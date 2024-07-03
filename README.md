@@ -1,6 +1,7 @@
 # Portfolio Showcase
 
-[![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato/)
+[![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
+[![Email Badge](https://img.shields.io/badge/Write%20Me-krishnak.pilato@gmail.com-red)](mailto:krishnak.pilato@gmail.com)
 
 Welcome to my Portfolio Showcase! This web application is designed to highlight my technical skills and experience.
 
@@ -36,6 +37,6 @@ It features a modern design and responsive layout, making it easily accessible o
 
 After development, this project will be deployed on AWS for high availability and scalability.
 
-## Feedback & Collaboration
+## Feedback
 
 I welcome any feedback or suggestions for improvement. Feel free to connect with me on LinkedIn or open an issue on this repository.
