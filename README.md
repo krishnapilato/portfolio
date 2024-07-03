@@ -36,6 +36,6 @@ It features a modern design and responsive layout, making it easily accessible o
 
 After development, this project will be deployed on AWS for high availability and scalability.
 
-## Feedback & Collaboration
+## Feedback
 
 I welcome any feedback or suggestions for improvement. Feel free to connect with me on LinkedIn or open an issue on this repository.
