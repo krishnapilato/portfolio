@@ -1,6 +1,7 @@
 # Portfolio Showcase
 
-[![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato/)
+[![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
+[![Email Badge](https://img.shields.io/badge/Write%20Me-krishnak.pilato@gmail.com-red)](mailto:krishnak.pilato@gmail.com)
 
 Welcome to my Portfolio Showcase! This web application is designed to highlight my technical skills and experience.
 
