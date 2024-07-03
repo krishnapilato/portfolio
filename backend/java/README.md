@@ -30,6 +30,11 @@ This is a RESTful API built with Spring Boot, providing user authentication, man
 3. **Clone and Run:**
 
    ```bash
-   git clone https://github.com/krishnapilato/portfolio.git
+   git clone https://github.com/krishnapilato/portfolio.git;
+   ```
+   ```bash
    cd backend/java
+   ```
+   ```bash
    ./mvnw spring-boot:run
+   ```
