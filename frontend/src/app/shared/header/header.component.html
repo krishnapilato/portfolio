@@ -1,1 +1,28 @@
-<p>header works!</p>
+<mat-toolbar style="background-color: #f0f4f7;">
+    <mat-icon class="hover-class" fontIcon="dashboard"></mat-icon>
+    <span class="hover-class" style="font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Portfolio</span>
+    <span class="example-spacer"></span>
+    <div class="toolbar-icons">
+      <button mat-icon-button matTooltip="My Work" class="hover-class" [matTooltipPosition]="'below'">
+        <mat-icon fontIcon="web_stories"></mat-icon>
+      </button>
+      <span class="space"></span>
+      <button mat-icon-button class="hover-class" matTooltip="About me" [matTooltipPosition]="'below'">
+        <mat-icon fontIcon="person"></mat-icon>
+      </button>
+      <span class="space"></span>
+      <button mat-icon-button matTooltip="Skills" class="hover-class" [matTooltipPosition]="'below'">
+        <mat-icon fontIcon="dataset"></mat-icon>
+      </button>
+      <span class="space"></span>
+      <button *ngIf="isAuthenticated()" mat-icon-button matTooltip="Contact" class="hover-class" [matTooltipPosition]="'below'" [matMenuTriggerFor]="settingsMenu">
+        <mat-icon fontIcon="call"></mat-icon>
+      </button>
+    </div>
+    <span class="example-spacer-right"></span>
+  </mat-toolbar>
+  
+  <mat-menu #settingsMenu>
+    <button mat-menu-item>Profile</button>
+    <button mat-menu-item (click)="logout()">Logout</button>
+  </mat-menu>  

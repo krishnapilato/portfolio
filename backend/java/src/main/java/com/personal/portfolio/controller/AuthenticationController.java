@@ -45,9 +45,6 @@ public class AuthenticationController {
 		} catch (AuthenticationException e) {
 			String errorMessage = "Authentication failed: " + e.getMessage();
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse(errorMessage, 0));
-		} catch (Exception e) {
-			String errorMessage = "An error occurred during authentication.";
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new LoginResponse(errorMessage, 0));
 		}
 	}
 

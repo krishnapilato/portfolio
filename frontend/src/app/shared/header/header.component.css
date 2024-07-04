@@ -1,0 +1,15 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .space {
+    margin-left: 20px;
+  }
+  
+  .animate__animated.animate__bounceInLeft {
+    animation-duration: 1.5s;
+  }
+  
+  .hover-class:hover {
+    color: blue;
+  }

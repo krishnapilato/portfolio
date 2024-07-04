@@ -1,0 +1,44 @@
+<div class="registration-container">
+    <mat-card class="registration-card">
+        <mat-card-title>Let's get started.</mat-card-title>
+        <mat-card-subtitle>Create an account to connect.</mat-card-subtitle>
+        <div class="space"></div>
+        <mat-card-content>
+            <form (ngSubmit)="signUp()" #registrationForm="ngForm">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Full Name</mat-label>
+                    <input matInput [(ngModel)]="registrationRequest.fullName" name="fullName" required>
+                    <mat-error *ngIf="registrationForm.controls['fullName']?.invalid && registrationForm.controls['fullName']?.touched">
+                        Full Name is required
+                    </mat-error>
+                </mat-form-field>
+                <div class="space"></div>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput [(ngModel)]="registrationRequest.email" name="email" required>
+                    <mat-error *ngIf="registrationForm.controls['email']?.invalid && registrationForm.controls['email']?.touched">
+                        Email is required
+                    </mat-error>
+                </mat-form-field>
+                <div class="space"></div>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" [(ngModel)]="registrationRequest.password" name="password" required>
+                    <mat-error *ngIf="registrationForm.controls['password']?.invalid && registrationForm.controls['password']?.touched">
+                        Password is required
+                    </mat-error>
+                </mat-form-field>
+                <div *ngIf="error" class="error">{{ error }}</div>
+                <div class="space"></div>
+                <div class="button-container">
+                    <button class="full-width" id="registrationButton" mat-raised-button color="primary" type="submit" [disabled]="registrationForm.invalid">
+                      Sign up
+                    </button>
+                  </div>
+                  <p mat-raised-button color="primary">
+                    Already have an account? Login <u><a (click)="goToLoginPage()">here</a></u>
+                  </p>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>  

@@ -1,0 +1,8 @@
+.welcome-container {
+  display: flex; /* Enable flexbox for easy alignment */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: flex-start; /* Align items to the top of the container */
+  align-items: center;
+  padding: 50px;
+  background-color: #f0f4f7;
+}
