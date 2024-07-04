@@ -1,8 +1,35 @@
 .welcome-container {
-  display: flex; /* Enable flexbox for easy alignment */
-  flex-direction: column; /* Stack items vertically */
-  justify-content: flex-start; /* Align items to the top of the container */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  padding: 50px;
+  padding: 80px;
   background-color: #f0f4f7;
+}
+
+.mat-raised-button {
+  padding: 15px 30px;
+  font-size: 18px;
+  margin: 10px;
+}
+
+.mat-raised-button:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.button-container > button:first-child {
+  background-color: #c6ff00;
+  color: black;
+  transform: scale(1.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.button-container > button:first-child:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }

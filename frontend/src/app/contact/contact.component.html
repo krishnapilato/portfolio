@@ -1,0 +1,59 @@
+<div class="contact-container">
+    <div class="header">
+        <h2>Khova Krishna Pilato</h2>
+        <p class="contact-info"> 
+            <span class="contact-item">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ personalData.email }}" target="_blank"><i class="fa-solid fa-envelope"></i> {{ personalData.email }}</a>
+            </span>
+            <span class="contact-item">
+                <a href="tel:{{ personalData.phoneNumber }}" target="_blank"><i class="fa-solid fa-square-phone"></i> {{ personalData.phoneNumber }}</a>
+            </span>
+            <span class="contact-item">
+                <a href="{{ personalData.linkedInProfile }}" target="_blank">
+                    <i class="fa-brands fa-linkedin"></i> LinkedIn Profile
+                </a>
+            </span>
+        </p>
+    </div>
+    <div class="space" style="margin-top: 20px;"></div>
+    <mat-card class="contact-form">
+        <mat-card-title>Contact Me</mat-card-title>
+        <mat-card-subtitle>Have a question or want to collaborate? Reach out to me here.</mat-card-subtitle>
+        <div class="space" style="margin-top: 20px;"></div>
+        <mat-card-content>
+            <form [formGroup]="contactForm" (ngSubmit)="sendMessage()">
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" required>
+                    <mat-error *ngIf="contactForm.controls['email'].hasError('required')">
+                        Email is required
+                    </mat-error>
+                    <mat-error *ngIf="contactForm.controls['email'].hasError('email')">
+                        Invalid email
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Title</mat-label>
+                    <input required="true" matInput formControlName="title">
+                    <mat-error *ngIf="contactForm.controls['email'].hasError('required')">
+                        Title is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Message</mat-label>
+                    <textarea  matInput formControlName="message" rows="4" required></textarea>
+                    <mat-error *ngIf="contactForm.controls['message'].hasError('required')">
+                        Message is required
+                    </mat-error>
+                </mat-form-field>
+                <button mat-raised-button color="primary" type="submit" [disabled]="contactForm.invalid" class="full-width">
+                    Send
+                </button>
+            </form>
+
+            <div class="message" *ngIf="message">{{ message }}</div>
+        </mat-card-content>
+    </mat-card>
+</div>
