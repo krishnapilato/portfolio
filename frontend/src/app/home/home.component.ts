@@ -15,7 +15,7 @@ import { MatButton } from '@angular/material/button';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  languages: string[] = environment.programmingLanguages;
+  languages: string[] = ['Java', "Python", "JavaScript", "TypeScript"];
 
   public viewDevTools(): void {
     console.log('Opening developer tools...');
