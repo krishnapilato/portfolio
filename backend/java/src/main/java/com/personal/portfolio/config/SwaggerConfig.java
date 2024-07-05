@@ -24,13 +24,16 @@ public class SwaggerConfig {
 								.bearerFormat(bearerFormat)))
 				.info(new Info().title("Portfolio").description("REST API Showcase").version("0.0.1"));
 	}
-	
-    @Bean
-    public GroupedOpenApi authApi() {
-        return GroupedOpenApi.builder()
-                .group("Authentication & Authorization") 
-                .packagesToScan("com.personal.portfolio.controller")
-                .pathsToMatch("/auth/**") 
-                .build();
-    }
+
+	@Bean
+	public GroupedOpenApi authApi() {
+		return GroupedOpenApi.builder().group("Authentication & Authorization")
+				.packagesToScan("com.personal.portfolio.controller").pathsToMatch("/auth/**").build();
+	}
+
+	@Bean
+	public GroupedOpenApi profileApi() {
+		return GroupedOpenApi.builder().group("Profile").packagesToScan("com.personal.portfolio.controller")
+				.pathsToMatch("/profile/**").build();
+	}
 }
