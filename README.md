@@ -3,8 +3,9 @@
 [![Java Version](https://img.shields.io/badge/Java-21-blue?style=flat&logo=java)](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
 [![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.1-brightgreen?style=flat&logo=spring-boot)](https://spring.io/projects/spring-boot)
 [![Angular Version](https://img.shields.io/badge/Angular-18.0.5-red?style=flat&logo=angular)](https://angular.io/)
-[![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
-
+[![MySQL](https://img.shields.io/badge/MySQL-8.0.32-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green?style=flat&logo=mongodb)](https://www.mongodb.com/)
+[![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat&logo=python)](https://www.python.org/downloads/release/python-3120/)
 
 Welcome to my Portfolio Showcase! This web application is designed to highlight my technical skills and experience.
 
