@@ -30,10 +30,4 @@ public class SwaggerConfig {
 		return GroupedOpenApi.builder().group("Authentication & Authorization")
 				.packagesToScan("com.personal.portfolio.controller").pathsToMatch("/auth/**").build();
 	}
-
-	@Bean
-	public GroupedOpenApi profileApi() {
-		return GroupedOpenApi.builder().group("Profile").packagesToScan("com.personal.portfolio.controller")
-				.pathsToMatch("/profile/**").build();
-	}
 }
