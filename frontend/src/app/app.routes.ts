@@ -10,4 +10,5 @@ export const routes: Routes = [
   { path: 'auth/signup', component: RegistrationComponent },
   { path: 'home', component: HomeComponent },
   { path: 'contact', component: ContactComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent }
 ];

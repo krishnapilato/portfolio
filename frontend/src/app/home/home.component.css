@@ -33,3 +33,7 @@
 .button-container > button:first-child:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
+
+.space {
+  margin-top: 50px;
+}
