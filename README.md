@@ -30,7 +30,7 @@ It features a modern design and responsive layout, making it easily accessible o
 2. **Backend:**
    * **Java:** Follow the instructions in the `backend/java/README.md` file.
 3. **Frontend:**
-   * Navigate to the `frontend` directory.
+   * Navigate to the `frontend/angular/` directory.
    * Install dependencies: `npm install`
    * Run the development server: `ng serve`
    * Open your browser to `http://localhost:4200/`
