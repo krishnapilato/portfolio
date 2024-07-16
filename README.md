@@ -5,16 +5,15 @@
 [![Angular Version](https://img.shields.io/badge/Angular-18.0.5-red?style=flat&logo=angular)](https://angular.io/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0.32-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green?style=flat&logo=mongodb)](https://www.mongodb.com/)
-[![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat&logo=python)](https://www.python.org/downloads/release/python-3120/)
 
-Welcome to my Portfolio Showcase! This web application is designed to highlight my technical skills and experience.
+Welcome! This web application is designed to highlight my technical skills and experience.
 
 ## About
 
 This showcase is built with:
 
+* **Backend:** Java
 * **Frontend:** Angular 
-* **Backend:** Java and Python
 
 It features a modern design and responsive layout, making it easily accessible on various devices.
 
