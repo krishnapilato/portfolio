@@ -29,7 +29,6 @@ It features a modern design and responsive layout, making it easily accessible o
 1. **Clone the Repository:** `git clone https://github.com/krishnapilato/portfolio.git`
 2. **Backend:**
    * **Java:** Follow the instructions in the `backend/java/README.md` file.
-   * **Python:** Follow the instructions in the `backend/python/README.md` file.
 3. **Frontend:**
    * Navigate to the `frontend` directory.
    * Install dependencies: `npm install`
