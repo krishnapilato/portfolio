@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from '../../environment/environment.development';
+import { environment } from '../../environment/environment';
 import { LoginRequest, LoginResponse } from '../shared/models/login.model';
 import {
   RegistrationRequest,

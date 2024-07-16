@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
-import { environment } from '../../environment/environment.development';
+import { environment } from '../../environment/environment';
 
 @Component({
   selector: 'app-home',
