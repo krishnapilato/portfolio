@@ -1,11 +1,11 @@
 <div class="welcome-container">
-  <h2 class="animate__animated animate__fadeInDown">Ciao! I am Krishna</h2>
-  <p class="animate__animated animate__fadeInUp">I build web applications using</p>
-  <mat-chip-grid class="animate__animated animate__fadeInUp" aria-label="Programming Languages">
+  <h2>Ciao! I am Krishna</h2>
+  <p>I build web applications using</p>
+  <mat-chip-set aria-label="Programming Languages">
     <mat-chip *ngFor="let language of languages">
       {{ language }}
     </mat-chip>
-  </mat-chip-grid>
+  </mat-chip-set>
 </div>
 
 <div class="button-container">
@@ -16,5 +16,3 @@
     <mat-icon>download</mat-icon> Download resume
   </button>
 </div>
-<div class="space"></div>
-<div id="map" style="height: 63%;"></div>

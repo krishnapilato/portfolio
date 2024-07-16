@@ -1,19 +1,20 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { MatMenuModule } from '@angular/material/menu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JWT_OPTIONS, JwtHelperService, JwtInterceptor } from '@auth0/angular-jwt';
 import { routes } from './app.routes';
-
-export function tokenGetter() {
-  return localStorage.getItem('currentUser')
-    ? JSON.parse(localStorage.getItem('currentUser') || '').token
-    : null;
-}
+import { AuthGuard } from './auth/auth.guard';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideAnimationsAsync(),
-  ],
+    provideHttpClient(withInterceptorsFromDi()),
+    importProvidersFrom(MatMenuModule, BrowserAnimationsModule, RouterModule.forRoot(routes)),
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
+    AuthGuard,
+  ]
 };

@@ -1,35 +1,15 @@
+:root {
+  --bg-color: #f0f4f7;
+  --font-family: "Roboto", "Helvetica Neue", sans-serif;
+}
+
 body,
 html {
   margin: 0;
-  padding: 0;
-  width: 100%;
   height: 100%;
-  background-color: #f0f4f7;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--bg-color) !important;
+  font-family: var(--font-family);
 }
-
-mat-toolbar {
-  width: 100%;
-  background-color: #f0f4f7;
-}
-
-.mat-mdc-form-field-type-mat-select:not(.mat-form-field-disabled)
-  .mat-mdc-text-field-wrapper {
-  background-color: #c6ff00;
-  border-radius: 26px;
-}
-
-.cdk-overlay-pane:not(.mat-mdc-select-panel-above) div.mat-mdc-select-panel {
-  border-radius: 35px;
-  background-color: #c6ff00;
-  color: #003366;
-}
-
 .noselect {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
