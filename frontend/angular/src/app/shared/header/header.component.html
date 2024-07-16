@@ -1,7 +1,7 @@
 <mat-toolbar style="background-color: #f0f4f7;">
   <mat-icon color="primary" fontIcon="dashboard"></mat-icon>
-    <span [matMenuTriggerFor]="settingsMenu" (click)="openHomeView()" class="hover-class" matTooltip="Home" [matTooltipPosition]="'below'" style="font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Portfolio</span>
-    <span class="example-spacer"></span>
+    <span (click)="openHomeView()" class="hover-class" matTooltip="Home" [matTooltipPosition]="'below'" style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Bytecode Chronicles</span>
+    <span class="spacer"></span>
     <div class="toolbar-icons">
       <button mat-icon-button matTooltip="My Work" class="hover-class" [matTooltipPosition]="'below'">
         <mat-icon fontIcon="web_stories"></mat-icon>
@@ -19,9 +19,5 @@
         <mat-icon fontIcon="call"></mat-icon>
       </button>
     </div>
-    <span class="example-spacer-right"></span>
+    <span class="spacer-right"></span>
   </mat-toolbar>
-  
-  <mat-menu #settingsMenu>
-    <button mat-menu-item (click)="logout()">Logout</button>
-  </mat-menu>  
