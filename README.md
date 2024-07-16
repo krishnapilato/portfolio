@@ -7,9 +7,7 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green?style=flat&logo=mongodb)](https://www.mongodb.com/)
 [![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat&logo=python)](https://www.python.org/downloads/release/python-3120/)
 
-Welcome! This web application is designed to highlight my technical skills and experience. **First design attempt below:**
-
-![image](https://github.com/krishnapilato/portfolio/assets/24872518/feb49205-e810-4a45-9a12-0aa089db4ea7)
+Welcome! This web application is designed to highlight my technical skills and experience.
 
 ## About
 
