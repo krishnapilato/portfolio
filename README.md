@@ -13,8 +13,8 @@ Welcome! This web application is designed to highlight my technical skills and e
 
 This showcase is built with:
 
+* **Backend:** Java
 * **Frontend:** Angular 
-* **Backend:** Java and Python
 
 It features a modern design and responsive layout, making it easily accessible on various devices.
 
