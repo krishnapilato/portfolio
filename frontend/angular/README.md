@@ -21,6 +21,4 @@
 
 ## 💡 Need Help?
 
-- **Angular CLI is Your Friend:** The Angular CLI is packed with features.  Run `ng help` or check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) to unlock its full potential.
-
-Let your creativity flow, and build an amazing portfolio that truly represents you! 🎨
+- **Angular CLI is Your Friend:** The Angular CLI is packed with features.  Run `ng help` or check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) to unlock its full potential. 🎨
