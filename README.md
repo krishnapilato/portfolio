@@ -13,7 +13,8 @@ Welcome! This web application is designed to highlight my technical skills and e
 This showcase is built with:
 
 * **Backend:** Java
-* **Frontend:** Angular 
+* **Frontend:** Angular
+* **Database** MySQL and MongoDB
 
 It features a modern design and responsive layout, making it easily accessible on various devices.
 
