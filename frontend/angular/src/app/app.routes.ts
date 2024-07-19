@@ -6,9 +6,9 @@ import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
-  { path: 'auth/login', component: LoginComponent },
-  { path: 'auth/signup', component: RegistrationComponent },
+  { path: 'auth/login', component: LoginComponent, canActivate: [AuthGuard] }, 
+  { path: 'auth/signup', component: RegistrationComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'contact', component: ContactComponent, canActivate: [AuthGuard] },
-  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/auth/login', pathMatch: 'full' }
 ];

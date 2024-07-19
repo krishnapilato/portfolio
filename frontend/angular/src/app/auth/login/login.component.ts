@@ -31,24 +31,19 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    // Check if user is already logged in, and if so, redirect to home
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['home']);
     }
   }
 
-  login() {
+  public login(): void {
     this.authService.login(this.loginRequest).subscribe(
-      () => {
-        // Login success, authService will handle redirection
-      },
-      (error) => {
-        this.error = 'Incorrect login details.';
-      }
+      () => { this.error = '' },
+      (error) => { this.error = 'Incorrect login details.' }
     );
   }
 
-  goToSignUpPage(): void {
+  public goToSignUpPage(): void {
     this.router.navigate(['auth/signup']);
   }
 }
