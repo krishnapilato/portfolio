@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
       typeSpeed: 300,
       backSpeed: 300,
       showCursor: true,
-      cursorChar: '|',
+      cursorChar: '_',
       loop: true,
       fadeOut: false,
       fadeOutDelay: 1500,

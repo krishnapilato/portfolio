@@ -1,7 +1,13 @@
 .home-button {
   font-size: 15px;
+  font-family: cursive;
   font-weight: bold;
   text-decoration: underline;
+  transition: box-shadow 0.3s ease;
+}
+
+.home-button:hover {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .spacer {
