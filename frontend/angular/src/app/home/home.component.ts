@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -22,14 +22,14 @@ import { environment } from '../../environment/environment';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   private languages: string[] = ['Java', 'Python', 'JavaScript', 'TypeScript'];
 
   ngOnInit() {
     const typed = new Typed('.typed-element', {
       strings: this.languages,
-      typeSpeed: 100,
-      backSpeed: 20,
+      typeSpeed: 300,
+      backSpeed: 300,
       showCursor: true,
       cursorChar: '|',
       loop: true,

@@ -13,6 +13,14 @@
   margin: 10px;
 }
 
+.italy-flag {
+  background-image: linear-gradient(to right, #008C45, rgb(255, 255, 217), #CD212A);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
+}
+
 .mat-raised-button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
