@@ -2,11 +2,13 @@ package com.personal.portfolio.model;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
@@ -15,12 +17,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Table(name = "users")
 @Entity
-@Data
+@Getter
+@Setter
 public class User implements UserDetails {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,11 +49,19 @@ public class User implements UserDetails {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of();
+	@Column(name = "roles")
+	private Role role;
+
+	public User() {}
+	
+	public User(String fullName, String email, String password, Role role) {
+		this.fullName = fullName;
+		this.email = email;
+		this.password = password;
+		this.role = role;
 	}
 
+	@Override
 	public String getPassword() {
 		return password;
 	}
@@ -56,6 +69,14 @@ public class User implements UserDetails {
 	@Override
 	public String getUsername() {
 		return email;
+	}
+	
+	public Role getRole() {
+		return this.role;
+	}
+	
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	@Override
@@ -76,5 +97,10 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
 	}
 }

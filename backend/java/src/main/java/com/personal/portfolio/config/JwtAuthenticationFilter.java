@@ -16,6 +16,9 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import com.personal.portfolio.service.JwtService;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,8 +26,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-	private final HandlerExceptionResolver handlerExceptionResolver;
-
 	private final JwtService jwtService;
 	private final UserDetailsService userDetailsService;
 
@@ -33,7 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			HandlerExceptionResolver handlerExceptionResolver) {
 		this.jwtService = jwtService;
 		this.userDetailsService = userDetailsService;
-		this.handlerExceptionResolver = handlerExceptionResolver;
 	}
 
 	@Override
@@ -63,10 +63,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 					SecurityContextHolder.getContext().setAuthentication(authToken);
 				}
 			}
-
 			filterChain.doFilter(request, response);
-		} catch (Exception exception) {
-			handlerExceptionResolver.resolveException(request, response, null, exception);
+		} catch (ExpiredJwtException e) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token expired");
+		} catch (MalformedJwtException | SignatureException e) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+		} catch (Exception e) {
+			logger.error("Unexpected error during token validation", e);
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal server error");
 		}
 	}
 }

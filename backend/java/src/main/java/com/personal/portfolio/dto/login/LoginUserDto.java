@@ -1,18 +1,12 @@
-package com.personal.portfolio.dto;
+package com.personal.portfolio.dto.login;
 
-public class RegisterUserDto {
-	private String fullName;
-
+public class LoginUserDto {
 	private String email;
-
 	private String password;
 
-	public String getFullName() {
-		return fullName;
-	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public LoginUserDto(String email, String password) {
+		this.email = email;
+		this.password = password;
 	}
 
 	public String getEmail() {

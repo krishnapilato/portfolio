@@ -3,6 +3,7 @@ package com.personal.portfolio.service;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -18,6 +20,7 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
+
 	@Value("${security.jwt.secret-key}")
 	private String secretKey;
 
@@ -34,11 +37,16 @@ public class JwtService {
 	}
 
 	public String generateToken(UserDetails userDetails) {
-		return generateToken(new HashMap<>(), userDetails);
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("roles", userDetails.getAuthorities());
+		return generateToken(claims, userDetails);
 	}
 
 	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-		return buildToken(extraClaims, userDetails, jwtExpiration);
+		Map<String, Object> claims = new HashMap<>(extraClaims);
+		claims.put("iss", "krishnapilato");
+		claims.put("aud", "audience");
+		return buildToken(claims, userDetails, jwtExpiration);
 	}
 
 	public long getExpirationTime() {
@@ -53,8 +61,31 @@ public class JwtService {
 	}
 
 	public boolean isTokenValid(String token, UserDetails userDetails) {
-		final String username = extractUsername(token);
-		return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+		try {
+			final String username = extractUsername(token);
+			return username.equals(userDetails.getUsername()) && !isTokenExpired(token) && isTokenIssuedByUs(token)
+					&& isValidAudience(token);
+		} catch (JwtException e) {
+			return false;
+		}
+	}
+
+	private boolean isTokenIssuedByUs(String token) {
+		String issuer = extractClaim(token, Claims::getIssuer);
+		return "krishnapilato".equals(issuer);
+	}
+
+	private boolean isValidAudience(String token) {
+		Object audienceClaim = extractClaim(token, Claims::getAudience);
+		if (audienceClaim instanceof String) {
+			return "audience".equals(audienceClaim);
+		} else if (audienceClaim instanceof List) {
+			@SuppressWarnings("unchecked")
+			List<String> audienceList = (List<String>) audienceClaim;
+			return audienceList.contains("audience");
+		} else {
+			return false;
+		}
 	}
 
 	private boolean isTokenExpired(String token) {
