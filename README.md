@@ -8,6 +8,9 @@
 
 Welcome! This web application is designed to highlight my technical skills and experience.
 
+![image](https://github.com/user-attachments/assets/f19fd0b1-02d5-465e-80ce-b6f3e287b9d7)
+
+
 ## About
 
 This showcase is built with:
