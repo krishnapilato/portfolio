@@ -43,10 +43,9 @@ export class AuthService {
             const user = this.jwtHelper.decodeToken(response.token);
             user.token = response.token;
             localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('userRole', response.role.toString());
             this.currentUserSubject.next(user);
-
-            const redirect = this.redirectUrl || '/home';
-            this.router.navigate([redirect]);
+            this.router.navigate([this.redirectUrl || '/home']);
             this.redirectUrl = '';
           }
           return response;

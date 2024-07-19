@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.personal.portfolio.dto.login.LoginUserDto;
 import com.personal.portfolio.dto.registration.RegisterUserDto;
+import com.personal.portfolio.model.Role;
 import com.personal.portfolio.model.User;
 import com.personal.portfolio.repository.UserRepository;
 
@@ -41,6 +42,7 @@ public class AuthenticationService {
 		user.setFullName(input.getFullName());
 		user.setEmail(input.getEmail());
 		user.setPassword(passwordEncoder.encode(input.getPassword()));
+		user.setRole(Role.USER);
 
 		User savedUser = userRepository.save(user);
 		logger.info("User registration successful for ID: {}", savedUser.getId());

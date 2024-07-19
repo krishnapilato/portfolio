@@ -5,4 +5,11 @@ export interface User {
   password: string;
   createdAt: Date;
   updatedAt: Date;
+  role: Role;
+}
+
+export enum Role {
+  USER,
+  ADMIN,
+  DEVELOPER,
 }

@@ -1,3 +1,5 @@
+import { Role } from "./user.model";
+
 export interface RegistrationRequest {
   fullName: string;
   email: string;
@@ -5,6 +7,8 @@ export interface RegistrationRequest {
 }
 
 export interface RegistrationResponse {
+  status: string;
   message: string;
-  userId: number;
+  userId?: number;
+  role?: Role;
 }

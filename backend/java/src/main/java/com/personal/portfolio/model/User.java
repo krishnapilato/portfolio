@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,7 +51,8 @@ public class User implements UserDetails {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@Column(name = "roles")
+	@Enumerated(EnumType.STRING)
+	@Column(name = "role")
 	private Role role;
 
 	public User() {}

@@ -47,7 +47,7 @@ public class AuthenticationController {
 		try {
 			User authenticatedUser = authenticationService.authenticate(loginUserDto);
 			String jwtToken = jwtService.generateToken(authenticatedUser);
-			return ResponseEntity.ok(new LoginResponse(jwtToken, jwtService.getExpirationTime()));
+			return ResponseEntity.ok(new LoginResponse(jwtToken, jwtService.getExpirationTime(), authenticatedUser.getRole()));
 		} catch (AuthenticationException e) {
 			logger.warn("Authentication failed for email: {}", loginUserDto.getEmail(), e);
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

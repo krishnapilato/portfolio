@@ -1,17 +1,21 @@
 package com.personal.portfolio.dto.login;
 
+import com.personal.portfolio.model.Role;
+
 public class LoginResponse {
 	private String status;
 	private String message;
 	private String token;
 	private long expiresIn;
 	private String errorCode;
+	private Role role;
 
-	public LoginResponse(String token, long expiresIn) {
+	public LoginResponse(String token, long expiresIn, Role role) {
 		this.setStatus("success");
 		this.setMessage("Authentication successful.");
 		this.setToken(token);
 		this.setExpiresIn(expiresIn);
+		this.setRole(role);
 	}
 
 	public LoginResponse(String errorCode, String message) {
@@ -59,4 +63,12 @@ public class LoginResponse {
 	public void setErrorCode(String errorCode) {
 		this.errorCode = errorCode;
 	}
+	
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
