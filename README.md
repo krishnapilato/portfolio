@@ -6,7 +6,7 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0.32-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green?style=flat&logo=mongodb)](https://www.mongodb.com/)
 
-Welcome! This web application is designed to highlight my technical skills and experience.
+Welcome! This web application is designed to highlight my technical skills and experience. The code might still have some minor issues that need to be resolved. A thorough review and bug fixing process will continue through July 31, 2024 to ensure stability and optimal performance.
 
 ![image](https://github.com/user-attachments/assets/f19fd0b1-02d5-465e-80ce-b6f3e287b9d7)
 
