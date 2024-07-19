@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
+import { LoginRequest } from '../../shared/models/login.model';
 import { AuthService } from '../auth.service';
-import { LoginRequest, LoginResponse } from '../../shared/models/login.model';
 
 @Component({
   selector: 'app-login',
@@ -22,25 +22,27 @@ import { LoginRequest, LoginResponse } from '../../shared/models/login.model';
     MatInputModule,
     MatButtonModule,
     RouterModule,
-  ]
+  ],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   public loginRequest: LoginRequest = { email: '', password: '' };
   public error!: string;
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  ngOnInit(): void {
+    // Check if user is already logged in, and if so, redirect to home
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/home']);
+    }
+  }
+
   login() {
     this.authService.login(this.loginRequest).subscribe(
-      (data: LoginResponse) => {
-        if (data && data.token) {
-          const returnUrl = this.router.routerState.snapshot.root.queryParams['returnUrl'] || '/';
-          this.router.navigate([returnUrl]);
-        } else {
-          this.error = 'Invalid username or password.';
-        }
+      () => {
+        // Login success, authService will handle redirection
       },
-      error => {
+      (error) => {
         this.error = 'Incorrect login details.';
       }
     );

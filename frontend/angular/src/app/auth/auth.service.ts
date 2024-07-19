@@ -17,6 +17,7 @@ import {
 export class AuthService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
+  public redirectUrl: string; 
 
   constructor(
     private http: HttpClient,
@@ -43,6 +44,10 @@ export class AuthService {
             user.token = response.token;
             localStorage.setItem('currentUser', JSON.stringify(user));
             this.currentUserSubject.next(user);
+
+            const redirect = this.redirectUrl || '/home';
+            this.router.navigate([redirect]);
+            this.redirectUrl = '';
           }
           return response;
         })
