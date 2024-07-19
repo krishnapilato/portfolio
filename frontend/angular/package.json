@@ -26,9 +26,11 @@
     "bootstrap": "^5.3.3",
     "date-fns": "^3.6.0",
     "install": "^0.13.0",
+    "ngx-typed-js": "^2.1.1",
     "npm": "^10.8.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "typed.js": "^2.1.0",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
