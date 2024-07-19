@@ -34,11 +34,10 @@
 .button-container > button:first-child {
   background-color: #c6ff00;
   color: black;
-  transform: scale(1.05);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.button-container > button:first-child:hover {
+.button-container > button:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 

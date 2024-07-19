@@ -6,10 +6,10 @@
 </div>
 
 <div class="button-container">
-  <button mat-raised-button (click)="viewMyWork()">
+  <button matTooltip="View my work" [matTooltipPosition]="'before'" mat-raised-button (click)="viewMyWork()">
     See my work <i class="fa-regular fa-eye"></i>
   </button>
-  <button mat-raised-button (click)="downloadCurriculumVitae()">
+  <button matTooltip="Download resume" [matTooltipPosition]="'after'" mat-raised-button (click)="downloadCurriculumVitae()">
     Download resume <i class="fa-solid fa-file"></i>
   </button>
 </div>
