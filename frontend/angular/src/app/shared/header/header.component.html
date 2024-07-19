@@ -1,22 +1,21 @@
 <mat-toolbar style="background-color: #f0f4f7;">
-  <mat-icon color="primary" fontIcon="dashboard"></mat-icon>
-    <span (click)="openHomeView()" class="hover-class" matTooltip="Home" [matTooltipPosition]="'below'" style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Bytecode Chronicles</span>
+    <button class="home-button" (click)="openHomeView()" mat-button matTooltip="Home" [matTooltipPosition]="'below'">khovakrishnapilato.com</button>
     <span class="spacer"></span>
     <div class="toolbar-icons">
-      <button mat-icon-button matTooltip="My Work" class="hover-class" [matTooltipPosition]="'below'">
-        <mat-icon fontIcon="web_stories"></mat-icon>
+      <button mat-icon-button matTooltip="Work" class="hover-class" [matTooltipPosition]="'below'">
+        <i class="fa-brands fa-java"></i>
       </button>
       <span class="space"></span>
-      <button [matMenuTriggerFor]="menu" mat-icon-button class="hover-class" matTooltip="About me" [matTooltipPosition]="'below'">
-        <mat-icon fontIcon="person"></mat-icon>
+      <button [matMenuTriggerFor]="menu" mat-icon-button class="hover-class" matTooltip="About" [matTooltipPosition]="'below'">
+        <i class="fa-solid fa-address-card"></i>
       </button>
       <span class="space"></span>
-      <button mat-icon-button matTooltip="Skills" class="hover-class" [matTooltipPosition]="'below'">
-        <mat-icon fontIcon="dataset"></mat-icon>
+      <button (click)="openGithub()" mat-icon-button matTooltip="GitHub" class="hover-class" [matTooltipPosition]="'below'">
+        <i class="fa-brands fa-github"></i>
       </button>
       <span class="space"></span>
       <button mat-icon-button matTooltip="Contact" (click)="openContactView()" class="hover-class" [matTooltipPosition]="'below'">
-        <mat-icon fontIcon="call"></mat-icon>
+        <i class="fa-regular fa-paper-plane"></i>
       </button>
     </div>
     <span class="spacer-right"></span>

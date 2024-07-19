@@ -25,11 +25,11 @@ import { AuthService } from '../../auth/auth.service';
 export class HeaderComponent {
   constructor(private authService: AuthService, private route: Router) {}
 
-  logout(): void {
+  public logout(): void {
     this.authService.logout();
   }
 
-  isAuthenticated(): boolean {
+  public isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
   }
 
@@ -37,7 +37,11 @@ export class HeaderComponent {
     this.route.navigate(['home']);
   }
 
-  openContactView(): void {
+  public openGithub(): void {
+    window.open('https://github.com/krishnapilato/portfolio', '_blank');
+  }
+
+  public openContactView(): void {
     this.route.navigate(['contact']);
   }
 }
