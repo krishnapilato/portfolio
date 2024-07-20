@@ -6,11 +6,9 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0.32-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green?style=flat&logo=mongodb)](https://www.mongodb.com/)
 
-Welcome! This web application is designed to highlight my technical skills and experience. The code might still have some minor issues that need to be resolved. A thorough review and bug fixing process will continue through July 31, 2024 to ensure stability and optimal performance. Demos are shown below.
+Welcome! This web application is designed to highlight my technical skills and experience. The code might still have some minor issues that need to be resolved. A thorough review and bug fixing process will continue through July 31, 2024 to ensure stability and optimal performance.
 
-Login & Signup | Home
-:-:|:-:
-![image](https://github.com/user-attachments/assets/39fb3d59-4a6a-4a39-851d-39f746e3b3b1) | ![image](https://github.com/user-attachments/assets/44097597-18db-4117-bc69-af1595998900)
+![Registrazione2024-07-20145549-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/6055c626-0dcf-41e6-ba27-7de01364cfdd)
 
 ## About
 
