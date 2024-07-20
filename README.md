@@ -8,6 +8,8 @@
 
 Welcome! This web application is designed to highlight my technical skills and experience.
 
+![Registrazione2024-07-20145549-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/6055c626-0dcf-41e6-ba27-7de01364cfdd)
+
 ## About
 
 This showcase is built with:
