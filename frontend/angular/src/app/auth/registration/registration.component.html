@@ -1,44 +1,78 @@
 <div class="registration-container">
     <mat-card class="registration-card">
-        <mat-card-title>Let's get started.</mat-card-title>
-        <mat-card-subtitle>Create an account to connect.</mat-card-subtitle>
-        <div class="space"></div>
-        <mat-card-content>
-            <form (ngSubmit)="signUp()" #registrationForm="ngForm">
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Full Name</mat-label>
-                    <input matInput [(ngModel)]="registrationRequest.fullName" name="fullName" required>
-                    <mat-error *ngIf="registrationForm.controls['fullName']?.invalid && registrationForm.controls['fullName']?.touched">
-                        Full Name is required
-                    </mat-error>
-                </mat-form-field>
-                <div class="space"></div>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Email</mat-label>
-                    <input matInput [(ngModel)]="registrationRequest.email" name="email" required>
-                    <mat-error *ngIf="registrationForm.controls['email']?.invalid && registrationForm.controls['email']?.touched">
-                        Email is required
-                    </mat-error>
-                </mat-form-field>
-                <div class="space"></div>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Password</mat-label>
-                    <input matInput type="password" [(ngModel)]="registrationRequest.password" name="password" required>
-                    <mat-error *ngIf="registrationForm.controls['password']?.invalid && registrationForm.controls['password']?.touched">
-                        Password is required
-                    </mat-error>
-                </mat-form-field>
-                <div *ngIf="error" class="error">{{ error }}</div>
-                <div class="space"></div>
-                <div class="button-container">
-                    <button class="full-width" id="registrationButton" mat-raised-button color="primary" type="submit" [disabled]="registrationForm.invalid">
-                      Sign up
-                    </button>
-                  </div>
-                  <p mat-raised-button color="primary">
-                    Already have an account? Login <u><a (click)="goToLoginPage()">here</a></u>
-                  </p>
-            </form>
-        </mat-card-content>
+      <mat-card-title>Let's get started.</mat-card-title>
+      <mat-card-subtitle>Create an account to connect.</mat-card-subtitle>
+      <div class="space"></div>
+      <mat-card-content>
+        <form (ngSubmit)="signUp(registrationForm)" #registrationForm="ngForm">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Full Name</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="registrationRequest.fullName" 
+              name="registrationRequest.fullName"
+              required 
+              minlength="2"
+              pattern="[a-zA-Z\s]+" 
+            />
+            <mat-error *ngIf="registrationForm.controls['registrationRequest.fullName']?.errors && (registrationForm.controls['registrationRequest.fullName']?.dirty || registrationForm.controls['registrationRequest.fullName']?.touched)">
+              <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('required')">Full name is required</ng-container>
+            </mat-error>
+            <mat-icon matSuffix fontIcon="person"></mat-icon>
+          </mat-form-field>
+          <div class="space"></div>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="registrationRequest.email" 
+              name="registrationRequest.email"
+              type="email" 
+              required 
+              email 
+            />
+            <mat-error *ngIf="registrationForm.controls['registrationRequest.email']?.errors && (registrationForm.controls['registrationRequest.email']?.dirty || registrationForm.controls['registrationRequest.email']?.touched)">
+              <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('required')">Email is required</ng-container>
+              <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('email')">Please enter a valid email</ng-container>
+            </mat-error>
+            <mat-icon matSuffix fontIcon="mail"></mat-icon>
+          </mat-form-field>
+          <div class="space"></div>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input 
+              matInput 
+              [type]="hide ? 'password' : 'text'" 
+              [(ngModel)]="registrationRequest.password" 
+              name="registrationRequest.password" 
+              required 
+              minlength="9"
+            />
+            <mat-icon matSuffix (click)="hide = !hide">{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            <mat-error *ngIf="registrationForm.controls['registrationRequest.password']?.errors && (registrationForm.controls['registrationRequest.password']?.dirty || registrationForm.controls['registrationRequest.password']?.touched)">
+              <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('required')">Password is required</ng-container>
+              <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('minlength')">Password must be at least 9 characters</ng-container>
+            </mat-error>
+          </mat-form-field>
+          <div *ngIf="error" class="error">{{ error }}</div>
+          <div class="space"></div>
+          <div class="button-container">
+            <button 
+              class="full-width" 
+              id="registrationButton" 
+              mat-raised-button 
+              color="primary" 
+              type="submit" 
+              [disabled]="registrationForm.invalid"
+            >
+              Sign Up <mat-icon iconPositionEnd fontIcon="person_add"></mat-icon>
+            </button>
+          </div>
+          <p mat-raised-button color="primary">
+            Already have an account? Login
+            <u><a routerLink="/auth/login" matTooltip="Login" [matTooltipPosition]="'after'">here</a></u>
+          </p>
+        </form>
+      </mat-card-content>
     </mat-card>
-</div>  
+  </div>

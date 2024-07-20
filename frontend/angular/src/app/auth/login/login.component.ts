@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { LoginRequest } from '../../shared/models/login.model';
 import { AuthService } from '../auth.service';
@@ -22,11 +24,14 @@ import { AuthService } from '../auth.service';
     MatInputModule,
     MatButtonModule,
     RouterModule,
+    MatIconModule,
+    MatTooltipModule
   ],
 })
 export class LoginComponent implements OnInit {
   public loginRequest: LoginRequest = { email: '', password: '' };
-  public error!: string;
+  public error: string | null = null; 
+  public hide: boolean = true;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -36,14 +41,16 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  public login(): void {
-    this.authService.login(this.loginRequest).subscribe(
-      () => { this.error = '' },
-      (error) => { this.error = 'Incorrect login details.' }
-    );
-  }
-
-  public goToSignUpPage(): void {
-    this.router.navigate(['auth/signup']);
+  public login(loginForm: NgForm) {
+    if (loginForm.valid) {
+      this.authService.login(this.loginRequest).subscribe({
+        next: () => {
+          this.error = null;
+        },
+        error: (err) => {
+          this.error = 'Incorrect login details.';
+        },
+      });
+    }
   }
 }
