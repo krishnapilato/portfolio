@@ -22,7 +22,7 @@
   margin-left: 20px;
 }
 
-.java-button:hover i {
+.sliders-button:hover i {
   animation: pulse 1s infinite;
 }
 

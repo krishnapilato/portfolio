@@ -1,0 +1,31 @@
+<mat-tab-group class="tab-container" animationDuration="1s">
+  <mat-tab label="Users">
+    <ng-template mat-tab-label>
+      <i class="fa-solid fa-user-group" style="font-size: 12px"></i
+      >&nbsp;&nbsp;Users
+    </ng-template>
+    <app-user-management></app-user-management>
+  </mat-tab>
+  <mat-tab label="Developer Tools"  animationDuration="0ms">
+    <ng-template mat-tab-label>
+      <i style="font-size: 12px" class="fa-solid fa-code"></i
+      >&nbsp;&nbsp;Developer Tools
+    </ng-template>
+    <mat-tab-group dynamicHeight>
+      <mat-tab label="Backend">
+        <ng-template mat-tab-label>
+          <i class="fa-brands fa-java" style="font-size: 17px"></i
+          >&nbsp;&nbsp;Backend
+        </ng-template>
+        <p class="centered">Backend</p>
+      </mat-tab>
+      <mat-tab label="'Frontend'">
+        <ng-template mat-tab-label>
+          <i class="fa-brands fa-angular" style="font-size: 17px"></i
+          >&nbsp;&nbsp;Frontend
+        </ng-template>
+        <p class="centered">Frontend</p>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-tab>
+</mat-tab-group>
