@@ -6,13 +6,11 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0.32-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green?style=flat&logo=mongodb)](https://www.mongodb.com/)
 
-Welcome! This web application is designed to highlight my technical skills and experience. The code might still have some minor issues that need to be resolved. A thorough review and bug fixing process will continue through July 31, 2024 to ensure stability and optimal performance.
+Welcome! This web application is designed to highlight my technical skills and experience. The code might still have some minor issues that need to be resolved. A thorough review and bug fixing process will continue through July 31, 2024 to ensure stability and optimal performance. Demos are shown below.
 
-Login & Signup             |  Home
-:-------------------------:|:-------------------------:
-![image](https://github.com/user-attachments/assets/39fb3d59-4a6a-4a39-851d-39f746e3b3b1)  |  ![image](https://github.com/user-attachments/assets/44097597-18db-4117-bc69-af1595998900)
-![image](https://github.com/user-attachments/assets/96bb8a9d-ceda-4bf0-b21d-01e46335f81f)  | ![image](https://github.com/user-attachments/assets/4914068e-188b-4e02-a85c-6d9f39b3ab44)
-
+Login & Signup | Home
+:-:|:-:
+![image](https://github.com/user-attachments/assets/39fb3d59-4a6a-4a39-851d-39f746e3b3b1) | ![image](https://github.com/user-attachments/assets/44097597-18db-4117-bc69-af1595998900)
 
 ## About
 
