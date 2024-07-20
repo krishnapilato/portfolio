@@ -7,6 +7,10 @@
 }
 
 .home-button:hover {
+  animation: pulse 1s ease;
+}
+
+.home-button:hover {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -16,4 +20,32 @@
 
 .space {
   margin-left: 20px;
+}
+
+.java-button:hover i {
+  animation: pulse 1s infinite;
+}
+
+.about-button:hover i {
+  animation: pulse 1s infinite;
+}
+
+.github-button:hover i {
+  animation: pulse 1s infinite;
+}
+
+.contact-button:hover i {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
