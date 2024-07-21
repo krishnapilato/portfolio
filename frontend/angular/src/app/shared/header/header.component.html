@@ -1,8 +1,8 @@
 <mat-toolbar style="background-color: #f0f4f7;">
-    <button class="home-button" routerLink="/home" mat-button matTooltip="Home" [matTooltipPosition]="'below'">khovakrishnapilato.com</button>
+    <button class="home-button" (click)="openHome()" mat-button matTooltip="Home" [matTooltipPosition]="'below'">khovakrishnapilato.com</button>
     <span class="spacer"></span>
     <div class="toolbar-icons">
-      <button class="sliders-button" routerLink="/dashboard" mat-icon-button matTooltip="Dashboard" [matTooltipPosition]="'below'">
+      <button class="sliders-button" (click)="openDashboard()" mat-icon-button matTooltip="Dashboard" [matTooltipPosition]="'below'">
         <i class="fa-solid fa-sliders"></i>
       </button>
       <span class="space"></span>
