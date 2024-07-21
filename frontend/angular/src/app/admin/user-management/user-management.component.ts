@@ -7,6 +7,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { delay, finalize, tap } from 'rxjs';
 import { User } from '../../shared/models/user.model';
 import { UserService } from '../../shared/services/user.service';
+import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-user-management',
@@ -16,6 +17,8 @@ import { UserService } from '../../shared/services/user.service';
     CommonModule,
     MatTableModule,
     MatIconModule,
+    MatToolbar,
+    MatToolbarModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
   ],

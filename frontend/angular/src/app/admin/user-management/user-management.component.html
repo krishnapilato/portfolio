@@ -39,5 +39,11 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator #paginator *ngIf="!isLoading" [pageSize]="10"></mat-paginator>
+  <mat-toolbar *ngIf="!isLoading">
+    <mat-toolbar-row>
+      <span style="font-size: medium;">Add</span><mat-icon fontIcon="add"></mat-icon>
+      <span class="spacer"></span>
+      <mat-paginator #paginator [pageSize]="10"></mat-paginator>
+    </mat-toolbar-row>
+  </mat-toolbar>
 </div>

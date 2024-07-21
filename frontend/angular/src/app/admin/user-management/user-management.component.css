@@ -5,6 +5,7 @@
   position: relative;
   width: 95%;
   margin: 0 auto;
+  border-radius: 30px;
 }
 
 .table-container .mat-paginator {
@@ -17,6 +18,10 @@
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+.spacer {
+  flex: 1;
 }
 
 .options-cell button[mat-icon-button] {
