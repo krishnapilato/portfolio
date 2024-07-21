@@ -8,14 +8,18 @@ import { delay, finalize, tap } from 'rxjs';
 import { User } from '../../shared/models/user.model';
 import { UserService } from '../../shared/services/user.service';
 import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-user-management',
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [
+    MatTooltipModule,
     CommonModule,
     MatTableModule,
+    MatMenuModule,
     MatIconModule,
     MatToolbar,
     MatToolbarModule,

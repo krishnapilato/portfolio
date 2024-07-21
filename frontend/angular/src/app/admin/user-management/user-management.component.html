@@ -4,35 +4,28 @@
 <div class="table-container mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="!isLoading">
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let user"> {{user.id}} </td>
+      <th mat-header-cell *matHeaderCellDef> # </th>
+      <td mat-cell *matCellDef="let user; let i = index">
+        {{ i + 1 }} 
+      </td>
     </ng-container>
     <ng-container matColumnDef="fullName">
-      <th mat-header-cell *matHeaderCellDef> Full Name </th>
+      <th mat-header-cell *matHeaderCellDef> <b>Full Name</b> </th>
       <td mat-cell *matCellDef="let user"> {{user.fullName}} </td>
     </ng-container>
     <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <th mat-header-cell *matHeaderCellDef> <b>Email</b> </th>
       <td mat-cell *matCellDef="let user"> {{user.email}} </td>
     </ng-container>
     <ng-container matColumnDef="role">
-      <th mat-header-cell *matHeaderCellDef> Role </th>
+      <th mat-header-cell *matHeaderCellDef> <b>Email</b> </th>
       <td mat-cell *matCellDef="let user"> {{user.role}} </td>
     </ng-container>
     <ng-container matColumnDef="options">
-      <th mat-header-cell *matHeaderCellDef>Options</th>
+      <th mat-header-cell *matHeaderCellDef></th>
       <td  mat-cell *matCellDef="let user" class="options-cell">
-        <button mat-icon-button>
-          <mat-icon>info</mat-icon>
-        </button>
-        <button mat-icon-button>
-          <mat-icon>lock_open</mat-icon>
-        </button>
-        <button mat-icon-button (click)="editUser(user)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button>
-          <mat-icon>delete</mat-icon>
+        <button [matMenuTriggerFor]="menu" mat-icon-button matTooltip="Options" [matTooltipPosition]="'before'">
+          <i class="fa-solid fa-ellipsis"></i>
         </button>
       </td>
     </ng-container>
@@ -47,3 +40,11 @@
     </mat-toolbar-row>
   </mat-toolbar>
 </div>
+
+<mat-menu yPosition="below" xPosition="before" #menu="matMenu">
+  <button mat-menu-item><mat-icon fontIcon="info"></mat-icon> Information</button>
+  <button mat-menu-item><mat-icon fontIcon="send"></mat-icon> Email</button>
+  <button mat-menu-item><mat-icon fontIcon="edit"></mat-icon> Edit</button>
+  <button mat-menu-item><mat-icon fontIcon="lock"></mat-icon>Lock</button>
+  <button mat-menu-item><mat-icon fontIcon="person_remove"></mat-icon> Delete</button>
+</mat-menu>
