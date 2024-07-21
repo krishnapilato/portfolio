@@ -8,7 +8,8 @@
 
 Welcome! This web application is designed to highlight my technical skills and experience. The code might still have some minor issues that need to be resolved. A thorough review and bug fixing process will continue through July 31, 2024 to ensure stability and optimal performance.
 
-![Registrazione2024-07-20145549-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/6055c626-0dcf-41e6-ba27-7de01364cfdd)
+![image](https://github.com/user-attachments/assets/dfc054ff-98d5-424c-bc1d-b34d4bc610d6)
+
 
 ## About
 
