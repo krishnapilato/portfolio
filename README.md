@@ -8,8 +8,7 @@
 
 Welcome! This web application is designed to highlight my technical skills and experience. The code might still have some minor issues that need to be resolved. A thorough review and bug fixing process will continue through July 31, 2024 to ensure stability and optimal performance.
 
-![image](https://github.com/user-attachments/assets/dfc054ff-98d5-424c-bc1d-b34d4bc610d6)
-
+![image](https://github.com/user-attachments/assets/a8d3e3a9-7176-4669-ad32-57044ff30d08)
 
 ## About
 
