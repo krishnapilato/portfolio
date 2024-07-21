@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 
 @RequestMapping("/auth")
 @RestController
-@Tag(name = "Authentication", description = "Endpoints for user authentication and registration")
+@Tag(name = "Authentication", description = "Endpoints for user authentication and registration.")
 public class AuthenticationController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
