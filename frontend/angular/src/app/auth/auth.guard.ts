@@ -15,23 +15,15 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
-    if (this.authService.isAuthenticated()) {
-      // User is authenticated
-      if (state.url.startsWith('/auth')) {
-        // Prevent access to auth routes when authenticated
-        return this.router.parseUrl('/home'); // Redirect to home or another protected page
-      } else {
-        return true; // Allow access to other protected routes
-      }
+    const isAuthenticated = this.authService.isAuthenticated();
+    const url = state.url;
+    if (url === '/auth/signup') {
+      return isAuthenticated ? this.router.parseUrl('/home') : true; 
+    } if (isAuthenticated) {
+      return true; 
     } else {
-      // User is not authenticated
-      if (!state.url.startsWith('/auth')) {
-        // Store the attempted URL and redirect to login
-        this.authService.redirectUrl = state.url;
-        return this.router.parseUrl('/auth/login');
-      } else {
-        return true; // Allow access to auth routes (login/registration)
-      }
+      this.authService.redirectUrl = state.url; 
+      return this.router.parseUrl('/auth/login'); 
     }
   }
 }

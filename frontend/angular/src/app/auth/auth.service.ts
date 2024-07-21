@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environment/environment';
@@ -19,11 +18,7 @@ export class AuthService {
   public currentUser: Observable<any>;
   public redirectUrl: string; 
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private jwtHelper: JwtHelperService
-  ) {
+  constructor(private http: HttpClient, private router: Router) {
     const storedUser = localStorage.getItem('currentUser');
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     this.currentUserSubject = new BehaviorSubject<any>(parsedUser);
@@ -40,11 +35,9 @@ export class AuthService {
       .pipe(
         map((response: LoginResponse) => {
           if (response && response.token) {
-            const user = this.jwtHelper.decodeToken(response.token);
-            user.token = response.token;
-            localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('currentUser', JSON.stringify(response));
             localStorage.setItem('userRole', response.role.toString());
-            this.currentUserSubject.next(user);
+            this.currentUserSubject.next(response);
             this.router.navigate([this.redirectUrl || '/home']);
             this.redirectUrl = '';
           }
@@ -71,15 +64,12 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    const token = this.currentUserValue ? this.currentUserValue.token : null;
-    return token && !this.jwtHelper.isTokenExpired(token);
+    const currentUser = this.currentUserValue;
+    return !!currentUser && !!currentUser.token && !this.isTokenExpired(currentUser.token); 
   }
 
-  public get getDecodedToken(): string | null {
-    const token = this.currentUserValue ? this.currentUserValue.token : null;
-    if (token) {
-      return this.jwtHelper.decodeToken(token);
-    }
-    return null;
+  private isTokenExpired(token: string): boolean {
+    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+    return (Math.floor((new Date()).getTime() / 1000)) >= expiry;
   }
 }
