@@ -1,8 +1,7 @@
 .tab-container {
   display: flex;
+  width: 90%;
   justify-content: center;
-  width: 96%;
-  border-radius: 30px;
   background-color: #f5f5f5;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin: 20px auto;

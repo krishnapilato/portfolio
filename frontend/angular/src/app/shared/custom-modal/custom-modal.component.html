@@ -1,0 +1,41 @@
+<div class="custom-modal" [ngClass]="animationClass">
+    <h2 class="title" [ngClass]="{ 'centered': titleCentered }">{{ titleLabel }}</h2>
+    <p class="subtitle" [ngClass]="{ 'centered': subtitleCentered }">{{ subtitleLabel }}</p>
+  
+    <form [formGroup]="form">
+      <div *ngFor="let field of inputFields" class="input-field">
+        <mat-form-field *ngIf="['text', 'email', 'password'].includes(field.type)"> 
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput [type]="field.type" [formControlName]="field.label"
+                 [disabled]="field.disabled || false">
+          <mat-icon matSuffix *ngIf="field.icon">{{ field.icon }}</mat-icon>
+          <mat-error *ngIf="form.get(field.label)?.hasError('required')">{{ field.label }} is required</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field *ngIf="['number','tel'].includes(field.type)">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput [type]="field.type" [formControlName]="field.label"
+                 [disabled]="field.disabled || false">
+          <mat-icon matSuffix *ngIf="field.icon">{{ field.icon }}</mat-icon>
+          <mat-error *ngIf="form.get(field.label)?.hasError('required')">This field is required</mat-error>
+        </mat-form-field>
+  
+        <mat-checkbox *ngIf="field.type === 'checkbox'" [formControlName]="field.label">{{ field.label }}</mat-checkbox>
+  
+        <mat-form-field *ngIf="field.type === 'select'">
+          <mat-label>{{ field.label }}</mat-label>
+          <mat-select [formControlName]="field.label">
+            <mat-option *ngFor="let option of field.options" [value]="option.value">{{ option.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="button-container">
+        <button mat-button (click)="dialogRef.close()">{{ cancelButtonLabel }}</button>
+        <button matTooltip="{{ submitButtonTooltip }}" mat-raised-button color="primary" (click)="onSubmit()" matTooltipPosition="after">
+          <mat-icon *ngIf="submitButtonIcon">{{ submitButtonIcon }}</mat-icon>
+          {{ submitButtonLabel }}
+        </button>
+      </div>
+    </form>
+  </div>
+  
