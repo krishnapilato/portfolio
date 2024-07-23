@@ -176,4 +176,6 @@ export class CustomModalComponent {
   private isPasswordField(field: ModalInputField): boolean {
     return field.label.toLowerCase().includes('password');
   }
+
+  // new features coming soon!
 }
