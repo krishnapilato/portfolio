@@ -21,7 +21,7 @@
     <ng-container matColumnDef="options">
       <th mat-header-cell *matHeaderCellDef></th>
       <td  mat-cell *matCellDef="let user" class="options-cell">
-        <button [matMenuTriggerFor]="menu" mat-icon-button matTooltip="Options" [matTooltipPosition]="'before'">
+        <button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{ user: user }" mat-icon-button matTooltip="Options" [matTooltipPosition]="'before'">
           <i class="fa-solid fa-ellipsis"></i>
         </button>
       </td>
@@ -31,7 +31,7 @@
   </table>
   <mat-toolbar *ngIf="dataSource.data.length > 0">
     <mat-toolbar-row>
-      <button (click)="openModal()" style="font-size: medium;">Add</button><mat-icon fontIcon="add"></mat-icon>
+      <span (click)="openModal()" matTooltip="Create new user" [matTooltipPosition]="'after'" style="font-size: medium;">Create <i class="fa-solid fa-plus"></i></span>
       <span class="spacer"></span>
       <mat-paginator #paginator [pageSize]="8"></mat-paginator>
     </mat-toolbar-row>
@@ -42,9 +42,11 @@
 </div>
 
 <mat-menu yPosition="below" xPosition="before" #menu="matMenu">
+  <ng-template matMenuContent let-user="user">
   <button mat-menu-item><mat-icon fontIcon="info"></mat-icon> Information</button>
   <button mat-menu-item><mat-icon fontIcon="send"></mat-icon> Email</button>
   <button mat-menu-item><mat-icon fontIcon="edit"></mat-icon> Edit</button>
   <button mat-menu-item><mat-icon fontIcon="lock"></mat-icon>Lock</button>
-  <button mat-menu-item><mat-icon fontIcon="delete_forever"></mat-icon> Delete</button>
+  <button (click)="deleteUser(user)" mat-menu-item><mat-icon fontIcon="delete_forever"></mat-icon> Delete</button>
+</ng-template>
 </mat-menu>

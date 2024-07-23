@@ -1,22 +1,21 @@
-/* Basic styling */
 .custom-modal {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 
-  /* Set width and height */
-  width: 600px; /* Adjust as needed */
-  max-width: 100%; /* Ensure it's responsive on smaller screens */
-  min-height: 200px; /* Adjust as needed */
+  width: 600px;
+  max-width: 100%;
+  min-height: 200px;
 
   .title {
-    font-size: 1.5rem;
+    font-weight: bold;
+    font-size: 1.3rem;
     margin-bottom: 15px;
   }
 
   .subtitle {
-    font-size: 1.1rem;
-    margin-bottom: 25px;
+    margin-top: 0px;
+    font-size: 0.9rem;
   }
 
   .centered {
@@ -24,7 +23,7 @@
   }
 
   .input-field {
-    margin-bottom: 15px; /* Add spacing between input fields */
+    margin-bottom: 15px;
   }
 
   mat-form-field {
@@ -35,12 +34,5 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 25px;
-  }
-}
-
-/* Specific styles for delete confirmation dialog */
-.delete-confirmation {
-  .title {
-    color: red; /* Highlight the title in red */
   }
 }

@@ -31,7 +31,7 @@ export class AuthService {
 
   public login(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.http
-      .post<LoginResponse>(environment.apiUrl + 'auth/login', loginRequest)
+      .post<LoginResponse>(environment.apiUrl + '/auth/login', loginRequest)
       .pipe(
         map((response: LoginResponse) => {
           if (response && response.token) {
@@ -48,7 +48,7 @@ export class AuthService {
 
   public signUp(registrationRequest: RegistrationRequest): Observable<RegistrationResponse> {
     return this.http
-      .post<RegistrationResponse>(environment.apiUrl + 'auth/signup', registrationRequest)
+      .post<RegistrationResponse>(environment.apiUrl + '/auth/signup', registrationRequest)
       .pipe(
         map((response: RegistrationResponse) => {
           return response;

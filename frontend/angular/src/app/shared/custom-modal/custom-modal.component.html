@@ -1,41 +1,125 @@
-<div class="custom-modal" [ngClass]="animationClass">
-    <h2 class="title" [ngClass]="{ 'centered': titleCentered }">{{ titleLabel }}</h2>
-    <p class="subtitle" [ngClass]="{ 'centered': subtitleCentered }">{{ subtitleLabel }}</p>
-  
-    <form [formGroup]="form">
-      <div *ngFor="let field of inputFields" class="input-field">
-        <mat-form-field *ngIf="['text', 'email', 'password'].includes(field.type)"> 
-          <mat-label>{{ field.label }}</mat-label>
-          <input matInput [type]="field.type" [formControlName]="field.label"
-                 [disabled]="field.disabled || false">
-          <mat-icon matSuffix *ngIf="field.icon">{{ field.icon }}</mat-icon>
-          <mat-error *ngIf="form.get(field.label)?.hasError('required')">{{ field.label }} is required</mat-error>
-        </mat-form-field>
-        
-        <mat-form-field *ngIf="['number','tel'].includes(field.type)">
-          <mat-label>{{ field.label }}</mat-label>
-          <input matInput [type]="field.type" [formControlName]="field.label"
-                 [disabled]="field.disabled || false">
-          <mat-icon matSuffix *ngIf="field.icon">{{ field.icon }}</mat-icon>
-          <mat-error *ngIf="form.get(field.label)?.hasError('required')">This field is required</mat-error>
-        </mat-form-field>
-  
-        <mat-checkbox *ngIf="field.type === 'checkbox'" [formControlName]="field.label">{{ field.label }}</mat-checkbox>
-  
-        <mat-form-field *ngIf="field.type === 'select'">
-          <mat-label>{{ field.label }}</mat-label>
-          <mat-select [formControlName]="field.label">
-            <mat-option *ngFor="let option of field.options" [value]="option.value">{{ option.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="button-container">
-        <button mat-button (click)="dialogRef.close()">{{ cancelButtonLabel }}</button>
-        <button matTooltip="{{ submitButtonTooltip }}" mat-raised-button color="primary" (click)="onSubmit()" matTooltipPosition="after">
-          <mat-icon *ngIf="submitButtonIcon">{{ submitButtonIcon }}</mat-icon>
-          {{ submitButtonLabel }}
+<div class="custom-modal">
+  <h6 class="title" [ngClass]="{ centered: titleCentered }">
+    {{ titleLabel }}
+  </h6>
+  <p class="subtitle" [ngClass]="{ centered: subtitleCentered }">
+    {{ subtitleLabel }}
+  </p>
+
+  <form [formGroup]="form">
+    <div *ngFor="let field of inputFields" class="input-field">
+      <mat-form-field
+        *ngIf="['text', 'email', 'password'].includes(field.type)"
+      >
+        <mat-label>{{ field.label }}</mat-label>
+        <input
+          matTooltip="Insert {{ field.label.toLowerCase() }}"
+          matInput
+          [type]="field.type"
+          [placeholder]="'Insert ' + field.label.toLowerCase()"
+          [formControlName]="field.label"
+          [disabled]="field.disabled || false"
+        />
+        <button
+          *ngIf="shouldShowPasswordIcon(field)"
+          mat-icon-button
+          matSuffix
+          (click)="togglePasswordVisibility(field)"
+        >
+          <mat-icon>{{
+            hidePassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
         </button>
-      </div>
-    </form>
-  </div>
-  
+        <mat-icon matSuffix *ngIf="field.icon && field.type !== 'password'">{{
+          field.icon
+        }}</mat-icon>
+        <mat-error *ngIf="form.get(field.label)?.hasError('required')">
+          {{ field.label }} is required
+        </mat-error>
+        <mat-error *ngIf="form.get(field.label)?.hasError('email')">
+          Please enter a valid email address.
+        </mat-error>
+        <mat-error *ngIf="form.get(field.label)?.hasError('minlength')">
+          {{ field.label }} must be at least 8 characters long.
+        </mat-error>
+        <mat-error *ngIf="form.get(field.label)?.hasError('maxlength')">
+          {{ field.label }} must not exceed 18 characters.
+        </mat-error>
+        <mat-error *ngIf="form.get(field.label)?.hasError('textOnly')">
+          Only letters and spaces allowed.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            form.get(field.label)?.hasError('pattern') &&
+            field.type === 'password'
+          "
+        >
+          Password must contain a number, a lowercase letter, an uppercase
+          letter, and a special character.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="['number', 'tel'].includes(field.type)">
+        <mat-label>{{ field.label }}</mat-label>
+        <input
+          [matTooltipPosition]="'below'"
+          matTooltip="Select an option for {{ field.label.toLowerCase() }}"
+          matInput
+          [type]="field.type"
+          [formControlName]="field.label"
+          [disabled]="field.disabled || false"
+        />
+        <mat-icon matSuffix *ngIf="field.icon">{{ field.icon }}</mat-icon>
+        <mat-error *ngIf="form.get(field.label)?.hasError('required')"
+          >This field is required</mat-error
+        >
+      </mat-form-field>
+
+      <mat-checkbox
+        *ngIf="field.type === 'checkbox'"
+        [formControlName]="field.label"
+        >{{ field.label }}</mat-checkbox
+      >
+
+      <mat-form-field *ngIf="field.type === 'select'">
+        <mat-label>{{ field.label }}</mat-label>
+        <mat-select
+          placeholder="Select {{ field.label.toLowerCase() }}"
+          [matTooltipPosition]="'below'"
+          matTooltip="Select an option for {{ field.label.toLowerCase() }}"
+          [formControlName]="field.label"
+        >
+          <mat-option
+            *ngFor="let option of field.options"
+            [value]="option.value"
+            >{{ option.label }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="button-container">
+      <button
+        matTooltip="Close Dialog"
+        [matTooltipPosition]="'before'"
+        mat-button
+        (click)="dialogRef.close()"
+      >
+        {{ cancelButtonLabel || "primary" }}
+      </button>
+      <button
+        [disabled]="form.invalid"
+        (focus)="(true)"
+        matTooltip="{{ submitButtonTooltip }}"
+        mat-raised-button
+        color="{{ submitButtonColor }}"
+        (click)="onSubmit()"
+        matTooltipPosition="after"
+      >
+        {{ submitButtonLabel }}
+        <mat-icon iconPositionEnd *ngIf="submitButtonIcon">{{
+          submitButtonIcon
+        }}</mat-icon>
+      </button>
+    </div>
+  </form>
+</div>
