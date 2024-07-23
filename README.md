@@ -39,10 +39,16 @@ It features a modern design and responsive layout, making it easily accessible o
    * Run the development server: `ng serve`
    * Open your browser to `http://localhost:4200/`
 
+## Project Status: Active Development 🚧🏗️🔨
+
+This project is currently under active development. I am working hard to build a robust and secure application, but please be aware of the following:
+
+* **Security:** Security configurations are still being implemented and fine-tuned. While I am taking measures to protect user data, I recommend not using this application with sensitive information until the security features are complete.
+* **Frontend:** Some frontend components are in an early stage of development. You might encounter bugs, responsiveness inconsistencies, or incomplete features. I appreciate your patience as I continue to improve the UI and UX.
+* **Testing:** Thorough testing is ongoing, and I encourage you to report any issues you find through the [Issues tab](https://github.com/krishnapilato/portfolio/issues).
+
+I welcome any feedback and contributions from the community as I work to bring this project to its full potential. Thank you for your understanding!
+
 ## Deployment
 
 After development, this project will be deployed on AWS for high availability and scalability.
-
-## Feedback
-
-I welcome any feedback or suggestions for improvement. Feel free to connect with me on LinkedIn or open an issue on this repository.
