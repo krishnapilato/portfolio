@@ -19,6 +19,9 @@
           [value]="'ciao'"
           [placeholder]="'Insert ' + field.label.toLowerCase()"
           [formControlName]="field.label"
+          readonly="{{
+            titleLabel.toLowerCase().includes('information') ? true : false
+          }}"
           [disabled]="field.disabled || false"
         />
         <button
@@ -109,10 +112,11 @@
         {{ cancelButtonLabel || "primary" }}
       </button>
       <button
+        *ngIf="!titleLabel.toLowerCase().includes('information')"      
         [disabled]="
           (form.invalid && titleLabel.toLowerCase().includes('create')) ||
           form.invalid ||
-            (form.pristine && titleLabel.toLowerCase().includes('update'))
+          (form.pristine && titleLabel.toLowerCase().includes('update'))
         "
         (focus)="(true)"
         matTooltip="{{ submitButtonTooltip }}"

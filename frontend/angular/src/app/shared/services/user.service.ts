@@ -32,6 +32,20 @@ export class UserService {
     );
   }
 
+  public updateUser(userId: number, updatedUser: User): Observable<User> {
+    const url = `${environment.apiUrl}/api/users/${userId}`; 
+    return this.http.put<User>(url, updatedUser).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          console.error('User not found:', userId);
+        } else {
+          console.error('Error updating user:', error);
+        }
+        return throwError(error); 
+      })
+    );
+  }
+
   public toggleLockUser(userId: number): Observable<User> {
     return this.http.put<User>(`${environment.apiUrl}/api/users/${userId}/lock`, {}); 
   }

@@ -128,7 +128,7 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  editUser(user: User) {
+  editUser(user: User, state: string) {
     const inputFields: ModalInputField[] = [
       {
         type: 'text',
@@ -136,6 +136,7 @@ export class UserManagementComponent implements OnInit {
         icon: 'person',
         value: user.fullName,
         required: true,
+        disabled: state === 'edit' ? false : true,
       },
       {
         type: 'email',
@@ -143,6 +144,7 @@ export class UserManagementComponent implements OnInit {
         value: user.email,
         icon: 'mail',
         required: true,
+        disabled: state === 'edit' ? false : true,
       },
       {
         type: 'password',
@@ -150,6 +152,7 @@ export class UserManagementComponent implements OnInit {
         value: '***************',
         icon: '',
         required: true,
+        disabled: state === 'edit' ? false : true,
       },
     ];
 
@@ -167,34 +170,35 @@ export class UserManagementComponent implements OnInit {
     const dialogRef = this.dialog.open(CustomModalComponent, {
       data: {
         subtitleLabel: `User was updated on ${formattedDate} last time.`,
-        titleLabel: `Edit User #${user.id}`,
+        titleLabel:
+          state == 'edit' ? `Edit User #${user.id}` : `Information #${user.id}`,
         cancelButtonLabel: 'Cancel',
-        submitButtonLabel: 'Update user',
+        submitButtonLabel: 'Update',
         submitButtonIcon: 'edit',
-        submitButtonTooltip: 'Update user details',
+        submitButtonTooltip: 'Update user',
         inputFields: inputFields,
       },
     });
 
-    // dialogRef.componentInstance.submitEvent.subscribe((formData: any) => {
-    //   let user: User = {
-    //     fullName: formData['Full Name'],
-    //     email: formData['Email'],
-    //     password: formData['Password'],
-    //     createdAt: new Date(),
-    //     updatedAt: new Date(),
-    //     role: Role.USER,
-    //   };
-    //   this.userService.createNewUser(user).subscribe(
-    //     (response: any) => {
-    //       console.log(response);
-    //       this.ngOnInit();
-    //       this.dialog.closeAll();
-    //       this._snackbar.open('User created successfully!', 'Close');
-    //     },
-    //     (error: any) => console.error(error)
-    //   );
-    // });
+    dialogRef.componentInstance.submitEvent.subscribe((formData: any) => {
+      let userObject: User = {
+        fullName: formData['Full Name'],
+        email: formData['Email'],
+        password: formData['Password'],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      this.userService.updateUser(user.id || 0, userObject).subscribe(
+        (response: any) => {
+          this.ngOnInit();
+          this.dialog.closeAll();
+          this._snackbar.open('User updated successfully!', 'Close', {
+            duration: 3000,
+          });
+        },
+        (error: any) => console.error(error)
+      );
+    });
   }
 
   toggleLockUser(user: User) {

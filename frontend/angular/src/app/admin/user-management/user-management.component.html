@@ -43,9 +43,9 @@
 
 <mat-menu yPosition="below" xPosition="before" #menu="matMenu">
   <ng-template matMenuContent let-user="user">
-  <button (click)="editUser(user)" mat-menu-item><mat-icon fontIcon="info"></mat-icon> Information</button>
+  <button (click)="editUser(user, 'information')" mat-menu-item><mat-icon fontIcon="info"></mat-icon> Information</button>
   <button mat-menu-item><mat-icon fontIcon="send"></mat-icon> Email</button>
-  <button (click)="editUser(user)" mat-menu-item><mat-icon fontIcon="edit"></mat-icon> Edit</button>
+  <button (click)="editUser(user, 'edit')" mat-menu-item><mat-icon fontIcon="edit"></mat-icon> Edit</button>
   <button mat-menu-item (click)="toggleLockUser(user)">
     <mat-icon>{{ user.locked ? 'lock' : 'lock_open' }}</mat-icon>
     {{ user.locked ? 'Unlock' : 'Lock' }} 
