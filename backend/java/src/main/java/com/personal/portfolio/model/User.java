@@ -54,6 +54,9 @@ public class User implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role")
 	private Role role;
+	
+    @Column(name = "locked")
+    private boolean locked = false;
 
 	public User() {}
 	

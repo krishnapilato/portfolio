@@ -16,6 +16,7 @@
           matTooltip="Insert {{ field.label.toLowerCase() }}"
           matInput
           [type]="field.type"
+          [value]="'ciao'"
           [placeholder]="'Insert ' + field.label.toLowerCase()"
           [formControlName]="field.label"
           [disabled]="field.disabled || false"
@@ -84,6 +85,7 @@
       <mat-form-field *ngIf="field.type === 'select'">
         <mat-label>{{ field.label }}</mat-label>
         <mat-select
+          [(value)]="field.value"
           placeholder="Select {{ field.label.toLowerCase() }}"
           [matTooltipPosition]="'below'"
           matTooltip="Select an option for {{ field.label.toLowerCase() }}"
@@ -107,7 +109,11 @@
         {{ cancelButtonLabel || "primary" }}
       </button>
       <button
-        [disabled]="form.invalid"
+        [disabled]="
+          (form.invalid && titleLabel.toLowerCase().includes('create')) ||
+          form.invalid ||
+            (form.pristine && titleLabel.toLowerCase().includes('update'))
+        "
         (focus)="(true)"
         matTooltip="{{ submitButtonTooltip }}"
         mat-raised-button

@@ -6,6 +6,7 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
   role: Role;
+  locked?: boolean;
 }
 
 export enum Role {

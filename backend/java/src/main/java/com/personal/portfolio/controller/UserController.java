@@ -75,7 +75,20 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-
+	
+	@PutMapping("/{id}/lock")
+	@Operation(summary = "Toggle user lock status", description = "Locks or unlocks a user account.")
+	@ApiResponses(value = {
+	        @ApiResponse(responseCode = "200", description = "User lock status toggled successfully", content = @Content(schema = @Schema(implementation = User.class))),
+	        @ApiResponse(responseCode = "404", description = "User not found", content = @Content()) })
+	public ResponseEntity<User> toggleLockUser(@PathVariable Long id) {
+	    try {
+	        User user = userService.toggleLock(id);
+	        return new ResponseEntity<>(user, HttpStatus.OK);
+	    } catch (UsernameNotFoundException e) {
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	    }
+	}
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Delete user by ID", description = "Delete a user by their unique identifier.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "User deleted"),

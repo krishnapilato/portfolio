@@ -29,8 +29,16 @@ public class UserService implements UserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 	}
 	
+	
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
+	}
+	
+	public User toggleLock(Long id) {
+	    User user = userRepository.findById(id)
+	            .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+	    user.setLocked(!user.isLocked());
+	    return userRepository.save(user);
 	}
 
 	public Optional<User> getUserById(Long id) {

@@ -85,14 +85,13 @@ export class UserManagementComponent implements OnInit {
     }, 35);
   }
 
-  openModal() {
+  public createNewUser(): void {
     const inputFields: ModalInputField[] = [
       { type: 'text', label: 'Full Name', icon: 'person', required: true },
       { type: 'email', label: 'Email', icon: 'mail', required: true },
       { type: 'password', label: 'Password', icon: '', required: true },
     ];
 
-    // Open the modal
     const dialogRef = this.dialog.open(CustomModalComponent, {
       data: {
         subtitleLabel: 'Complete the form to create a new user.',
@@ -113,20 +112,110 @@ export class UserManagementComponent implements OnInit {
         createdAt: new Date(),
         updatedAt: new Date(),
         role: Role.USER,
+        locked: false,
       };
       this.userService.createNewUser(user).subscribe(
         (response: any) => {
           console.log(response);
           this.ngOnInit();
           this.dialog.closeAll();
-          this._snackbar.open('User created successfully!', 'Close');
+          this._snackbar.open('User created successfully!', 'Close', {
+            duration: 3000,
+          });
         },
         (error: any) => console.error(error)
       );
     });
   }
 
-  editUser(user: User) {}
+  editUser(user: User) {
+    const inputFields: ModalInputField[] = [
+      {
+        type: 'text',
+        label: 'Full Name',
+        icon: 'person',
+        value: user.fullName,
+        required: true,
+      },
+      {
+        type: 'email',
+        label: 'Email',
+        value: user.email,
+        icon: 'mail',
+        required: true,
+      },
+      {
+        type: 'password',
+        label: 'Password',
+        value: '***************',
+        icon: '',
+        required: true,
+      },
+    ];
+
+    const userCreatedAt = new Date(user.updatedAt);
+    const formattedDate = userCreatedAt.toLocaleString(undefined, {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+      timeZone: 'Europe/Rome',
+    });
+
+    const dialogRef = this.dialog.open(CustomModalComponent, {
+      data: {
+        subtitleLabel: `User was updated on ${formattedDate} last time.`,
+        titleLabel: `Edit User #${user.id}`,
+        cancelButtonLabel: 'Cancel',
+        submitButtonLabel: 'Update user',
+        submitButtonIcon: 'edit',
+        submitButtonTooltip: 'Update user details',
+        inputFields: inputFields,
+      },
+    });
+
+    // dialogRef.componentInstance.submitEvent.subscribe((formData: any) => {
+    //   let user: User = {
+    //     fullName: formData['Full Name'],
+    //     email: formData['Email'],
+    //     password: formData['Password'],
+    //     createdAt: new Date(),
+    //     updatedAt: new Date(),
+    //     role: Role.USER,
+    //   };
+    //   this.userService.createNewUser(user).subscribe(
+    //     (response: any) => {
+    //       console.log(response);
+    //       this.ngOnInit();
+    //       this.dialog.closeAll();
+    //       this._snackbar.open('User created successfully!', 'Close');
+    //     },
+    //     (error: any) => console.error(error)
+    //   );
+    // });
+  }
+
+  toggleLockUser(user: User) {
+    this.userService.toggleLockUser(user.id || 0).subscribe(
+      (updatedUser: User) => {
+        this.dataSource.data = this.dataSource.data.map((u) =>
+          u.id === updatedUser.id ? updatedUser : u
+        );
+        this.ngOnInit();
+        this._snackbar.open(
+          `User ${updatedUser.locked ? 'locked' : 'unlocked'} successfully!`,
+          'Close',
+          { duration: 3000 }
+        );
+      },
+      (error) => {
+        // Handle the error (e.g., display an error message)
+        console.error(error);
+      }
+    );
+  }
 
   deleteUser(user: User) {
     const dialogRef = this.dialog.open(CustomModalComponent, {
@@ -147,7 +236,9 @@ export class UserManagementComponent implements OnInit {
           console.log('User deleted successfully');
           this.ngOnInit();
           this.dialog.closeAll();
-          this._snackbar.open('User deleted successfully!', 'Close');
+          this._snackbar.open('User deleted successfully!', 'Close', {
+            duration: 3000,
+          });
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error deleting user:', error);

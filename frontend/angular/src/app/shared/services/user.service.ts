@@ -32,6 +32,10 @@ export class UserService {
     );
   }
 
+  public toggleLockUser(userId: number): Observable<User> {
+    return this.http.put<User>(`${environment.apiUrl}/api/users/${userId}/lock`, {}); 
+  }
+
   public deleteUserById(userId: number): Observable<void> {
     return this.http
       .delete<void>(`${environment.apiUrl}/api/users/${userId}`)

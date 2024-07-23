@@ -25,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Role } from '../models/user.model';
 export interface ModalInputField {
   type:
     | 'text'
@@ -35,6 +36,7 @@ export interface ModalInputField {
     | 'checkbox'
     | 'select';
   label: string;
+  value?: string | Role;
   placeholder?: string;
   icon?: string;
   required?: boolean;
@@ -126,7 +128,10 @@ export class CustomModalComponent {
           break;
       }
 
-      this.form.addControl(field.label, new FormControl('', validators));
+      this.form.addControl(
+        field.label,
+        new FormControl(field.value ? field.value : '', validators)
+      );
     });
   }
 
@@ -136,7 +141,10 @@ export class CustomModalComponent {
       this.inputFields.forEach((field) => {
         this.form.addControl(
           field.label,
-          new FormControl('', field.required ? [Validators.required] : [])
+          new FormControl(
+            field.value ? field.value : '',
+            field.required ? [Validators.required] : []
+          )
         );
       });
     }
@@ -176,6 +184,4 @@ export class CustomModalComponent {
   private isPasswordField(field: ModalInputField): boolean {
     return field.label.toLowerCase().includes('password');
   }
-
-  // new features coming soon!
 }

@@ -22,6 +22,7 @@ import com.personal.portfolio.model.Role;
 import com.personal.portfolio.model.User;
 import com.personal.portfolio.service.AuthenticationService;
 import com.personal.portfolio.service.JwtService;
+import com.personal.portfolio.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,19 +36,32 @@ public class AuthenticationController {
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 	private final JwtService jwtService;
 	private final AuthenticationService authenticationService;
+	private final UserService userService;
 
-	public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
+	public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService,
+			UserService userService) {
 		this.jwtService = jwtService;
 		this.authenticationService = authenticationService;
+		this.userService = userService;
 	}
 
 	@PostMapping("/login")
 	@Operation(summary = "User Login", description = "Authenticate a user and generate a JWT token.")
 	public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserDto loginUserDto) {
 		try {
+			User user = (User) userService.loadUserByUsername(loginUserDto.getEmail());
+
+			if (user.isLocked()) {
+				logger.warn("Authentication failed for email: {}. User is locked.", loginUserDto.getEmail());
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+						.body(new LoginResponse("ACCOUNT_LOCKED", "This account is locked. Please contact support."));
+			}
+			
 			User authenticatedUser = authenticationService.authenticate(loginUserDto);
 			String jwtToken = jwtService.generateToken(authenticatedUser);
-			return ResponseEntity.ok(new LoginResponse(jwtToken, jwtService.getExpirationTime(), authenticatedUser.getRole()));
+			return ResponseEntity
+					.ok(new LoginResponse(jwtToken, jwtService.getExpirationTime(), authenticatedUser.getRole()));
+
 		} catch (AuthenticationException e) {
 			logger.warn("Authentication failed for email: {}", loginUserDto.getEmail(), e);
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -64,7 +78,8 @@ public class AuthenticationController {
 	public ResponseEntity<RegistrationResponse> signup(@Valid @RequestBody RegisterUserDto registerUserDto) {
 		try {
 			User registeredUser = authenticationService.signup(registerUserDto);
-			return ResponseEntity.status(HttpStatus.CREATED).body(new RegistrationResponse(registeredUser.getId(), Role.USER));
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(new RegistrationResponse(registeredUser.getId(), Role.USER));
 		} catch (DataIntegrityViolationException ex) {
 			logger.warn("Registration failed due to duplicate email: {}", registerUserDto.getEmail(), ex);
 			return ResponseEntity.status(HttpStatus.CONFLICT)

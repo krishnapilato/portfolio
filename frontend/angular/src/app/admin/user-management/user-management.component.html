@@ -31,7 +31,7 @@
   </table>
   <mat-toolbar *ngIf="dataSource.data.length > 0">
     <mat-toolbar-row>
-      <span (click)="openModal()" matTooltip="Create new user" [matTooltipPosition]="'after'" style="font-size: medium;">Create <i class="fa-solid fa-plus"></i></span>
+      <span (click)="createNewUser()" matTooltip="Create new user" [matTooltipPosition]="'after'" style="font-size: medium;">Create <i class="fa-solid fa-plus"></i></span>
       <span class="spacer"></span>
       <mat-paginator #paginator [pageSize]="8"></mat-paginator>
     </mat-toolbar-row>
@@ -43,10 +43,13 @@
 
 <mat-menu yPosition="below" xPosition="before" #menu="matMenu">
   <ng-template matMenuContent let-user="user">
-  <button mat-menu-item><mat-icon fontIcon="info"></mat-icon> Information</button>
+  <button (click)="editUser(user)" mat-menu-item><mat-icon fontIcon="info"></mat-icon> Information</button>
   <button mat-menu-item><mat-icon fontIcon="send"></mat-icon> Email</button>
-  <button mat-menu-item><mat-icon fontIcon="edit"></mat-icon> Edit</button>
-  <button mat-menu-item><mat-icon fontIcon="lock"></mat-icon>Lock</button>
+  <button (click)="editUser(user)" mat-menu-item><mat-icon fontIcon="edit"></mat-icon> Edit</button>
+  <button mat-menu-item (click)="toggleLockUser(user)">
+    <mat-icon>{{ user.locked ? 'lock' : 'lock_open' }}</mat-icon>
+    {{ user.locked ? 'Unlock' : 'Lock' }} 
+  </button>
   <button (click)="deleteUser(user)" mat-menu-item><mat-icon fontIcon="delete_forever"></mat-icon> Delete</button>
 </ng-template>
 </mat-menu>

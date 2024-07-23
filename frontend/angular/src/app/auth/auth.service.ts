@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environment/environment';
 import { LoginRequest, LoginResponse } from '../shared/models/login.model';
 import {
@@ -30,8 +30,7 @@ export class AuthService {
   }
 
   public login(loginRequest: LoginRequest): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>(environment.apiUrl + '/auth/login', loginRequest)
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, loginRequest)
       .pipe(
         map((response: LoginResponse) => {
           if (response && response.token) {
@@ -42,6 +41,15 @@ export class AuthService {
             this.redirectUrl = '';
           }
           return response;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          if (error.error && error.error.code === 'ACCOUNT_LOCKED') {
+            this.currentUserSubject.error(error.error); 
+          } else {
+            console.error('Error during login:', error);
+            this.currentUserSubject.error(error); 
+          }
+          return throwError(error); 
         })
       );
   }
