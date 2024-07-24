@@ -14,6 +14,7 @@ import {
   RegistrationResponse,
 } from '../../shared/models/registration.model';
 import { AuthService } from '../auth.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-registration',
@@ -27,7 +28,8 @@ import { AuthService } from '../auth.service';
     MatButtonModule,
     RouterModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSnackBarModule,
   ],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
@@ -41,12 +43,13 @@ export class RegistrationComponent {
   public error: string | null = null; 
   public hide: boolean = true;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private _snackbar: MatSnackBar) {}
 
   public signUp(registrationForm: NgForm): void {
     if (registrationForm.valid) {
       this.authService.signUp(this.registrationRequest).subscribe({
         next: (data: RegistrationResponse) => {
+          this._snackbar.open('Login successful!', 'Close', { duration: 3000 });
           this.router.navigate(['auth/login']);
         },
         error: (error: RegistrationResponse) => {

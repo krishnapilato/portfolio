@@ -9,6 +9,7 @@ import {
   RegistrationRequest,
   RegistrationResponse,
 } from '../shared/models/registration.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class AuthService {
   public currentUser: Observable<any>;
   public redirectUrl: string; 
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private _snackbar: MatSnackBar) {
     const storedUser = localStorage.getItem('currentUser');
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     this.currentUserSubject = new BehaviorSubject<any>(parsedUser);
@@ -37,6 +38,7 @@ export class AuthService {
             localStorage.setItem('currentUser', JSON.stringify(response));
             localStorage.setItem('userRole', response.role.toString());
             this.currentUserSubject.next(response);
+            this._snackbar.open('Login successful!', 'Close', { duration: 3000 });
             this.router.navigate([this.redirectUrl || '/home']);
             this.redirectUrl = '';
           }
@@ -68,6 +70,7 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userRole');
     this.currentUserSubject.next(null);
+    this._snackbar.open('Logout successful!', 'Close', { duration: 3000 });
     this.router.navigate(['auth/login']);
   }
 

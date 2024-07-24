@@ -22,6 +22,15 @@
   transition: background-color 0.5s ease;
 }
 
+.create-user {
+  font-size: medium;
+  transition: font-size 0.3s ease-in-out;
+}
+
+.create-user:hover {
+  font-size: 17px; 
+}
+
 .options-cell button[mat-icon-button] {
   width: 32px;
   height: 32px;

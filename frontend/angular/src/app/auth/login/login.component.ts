@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
           this.error = null;
         },
         error: (err) => {
-          this.error = 'Incorrect login details.';
+          this.error = err.error.message;
         },
       });
     }
