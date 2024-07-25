@@ -5,14 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
 
 import com.personal.portfolio.dto.login.LoginResponse;
 import com.personal.portfolio.dto.login.LoginUserDto;
@@ -27,9 +24,11 @@ import com.personal.portfolio.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/auth")
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "Authentication", description = "Endpoints for user authentication and registration.")
 public class AuthenticationController {
 
@@ -38,39 +37,31 @@ public class AuthenticationController {
 	private final AuthenticationService authenticationService;
 	private final UserService userService;
 
-	public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService,
-			UserService userService) {
-		this.jwtService = jwtService;
-		this.authenticationService = authenticationService;
-		this.userService = userService;
-	}
-
 	@PostMapping("/login")
 	@Operation(summary = "User Login", description = "Authenticate a user and generate a JWT token.")
 	public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserDto loginUserDto) {
-	    try {
-	        User user = (User) userService.loadUserByUsername(loginUserDto.getEmail());
+		try {
+			User user = (User) userService.loadUserByUsername(loginUserDto.getEmail());
+			if (user.isLocked()) {
+				logger.warn("Authentication failed: user {} is locked.", loginUserDto.getEmail());
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+						.body(new LoginResponse("ACCOUNT_LOCKED", "This account is locked. Please contact support."));
+			}
 
-	        if (user.isLocked()) {
-	            logger.warn("Authentication failed for email: {}. User is locked.", loginUserDto.getEmail());
-	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-	                    .body(new LoginResponse("ACCOUNT_LOCKED", "This account is locked. Please contact support."));
-	        }
+			authenticationService.authenticate(loginUserDto);
+			String jwtToken = jwtService.generateToken(user);
+			long expirationMillis = jwtService.extractExpiration(jwtToken).toInstant().toEpochMilli();
 
-	        User authenticatedUser = authenticationService.authenticate(loginUserDto);
-	        String jwtToken = jwtService.generateToken(authenticatedUser);
-	        long expirationMillis = jwtService.extractExpiration(jwtToken).toInstant().toEpochMilli();
-
-	        return ResponseEntity.ok(new LoginResponse(jwtToken, expirationMillis, authenticatedUser.getRole())); 
-	    } catch (AuthenticationException e) {
-	        logger.warn("Authentication failed for email: {}", loginUserDto.getEmail(), e);
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-	                .body(new LoginResponse("INVALID_CREDENTIALS", "Invalid credentials provided."));
-	    } catch (Exception e) {
-	        logger.error("Unexpected error during authentication", e);
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                .body(new LoginResponse("SERVER_ERROR", "An unexpected error occurred."));
-	    }
+			return ResponseEntity.ok(new LoginResponse(jwtToken, expirationMillis, user.getRole()));
+		} catch (BadCredentialsException e) {
+			logger.warn("Authentication failed for email: {}. Invalid credentials.", loginUserDto.getEmail());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body(new LoginResponse("INVALID_CREDENTIALS", "Invalid credentials provided."));
+		} catch (Exception e) {
+			logger.error("Unexpected error during authentication", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new LoginResponse("SERVER_ERROR", "An unexpected error occurred."));
+		}
 	}
 
 	@PostMapping("/signup")
@@ -89,14 +80,5 @@ public class AuthenticationController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new RegistrationResponse("SERVER_ERROR", "An error occurred during registration."));
 		}
-	}
-
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<RegistrationResponse> handleValidationExceptions(MethodArgumentNotValidException ex,
-			WebRequest request) {
-		logger.error("Validation error occurred: {}", ex.getMessage());
-		String errorMessage = "Validation failed: " + ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-				.body(new RegistrationResponse("VALIDATION_ERROR", errorMessage));
 	}
 }

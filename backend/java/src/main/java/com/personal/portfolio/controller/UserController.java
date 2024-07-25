@@ -1,5 +1,6 @@
 package com.personal.portfolio.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,24 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/users")
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "Users", description = "Endpoints for managing user data.")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
+
+	@GetMapping
+	@Operation(summary = "Get all users", description = "Retrieve a list of all registered users.")
+	@ApiResponse(responseCode = "200", description = "List of users", content = @Content(schema = @Schema(implementation = User.class)))
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> users = userService.getAllUsers().toList();
+		return ResponseEntity.ok(users);
+	}
 
 	@GetMapping("/{id}")
 	@Operation(summary = "Get user by ID", description = "Retrieve a user by their unique identifier.")
@@ -40,16 +51,7 @@ public class UserController {
 			@ApiResponse(responseCode = "200", description = "User found", content = @Content(schema = @Schema(implementation = User.class))),
 			@ApiResponse(responseCode = "404", description = "User not found", content = @Content()) })
 	public ResponseEntity<User> getUserById(@PathVariable Long id) {
-		return userService.getUserById(id).map(user -> new ResponseEntity<>(user, HttpStatus.OK))
-				.orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-	}
-
-	@GetMapping
-	@Operation(summary = "Get all users", description = "Retrieve a list of all registered users.")
-	@ApiResponse(responseCode = "200", description = "List of users", content = @Content(schema = @Schema(implementation = User.class)))
-	public ResponseEntity<List<User>> getAllUsers() {
-		List<User> users = userService.getAllUsers();
-		return new ResponseEntity<>(users, HttpStatus.OK);
+		return userService.getUserById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
@@ -59,7 +61,7 @@ public class UserController {
 			@ApiResponse(responseCode = "400", description = "Invalid user data", content = @Content()) })
 	public ResponseEntity<User> createUser(@Valid @RequestBody User newUser) {
 		User createdUser = userService.createUser(newUser);
-		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+		return ResponseEntity.created(URI.create("/api/users/" + createdUser.getId())).body(createdUser);
 	}
 
 	@PutMapping("/{id}")
@@ -69,26 +71,26 @@ public class UserController {
 			@ApiResponse(responseCode = "404", description = "User not found", content = @Content()) })
 	public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
 		try {
-			User updated = userService.updateUser(id, updatedUser);
-			return new ResponseEntity<>(updated, HttpStatus.OK);
+			return ResponseEntity.ok(userService.updateUser(id, updatedUser));
+		} catch (UsernameNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@PutMapping("/{id}/lock")
+	@Operation(summary = "Toggle user lock status", description = "Locks or unlocks a user account.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "User lock status toggled successfully", content = @Content(schema = @Schema(implementation = User.class))),
+			@ApiResponse(responseCode = "404", description = "User not found", content = @Content()) })
+	public ResponseEntity<User> toggleLockUser(@PathVariable Long id) {
+		try {
+			User user = userService.toggleLock(id);
+			return new ResponseEntity<>(user, HttpStatus.OK);
 		} catch (UsernameNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	@PutMapping("/{id}/lock")
-	@Operation(summary = "Toggle user lock status", description = "Locks or unlocks a user account.")
-	@ApiResponses(value = {
-	        @ApiResponse(responseCode = "200", description = "User lock status toggled successfully", content = @Content(schema = @Schema(implementation = User.class))),
-	        @ApiResponse(responseCode = "404", description = "User not found", content = @Content()) })
-	public ResponseEntity<User> toggleLockUser(@PathVariable Long id) {
-	    try {
-	        User user = userService.toggleLock(id);
-	        return new ResponseEntity<>(user, HttpStatus.OK);
-	    } catch (UsernameNotFoundException e) {
-	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	    }
-	}
+
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Delete user by ID", description = "Delete a user by their unique identifier.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "User deleted"),
@@ -96,9 +98,9 @@ public class UserController {
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		try {
 			userService.deleteUser(id);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return ResponseEntity.noContent().build();
 		} catch (UsernameNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return ResponseEntity.notFound().build();
 		}
 	}
 }

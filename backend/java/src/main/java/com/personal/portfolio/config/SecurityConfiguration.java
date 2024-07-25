@@ -20,8 +20,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 
-	private static final String[] API_WHITELIST = { "/", "/v3/api-docs/**", "/swagger-ui/**", "/api/auth/**", "/api/test/**",
-	"/auth/**" };
+	private static final String[] API_WHITELIST = { "/", "/v3/api-docs/**", "/swagger-ui/**", "/api/auth/**",
+			"/api/test/**", "/auth/**" };
 
 	private final AuthenticationProvider authenticationProvider;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;

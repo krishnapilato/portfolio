@@ -63,12 +63,12 @@ public class LoginResponse {
 	public void setErrorCode(String errorCode) {
 		this.errorCode = errorCode;
 	}
-	
-    public Role getRole() {
-        return role;
-    }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 }

@@ -1,9 +1,10 @@
 package com.personal.portfolio.service;
 
-import java.util.List;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Optional;
+import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,31 +15,35 @@ import com.personal.portfolio.model.Role;
 import com.personal.portfolio.model.User;
 import com.personal.portfolio.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		return userRepository.findByEmail(email)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 	}
-	
-	
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
+
+	public Stream<User> getAllUsers() {
+		return userRepository.findAll().stream();
 	}
-	
+
 	public User toggleLock(Long id) {
-	    User user = userRepository.findById(id)
-	            .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
-	    user.setLocked(!user.isLocked());
-	    return userRepository.save(user);
+		int updatedRows = userRepository.toggleLockById(id, !userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id)).isLocked());
+
+		if (updatedRows == 0) {
+			throw new UsernameNotFoundException("User not found with id: " + id);
+		}
+
+		return userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
 	}
 
 	public Optional<User> getUserById(Long id) {
@@ -46,17 +51,17 @@ public class UserService implements UserDetailsService {
 	}
 
 	public User createUser(User user) {
-		String hashedPassword = passwordEncoder.encode(user.getPassword());
-		user.setPassword(hashedPassword);
-		if (user.getRole() == null) {
-			user.setRole(Role.USER);
-		}
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setRole(user.getRole() == null ? Role.USER : user.getRole());
 		return userRepository.save(user);
 	}
 
 	public User updateUser(Long id, User updatedUser) {
 		return userRepository.findById(id).map(user -> {
 			user.setFullName(updatedUser.getFullName());
+			user.setEmail(updatedUser.getEmail());
+			user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+			user.setUpdatedAt(Date.from(Instant.now()));
 			return userRepository.save(user);
 		}).orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
 	}
