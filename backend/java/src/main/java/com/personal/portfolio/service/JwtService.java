@@ -1,22 +1,25 @@
 package com.personal.portfolio.service;
 
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Instant;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -38,26 +41,21 @@ public class JwtService {
 
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("roles", userDetails.getAuthorities());
+		claims.put("roles",
+				userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 		return generateToken(claims, userDetails);
 	}
 
+	@SuppressWarnings("deprecation")
 	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-		Map<String, Object> claims = new HashMap<>(extraClaims);
-		claims.put("iss", "krishnapilato");
-		claims.put("aud", "audience");
-		return buildToken(claims, userDetails, jwtExpiration);
+		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername()).setIssuer("krishnapilato")
+				.setAudience("audience").setIssuedAt(Date.from(Instant.now()))
+				.setExpiration(Date.from(Instant.now().plusMillis(jwtExpiration)))
+				.signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
 	}
 
 	public long getExpirationTime() {
 		return jwtExpiration;
-	}
-
-	private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
-		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
-				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + expiration))
-				.signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
 	}
 
 	public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -97,7 +95,21 @@ public class JwtService {
 	}
 
 	private Claims extractAllClaims(String token) {
-		return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
+		try {
+			String[] parts = token.split("\\.");
+			if (parts.length != 3) {
+				throw new RuntimeException("Invalid JWT token format");
+			}
+
+			String base64EncodedPayload = parts[1];
+			byte[] decodedBytes = Base64.getUrlDecoder().decode(base64EncodedPayload);
+			String jsonPayload = new String(decodedBytes, StandardCharsets.UTF_8);
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			return objectMapper.readValue(jsonPayload, Claims.class);
+		} catch (Exception e) {
+			throw new RuntimeException("Invalid JWT token: " + e.getMessage());
+		}
 	}
 
 	private Key getSignInKey() {
