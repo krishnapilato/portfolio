@@ -2,7 +2,9 @@ package com.personal.portfolio.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +37,7 @@ public class AuthenticationService {
 
 		if (userRepository.findByEmail(input.getEmail()).isPresent()) {
 			logger.warn("User registration attempt failed: User with email {} already exists", input.getEmail());
-			throw new IllegalArgumentException("User with email already exists");
+			throw new DataIntegrityViolationException("User with email " + input.getEmail() + " already exists");
 		}
 
 		User user = new User();
@@ -57,7 +59,7 @@ public class AuthenticationService {
 					.authenticate(new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword()));
 		} catch (Exception e) {
 			logger.error("Authentication failed for email: {}", input.getEmail());
-			throw new RuntimeException("Authentication failed");
+			throw new BadCredentialsException("Invalid credentials provided");
 		}
 
 		User user = userRepository.findByEmail(input.getEmail())

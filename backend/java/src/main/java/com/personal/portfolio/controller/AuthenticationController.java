@@ -48,29 +48,29 @@ public class AuthenticationController {
 	@PostMapping("/login")
 	@Operation(summary = "User Login", description = "Authenticate a user and generate a JWT token.")
 	public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserDto loginUserDto) {
-		try {
-			User user = (User) userService.loadUserByUsername(loginUserDto.getEmail());
+	    try {
+	        User user = (User) userService.loadUserByUsername(loginUserDto.getEmail());
 
-			if (user.isLocked()) {
-				logger.warn("Authentication failed for email: {}. User is locked.", loginUserDto.getEmail());
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-						.body(new LoginResponse("ACCOUNT_LOCKED", "This account is locked. Please contact support."));
-			}
-			
-			User authenticatedUser = authenticationService.authenticate(loginUserDto);
-			String jwtToken = jwtService.generateToken(authenticatedUser);
-			return ResponseEntity
-					.ok(new LoginResponse(jwtToken, jwtService.getExpirationTime(), authenticatedUser.getRole()));
+	        if (user.isLocked()) {
+	            logger.warn("Authentication failed for email: {}. User is locked.", loginUserDto.getEmail());
+	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	                    .body(new LoginResponse("ACCOUNT_LOCKED", "This account is locked. Please contact support."));
+	        }
 
-		} catch (AuthenticationException e) {
-			logger.warn("Authentication failed for email: {}", loginUserDto.getEmail(), e);
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-					.body(new LoginResponse("INVALID_CREDENTIALS", "Invalid credentials provided."));
-		} catch (Exception e) {
-			logger.error("Unexpected error during authentication", e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new LoginResponse("SERVER_ERROR", "An unexpected error occurred."));
-		}
+	        User authenticatedUser = authenticationService.authenticate(loginUserDto);
+	        String jwtToken = jwtService.generateToken(authenticatedUser);
+	        long expirationMillis = jwtService.extractExpiration(jwtToken).toInstant().toEpochMilli();
+
+	        return ResponseEntity.ok(new LoginResponse(jwtToken, expirationMillis, authenticatedUser.getRole())); 
+	    } catch (AuthenticationException e) {
+	        logger.warn("Authentication failed for email: {}", loginUserDto.getEmail(), e);
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	                .body(new LoginResponse("INVALID_CREDENTIALS", "Invalid credentials provided."));
+	    } catch (Exception e) {
+	        logger.error("Unexpected error during authentication", e);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body(new LoginResponse("SERVER_ERROR", "An unexpected error occurred."));
+	    }
 	}
 
 	@PostMapping("/signup")

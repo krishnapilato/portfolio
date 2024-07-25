@@ -30,9 +30,9 @@ public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(nullable = false)
-	private Long id;
+	private long id;
 
 	@Column(nullable = false)
 	private String fullName;
@@ -56,7 +56,7 @@ public class User implements UserDetails {
 	private Role role;
 	
     @Column(name = "locked")
-    private boolean locked = false;
+    private boolean locked;
 
 	public User() {}
 	
@@ -92,7 +92,7 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return !this.locked;
 	}
 
 	@Override
