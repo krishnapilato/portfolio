@@ -19,7 +19,7 @@
                     <mat-label>Password</mat-label>
                     <mat-icon *ngIf="loginForm.controls['loginRequest.password']?.value?.length === 0" matSuffix fontIcon="key"></mat-icon>
                     <input matInput [minLength]="8" [type]="hide ? 'password' : 'text'" [(ngModel)]="loginRequest.password" name="loginRequest.password" required/>
-                    <mat-icon *ngIf="loginForm.controls['loginRequest.password']?.value?.length > 0" matSuffix (click)="hide = !hide">{{hide ? "visibility_off" : "visibility"}}</mat-icon>
+                    <mat-icon [matTooltipPosition]="'after'" [matTooltip]="hide ? 'Show password' : 'Hide password'" *ngIf="loginForm.controls['loginRequest.password']?.value?.length > 0" matSuffix (click)="hide = !hide">{{hide ? "visibility_off" : "visibility"}}</mat-icon>
                     <mat-error *ngIf="loginForm.controls['loginRequest.password']?.value?.length > 8">Your password is too short. It should have 9 characters or more.</mat-error>
                     <mat-error *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched">
                         Password is required

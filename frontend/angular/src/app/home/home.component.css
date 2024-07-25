@@ -2,14 +2,12 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  font-family: cursive;
   align-items: center;
   padding: 80px;
   background-color: #f0f4f7;
 }
 
 a {
-  font-family: cursive;
   text-decoration: none;
   color: black;
 }
@@ -45,7 +43,6 @@ a {
 
 .button-container > button:first-child {
   font-size: small;
-  font-family: cursive;
   background-color: #c6ff00;
   color: black;
 }
@@ -66,7 +63,6 @@ a {
 
 .download-button {
   font-size: small;
-  font-family: cursive;
 }
 
 .download-button:hover i {
