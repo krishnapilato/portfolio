@@ -110,17 +110,23 @@ public class JwtService {
 				userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 		return generateToken(claims, userDetails);
 	}
-
+	
 	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-		try {
-			return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
-					.setIssuer("krishnapilato").setAudience("audience").setIssuedAt(Date.from(Instant.now()))
-					.setExpiration(Date.from(Instant.now().plusMillis(7200000)))
-					.signWith(getSignInKey(), SignatureAlgorithm.HS512).compact();
-		} catch (JwtException e) {
-			logger.error("Error generating JWT token", e);
+	    try {
+	        Instant now = Instant.now();
+	        return Jwts.builder()
+	                .setClaims(extraClaims)
+	                .setSubject(userDetails.getUsername())
+	                .setIssuer("Khova Krishna Pilato")
+	                .setAudience("com.personal.portfolio")
+	                .setIssuedAt(Date.from(now))
+	                .setExpiration(Date.from(Instant.now().plusMillis(7200000)))
+	                .signWith(getSignInKey(), SignatureAlgorithm.HS512)
+	                .compact();
+	    } catch (JwtException e) {
+	        logger.warn("Error generating JWT token", e);
 			throw new RuntimeException("Error generating JWT token", e);
-		}
+	    }
 	}
 
 	public Date extractExpiration(String token) {
