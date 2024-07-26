@@ -40,10 +40,14 @@ export class RegistrationComponent {
     email: '',
     password: '',
   };
-  public error: string | null = null; 
+  public error: string | null = null;
   public hide: boolean = true;
 
-  constructor(private authService: AuthService, private router: Router, private _snackbar: MatSnackBar) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private _snackbar: MatSnackBar
+  ) {}
 
   public signUp(registrationForm: NgForm): void {
     if (registrationForm.valid) {
@@ -53,7 +57,8 @@ export class RegistrationComponent {
           this.router.navigate(['auth/login']);
         },
         error: (error: any) => {
-          this.error = error.error.message || 'Registration failed. Please try again.'; 
+          this.error =
+            error.error.message || 'Registration failed. Please try again.';
           console.log(error);
         },
       });

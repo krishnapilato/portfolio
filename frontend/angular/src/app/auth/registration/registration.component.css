@@ -20,6 +20,7 @@
 }
 
 a {
+  font-weight: bold;
   color: black;
 }
 
@@ -57,7 +58,8 @@ button.mat-raised-button:hover {
 }
 
 .error {
-  color: red;
+  color: rgb(189, 58, 58);
+  font-weight: bold;
   margin-top: 10px;
   text-align: center;
 }

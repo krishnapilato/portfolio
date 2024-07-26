@@ -7,7 +7,7 @@
             <form (ngSubmit)="login(loginForm)" #loginForm="ngForm">
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Email</mat-label>
-                    <input matInput [(ngModel)]="loginRequest.email" name="loginRequest.email" required email/>
+                    <input [placeholder]="'Insert email'" matInput [(ngModel)]="loginRequest.email" name="loginRequest.email" required email/>
                     <mat-error *ngIf=" loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched">
                         <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')">Email is required</ng-container>
                         <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')">Please enter a valid email</ng-container>
@@ -18,9 +18,8 @@
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Password</mat-label>
                     <mat-icon *ngIf="loginForm.controls['loginRequest.password']?.value?.length === 0" matSuffix fontIcon="key"></mat-icon>
-                    <input matInput [minLength]="8" [type]="hide ? 'password' : 'text'" [(ngModel)]="loginRequest.password" name="loginRequest.password" required/>
+                    <input [placeholder]="'Insert password'" matInput [minLength]="7" [type]="hide ? 'password' : 'text'" [(ngModel)]="loginRequest.password" name="loginRequest.password" required/>
                     <mat-icon [matTooltipPosition]="'after'" [matTooltip]="hide ? 'Show password' : 'Hide password'" *ngIf="loginForm.controls['loginRequest.password']?.value?.length > 0" matSuffix (click)="hide = !hide">{{hide ? "visibility_off" : "visibility"}}</mat-icon>
-                    <mat-error *ngIf="loginForm.controls['loginRequest.password']?.value?.length > 8">Your password is too short. It should have 9 characters or more.</mat-error>
                     <mat-error *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched">
                         Password is required
                     </mat-error>
@@ -34,7 +33,11 @@
             </form>
             <div class="space"></div>
             <p class="signup-link">
-                Don't have an account? <a routerLink="/auth/signup" matTooltip="Sign Up" [matTooltipPosition]="'after'">Sign up</a>
+                Don't have an account? 
+                <u
+                ><a routerLink="/auth/signup"
+                  >Sign Up  <i class="fa-solid fa-plus"></i></a
+              ></u>
             </p>
         </mat-card-content>
     </mat-card>
