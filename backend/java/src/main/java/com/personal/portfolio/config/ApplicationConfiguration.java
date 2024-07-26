@@ -12,13 +12,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.personal.portfolio.repository.UserRepository;
 
-@Configuration
-public class ApplicationConfiguration {
-	private final UserRepository userRepository;
+import lombok.RequiredArgsConstructor;
 
-	public ApplicationConfiguration(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+@Configuration
+@RequiredArgsConstructor
+public class ApplicationConfiguration {
+
+	private final UserRepository userRepository;
 
 	@Bean
 	public UserDetailsService userDetailsService() {
@@ -28,7 +28,7 @@ public class ApplicationConfiguration {
 
 	@Bean
 	BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(12);
 	}
 
 	@Bean

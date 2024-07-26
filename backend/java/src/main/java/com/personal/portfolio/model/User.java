@@ -1,6 +1,7 @@
 package com.personal.portfolio.model;
 
 import java.util.Collection;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,13 +22,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Table(name = "users")
 @Entity
-@Getter
-@Setter
+@Data
 public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
@@ -41,7 +42,24 @@ public class User implements UserDetails {
 	private String email;
 
 	@Column(nullable = false)
+	@JsonIgnore
 	private String password;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "role")
+	private Role role = Role.USER;
+
+	@Column(name = "enabled")
+	private boolean enabled = true;
+
+	@Column(name = "locked")
+	private boolean locked = false;
+
+	@Column(name = "account_non_expired")
+	private boolean accountNonExpired = true;
+
+	@Column(name = "credentials_non_expired")
+	private boolean credentialsNonExpired = true;
 
 	@CreationTimestamp
 	@Column(updatable = false, name = "created_at")
@@ -51,38 +69,19 @@ public class User implements UserDetails {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "role")
-	private Role role;
-	
-    @Column(name = "locked")
-    private boolean locked;
-
-	public User() {}
-	
-	public User(String fullName, String email, String password, Role role) {
-		this.fullName = fullName;
-		this.email = email;
-		this.password = password;
-		this.role = role;
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
 	@Override
 	public String getUsername() {
 		return email;
 	}
 	
-	public Role getRole() {
-		return this.role;
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 	
-	public void setRole(Role role) {
-		this.role = role;
+	@Override
+	public boolean isAccountNonLocked() {
+		return !this.locked;
 	}
 
 	@Override
@@ -91,24 +90,14 @@ public class User implements UserDetails {
 	}
 
 	@Override
-	public boolean isAccountNonLocked() {
-		return !this.locked;
-	}
-
-	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
 	@Override
-	public boolean isEnabled() {
-		return true;
-	}
-
-	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-	    Set<GrantedAuthority> authorities = new HashSet<>();
-	    authorities.add(new SimpleGrantedAuthority(role.name()));
-	    return authorities;
+		Set<GrantedAuthority> authorities = new HashSet<>();
+		authorities.add(new SimpleGrantedAuthority(role.name()));
+		return authorities;
 	}
 }

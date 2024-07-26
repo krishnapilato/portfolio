@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.personal.portfolio.dto.login.LoginResponse;
-import com.personal.portfolio.dto.login.LoginUserDto;
-import com.personal.portfolio.dto.registration.RegisterUserDto;
+import com.personal.portfolio.dto.login.LoginUserRequest;
+import com.personal.portfolio.dto.registration.RegisterUserRequest;
 import com.personal.portfolio.dto.registration.RegistrationResponse;
 import com.personal.portfolio.model.Role;
 import com.personal.portfolio.model.User;
@@ -39,7 +39,7 @@ public class AuthenticationController {
 
 	@PostMapping("/login")
 	@Operation(summary = "User Login", description = "Authenticate a user and generate a JWT token.")
-	public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserDto loginUserDto) {
+	public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserRequest loginUserDto) {
 		try {
 			User user = (User) userService.loadUserByUsername(loginUserDto.getEmail());
 			if (user.isLocked()) {
@@ -66,7 +66,7 @@ public class AuthenticationController {
 
 	@PostMapping("/signup")
 	@Operation(summary = "User Registration", description = "Register a new user.")
-	public ResponseEntity<RegistrationResponse> signup(@Valid @RequestBody RegisterUserDto registerUserDto) {
+	public ResponseEntity<RegistrationResponse> signup(@Valid @RequestBody RegisterUserRequest registerUserDto) {
 		try {
 			User registeredUser = authenticationService.signup(registerUserDto);
 			return ResponseEntity.status(HttpStatus.CREATED)

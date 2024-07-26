@@ -21,8 +21,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.personal.portfolio.dto.login.LoginUserDto;
-import com.personal.portfolio.dto.registration.RegisterUserDto;
+import com.personal.portfolio.dto.login.LoginUserRequest;
+import com.personal.portfolio.dto.registration.RegisterUserRequest;
 import com.personal.portfolio.model.User;
 import com.personal.portfolio.repository.UserRepository;
 
@@ -46,7 +46,7 @@ public class AuthenticationServiceTest {
 
 	@Test
 	public void testSignup() {
-		RegisterUserDto registerUserDto = new RegisterUserDto();
+		RegisterUserRequest registerUserDto = new RegisterUserRequest();
 		registerUserDto.setFullName("Name Surname");
 		registerUserDto.setEmail("name.surname@email.com");
 		registerUserDto.setPassword("password");
@@ -72,7 +72,7 @@ public class AuthenticationServiceTest {
 
 	@Test
 	public void testSignupDuplicateEmail() {
-	    RegisterUserDto registerUserDto = new RegisterUserDto();
+		RegisterUserRequest registerUserDto = new RegisterUserRequest();
 	    registerUserDto.setFullName("Name Surname");
 	    registerUserDto.setEmail("name.surname@email.com");
 	    registerUserDto.setPassword("password");
@@ -86,7 +86,7 @@ public class AuthenticationServiceTest {
 	
 	@Test
 	public void testAuthenticateSuccess() {
-		LoginUserDto loginUserDto = new LoginUserDto("name.surname@email.com", "password");
+		LoginUserRequest loginUserDto = new LoginUserRequest("name.surname@email.com", "password");
 
 		User user = new User();
 		user.setId(1L);
@@ -109,7 +109,7 @@ public class AuthenticationServiceTest {
 	
 	@Test
 	public void testAuthenticateIncorrectPassword() {
-	    LoginUserDto loginUserDto = new LoginUserDto("name.surname@email.com", "wrongPassword");
+		LoginUserRequest loginUserDto = new LoginUserRequest("name.surname@email.com", "wrongPassword");
 
 	    User user = new User();
 	    user.setId(1L);

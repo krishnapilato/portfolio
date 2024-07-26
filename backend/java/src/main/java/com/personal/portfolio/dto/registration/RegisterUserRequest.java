@@ -1,6 +1,6 @@
 package com.personal.portfolio.dto.registration;
 
-public class RegisterUserDto {
+public class RegisterUserRequest {
 	private String fullName;
 	private String email;
 	private String password;

@@ -1,10 +1,10 @@
 package com.personal.portfolio.dto.login;
 
-public class LoginUserDto {
+public class LoginUserRequest {
 	private String email;
 	private String password;
 
-	public LoginUserDto(String email, String password) {
+	public LoginUserRequest(String email, String password) {
 		this.email = email;
 		this.password = password;
 	}

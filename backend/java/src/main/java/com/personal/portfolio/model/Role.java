@@ -1,9 +1,7 @@
 package com.personal.portfolio.model;
 
 public enum Role {
-	USER("User"), 
-	ADMIN("Admin"), 
-	DEVELOPER("Developer");
+	USER("User"), ADMIN("Admin"), DEVELOPER("Developer");
 
 	private final String displayName;
 

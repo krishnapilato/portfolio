@@ -14,8 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.personal.portfolio.dto.login.LoginUserDto;
-import com.personal.portfolio.dto.registration.RegisterUserDto;
+import com.personal.portfolio.dto.login.LoginUserRequest;
+import com.personal.portfolio.dto.registration.RegisterUserRequest;
 import com.personal.portfolio.model.Role;
 import com.personal.portfolio.model.User;
 import com.personal.portfolio.repository.UserRepository;
@@ -31,7 +31,7 @@ public class AuthenticationService {
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
 
-	public User signup(RegisterUserDto input) {
+	public User signup(RegisterUserRequest input) {
 		logger.info("Starting user registration for email: {}", input.getEmail());
 
 		if (userRepository.existsByEmail(input.getEmail())) {
@@ -53,7 +53,7 @@ public class AuthenticationService {
 		return savedUser;
 	}
 
-	public User authenticate(LoginUserDto input) {
+	public User authenticate(LoginUserRequest input) {
 		logger.info("Attempting authentication for email: {}", input.getEmail());
 
 		try {
