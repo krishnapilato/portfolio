@@ -8,65 +8,43 @@
 
   <form [formGroup]="form">
     <div *ngFor="let field of inputFields" class="input-field">
-      <mat-form-field
-        *ngIf="['text', 'email', 'password'].includes(field.type)"
-      >
+      <!-- Text, Email, and Password Fields -->
+      <mat-form-field *ngIf="isTextOrEmailOrPassword(field.type)">
         <mat-label>{{ field.label }}</mat-label>
         <input
           matTooltip="Insert {{ field.label.toLowerCase() }}"
           matInput
-          [type]="field.type"
-          [value]="'ciao'"
+          [type]="getInputType(field)"
           [placeholder]="'Insert ' + field.label.toLowerCase()"
           [formControlName]="field.label"
-          readonly="{{
-            titleLabel.toLowerCase().includes('information') ? true : false
-          }}"
+          [readonly]="isReadOnly()"
           [disabled]="field.disabled || false"
         />
-        <button
-          *ngIf="shouldShowPasswordIcon(field)"
-          mat-icon-button
-          matSuffix
-          (click)="togglePasswordVisibility(field)"
-        >
-          <mat-icon>{{
-            hidePassword ? "visibility_off" : "visibility"
-          }}</mat-icon>
-        </button>
+        <mat-icon matSuffix *ngIf="field.type === 'password'">lock</mat-icon>
         <mat-icon matSuffix *ngIf="field.icon && field.type !== 'password'">{{
           field.icon
         }}</mat-icon>
-        <mat-error *ngIf="form.get(field.label)?.hasError('required')">
+        <mat-error *ngIf="hasError(field, 'required')">
           {{ field.label }} is required
         </mat-error>
-        <mat-error *ngIf="form.get(field.label)?.hasError('email')">
+        <mat-error *ngIf="hasError(field, 'email')">
           Please enter a valid email address.
         </mat-error>
-        <mat-error *ngIf="form.get(field.label)?.hasError('minlength')">
+        <mat-error *ngIf="hasError(field, 'minlength')">
           {{ field.label }} must be at least 8 characters long.
         </mat-error>
-        <mat-error *ngIf="form.get(field.label)?.hasError('maxlength')">
+        <mat-error *ngIf="hasError(field, 'maxlength')">
           {{ field.label }} must not exceed 18 characters.
         </mat-error>
-        <mat-error *ngIf="form.get(field.label)?.hasError('textOnly')">
+        <mat-error *ngIf="hasError(field, 'textOnly')">
           Only letters and spaces allowed.
-        </mat-error>
-        <mat-error
-          *ngIf="
-            form.get(field.label)?.hasError('pattern') &&
-            field.type === 'password'
-          "
-        >
-          Password must contain a number, a lowercase letter, an uppercase
-          letter, and a special character.
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field *ngIf="['number', 'tel'].includes(field.type)">
+      <!-- Number and Tel Fields -->
+      <mat-form-field *ngIf="isNumberOrTel(field.type)">
         <mat-label>{{ field.label }}</mat-label>
         <input
-          [matTooltipPosition]="'below'"
           matTooltip="Select an option for {{ field.label.toLowerCase() }}"
           matInput
           [type]="field.type"
@@ -74,34 +52,30 @@
           [disabled]="field.disabled || false"
         />
         <mat-icon matSuffix *ngIf="field.icon">{{ field.icon }}</mat-icon>
-        <mat-error *ngIf="form.get(field.label)?.hasError('required')"
-          >This field is required</mat-error
-        >
+        <mat-error *ngIf="hasError(field, 'required')">
+          This field is required
+        </mat-error>
       </mat-form-field>
 
-      <mat-checkbox
-        *ngIf="field.type === 'checkbox'"
-        [formControlName]="field.label"
-        >{{ field.label }}</mat-checkbox
-      >
-
+      <!-- Select Field -->
       <mat-form-field *ngIf="field.type === 'select'">
         <mat-label>{{ field.label }}</mat-label>
         <mat-select
-          [(value)]="field.value"
-          placeholder="Select {{ field.label.toLowerCase() }}"
-          [matTooltipPosition]="'below'"
-          matTooltip="Select an option for {{ field.label.toLowerCase() }}"
           [formControlName]="field.label"
+          placeholder="Select {{ field.label.toLowerCase() }}"
+          matTooltip="Select an option for {{ field.label.toLowerCase() }}"
         >
           <mat-option
             *ngFor="let option of field.options"
             [value]="option.value"
-            >{{ option.label }}</mat-option
           >
+            {{ option.label }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
+
+    <!-- Buttons -->
     <div class="button-container">
       <button
         matTooltip="Close Dialog"
@@ -112,21 +86,16 @@
         {{ cancelButtonLabel || "primary" }}
       </button>
       <button
-        *ngIf="!titleLabel.toLowerCase().includes('information')"      
-        [disabled]="
-          (form.invalid && titleLabel.toLowerCase().includes('create')) ||
-          form.invalid ||
-          (form.pristine && titleLabel.toLowerCase().includes('update'))
-        "
-        (focus)="(true)"
+        *ngIf="!isInformationDialog()"
+        [disabled]="isSubmitDisabled()"
         matTooltip="{{ submitButtonTooltip }}"
         mat-raised-button
-        color="{{ submitButtonColor }}"
+        [color]="submitButtonColor"
         (click)="onSubmit()"
         matTooltipPosition="after"
       >
         {{ submitButtonLabel }}
-        <mat-icon iconPositionEnd *ngIf="submitButtonIcon">{{
+        <mat-icon matSuffix *ngIf="submitButtonIcon">{{
           submitButtonIcon
         }}</mat-icon>
       </button>

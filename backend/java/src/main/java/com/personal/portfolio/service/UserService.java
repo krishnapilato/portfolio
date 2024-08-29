@@ -35,7 +35,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	public User toggleLock(Long id) {
-		int updatedRows = userRepository.toggleLockById(id, !userRepository.findById(id)
+		int updatedRows = userRepository.updateLockStatusById(id, !userRepository.findById(id)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id)).isLocked());
 
 		if (updatedRows == 0) {

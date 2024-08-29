@@ -19,22 +19,15 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Role } from '../models/user.model';
+
 export interface ModalInputField {
-  type:
-    | 'text'
-    | 'email'
-    | 'password'
-    | 'number'
-    | 'tel'
-    | 'checkbox'
-    | 'select';
+  type: 'text' | 'email' | 'password' | 'number' | 'tel' | 'select';
   label: string;
   value?: string | Role;
   placeholder?: string;
@@ -58,7 +51,6 @@ export interface ModalInputField {
     MatCardModule,
     MatButtonModule,
     MatTooltipModule,
-    MatCheckboxModule,
     MatSelectModule,
     ReactiveFormsModule,
   ],
@@ -77,37 +69,34 @@ export class CustomModalComponent {
 
   @Output() submitEvent = new EventEmitter<any>();
 
-  form: FormGroup;
+  public form: FormGroup;
   public hidePassword: boolean = true;
 
   constructor(
     public dialogRef: MatDialogRef<CustomModalComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      titleLabel: string;
-      subtitleLabel: string;
-      titleCentered: boolean;
-      subtitleCentered: boolean;
-      inputFields: ModalInputField[];
-      cancelButtonLabel: string;
-      submitButtonLabel: string;
-      submitButtonIcon: string;
-      submitButtonTooltip: string;
-      submitButtonColor: string;
-    }
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.titleLabel = data.titleLabel;
     this.subtitleLabel = data.subtitleLabel;
     this.titleCentered = data.titleCentered;
     this.subtitleCentered = data.subtitleCentered;
     this.inputFields = data.inputFields;
-
     this.cancelButtonLabel = data.cancelButtonLabel;
     this.submitButtonLabel = data.submitButtonLabel;
     this.submitButtonIcon = data.submitButtonIcon;
     this.submitButtonTooltip = data.submitButtonTooltip;
     this.submitButtonColor = data.submitButtonColor;
 
+    this.initializeForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['inputFields'] && !changes['inputFields'].isFirstChange()) {
+      this.initializeForm();
+    }
+  }
+
+  private initializeForm(): void {
     this.form = new FormGroup({});
     this.inputFields.forEach((field) => {
       const validators = [];
@@ -130,24 +119,9 @@ export class CustomModalComponent {
 
       this.form.addControl(
         field.label,
-        new FormControl(field.value ? field.value : '', validators)
+        new FormControl(field.value || '', validators)
       );
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['inputFields'] && !changes['inputFields'].isFirstChange()) {
-      this.form = new FormGroup({});
-      this.inputFields.forEach((field) => {
-        this.form.addControl(
-          field.label,
-          new FormControl(
-            field.value ? field.value : '',
-            field.required ? [Validators.required] : []
-          )
-        );
-      });
-    }
   }
 
   public onSubmit(): void {
@@ -167,21 +141,40 @@ export class CustomModalComponent {
     };
   }
 
-  public togglePasswordVisibility(field: ModalInputField) {
-    this.hidePassword = !this.hidePassword;
-    field.type = this.hidePassword ? 'password' : 'text';
+  public isPasswordField(field: ModalInputField): boolean {
+    return field.label.toLowerCase().includes('password');
   }
 
-  public shouldShowPasswordIcon(field: ModalInputField): boolean {
-    const passwordControl = this.form.get(field.label);
+  public isTextOrEmailOrPassword(type: string): boolean {
+    return ['text', 'email', 'password'].includes(type);
+  }
+
+  public isNumberOrTel(type: string): boolean {
+    return ['number', 'tel'].includes(type);
+  }
+
+  public getInputType(field: ModalInputField): string {
+    return field.type === 'password' && this.hidePassword ? 'password' : 'text';
+  }
+
+  public isReadOnly(): boolean {
+    return this.titleLabel.toLowerCase().includes('information');
+  }
+
+  public isInformationDialog(): boolean {
+    return this.titleLabel.toLowerCase().includes('information');
+  }
+
+  public isSubmitDisabled(): boolean {
     return (
-      this.isPasswordField(field) &&
-      (this.hidePassword ||
-        (passwordControl?.value && passwordControl.value.length >= 1))
+      (this.form.invalid && this.titleLabel.toLowerCase().includes('create')) ||
+      this.form.invalid ||
+      (this.form.pristine && this.titleLabel.toLowerCase().includes('update'))
     );
   }
 
-  private isPasswordField(field: ModalInputField): boolean {
-    return field.label.toLowerCase().includes('password');
+  public hasError(field: ModalInputField, errorType: string): boolean {
+    const control = this.form.get(field.label);
+    return control?.hasError(errorType) ?? false;
   }
 }

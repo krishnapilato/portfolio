@@ -85,9 +85,9 @@ public class UserController {
 	public ResponseEntity<User> toggleLockUser(@PathVariable Long id) {
 		try {
 			User user = userService.toggleLock(id);
-			return new ResponseEntity<>(user, HttpStatus.OK);
+			return ResponseEntity.ok(user);
 		} catch (UsernameNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 

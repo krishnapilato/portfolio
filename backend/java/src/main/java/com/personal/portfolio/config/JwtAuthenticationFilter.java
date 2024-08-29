@@ -1,11 +1,13 @@
 package com.personal.portfolio.config;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,6 +23,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+	
 	private final JwtService jwtService;
 	private final UserDetailsService userDetailsService;
 
@@ -33,9 +36,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 			return;
 		}
+
 		String jwtToken = authHeader.substring(7);
 
-		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+		Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
+		if (existingAuth != null) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -43,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		try {
 			String userEmail = jwtService.extractUsername(jwtToken);
 			UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-			
+
 			if (jwtService.isTokenValid(jwtToken, userDetails) && userDetails.isEnabled()) {
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
 						null, userDetails.getAuthorities());
@@ -52,11 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			}
 		} catch (Exception e) {
 			SecurityContextHolder.clearContext();
-			if (e.getMessage().contains("expired")) {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token expired");
-			} else {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
-			}
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage().contains("expired") ? "Token expired" : "Invalid token");
 			return;
 		}
 

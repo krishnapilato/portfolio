@@ -40,9 +40,10 @@ public class JwtService {
 
 	public JwtService(JwtKeysRepository keyRepository) {
 		this.keyRepository = keyRepository;
-		rotateKey();
+		rotateKey(); // Initial key rotation
 	}
 
+	// Scheduled task to rotate keys daily
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void rotateKey() {
 		List<JwtKeys> expiredKeys = keyRepository.findAllByExpirationDateBefore(Instant.now());
@@ -52,7 +53,7 @@ public class JwtService {
 			logger.info("Deleted {} expired keys.", expiredKeys.size());
 		}
 
-		Optional<JwtKeys> activeKeyOptional = keyRepository.findFirstByOrderByCreatedDateDesc();
+		Optional<JwtKeys> activeKeyOptional = keyRepository.findTopByOrderByCreatedDateDesc();
 		if (!activeKeyOptional.isPresent() || activeKeyOptional.get().isExpired()) {
 			SecretKey newKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 			String newKeyId = UUID.randomUUID().toString();
@@ -69,15 +70,18 @@ public class JwtService {
 		}
 	}
 
+	// Extracts username from JWT token
 	public String extractUsername(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
 
+	// Extracts claims from JWT token
 	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
 		final Claims claims = extractAllClaims(token);
 		return claimsResolver.apply(claims);
 	}
 
+	// Checks if token is valid
 	public boolean isTokenValid(String token, UserDetails userDetails) {
 		if (token == null || token.isBlank()) {
 			return false;
@@ -95,6 +99,7 @@ public class JwtService {
 		}
 	}
 
+	// Checks if token is expired
 	private boolean isTokenExpired(String token) {
 		try {
 			return extractExpiration(token).before(new Date());
@@ -104,6 +109,7 @@ public class JwtService {
 		}
 	}
 
+	// Generates JWT token with user details
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("roles",
@@ -111,6 +117,7 @@ public class JwtService {
 		return generateToken(claims, userDetails);
 	}
 	
+	// Generates JWT token with extra claims
 	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
 	    try {
 	        Instant now = Instant.now();
@@ -120,7 +127,7 @@ public class JwtService {
 	                .setIssuer("Khova Krishna Pilato")
 	                .setAudience("com.personal.portfolio")
 	                .setIssuedAt(Date.from(now))
-	                .setExpiration(Date.from(Instant.now().plusMillis(7200000)))
+	                .setExpiration(Date.from(Instant.now().plusMillis(7200000))) // 2 hours
 	                .signWith(getSignInKey(), SignatureAlgorithm.HS512)
 	                .compact();
 	    } catch (JwtException e) {
@@ -129,6 +136,7 @@ public class JwtService {
 	    }
 	}
 
+	// Extracts expiration date from JWT token
 	public Date extractExpiration(String token) {
 		try {
 			return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody()
@@ -142,6 +150,7 @@ public class JwtService {
 		}
 	}
 
+	// Extracts all claims from JWT token
 	private Claims extractAllClaims(String token) {
 		try {
 			return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
@@ -154,8 +163,9 @@ public class JwtService {
 		}
 	}
 
+	// Retrieves the signing key
 	private SecretKey getSignInKey() {
-		JwtKeys activeKey = keyRepository.findFirstByOrderByCreatedDateDesc()
+		JwtKeys activeKey = keyRepository.findTopByOrderByCreatedDateDesc()
 				.orElseThrow(() -> new IllegalStateException("No active key found!"));
 		return Keys.hmacShaKeyFor(Base64.getDecoder().decode(activeKey.getSecretKey()));
 	}

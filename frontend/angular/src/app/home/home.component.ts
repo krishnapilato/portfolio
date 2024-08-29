@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private _snackBar: MatSnackBar) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const typed = new Typed('.typed-element', {
       strings: this.languages,
       typeSpeed: 300,

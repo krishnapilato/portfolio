@@ -49,12 +49,12 @@
   }
 }
 
-/* Adjust flex properties for smaller screens in a separate CSS file */
+
 @media (max-width: 768px) {
   .toolbar-container {
-    flex-direction: column; /* Stack elements vertically on small screens */
+    flex-direction: column;
   }
   .toolbar-icons {
-    flex-grow: 0; /* Don't grow horizontally on small screens */
+    flex-grow: 0;
   }
 }

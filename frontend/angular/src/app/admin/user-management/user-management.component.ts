@@ -150,7 +150,7 @@ export class UserManagementComponent implements OnInit {
         type: 'password',
         label: 'Password',
         value: '***************',
-        icon: '',
+        icon: 'lock',
         required: true,
         disabled: state === 'edit' ? false : true,
       },
@@ -215,7 +215,6 @@ export class UserManagementComponent implements OnInit {
         );
       },
       (error) => {
-        // Handle the error (e.g., display an error message)
         console.error(error);
       }
     );
