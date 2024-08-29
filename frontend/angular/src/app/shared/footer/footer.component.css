@@ -1,19 +1,21 @@
-:host {
-  display: block;
-  width: 100%;
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
 }
 
 footer {
-  padding: 1rem 0;
+  padding: 0.1rem 0;
   text-align: center;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
   font-size: 0.6rem;
-}
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
 }

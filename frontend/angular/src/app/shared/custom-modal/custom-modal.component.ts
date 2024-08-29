@@ -74,7 +74,7 @@ export class CustomModalComponent {
 
   constructor(
     public dialogRef: MatDialogRef<CustomModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) data: any
   ) {
     this.titleLabel = data.titleLabel;
     this.subtitleLabel = data.subtitleLabel;
@@ -174,7 +174,6 @@ export class CustomModalComponent {
   }
 
   public hasError(field: ModalInputField, errorType: string): boolean {
-    const control = this.form.get(field.label);
-    return control?.hasError(errorType) ?? false;
+    return this.form.get(field.label)?.hasError(errorType) ?? false;
   }
 }

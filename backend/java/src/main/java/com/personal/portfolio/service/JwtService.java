@@ -61,7 +61,7 @@ public class JwtService {
 			newKeyEntity.setKeyId(newKeyId);
 			newKeyEntity.setSecretKey(Base64.getEncoder().encodeToString(newKey.getEncoded()));
 			newKeyEntity.setCreatedDate(Instant.now());
-			newKeyEntity.setExpirationDate(Instant.now().plus(Duration.ofDays(30)));
+			newKeyEntity.setExpirationDate(Instant.now().plus(Duration.ofDays(28)));
 
 			keyRepository.save(newKeyEntity);
 			logger.info("JWT Secret key rotated. New key ID: {}", newKeyId);
