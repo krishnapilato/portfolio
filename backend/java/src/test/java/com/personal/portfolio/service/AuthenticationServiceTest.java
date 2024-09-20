@@ -26,7 +26,7 @@ import com.personal.portfolio.dto.registration.RegisterUserRequest;
 import com.personal.portfolio.model.User;
 import com.personal.portfolio.repository.UserRepository;
 
-public class AuthenticationServiceTest {
+class AuthenticationServiceTest {
 	@Mock
 	private UserRepository userRepository;
 
@@ -45,7 +45,7 @@ public class AuthenticationServiceTest {
 	}
 
 	@Test
-	public void testSignup() {
+	void testSignup() {
 		RegisterUserRequest registerUserDto = new RegisterUserRequest();
 		registerUserDto.setFullName("Name Surname");
 		registerUserDto.setEmail("name.surname@email.com");
@@ -71,7 +71,7 @@ public class AuthenticationServiceTest {
 	}
 
 	@Test
-	public void testSignupDuplicateEmail() {
+	void testSignupDuplicateEmail() {
 		RegisterUserRequest registerUserDto = new RegisterUserRequest();
 	    registerUserDto.setFullName("Name Surname");
 	    registerUserDto.setEmail("name.surname@email.com");
@@ -85,7 +85,7 @@ public class AuthenticationServiceTest {
 	}
 	
 	@Test
-	public void testAuthenticateSuccess() {
+	void testAuthenticateSuccess() {
 		LoginUserRequest loginUserDto = new LoginUserRequest("name.surname@email.com", "password");
 
 		User user = new User();
@@ -108,7 +108,7 @@ public class AuthenticationServiceTest {
 	}
 	
 	@Test
-	public void testAuthenticateIncorrectPassword() {
+	void testAuthenticateIncorrectPassword() {
 		LoginUserRequest loginUserDto = new LoginUserRequest("name.surname@email.com", "wrongPassword");
 
 	    User user = new User();

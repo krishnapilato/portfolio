@@ -2,13 +2,7 @@ package com.personal.portfolio.service;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -37,6 +31,10 @@ public class JwtService {
 	private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
 	private JwtKeysRepository keyRepository;
+
+	private static final String JWT_TOKEN_EXPIRED = "JWT Token expired: {}";
+
+	private static final String INVALID_JWT_TOKEN = "Invalid JWT token: {}";
 
 	public JwtService(JwtKeysRepository keyRepository) {
 		this.keyRepository = keyRepository;
@@ -91,10 +89,10 @@ public class JwtService {
 			final String username = extractUsername(token);
 			return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 		} catch (ExpiredJwtException e) {
-			logger.warn("JWT Token expired: {}", e.getMessage());
+			logger.warn(JWT_TOKEN_EXPIRED, e.getMessage());
 			return false;
 		} catch (JwtException e) {
-			logger.error("Invalid JWT token: {}", e.getMessage(), e);
+			logger.error(INVALID_JWT_TOKEN, e.getMessage(), e);
 			return false;
 		}
 	}
@@ -104,7 +102,7 @@ public class JwtService {
 		try {
 			return extractExpiration(token).before(new Date());
 		} catch (ExpiredJwtException e) {
-			logger.warn("JWT Token expired: {}", e.getMessage());
+			logger.warn(JWT_TOKEN_EXPIRED, e.getMessage());
 			return true;
 		}
 	}
@@ -142,10 +140,10 @@ public class JwtService {
 			return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody()
 					.getExpiration();
 		} catch (ExpiredJwtException e) {
-			logger.warn("JWT Token expired: {}", e.getMessage());
+			logger.warn(JWT_TOKEN_EXPIRED, e.getMessage());
 			throw e;
 		} catch (JwtException e) {
-			logger.error("Invalid JWT token: {}", e.getMessage());
+			logger.error(INVALID_JWT_TOKEN, e.getMessage());
 			throw e;
 		}
 	}
@@ -155,10 +153,10 @@ public class JwtService {
 		try {
 			return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
 		} catch (ExpiredJwtException e) {
-			logger.warn("JWT Token expired: {}", e.getMessage());
+			logger.warn(JWT_TOKEN_EXPIRED, e.getMessage());
 			throw e;
 		} catch (JwtException e) {
-			logger.error("Invalid JWT token: {}", e.getMessage());
+			logger.error(INVALID_JWT_TOKEN, e.getMessage());
 			throw e;
 		}
 	}

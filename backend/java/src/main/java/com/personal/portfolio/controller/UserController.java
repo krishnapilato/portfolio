@@ -3,7 +3,6 @@ package com.personal.portfolio.controller;
 import java.net.URI;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "Users", description = "Endpoints for managing user data.")
 public class UserController {
 
-	@Autowired
 	private UserService userService;
 
 	@GetMapping

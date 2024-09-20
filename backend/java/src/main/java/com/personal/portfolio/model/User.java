@@ -28,7 +28,6 @@ import lombok.Data;
 @Entity
 @Data
 public class User implements UserDetails {
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -73,10 +72,10 @@ public class User implements UserDetails {
 	public String getUsername() {
 		return email;
 	}
-	
+
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return this.enabled;
 	}
 	
 	@Override
@@ -86,12 +85,7 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
+		return this.accountNonExpired;
 	}
 
 	@Override

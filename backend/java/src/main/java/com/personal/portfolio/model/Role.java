@@ -1,5 +1,8 @@
 package com.personal.portfolio.model;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
 	USER("User"), ADMIN("Admin"), DEVELOPER("Developer");
 
@@ -7,9 +10,5 @@ public enum Role {
 
 	Role(String displayName) {
 		this.displayName = displayName;
-	}
-
-	public String getDisplayName() {
-		return displayName;
 	}
 }

@@ -18,6 +18,8 @@ import io.swagger.v3.oas.models.servers.Server;
 @Configuration
 public class SwaggerConfig {
 
+	private static final String BEARER_AUTH = "bearerAuth";
+
 	@Bean
 	public OpenAPI openAPI() {
 		Contact contact = new Contact();
@@ -29,9 +31,9 @@ public class SwaggerConfig {
 		server.setUrl("https://khovakrishnapilato.com");
 		server.setDescription("Development");
 
-		return new OpenAPI().addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-				.components(new Components().addSecuritySchemes("bearerAuth",
-						new SecurityScheme().name("bearerAuth").type(SecurityScheme.Type.HTTP).scheme("bearer")
+		return new OpenAPI().addSecurityItem(new SecurityRequirement().addList(BEARER_AUTH))
+				.components(new Components().addSecuritySchemes(BEARER_AUTH,
+						new SecurityScheme().name(BEARER_AUTH).type(SecurityScheme.Type.HTTP).scheme("bearer")
 								.bearerFormat("JWT")))
 				.info(new Info().title("Portfolio Website API")
 						.description("REST API Documentation for my Portfolio Website").version("0.0.1-SNAPSHOT")

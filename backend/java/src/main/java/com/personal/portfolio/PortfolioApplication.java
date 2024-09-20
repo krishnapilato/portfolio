@@ -28,7 +28,7 @@ public class PortfolioApplication {
 				User adminUser = new User();
 				adminUser.setFullName("Khova Krishna Pilato");
 				adminUser.setEmail("krishnak.pilato@gmail.com");
-				adminUser.setPassword(passwordEncoder.encode(">!8vAR}]9Zh9f3xi.uE/'^aj?\"W2!\"@!48tp:2fHOC@v£\"nv^&"));
+				adminUser.setPassword(passwordEncoder.encode("12345678"));
 				adminUser.setRole(Role.ADMIN);
 				adminUser.setEnabled(true);
 

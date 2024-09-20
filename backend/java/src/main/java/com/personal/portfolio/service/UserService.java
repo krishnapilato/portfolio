@@ -24,10 +24,12 @@ public class UserService implements UserDetailsService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 
+	private static final String USER_NOT_FOUND = "User not found with id: ";
+
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		return userRepository.findByEmail(email)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+				.orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + email));
 	}
 
 	public Stream<User> getAllUsers() {
@@ -36,14 +38,14 @@ public class UserService implements UserDetailsService {
 
 	public User toggleLock(Long id) {
 		int updatedRows = userRepository.updateLockStatusById(id, !userRepository.findById(id)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id)).isLocked());
+				.orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id)).isLocked());
 
 		if (updatedRows == 0) {
-			throw new UsernameNotFoundException("User not found with id: " + id);
+			throw new UsernameNotFoundException(USER_NOT_FOUND + id);
 		}
 
 		return userRepository.findById(id)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+				.orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id));
 	}
 
 	public Optional<User> getUserById(Long id) {
@@ -63,7 +65,7 @@ public class UserService implements UserDetailsService {
 			user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
 			user.setUpdatedAt(Date.from(Instant.now()));
 			return userRepository.save(user);
-		}).orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+		}).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id));
 	}
 
 	public void deleteUser(Long id) {

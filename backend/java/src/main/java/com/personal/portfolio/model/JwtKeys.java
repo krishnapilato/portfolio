@@ -34,6 +34,6 @@ public class JwtKeys {
 	private Instant expirationDate;
 
 	public boolean isExpired() {
-		return expirationDate.isBefore(Instant.now());
+		return this.expirationDate.isBefore(Instant.now());
 	}
 }
