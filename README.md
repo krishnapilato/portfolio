@@ -1,9 +1,9 @@
 # khovakrishnapilato.com
 
 [![Java Version](https://img.shields.io/badge/Java-21.0.4-blue?style=flat&logo=java)](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
-[![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.4.0-brightgreen?style=flat&logo=spring-boot)](https://spring.io/projects/spring-boot)
-[![Angular Version](https://img.shields.io/badge/Angular-18.1.2-red?style=flat&logo=angular)](https://angular.io/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0.32-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql/)
+[![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.4-brightgreen?style=flat&logo=spring-boot)](https://spring.io/projects/spring-boot)
+[![Angular Version](https://img.shields.io/badge/Angular-18.2.5-red?style=flat&logo=angular)](https://angular.io/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0.39-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql/)
 
 Welcome! This web application is designed to highlight my technical skills and experience. The code might still have some minor issues that need to be resolved. A thorough review and bug fixing process will continue through July 31, 2024 to ensure stability and optimal performance.
 
