@@ -2,6 +2,7 @@ package com.personal.portfolio;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,9 @@ public class PortfolioApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(PortfolioApplication.class);
 
+	@Value("${user.admin.password}")
+	private String adminPassword;
+
 	public static void main(String[] args) {
 		SpringApplication.run(PortfolioApplication.class, args);
 	}
@@ -28,7 +32,7 @@ public class PortfolioApplication {
 				User adminUser = new User();
 				adminUser.setFullName("Khova Krishna Pilato");
 				adminUser.setEmail("krishnak.pilato@gmail.com");
-				adminUser.setPassword(passwordEncoder.encode("12345678"));
+				adminUser.setPassword(passwordEncoder.encode(adminPassword));
 				adminUser.setRole(Role.ADMIN);
 				adminUser.setEnabled(true);
 
