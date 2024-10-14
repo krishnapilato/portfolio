@@ -9,22 +9,23 @@
 
 a {
   text-decoration: none;
-  color: black;
+  color: #333;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #007bff;
 }
 
 .mat-raised-button {
   padding: 15px 30px;
   font-size: 18px;
   margin: 10px;
+  transition: all 0.3s ease;
 }
 
 .italy-flag {
-  background-image: linear-gradient(
-    to right,
-    #008c45,
-    rgb(255, 255, 217),
-    #cd212a
-  );
+  background-image: linear-gradient(to right, #008c45, #fff, #cd212a);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -56,9 +57,7 @@ a {
 }
 
 .view-work-button:hover i {
-  animation: blink 0.1s ease-in-out;
-  animation-iteration-count: 1;
-  animation-duration: 1.2s;
+  animation: blink 0.5s ease-in-out;
 }
 
 .download-button {
@@ -66,7 +65,7 @@ a {
 }
 
 .download-button:hover i {
-  animation: pulse 1s ease-in-out;
+  animation: pulse 1.2s ease-in-out;
 }
 
 @keyframes blink {

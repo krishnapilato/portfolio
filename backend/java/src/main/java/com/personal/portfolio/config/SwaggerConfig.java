@@ -28,7 +28,7 @@ public class SwaggerConfig {
 		contact.setEmail("krishnak.pilato@gmail.com");
 
 		Server server = new Server();
-		server.setUrl("https://khovakrishnapilato.com");
+		server.setUrl("http://localhost:8080");
 		server.setDescription("Development");
 
 		return new OpenAPI().addSecurityItem(new SecurityRequirement().addList(BEARER_AUTH))

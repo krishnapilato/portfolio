@@ -22,8 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-	private static final String[] API_WHITELIST = { "/", "/v3/api-docs/**", "/swagger-ui/**", "/api/auth/**",
-			"/api/test/**", "/auth/**" };
+	private static final String[] API_WHITELIST = { "/", "/v3/api-docs/**", "/swagger-ui/**", "/api/auth/**", "/api/test/**", "/auth/**" };
 
 	private final AuthenticationProvider authenticationProvider;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
