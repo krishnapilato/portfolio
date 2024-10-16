@@ -17,7 +17,7 @@ Welcome! This web application is designed to highlight my technical skills and e
 
 ## Local Development Setup
 
-1. **Clone the Repository:** `git clone https://github.com/krishnapilato/portfolio.git && cd portfolio && git checkout dev`
+1. **Clone:** `git clone https://github.com/krishnapilato/portfolio.git && cd portfolio && git checkout dev`
 2. **Backend:**
    * **Java:** Follow the instructions in the `backend/java/README.md` file.
 3. **Frontend:**
