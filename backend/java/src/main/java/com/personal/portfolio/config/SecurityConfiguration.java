@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,17 +23,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-	private static final String[] API_WHITELIST = { "/", "/v3/api-docs/**", "/swagger-ui/**", "/api/auth/**", "/api/test/**", "/auth/**" };
+	private static final String[] API_WHITELIST = {
+			"/",
+			"/v3/api-docs/**",
+			"/swagger-ui/**",
+			"/swagger-ui.html",
+			"/api/auth/**",
+			"/api/test/**",
+			"/auth/**"
+	};
 
 	private final AuthenticationProvider authenticationProvider;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.cors(cors -> cors.configurationSource(corsConfigurationSource())).csrf(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(
-						authorize -> authorize.requestMatchers(API_WHITELIST).permitAll().anyRequest().authenticated())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+		http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+				.csrf(AbstractHttpConfigurer::disable)
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers(API_WHITELIST).permitAll()
+						.anyRequest().authenticated()
+				)
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider)
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -42,8 +54,10 @@ public class SecurityConfiguration {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("http://localhost:4200", "https://production-domain.com"));
-		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		configuration.setAllowedOrigins(List.of("http://localhost:4200", "https://khovakrishnapilato.com"));
+		configuration.setAllowedMethods(List.of(HttpMethod.GET.name(), HttpMethod.POST.name(),
+				HttpMethod.PUT.name(), HttpMethod.DELETE.name(),
+				HttpMethod.OPTIONS.name()));
 		configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 		configuration.setAllowCredentials(true);
 

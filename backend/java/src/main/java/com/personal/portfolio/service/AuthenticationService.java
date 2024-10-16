@@ -27,6 +27,12 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationService {
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
+	// Constants for logging and exception messages
+	private static final String USER_EMAIL_EXISTS = "User with email %s already exists";
+	private static final String USER_REGISTRATION_SUCCESS = "User registration successful for ID: %d";
+	private static final String AUTHENTICATION_FAILED = "Authentication failed for email: %s";
+	private static final String USER_NOT_FOUND = "User not found with email: %s";
+
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
@@ -35,8 +41,8 @@ public class AuthenticationService {
 		logger.info("Starting user registration for email: {}", input.getEmail());
 
 		if (userRepository.existsByEmail(input.getEmail())) {
-			logger.warn("User registration attempt failed: User with email {} already exists", input.getEmail());
-			throw new DuplicateKeyException("User with email " + input.getEmail() + " already exists");
+			logger.warn("User registration attempt failed: " + USER_EMAIL_EXISTS, input.getEmail());
+			throw new DuplicateKeyException(String.format(USER_EMAIL_EXISTS, input.getEmail()));
 		}
 
 		User user = new User();
@@ -48,7 +54,7 @@ public class AuthenticationService {
 		user.setUpdatedAt(Date.from(Instant.now()));
 
 		User savedUser = userRepository.save(user);
-		logger.info("User registration successful for ID: {}", savedUser.getId());
+		logger.info(String.format(USER_REGISTRATION_SUCCESS, savedUser.getId()));
 
 		return savedUser;
 	}
@@ -57,14 +63,13 @@ public class AuthenticationService {
 		logger.info("Attempting authentication for email: {}", input.getEmail());
 
 		try {
-			authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword()));
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword()));
 		} catch (AuthenticationException e) {
-			logger.error("Authentication failed for email: {}", input.getEmail(), e);
+			logger.error(String.format(AUTHENTICATION_FAILED, input.getEmail()), e);
 			throw new BadCredentialsException("Invalid credentials provided");
 		}
 
 		return userRepository.findByEmail(input.getEmail())
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + input.getEmail()));
+				.orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, input.getEmail())));
 	}
 }

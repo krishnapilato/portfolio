@@ -8,13 +8,23 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entity representing JWT keys.
+ */
 @Table(name = "jwt_keys")
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = "keyId")
 public class JwtKeys {
 
 	@Id
@@ -28,9 +38,11 @@ public class JwtKeys {
 	private String secretKey;
 
 	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Instant createdDate;
 
 	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Instant expirationDate;
 
 	public boolean isExpired() {

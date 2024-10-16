@@ -10,6 +10,7 @@ import javax.crypto.SecretKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,11 +31,13 @@ public class JwtService {
 
 	private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
-	private JwtKeysRepository keyRepository;
+	private final JwtKeysRepository keyRepository;
 
 	private static final String JWT_TOKEN_EXPIRED = "JWT Token expired: {}";
-
 	private static final String INVALID_JWT_TOKEN = "Invalid JWT token: {}";
+
+	@Value("${jwt.token.expiration:7200000}")
+	private long tokenExpiration;
 
 	public JwtService(JwtKeysRepository keyRepository) {
 		this.keyRepository = keyRepository;
@@ -44,7 +47,7 @@ public class JwtService {
 	// Scheduled task to rotate keys daily
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void rotateKey() {
-		List<JwtKeys> expiredKeys = keyRepository.findAllByExpirationDateBefore(Instant.now());
+		List<JwtKeys> expiredKeys = keyRepository.findExpiredKeys(Instant.now());
 
 		if (!expiredKeys.isEmpty()) {
 			keyRepository.deleteAllInBatch(expiredKeys);
@@ -52,7 +55,7 @@ public class JwtService {
 		}
 
 		Optional<JwtKeys> activeKeyOptional = keyRepository.findTopByOrderByCreatedDateDesc();
-		if (!activeKeyOptional.isPresent() || activeKeyOptional.get().isExpired()) {
+		if (activeKeyOptional.isEmpty() || activeKeyOptional.get().isExpired()) {
 			SecretKey newKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 			String newKeyId = UUID.randomUUID().toString();
 			JwtKeys newKeyEntity = new JwtKeys();
@@ -114,42 +117,38 @@ public class JwtService {
 				userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 		return generateToken(claims, userDetails);
 	}
-	
+
 	// Generates JWT token with extra claims
 	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-	    try {
-	        Instant now = Instant.now();
-	        return Jwts.builder()
-	                .setClaims(extraClaims)
-	                .setSubject(userDetails.getUsername())
-	                .setIssuer("Khova Krishna Pilato")
-	                .setAudience("com.personal.portfolio")
-	                .setIssuedAt(Date.from(now))
-	                .setExpiration(Date.from(Instant.now().plusMillis(7200000))) // 2 hours
-	                .signWith(getSignInKey(), SignatureAlgorithm.HS512)
-	                .compact();
-	    } catch (JwtException e) {
-	        logger.warn("Error generating JWT token", e);
+		try {
+			Instant now = Instant.now();
+			return Jwts.builder()
+					.setClaims(extraClaims)
+					.setSubject(userDetails.getUsername())
+					.setIssuer("Khova Krishna Pilato")
+					.setAudience("com.personal.portfolio")
+					.setIssuedAt(Date.from(now))
+					.setExpiration(Date.from(now.plusMillis(tokenExpiration)))
+					.signWith(getSignInKey(), SignatureAlgorithm.HS512)
+					.compact();
+		} catch (JwtException e) {
+			logger.warn("Error generating JWT token", e);
 			throw new RuntimeException("Error generating JWT token", e);
-	    }
+		}
 	}
 
 	// Extracts expiration date from JWT token
 	public Date extractExpiration(String token) {
-		try {
-			return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody()
-					.getExpiration();
-		} catch (ExpiredJwtException e) {
-			logger.warn(JWT_TOKEN_EXPIRED, e.getMessage());
-			throw e;
-		} catch (JwtException e) {
-			logger.error(INVALID_JWT_TOKEN, e.getMessage());
-			throw e;
-		}
+		return parseClaims(token).getExpiration();
 	}
 
 	// Extracts all claims from JWT token
 	private Claims extractAllClaims(String token) {
+		return parseClaims(token);
+	}
+
+	// Parses claims from JWT token
+	private Claims parseClaims(String token) {
 		try {
 			return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
 		} catch (ExpiredJwtException e) {

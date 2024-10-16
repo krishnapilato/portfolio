@@ -37,15 +37,14 @@ public class UserService implements UserDetailsService {
 	}
 
 	public User toggleLock(Long id) {
-		int updatedRows = userRepository.updateLockStatusById(id, !userRepository.findById(id)
-				.orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id)).isLocked());
-
-		if (updatedRows == 0) {
-			throw new UsernameNotFoundException(USER_NOT_FOUND + id);
-		}
-
-		return userRepository.findById(id)
+		User user = userRepository.findById(id)
 				.orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id));
+
+		boolean newLockStatus = !user.isLocked();
+		userRepository.updateLockStatusById(id, newLockStatus);
+		user.setLocked(newLockStatus);
+
+		return user;
 	}
 
 	public Optional<User> getUserById(Long id) {
@@ -62,13 +61,18 @@ public class UserService implements UserDetailsService {
 		return userRepository.findById(id).map(user -> {
 			user.setFullName(updatedUser.getFullName());
 			user.setEmail(updatedUser.getEmail());
-			user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+			if (updatedUser.getPassword() != null) {
+				user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+			}
 			user.setUpdatedAt(Date.from(Instant.now()));
 			return userRepository.save(user);
 		}).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id));
 	}
 
 	public void deleteUser(Long id) {
+		if (!userRepository.existsById(id)) {
+			throw new UsernameNotFoundException(USER_NOT_FOUND + id);
+		}
 		userRepository.deleteById(id);
 	}
 }

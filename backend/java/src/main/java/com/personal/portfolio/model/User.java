@@ -1,7 +1,6 @@
 package com.personal.portfolio.model;
 
 import java.util.Collection;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,11 +21,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Table(name = "users")
 @Entity
 @Data
+@NoArgsConstructor
 public class User implements UserDetails {
 
 	@Id
@@ -34,7 +36,7 @@ public class User implements UserDetails {
 	@Column(nullable = false)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 100)
 	private String fullName;
 
 	@Column(unique = true, length = 100, nullable = false)
@@ -77,7 +79,7 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		return this.enabled;
 	}
-	
+
 	@Override
 	public boolean isAccountNonLocked() {
 		return !this.locked;
@@ -93,5 +95,17 @@ public class User implements UserDetails {
 		Set<GrantedAuthority> authorities = new HashSet<>();
 		authorities.add(new SimpleGrantedAuthority(role.name()));
 		return authorities;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof User user)) return false;
+		return id != null && id.equals(user.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
 	}
 }
