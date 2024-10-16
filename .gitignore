@@ -1,2 +1,10 @@
 
 *.lck
+backend/java/logs/application.log.0
+backend/java/logs/application.log.1
+backend/java/logs/application.log.2
+backend/java/logs/application.log.3
+backend/java/logs/application.log.4
+backend/java/logs/application.log.5
+backend/java/logs/application.log.6
+backend/java/logs/application.log.7
