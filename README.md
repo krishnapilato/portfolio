@@ -17,12 +17,10 @@ Welcome! This web application is designed to highlight my technical skills and e
 
 ## Local Development Setup
 
-1. **Clone the Repository:** `git clone https://github.com/krishnapilato/portfolio.git`
-2. **Navigate to the Repository Directory:** `cd portfolio`
-3. **Navigate to the Repository Directory:** `git checkout dev`
-4. **Backend:**
+1. **Clone:** `git clone https://github.com/krishnapilato/portfolio.git && cd portfolio && git checkout dev`
+2. **Backend:**
    * **Java:** Follow the instructions in the `backend/java/README.md` file.
-5. **Frontend:**
+3. **Frontend:**
    * Navigate to the `frontend/angular` directory.
    * Install dependencies: `npm install --force`
    * Run the development server: `ng serve -o`
