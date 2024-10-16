@@ -1,10 +1,9 @@
 # khovakrishnapilato.com
 
-[![Java Version](https://img.shields.io/badge/Java-21-blue?style=flat&logo=java)](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
-[![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.1-brightgreen?style=flat&logo=spring-boot)](https://spring.io/projects/spring-boot)
-[![Angular Version](https://img.shields.io/badge/Angular-18.0.5-red?style=flat&logo=angular)](https://angular.io/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0.32-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green?style=flat&logo=mongodb)](https://www.mongodb.com/)
+[![Java Version](https://img.shields.io/badge/Java-21.0.5-blue?style=flat&logo=java)](https://www.oracle.com/java/technologies/downloads/#java21)
+[![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.4-brightgreen?style=flat&logo=spring-boot)](https://spring.io/projects/spring-boot)
+[![Angular Version](https://img.shields.io/badge/Angular-18.2.8-red?style=flat&logo=angular)](https://angular.dev/overview)
+[![MySQL](https://img.shields.io/badge/MySQL-9.1.0-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql)
 
 Welcome! This web application is designed to highlight my technical skills and experience.
 
