@@ -27,7 +27,7 @@ Welcome! This web application is designed to highlight my technical skills and e
    * Install dependencies: `npm install --force`
    * Run the development server: `ng serve -o`
 
-## Project Status: Active Development 🚧🏗️🔨
+## Work in Progress 🔨
 
 This project is currently under active development. The Frontend application has a lot of bugs.
 I welcome any feedback and contributions from the community as I work to bring this project to its full potential. Thank you for your understanding!
