@@ -15,7 +15,7 @@ Welcome! This web application is designed to highlight my technical skills and e
 * **About Me:** Get to know me better through a personal introduction and my professional interests.
 * **Contact:** Reach out to me via the provided contact form
 
-## How to Run (Local Development)
+## Local Development Setup
 
 1. **Clone the Repository:** `git clone https://github.com/krishnapilato/portfolio.git`
 2. **Navigate to the Repository Directory:** `cd portfolio`
