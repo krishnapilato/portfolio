@@ -71,6 +71,7 @@ export const environment = {
         color: '#007BFF',
         icon: 'fa-solid fa-download',
       },
+      skils: ["Java", "Spring Boot", "Angular", "AWS", "Docker"],
       linkedinLink: 'https://www.linkedin.com/in/khovakrishnapilato',
     },
   },
