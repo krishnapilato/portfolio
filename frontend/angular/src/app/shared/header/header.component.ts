@@ -5,8 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
+import { environment } from '../../../environment/environment';
 import { AuthService } from '../../auth/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -18,22 +19,13 @@ import { Router } from '@angular/router';
     MatMenuModule,
     MatTooltipModule,
     CommonModule,
+    RouterModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  constructor(private authService: AuthService, private route: Router) {}
+  public env = environment;
 
-  openHome(): void {
-    this.route.navigate(['home']);
-  }
-
-  openDashboard(): void {
-    this.route.navigate(['dashboard']);
-  }
-
-  public logout(): void {
-    this.authService.logout();
-  }
+  constructor(public authService: AuthService) {}
 }

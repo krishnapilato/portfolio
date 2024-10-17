@@ -1,26 +1,43 @@
-<mat-toolbar style="background-color: #f0f4f7;">
-    <button class="home-button" (click)="openHome()" mat-button matTooltip="Home" [matTooltipPosition]="'below'">khovakrishnapilato.com</button>
-    <span class="spacer"></span>
-    <div class="toolbar-icons">
-      <button class="sliders-button" (click)="openDashboard()" mat-icon-button matTooltip="Dashboard" [matTooltipPosition]="'below'">
-        <i class="fa-solid fa-sliders"></i>
-      </button>
-      <span class="space"></span>
-      <button class="about-button" [matMenuTriggerFor]="menu" mat-icon-button matTooltip="About" [matTooltipPosition]="'below'">
-        <i class="fa-solid fa-address-card"></i>
-      </button>
-      <span class="space"></span>
-      <a class="github-button" href="https://github.com/krishnapilato/portfolio" target="_blank" mat-icon-button matTooltip="GitHub" [matTooltipPosition]="'below'">
-        <i class="fa-brands fa-github"></i>
-      </a>
-      <span class="space"></span>
-      <button class="contact-button" mat-icon-button matTooltip="Contact" routerLink="/contact" [matTooltipPosition]="'below'">
-        <i class="fa-regular fa-paper-plane"></i>
-      </button>
-    </div>
-    <span class="spacer-right"></span>
-  </mat-toolbar>
+<mat-toolbar style="background-color: #f0f4f7">
+  <button
+    [style.color]="env.website.header.titleColor"
+    class="home-button"
+    [routerLink]="['/home']"
+    mat-button
+    matTooltip="{{ env.website.header.titleTooltip }}"
+    [matTooltipPosition]="'below'"
+  >
+    {{ env.website.header.title }}
+  </button>
+  <span class="spacer"></span>
 
-  <mat-menu #menu="matMenu">
-    <button (click)="logout()" mat-menu-item><mat-icon fontIcon="logout"></mat-icon>Logout</button>
-  </mat-menu>
+  <div class="toolbar-icons">
+    <ng-container *ngFor="let icon of env.website.header.icons">
+      <a
+        [href]="icon.link"
+        [target]="icon.link.startsWith('http') ? '_blank' : '_self'"
+        class="icon-link"
+      >
+        <button
+          class="icon-buttons"
+          [matMenuTriggerFor]="icon.isLogoutMenuTrigger ? menu : null"
+          mat-icon-button
+          [matTooltip]="icon.tooltip"
+          [matTooltipPosition]="'below'"
+          [ngStyle]="{ color: icon.color }"
+          [ngClass]="{ active: icon.isActive, disabled: icon.disabled }"
+          [disabled]="icon.disabled"
+        >
+          <i [class]="icon.icon"></i>
+        </button>
+      </a>
+    </ng-container>
+  </div>
+  <span class="spacer-right"></span>
+</mat-toolbar>
+
+<mat-menu #menu="matMenu">
+  <button (click)="authService.logout()" mat-menu-item>
+    <mat-icon fontIcon="logout"></mat-icon>Logout
+  </button>
+</mat-menu>

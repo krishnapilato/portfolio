@@ -5,35 +5,15 @@
   transition: box-shadow 0.3s ease;
 }
 
-.home-button:hover {
-  animation: pulse 1s ease;
-}
-
-.home-button:hover {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-}
-
 .spacer {
   flex: 1 1 auto;
 }
 
-.space {
-  margin-left: 20px;
+.icon-buttons {
+  margin: 10px;
 }
 
-.sliders-button:hover i {
-  animation: pulse 1s infinite;
-}
-
-.about-button:hover i {
-  animation: pulse 1s infinite;
-}
-
-.github-button:hover i {
-  animation: pulse 1s infinite;
-}
-
-.contact-button:hover i {
+.icon-buttons:hover i {
   animation: pulse 1s infinite;
 }
 
@@ -48,7 +28,6 @@
     transform: scale(1);
   }
 }
-
 
 @media (max-width: 768px) {
   .toolbar-container {

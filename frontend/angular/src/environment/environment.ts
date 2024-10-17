@@ -1,11 +1,52 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
-   personalData: {
-    name: 'Krishna Pilato',
-    email: 'krishnak.pilato@gmail.com',
-    phoneNumber: '(+39) 3382965483',
-    curriculumVitaeDownloadUrl: 'https://drive.usercontent.google.com/download?id=1Pcuizh16VeAbgajBD40pI3OMlD3owdgR&export=download',
-    linkedInProfile: 'https://www.linkedin.com/in/khovakrishnapilato'
-  }
+  website: {
+    header: {
+      title: 'khovakrishnapilato.com',
+      titleColor: '#000',
+      titleTooltip: 'Home',
+      fontFamily: 'Arial, sans-serif',
+      icons: [
+        {
+          icon: 'fa-solid fa-sliders',
+          tooltip: 'Settings',
+          link: '/dashboard',
+          color: '#000000',
+          hoverColor: '#0056b3',
+          size: '20px',
+          isActive: false,
+          disabled: false,
+        },
+        {
+          icon: 'fa-solid fa-address-card',
+          tooltip: 'Profile',
+          link: '/profile',
+          color: '#000000',
+          size: '20px',
+          isActive: false,
+          disabled: false,
+          isLogoutMenuTrigger: true,
+        },
+        {
+          icon: 'fa-brands fa-github',
+          tooltip: 'GitHub',
+          link: 'https://github.com/krishnapilato/portfolio/tree/dev/frontend/angular',
+          color: '#000000',
+          size: '20px',
+          isActive: false,
+          disabled: false,
+        },
+        {
+          icon: 'fa-regular fa-paper-plane',
+          tooltip: 'Contact',
+          link: '/contact',
+          color: '#000000',
+          size: '20px',
+          isActive: false,
+          disabled: false,
+        },
+      ],
+    },
+  },
 };

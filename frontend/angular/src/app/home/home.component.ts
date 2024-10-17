@@ -52,7 +52,6 @@ export class HomeComponent implements OnInit {
   }
 
   public downloadCurriculumVitae(): void {
-    window.open(environment.personalData.curriculumVitaeDownloadUrl);
     this._snackBar.open('Downloaded resume.', 'Close', {
       duration: 2500,
     });
