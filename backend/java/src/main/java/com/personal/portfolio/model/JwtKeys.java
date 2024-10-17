@@ -1,6 +1,7 @@
 package com.personal.portfolio.model;
 
 import java.time.Instant;
+import java.util.Optional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,6 +47,8 @@ public class JwtKeys {
 	private Instant expirationDate;
 
 	public boolean isExpired() {
-		return this.expirationDate.isBefore(Instant.now());
+		return Optional.ofNullable(expirationDate)
+				.map(date -> date.isBefore(Instant.now()))
+				.orElseThrow(() -> new IllegalStateException("Expiration date is not set."));
 	}
 }

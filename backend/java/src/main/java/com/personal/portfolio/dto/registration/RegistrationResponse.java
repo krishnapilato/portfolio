@@ -10,8 +10,7 @@ public class RegistrationResponse {
 	private Long userId;
 	private Optional<Role> role;
 
-	public RegistrationResponse() {
-	}
+	public RegistrationResponse() {}
 
 	// Constructor for successful registration
 	public RegistrationResponse(Long userId, Role role) {

@@ -2,6 +2,8 @@ package com.personal.portfolio.model;
 
 import lombok.Getter;
 
+import java.util.NoSuchElementException;
+
 /**
  * Enum representing different user roles.
  */
@@ -29,11 +31,16 @@ public enum Role {
 	 * @return Role corresponding to the display name
 	 */
 	public static Role fromDisplayName(String displayName) {
+		if (displayName == null) {
+			throw new IllegalArgumentException("Display name cannot be null.");
+		}
+
 		for (Role role : values()) {
 			if (role.getDisplayName().equalsIgnoreCase(displayName)) {
 				return role;
 			}
 		}
-		throw new IllegalArgumentException("No role found for display name: " + displayName);
+
+		throw new NoSuchElementException("No role found for display name: " + displayName);
 	}
 }

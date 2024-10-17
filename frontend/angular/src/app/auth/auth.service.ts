@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../environment/environment';
 import { LoginRequest, LoginResponse } from '../shared/models/login.model';
 import {
@@ -17,9 +17,13 @@ import {
 export class AuthService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
-  public redirectUrl: string; 
+  public redirectUrl: string;
 
-  constructor(private http: HttpClient, private router: Router, private _snackbar: MatSnackBar) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private _snackbar: MatSnackBar
+  ) {
     const storedUser = localStorage.getItem('currentUser');
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     this.currentUserSubject = new BehaviorSubject<any>(parsedUser);
@@ -31,34 +35,42 @@ export class AuthService {
   }
 
   public login(loginRequest: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, loginRequest)
+    return this.http
+      .post<LoginResponse>(`${environment.apiUrl}/auth/login`, loginRequest)
       .pipe(
-        map((response: LoginResponse) => {
+        tap((response: LoginResponse) => {
           if (response && response.token) {
             localStorage.setItem('currentUser', JSON.stringify(response));
-            localStorage.setItem('userRole', response.role.toString());
-            this.currentUserSubject.next(response);
-            this._snackbar.open('Login successful!', 'Close', { duration: 3000 });
-            this.router.navigate([this.redirectUrl || '/home']);
-            this.redirectUrl = '';
+            this.router.navigate(['/home']);
           }
-          return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          if (error.error && error.error.code === 'ACCOUNT_LOCKED') {
-            this.currentUserSubject.error(error.error); 
+          if (error.status === 401) {
+            this._snackbar.open(
+              'Invalid credentials. Please try again.',
+              'Close',
+              { duration: 3000 }
+            );
           } else {
-            console.error('Error during login:', error);
-            this.currentUserSubject.error(error); 
+            this._snackbar.open(
+              'Something went wrong. Please try again later.',
+              'Close',
+              { duration: 3000 }
+            );
           }
-          return throwError(error); 
+          return throwError(error);
         })
       );
   }
 
-  public signUp(registrationRequest: RegistrationRequest): Observable<RegistrationResponse> {
+  public signUp(
+    registrationRequest: RegistrationRequest
+  ): Observable<RegistrationResponse> {
     return this.http
-      .post<RegistrationResponse>(environment.apiUrl + '/auth/signup', registrationRequest)
+      .post<RegistrationResponse>(
+        environment.apiUrl + '/auth/signup',
+        registrationRequest
+      )
       .pipe(
         map((response: RegistrationResponse) => {
           return response;
@@ -74,13 +86,11 @@ export class AuthService {
     this.router.navigate(['auth/login']);
   }
 
-  public isAuthenticated(): boolean {
-    const currentUser = this.currentUserValue;
-    return !!currentUser && !!currentUser.token && !this.isTokenExpired(currentUser.token); 
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('currentUser');
   }
-
   private isTokenExpired(token: string): boolean {
-    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
-    return (Math.floor((new Date()).getTime() / 1000)) >= expiry;
+    const expiry = JSON.parse(atob(token.split('.')[1])).exp;
+    return Math.floor(new Date().getTime() / 1000) >= expiry;
   }
 }

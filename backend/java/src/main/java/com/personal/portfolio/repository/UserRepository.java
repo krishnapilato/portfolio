@@ -20,6 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	boolean existsByEmail(String email);
 
 	@Modifying
-	@Query("UPDATE User u SET u.locked = :locked WHERE u.id = :id")
-	int updateLockStatusById(@Param("id") Long id, @Param("locked") boolean locked);
+	@Transactional
+	@Query("UPDATE User u SET u.locked = CASE WHEN u.locked = true THEN false ELSE true END WHERE u.id = :id")
+	void updateLockStatusById(@Param("id") Long id);
 }

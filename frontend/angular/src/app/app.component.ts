@@ -18,10 +18,5 @@ import { HeaderComponent } from './shared/header/header.component';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title: string = 'frontend';
-
-  @HostListener('contextmenu', ['$event'])
-  onRightClick(event: Event) {
-    event.preventDefault();
-  }
+  title: string = 'khovakrishnapilato.com';
 }

@@ -41,7 +41,7 @@ public class JwtService {
 
 	public JwtService(JwtKeysRepository keyRepository) {
 		this.keyRepository = keyRepository;
-		rotateKey(); // Initial key rotation
+		rotateKey();
 	}
 
 	// Scheduled task to rotate keys daily

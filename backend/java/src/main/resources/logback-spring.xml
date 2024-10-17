@@ -3,7 +3,7 @@
         <file>logs/application.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/application-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
-            <maxHistory>30</maxHistory>
+            <maxHistory>28</maxHistory>
             <totalSizeCap>10GB</totalSizeCap>
             <sizeBasedTriggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
                 <maxSize>10MB</maxSize>

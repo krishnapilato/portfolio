@@ -2,6 +2,7 @@ package com.personal.portfolio.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -33,6 +34,9 @@ public class SecurityConfiguration {
 			"/auth/**"
 	};
 
+	@Value("${openapi.contact.url}")
+	private String contactUrl;
+
 	private final AuthenticationProvider authenticationProvider;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -54,7 +58,7 @@ public class SecurityConfiguration {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("http://localhost:4200", "https://khovakrishnapilato.com"));
+		configuration.setAllowedOrigins(List.of("http://localhost:4200", contactUrl));
 		configuration.setAllowedMethods(List.of(HttpMethod.GET.name(), HttpMethod.POST.name(),
 				HttpMethod.PUT.name(), HttpMethod.DELETE.name(),
 				HttpMethod.OPTIONS.name()));

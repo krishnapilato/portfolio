@@ -18,6 +18,9 @@ public class PortfolioApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(PortfolioApplication.class);
 
+	@Value("${spring.security.user.name}")
+	private String adminUsername;
+
 	@Value("${spring.security.user.password}")
 	private String adminPassword;
 
@@ -28,8 +31,7 @@ public class PortfolioApplication {
 	@Bean
 	public CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
-			// Check if the admin user already exists
-			if (!userRepository.existsByEmail("krishnak.pilato@gmail.com")) {
+			if (!userRepository.existsByEmail("admin.email@gmail.com")) {
 				createAdminUser(userRepository, passwordEncoder);
 			} else {
 				logger.info("Admin user already exists. Skipping creation.");
@@ -38,15 +40,14 @@ public class PortfolioApplication {
 	}
 
 	private void createAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-		// Create and save the default admin user
 		User adminUser = new User();
-		adminUser.setFullName("Khova Krishna Pilato");
-		adminUser.setEmail("krishnak.pilato@gmail.com");
+		adminUser.setFullName(adminUsername);
+		adminUser.setEmail("admin.email@gmail.com");
 		adminUser.setPassword(passwordEncoder.encode(adminPassword));
 		adminUser.setRole(Role.ADMIN);
 		adminUser.setEnabled(true);
 
 		userRepository.save(adminUser);
-		logger.info("Created default admin user with email: krishnak.pilato@gmail.com");
+		logger.info("Created default admin user with email: admin.email@gmail.com");
 	}
 }

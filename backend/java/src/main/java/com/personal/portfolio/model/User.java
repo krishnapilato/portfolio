@@ -1,9 +1,6 @@
 package com.personal.portfolio.model;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -92,9 +89,7 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Set<GrantedAuthority> authorities = new HashSet<>();
-		authorities.add(new SimpleGrantedAuthority(role.name()));
-		return authorities;
+		return Collections.singleton(new SimpleGrantedAuthority(role.name()));
 	}
 
 	@Override

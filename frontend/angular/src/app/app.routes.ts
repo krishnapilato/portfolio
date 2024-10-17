@@ -15,10 +15,13 @@ export const routes: Routes = [
   },
   {
     path: '',
-    canActivate: [AuthGuard],
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'dashboard', component: AdminDashboardComponent },
+      {
+        path: 'dashboard',
+        component: AdminDashboardComponent,
+        canActivate: [AuthGuard],
+      },
     ],
   },
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
