@@ -1,24 +1,55 @@
 <div class="welcome-container">
   <h1>
-    <a href="https://www.linkedin.com/in/khovakrishnapilato" target="_blank" matTooltip="Open LinkedIn" [matTooltipPosition]="'after'" aria-label="LinkedIn profile">
-      Khova Krishna Pilato
+    <a
+      [href]="env.website.home.linkedinLink"
+      target="_blank"
+      matTooltip="Open LinkedIn"
+      [matTooltipPosition]="'after'"
+      aria-label="LinkedIn profile"
+    >
+      {{ env.website.home.name }}
     </a>
   </h1>
   <p>
-    Java Full Stack developer from
-    <span matTooltip="Italy" [matTooltipPosition]="'after'" class="italy-flag" aria-label="From Italy">
-      Italy
-    </span>.
+    {{ env.website.home.subtitle }}
+    <span
+      matTooltip="Italy"
+      [matTooltipPosition]="'after'"
+      class="italy-flag"
+      aria-label="From Italy"
+    >
+      {{ env.website.home.country }}</span
+    >.
   </p>
   <p>Lasting impact on the digital landscape with</p>
-  <b><span class="typed-element"></span></b>
+  <b>
+    <span class="typed-element">{{ env.website.home.mainMessage }}</span>
+  </b>
 </div>
 
 <div class="button-container">
-  <button class="view-work-button" matTooltip="View my work" [matTooltipPosition]="'before'" mat-raised-button (click)="viewMyWork()" aria-label="View my work">
-    See my projects <i class="fa-regular fa-eye"></i>
+  <button
+    class="view-work-button"
+    matTooltip="{{ env.website.home.primaryAction.text }}"
+    [matTooltipPosition]="'before'"
+    mat-raised-button
+    (click)="viewMyWork()"
+    aria-label="View my work"
+    [ngStyle]="{ backgroundColor: env.website.home.primaryAction.color }"
+  >
+    {{ env.website.home.primaryAction.text }}
+    <i [class]="env.website.home.primaryAction.icon"></i>
   </button>
-  <button class="download-button" matTooltip="Download resume" [matTooltipPosition]="'after'" mat-raised-button (click)="downloadCurriculumVitae()" aria-label="Download resume">
-    Download resume <i class="fa-solid fa-download"></i>
+  <button
+    class="download-button"
+    matTooltip="{{ env.website.home.secondaryAction.text }}"
+    [matTooltipPosition]="'after'"
+    mat-raised-button
+    (click)="downloadCurriculumVitae()"
+    aria-label="Download resume"
+    [ngStyle]="{ backgroundColor: env.website.home.secondaryAction.color }"
+  >
+    {{ env.website.home.secondaryAction.text }}
+    <i [class]="env.website.home.secondaryAction.icon"></i>
   </button>
 </div>

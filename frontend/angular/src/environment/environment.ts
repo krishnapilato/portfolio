@@ -48,5 +48,30 @@ export const environment = {
         },
       ],
     },
+    footer: {
+      year: new Date().getFullYear().toString(),
+      name: 'Khova Krishna Pilato',
+      message: 'All rights reserved',
+      color: '#000000',
+      font: '11px Arial',
+      showYear: true,
+    },
+    home: {
+      name: 'Khova Krishna Pilato',
+      subtitle: 'Java Full Stack developer from',
+      country: 'Italy',
+      mainMessage: 'Lasting impact on the digital landscape with Python.',
+      primaryAction: {
+        text: 'See my projects',
+        color: '#00FF00',
+        icon: 'fa-regular fa-eye',
+      },
+      secondaryAction: {
+        text: 'Download resume',
+        color: '#007BFF',
+        icon: 'fa-solid fa-download',
+      },
+      linkedinLink: 'https://www.linkedin.com/in/khovakrishnapilato',
+    },
   },
 };

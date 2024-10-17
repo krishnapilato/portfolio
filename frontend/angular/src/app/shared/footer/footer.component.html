@@ -1,6 +1,9 @@
 <div class="wrapper">
   <div class="content"></div>
-  <footer>
-    <p>&copy; {{ currentYear }} • Khova Krishna Pilato • All rights reserved</p>
+  <footer [ngStyle]="{ color: env.website.footer.color, font: env.website.footer.font }">
+    <p>
+      {{ env.website.footer.showYear ? "&copy; " + env.website.footer.year + " • " : "" }}
+      {{ env.website.footer.name }} • {{ env.website.footer.message }}
+    </p>
   </footer>
 </div>
