@@ -2,9 +2,11 @@ package com.personal.portfolio.service;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,8 +34,9 @@ public class UserService implements UserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + email));
 	}
 
-	public Stream<User> getAllUsers() {
-		return userRepository.findAll().stream();
+	@Cacheable("users")
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
 	}
 
 	public User toggleLock(Long id) {
