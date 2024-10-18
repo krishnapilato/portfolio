@@ -9,10 +9,6 @@
 
 Welcome! This web application is designed to highlight my technical skills and experience. The code might still be unstable. A bug fixing process will continue through November 31, 2024 to ensure stability. Below are two images of my work:
 
-Backend             |  Frontend
-:-------------------------:|:-------------------------:
-![image](https://github.com/user-attachments/assets/b7748cad-2351-4c9f-bce9-42f54cb97ddb)   |  ![image](https://github.com/user-attachments/assets/3232309e-2a4d-40bc-a0c2-d836840f6871)
-
 ## Features
 
 * **Skills & Experience:** Learn about my expertise in various technologies and frameworks.
