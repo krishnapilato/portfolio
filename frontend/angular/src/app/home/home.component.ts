@@ -26,8 +26,8 @@ import { environment } from '../../environment/environment';
   styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
-  private languages: string[] = ['Java', 'Python', 'JavaScript', 'TypeScript'];
   env = environment;
+  private languages: string[] = this.env.website.home.skills;
   constructor(private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {

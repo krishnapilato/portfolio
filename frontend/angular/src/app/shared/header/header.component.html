@@ -1,4 +1,6 @@
-<mat-toolbar style="background-color: #f0f4f7">
+<mat-toolbar
+  [ngStyle]="{ 'background-color': env.website.header.style.backgroundColor }"
+>
   <button
     [style.color]="env.website.header.style.color"
     class="home-button"
@@ -13,24 +15,29 @@
 
   <div class="toolbar-icons">
     <ng-container *ngFor="let icon of env.website.header.icons">
-      <a
-        [href]="icon.link"
-        [target]="icon.link.startsWith('http') ? '_blank' : '_self'"
-        class="icon-link"
+      <ng-container
+        *ngIf="!(icon.tooltip.toLowerCase() === 'logout' && !isAuthenticated())"
       >
-        <button
-          class="icon-buttons"
-          [matMenuTriggerFor]="icon.isLogoutMenuTrigger ? menu : null"
-          mat-icon-button
-          [matTooltip]="icon.tooltip"
-          [matTooltipPosition]="'below'"
-          [ngStyle]="{ color: icon.color }"
-          [ngClass]="{ active: icon.isActive, disabled: icon.disabled }"
-          [disabled]="icon.disabled"
+        <a
+          [href]="icon.link"
+          [target]="icon.link.startsWith('http') ? '_blank' : '_self'"
+          class="icon-link"
         >
-          <i [class]="icon.icon"></i>
-        </button>
-      </a>
+          <button
+            class="icon-buttons"
+            [matMenuTriggerFor]="icon.isLogoutMenuTrigger ? menu : null"
+            mat-icon-button
+            [matTooltip]="icon.tooltip"
+            [matTooltipPosition]="'below'"
+            [ngStyle]="{ color: icon.color, fontSize: icon.size }"
+            [ngClass]="{ active: icon.isActive, disabled: icon.disabled }"
+            [disabled]="icon.disabled"
+            (click)="headerIconAction(icon)"
+          >
+            <i [class]="icon.icon"></i>
+          </button>
+        </a>
+      </ng-container>
     </ng-container>
   </div>
   <span class="spacer-right"></span>

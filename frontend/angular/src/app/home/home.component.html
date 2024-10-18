@@ -1,24 +1,29 @@
-<div class="welcome-container">
-  <h1>
-    <a href="https://www.linkedin.com/in/khovakrishnapilato" target="_blank" matTooltip="Open LinkedIn" [matTooltipPosition]="'after'" aria-label="LinkedIn profile">
-      Khova Krishna Pilato
-    </a>
-  </h1>
-  <p>
-    Java Full Stack developer from
-    <span matTooltip="Italy" [matTooltipPosition]="'after'" class="italy-flag" aria-label="From Italy">
-      Italy
-    </span>.
-  </p>
-  <p>Lasting impact on the digital landscape with</p>
-  <b><span class="typed-element"></span></b>
-</div>
-
-<div class="button-container">
-  <button class="view-work-button" matTooltip="View my work" [matTooltipPosition]="'before'" mat-raised-button (click)="viewMyWork()" aria-label="View my work">
-    See my projects <i class="fa-regular fa-eye"></i>
-  </button>
-  <button class="download-button" matTooltip="Download resume" [matTooltipPosition]="'after'" mat-raised-button (click)="downloadCurriculumVitae()" aria-label="Download resume">
-    Download resume <i class="fa-solid fa-download"></i>
-  </button>
+<div class="container">
+  <div class="content">
+    <div class="left-side">
+      <h1>Krishna Pilato</h1>
+      <p>
+        Full Stack developer from
+        <span
+          matTooltip="Italy"
+          [matTooltipPosition]="'after'"
+          class="italy-flag"
+          aria-label="From Italy"
+        >
+          Italy
+        </span>
+      </p>
+      <p>
+        Working with
+        <b><span class="typed-element"></span></b>
+      </p>
+      <br /><br />
+      <button class="skills-button">View My Skills & Expertise ></button>
+    </div>
+    <div class="space" style="margin-left: 5rem"></div>
+    <div class="right-side">
+      <img src="cloud.svg" alt="Mocked Image" class="mocked-image" />
+      <br /><br />
+    </div>
+  </div>
 </div>

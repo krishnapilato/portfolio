@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   padding-top: 20px;
+  text-shadow: 0 0 5px #5895ff, 0 0 10px #7b9eff, 0 0 15px #ffffff;
   background-color: #f0f4f7;
 }
 
@@ -12,6 +13,7 @@
 .registration-card {
   width: 100%;
   max-width: 400px;
+  text-shadow: 0 0 5px #5895ff, 0 0 10px #7b9eff, 0 0 15px #ffffff;
   padding: 40px 20px;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -38,6 +40,7 @@ a {
 
 .button-container {
   display: flex;
+  text-shadow: 0 0 5px #5895ff, 0 0 10px #7b9eff, 0 0 15px #ffffff;
   justify-content: center;
   margin-bottom: 20px;
 }

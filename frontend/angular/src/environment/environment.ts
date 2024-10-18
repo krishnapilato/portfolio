@@ -1,50 +1,55 @@
+// #5F5E79 for undraw
+
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
 
   website: {
+    backgroundColor: '#f0f4f7',
+    fontFamily: '"Roboto", "Helvetica Neue", sans-serif',
     header: {
       title: 'khovakrishnapilato.com',
       style: {
+        backgroundColor: '#e3e9ee',
         color: '#000',
         fontFamily: 'Arial, sans-serif',
       },
       titleTooltip: 'Home',
       icons: [
         {
-          icon: 'fa-solid fa-sliders',
-          tooltip: 'Settings',
+          icon: 'fas fa-tools',
+          tooltip: 'Skills & Experience',
           link: '/dashboard',
-          color: '#000000',
+          color: '##6c757d',
           hoverColor: '#0056b3',
           size: '20px',
-          isActive: false,
+          isActive: true,
           disabled: false,
         },
         {
-          icon: 'fa-solid fa-address-card',
-          tooltip: 'Profile',
+          icon: 'fas fa-user',
+          tooltip: 'About Me',
           link: '/profile',
-          color: '#000000',
+          color: '#007bff',
           size: '20px',
           isActive: false,
           disabled: false,
           isLogoutMenuTrigger: true,
         },
         {
-          icon: 'fa-brands fa-github',
-          tooltip: 'GitHub',
+          icon: 'fas fa-envelope',
+          tooltip: 'Contact',
           link: 'https://github.com/krishnapilato/portfolio/tree/dev/frontend/angular',
-          color: '#000000',
+          color: '#28a745',
           size: '20px',
           isActive: false,
           disabled: false,
         },
         {
-          icon: 'fa-regular fa-paper-plane',
-          tooltip: 'Contact',
-          link: '/contact',
-          color: '#000000',
+          icon: 'fas fa-sign-out-alt',
+          tooltip: 'Logout',
+          link: '/logout',
+          color: '#dc3545',
           size: '20px',
           isActive: false,
           disabled: false,
@@ -53,6 +58,7 @@ export const environment = {
     },
 
     footer: {
+      backgroundColor: '#e3e9ee',
       year: new Date().getFullYear().toString(),
       owner: {
         name: 'Khova Krishna Pilato',

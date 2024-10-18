@@ -28,4 +28,14 @@ export class HeaderComponent {
   public env = environment;
 
   constructor(public authService: AuthService) {}
+
+  public isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
+
+  public headerIconAction(icon: { tooltip: string }): void {
+    if (icon.tooltip.toLowerCase() === 'logout') {
+      this.authService.logout();
+    }
+  }
 }

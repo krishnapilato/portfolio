@@ -1,9 +1,20 @@
 <div class="wrapper">
   <div class="content"></div>
-  <footer [ngStyle]="{ color: env.website.footer.style.color, font: env.website.footer.style.font }">
+  <footer
+    [ngStyle]="{
+      backgroundColor: env.website.footer.backgroundColor,
+      color: env.website.footer.style.color,
+      font: env.website.footer.style.font
+    }"
+  >
     <p>
-      {{ env.website.footer.showYear ? "&copy; " + env.website.footer.year + " • " : "" }}
-      {{ env.website.footer.owner.name }} • {{ env.website.footer.owner.message }}
+      {{
+        env.website.footer.showYear
+          ? "&copy; " + env.website.footer.year + " • "
+          : ""
+      }}
+      {{ env.website.footer.owner.name }} •
+      {{ env.website.footer.owner.message }}
     </p>
   </footer>
 </div>

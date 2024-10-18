@@ -3,6 +3,8 @@
   font-weight: bold;
   text-decoration: underline;
   transition: box-shadow 0.3s ease;
+  
+  text-shadow: 0 0 5px #80a4c8, 0 0 10px #d3e4f6, 0 0 15px #e0f0ff;
 }
 
 .spacer {
@@ -11,6 +13,7 @@
 
 .icon-buttons {
   margin: 10px;
+    text-shadow: 0 0 5px #80a4c8;
 }
 
 .icon-buttons:hover i {
