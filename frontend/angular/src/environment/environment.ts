@@ -72,8 +72,8 @@ export const environment = {
     },
 
     home: {
-      name: 'Khova Krishna Pilato',
-      subtitle: 'Java Full Stack developer from',
+      name: 'Krishna',
+      subtitle: 'Full Stack developer from',
       location: {
         country: 'Italy',
         province: 'Milan',
@@ -81,9 +81,9 @@ export const environment = {
         address: 'XXXXXXXXXXXXXXXX',
         postalCode: '00122',
       },
-      mainMessage: 'Lasting impact on the digital landscape with Python.',
+      mainMessage: 'Working with ',
       primaryAction: {
-        text: 'See my projects',
+        text: 'View My Skills',
         style: {
           color: '#00FF00',
           icon: 'fa-regular fa-eye',

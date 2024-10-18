@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectorRef,
   Component,
@@ -6,15 +7,12 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -24,9 +22,6 @@ import {
 } from '../../shared/custom-modal/custom-modal.component';
 import { Role, User } from '../../shared/models/user.model';
 import { UserService } from '../../shared/services/user.service';
-import { Validators } from '@angular/forms';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-management',
@@ -149,9 +144,8 @@ export class UserManagementComponent implements OnInit {
       {
         type: 'password',
         label: 'Password',
-        value: '***************',
         icon: 'lock',
-        required: true,
+        required: false,
         disabled: state === 'edit' ? false : true,
       },
     ];

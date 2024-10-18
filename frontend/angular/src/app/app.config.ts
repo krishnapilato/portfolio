@@ -13,7 +13,10 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
-    importProvidersFrom(BrowserAnimationsModule, RouterModule.forRoot(routes)),
+    importProvidersFrom(
+      BrowserAnimationsModule,
+      RouterModule.forRoot(routes, { anchorScrolling: 'enabled' })
+    ),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
 };

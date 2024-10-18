@@ -1,24 +1,19 @@
 <div class="container">
   <div class="content">
     <div class="left-side">
-      <h1>Krishna Pilato</h1>
+      <h1>Hi, I am {{ env.website.home.name }}</h1>
       <p>
-        Full Stack developer from
-        <span
-          matTooltip="Italy"
-          [matTooltipPosition]="'after'"
-          class="italy-flag"
-          aria-label="From Italy"
-        >
-          Italy
+        {{ env.website.home.subtitle }}
+        <span>
+          {{ env.website.home.location.country }}
         </span>
-      </p>
-      <p>
-        Working with
+        {{ env.website.home.mainMessage }}
         <b><span class="typed-element"></span></b>
       </p>
       <br /><br />
-      <button class="skills-button">View My Skills & Expertise ></button>
+      <button (click)="toSec()" fragment="container" class="skills-button">
+        {{ env.website.home.primaryAction.text }}
+      </button>
     </div>
     <div class="space" style="margin-left: 5rem"></div>
     <div class="right-side">
@@ -26,4 +21,38 @@
       <br /><br />
     </div>
   </div>
+</div>
+
+<div class="space" style="margin-top: 10rem;"></div>
+<div id="container" class="container" #container>
+  <div
+    class="left"
+    *ngIf="totalPages > 1"
+    (click)="currentPage != 1 && changePage(-1)"
+    [ngClass]="{ disabled: currentPage === 1 }"
+  ></div>
+  
+  <div class="cards" [ngClass]="{ 'w-100': totalPages === 1 }">
+    <div
+      class="overflow"
+      [ngStyle]="{ width: overflowWidth, left: pagePosition }"
+    >
+      <div
+        class="card"
+        *ngFor="let item of arr; let index = index"
+        [ngStyle]="{ width: cardWidth }"
+      >
+        <h3 class="card-title">{{ item.title }}</h3>
+        <p class="card-date">{{ item.month }} {{ item.year }}</p>
+        <p class="card-description">{{ item.description }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <div
+    class="right"
+    *ngIf="totalPages > 1"
+    (click)="currentPage != totalPages && changePage(+1)"
+    [ngClass]="{ disabled: currentPage === totalPages }"
+  ></div>
 </div>

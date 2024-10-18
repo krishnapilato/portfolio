@@ -18,6 +18,7 @@ h1 {
 .container {
   display: flex;
   justify-content: center;
+  width: 100%;
   align-items: center;
   height: 65%;
 }
@@ -104,4 +105,102 @@ h1 {
     align-items: flex-end;
     flex: 0;
   }
+}
+
+
+.w-100 {
+  width: 100%!important;
+}
+
+.container {
+  display: flex;
+  position: relative;
+  justify-content: center;
+}
+
+.cards {
+  width: calc(100% - 80px);
+  overflow: hidden;
+}
+
+.overflow {
+  position: relative;
+  transition: left 0.5s ease-in-out;
+}
+
+.card {
+  width: 100%;
+  height: 300px;
+  background-color: #d6ebff;
+  border-radius: 5px;
+  display: inline-block;
+  margin-right: 10px;
+  position: relative;
+}
+
+.no-right-margin {
+  margin-right: 0px;
+}
+
+.card span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.left,
+.right {
+  height: 30px;
+  width: 30px;
+  background-color: #0072bc;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.left.disabled, .right.disabled {
+  background-color:#CCC;
+}
+
+.left {
+  left: 0;
+  bottom: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.card {
+  height: 20rem; /* You can adjust this */
+  background-color: #d7ecff;
+  border-radius: 15px;
+  color: rgb(0, 0, 0);
+  display: inline-block;
+  margin-right: 10px;
+  position: relative;
+  text-align: center; /* Center content */
+}
+
+.card-image {
+  width: 100%; /* Full width for images */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.card-title {
+  font-size: 1.2rem; /* Adjust title size */
+  margin: 10px 0; /* Space around title */
+}
+
+.card-date {
+    color: white;
+  font-size: 0.9rem; /* Date size */
+  color: #777; /* Color for date */
+}
+
+.card-description {
+    color: white;
+  font-size: 0.9rem; /* Description size */
+  color: #333; /* Color for description */
 }
