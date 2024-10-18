@@ -1,12 +1,15 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
+
   website: {
     header: {
       title: 'khovakrishnapilato.com',
-      titleColor: '#000',
+      style: {
+        color: '#000',
+        fontFamily: 'Arial, sans-serif',
+      },
       titleTooltip: 'Home',
-      fontFamily: 'Arial, sans-serif',
       icons: [
         {
           icon: 'fa-solid fa-sliders',
@@ -48,31 +51,67 @@ export const environment = {
         },
       ],
     },
+
     footer: {
       year: new Date().getFullYear().toString(),
-      name: 'Khova Krishna Pilato',
-      message: 'All rights reserved',
-      color: '#000000',
-      font: '11px Arial',
+      owner: {
+        name: 'Khova Krishna Pilato',
+        message: 'All rights reserved',
+      },
+      style: {
+        color: '#000000',
+        font: '11px Arial',
+      },
       showYear: true,
     },
+
     home: {
       name: 'Khova Krishna Pilato',
       subtitle: 'Java Full Stack developer from',
-      country: 'Italy',
+      location: {
+        country: 'Italy',
+        province: 'Milan',
+        city: 'Milan',
+        address: 'XXXXXXXXXXXXXXXX',
+        postalCode: '00122',
+      },
       mainMessage: 'Lasting impact on the digital landscape with Python.',
       primaryAction: {
         text: 'See my projects',
-        color: '#00FF00',
-        icon: 'fa-regular fa-eye',
+        style: {
+          color: '#00FF00',
+          icon: 'fa-regular fa-eye',
+        },
+        tooltip: 'View my work',
       },
       secondaryAction: {
         text: 'Download resume',
-        color: '#007BFF',
-        icon: 'fa-solid fa-download',
+        style: {
+          color: '#007BFF',
+          icon: 'fa-solid fa-download',
+        },
+        tooltip: 'Download resume',
       },
-      skils: ["Java", "Spring Boot", "Angular", "AWS", "Docker"],
-      linkedinLink: 'https://www.linkedin.com/in/khovakrishnapilato',
+      skills: ['Java', 'Spring Boot', 'Angular', 'AWS', 'Docker'],
+      skillsDisplay: {
+        type: '', // 'typed' || 'chips'
+        typedSettings: {
+          cursorChar: '_',
+          typeSpeed: 300,
+          backSpeed: 300,
+          backDelay: 1500,
+          loop: true,
+          showCursor: true,
+        },
+        chipSettings: {
+          chipColor: '#2196F3',
+          chipFontSize: '14px',
+        },
+      },
+      socialLinks: {
+        linkedin: 'https://www.linkedin.com/in/khovakrishnapilato',
+        github: 'https://github.com/krishnapilato',
+      },
     },
   },
 };

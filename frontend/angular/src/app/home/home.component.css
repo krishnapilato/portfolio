@@ -13,23 +13,11 @@ a {
   transition: color 0.3s;
 }
 
-a:hover {
-  color: #007bff;
-}
-
 .mat-raised-button {
   padding: 15px 30px;
   font-size: 18px;
   margin: 10px;
   transition: all 0.3s ease;
-}
-
-.italy-flag {
-  background-image: linear-gradient(to right, #008c45, #fff, #cd212a);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: bold;
 }
 
 .mat-raised-button:hover {
@@ -56,32 +44,26 @@ a:hover {
   margin-top: 50px;
 }
 
-.view-work-button:hover i {
-  animation: blink 0.5s ease-in-out;
-}
-
 .download-button {
   font-size: small;
 }
 
-.download-button:hover i {
-  animation: pulse 1.2s ease-in-out;
+.chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
 }
 
-@keyframes blink {
-  50% {
-    transform: scaleY(0);
-  }
+.chip {
+  padding: 10px 15px;
+  border-radius: 20px;
+  background-color: #e0e0e0; /* Default color, will be overridden by ngStyle */
+  color: #000;
+  font-size: 14px; /* Default font size, will be overridden by ngStyle */
+  transition: background-color 0.3s ease;
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+.chip:hover {
+  background-color: #cccccc;
 }
