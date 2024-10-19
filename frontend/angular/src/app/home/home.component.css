@@ -59,24 +59,14 @@ h1 {
   border-radius: 5px;
   font-size: 16px;
   font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.skills-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-}
-
-.skills-button:active {
-  background-color: #004494;
-  transform: translateY(0);
-}
-
-.skills-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+.download-button {
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -99,12 +89,21 @@ h1 {
   }
 
   .right-side {
+    margin-bottom: 500px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-end;
     flex: 0;
   }
+}
+
+.secondaryAction {
+  margin-top: 0.5rem;
+  border: none;
+  background-color: transparent;
+  color:rgba(174, 255, 217, 0.5);
+
 }
 
 .career-step-item {
@@ -133,7 +132,7 @@ h1 {
 
 .date {
   font-size: 0.9rem;
-  color: #ffffff;
+  color: #000000;
 }
 
 .icon-container {
@@ -142,7 +141,7 @@ h1 {
 
 .circle-icon {
   font-size: 1.2rem;
-  background-color: #ffffff;
+  background-color: #6f1212;
   border-radius: 50%;
   padding: 4px;
   box-shadow: 0 2px 4px rgba(255, 229, 229, 0.2);
@@ -174,18 +173,7 @@ h1 {
   flex-wrap: wrap;
 }
 
- button.p-link{
-    color: var(--dark-green-02) !important;
- }
-
 mat-chip {
-  margin-right: 4px;
-}
-
-.navigation-icons {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: flex;
-  gap: 8px;
+  margin-top: 10px;
+  margin-right: 1rem;
 }

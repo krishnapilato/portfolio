@@ -11,25 +11,74 @@
         <b><span class="typed-element"></span></b>
       </p>
       <br /><br />
-      <button (click)="moveToAboutMeSection()" fragment="careerSteps" class="skills-button">
-        {{ env.website.home.primaryAction.text }}
-      </button>
+      <div class="action-buttons">
+        <a
+          mat-button
+          (click)="moveToAboutMeSection()"
+          [style.color]="env.website.home.actions.primaryAction.style.color"
+          [target]="'_self'"
+          [ngClass]="env.website.home.actions.primaryAction.style.customClass"
+        >
+          <i></i>
+          {{ env.website.home.actions.primaryAction.text }}
+        </a>
+        <a
+          *ngIf="
+            env.website.home.actions.secondaryAction.text &&
+            env.website.home.actions.secondaryAction.externalLink
+          "
+          mat-button
+          [href]="env.website.home.actions.secondaryAction.externalLink"
+          [target]="
+            env.website.home.actions.secondaryAction.externalLink.startsWith(
+              'http'
+            )
+              ? '_blank'
+              : '_self'
+          "
+          [style.color]="env.website.home.actions.secondaryAction.style.color"
+          [ngClass]="env.website.home.actions.secondaryAction.style.customClass"
+        >
+          <i></i>
+          {{ env.website.home.actions.secondaryAction.text }}
+        </a>
+      </div>
     </div>
     <div class="space" style="margin-left: 5rem"></div>
     <div class="right-side">
-      <img src="cloud.svg" alt="Mocked Image" class="mocked-image" />
+      <img
+        src="{{ env.website.home.image }}"
+        alt="Mocked Image"
+        class="mocked-image"
+      />
       <br /><br />
     </div>
   </div>
 </div>
 
-<div class="space" style="margin-top: 30rem"></div>
+<div id="careerSteps" class="space" style="margin-top: 30rem"></div>
+<div id="careerSteps" class="hidden"></div>
+<div
+  style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  "
+>
+  <h1 style="text-align: center">WHO AM I?</h1>
+  <p style="text-align: center; width: 70%; max-width: 500px;">
+    I’m Krishna Pilato, a passionate Java Backend Developer with expertise in
+    Full-Stack Development. With over three years of hands-on experience, I’ve
+    honed my skills working with technologies like Spring Boot, Angular, and
+    relational/non-relational databases.
+  </p>
+</div>
 <p-carousel
-  id="careerSteps"
   [value]="careerSteps"
   [numVisible]="1"
   [numScroll]="1"
-  autoplayInterval="3000"
+  autoplayInterval="5000"
   [showNavigators]="true"
   circular="true"
 >
@@ -37,14 +86,14 @@
     <div class="career-step-item">
       <mat-card class="career-step-card">
         <div class="card-header">
-          <div class="date">{{ careerStep.month }}/{{ careerStep.year }}</div>
+          <div class="date">
+            <h3 class="title">{{ careerStep.title }}</h3>
+          </div>
           <div class="icon-container">
-            Java
+            {{ careerStep.month }}/{{ careerStep.year }}
           </div>
         </div>
-
         <mat-card-content class="card-content">
-          <h3 class="title">{{ careerStep.title }}</h3>
           <p class="description">{{ careerStep.description }}</p>
         </mat-card-content>
 

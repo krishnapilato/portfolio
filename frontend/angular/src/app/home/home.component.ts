@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
       title: 'Intern',
       description:
         'Worked Worked as a software intern where I gained experience in various technologies. loremWorked as a software intern where I gained experience in various technologies. loremWorked as a software intern where I gained experience in various technologies. lorem as a software intern where I gained experience in various technologies. lorem',
-      tags: ['Java', 'Spring', 'Hibernate'],
+      tags: ['Java', 'Spring', 'Hibernate', 'Java', 'AWS'],
     },
     {
       month: 'Jan',
@@ -103,18 +103,8 @@ export class HomeComponent implements OnInit {
   }
 
   moveToAboutMeSection() {
-    document.getElementById('careerSteps')?.scrollIntoView();
-  }
-
-  public next(): void {
-    if (this.activeIndex < this.careerSteps.length - 1) {
-      this.activeIndex++;
-    }
-  }
-
-  goBack() {
-    if (this.activeIndex > 0) {
-      this.activeIndex--;
-    }
+    document
+      .getElementById('careerSteps')
+      ?.scrollIntoView({ behavior: 'smooth' });
   }
 }

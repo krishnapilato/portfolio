@@ -82,38 +82,27 @@ export const environment = {
         postalCode: '00122',
       },
       mainMessage: 'Working with ',
-      primaryAction: {
-        text: 'Discover more about me >',
-        style: {
-          color: '#00FF00',
-          icon: 'fa-regular fa-eye',
+      actions: {
+        primaryAction: {
+          text: 'Discover more about me >',
+          style: {
+            color: '#FFFFFF',
+            customClass: 'skills-button',
+          },
         },
-        tooltip: 'View my work',
-      },
-      secondaryAction: {
-        text: 'Download resume',
-        style: {
-          color: '#007BFF',
-          icon: 'fa-solid fa-download',
+        secondaryAction: {
+          externalLink: 'https://drive.google.com',
+          text: 'Download resume',
+          style: {
+            color: '#007BFF',
+            customClass: 'download-button',
+          },
         },
-        tooltip: 'Download resume',
       },
+      image: 'developer.svg',
       skills: ['Java', 'Spring Boot', 'Angular', 'AWS', 'Docker'],
-      skillsDisplay: {
-        type: '', // 'typed' || 'chips'
-        typedSettings: {
-          cursorChar: '_',
-          typeSpeed: 300,
-          backSpeed: 300,
-          backDelay: 1500,
-          loop: true,
-          showCursor: true,
-        },
-        chipSettings: {
-          chipColor: '#2196F3',
-          chipFontSize: '14px',
-        },
-      },
+      carrrierTitle: 'My Career',
+      carrrierSubtitle: '(Working with a lot of techs)',
       socialLinks: {
         linkedin: 'https://www.linkedin.com/in/khovakrishnapilato',
         github: 'https://github.com/krishnapilato',
