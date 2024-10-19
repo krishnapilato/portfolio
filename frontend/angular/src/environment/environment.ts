@@ -83,7 +83,7 @@ export const environment = {
       },
       mainMessage: 'Working with ',
       primaryAction: {
-        text: 'View My Skills',
+        text: 'Discover more about me >',
         style: {
           color: '#00FF00',
           icon: 'fa-regular fa-eye',

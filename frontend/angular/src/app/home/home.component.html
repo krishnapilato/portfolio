@@ -11,7 +11,7 @@
         <b><span class="typed-element"></span></b>
       </p>
       <br /><br />
-      <button (click)="toSec()" fragment="container" class="skills-button">
+      <button (click)="moveToAboutMeSection()" fragment="careerSteps" class="skills-button">
         {{ env.website.home.primaryAction.text }}
       </button>
     </div>
@@ -23,36 +23,37 @@
   </div>
 </div>
 
-<div class="space" style="margin-top: 10rem;"></div>
-<div id="container" class="container" #container>
-  <div
-    class="left"
-    *ngIf="totalPages > 1"
-    (click)="currentPage != 1 && changePage(-1)"
-    [ngClass]="{ disabled: currentPage === 1 }"
-  ></div>
-  
-  <div class="cards" [ngClass]="{ 'w-100': totalPages === 1 }">
-    <div
-      class="overflow"
-      [ngStyle]="{ width: overflowWidth, left: pagePosition }"
-    >
-      <div
-        class="card"
-        *ngFor="let item of arr; let index = index"
-        [ngStyle]="{ width: cardWidth }"
-      >
-        <h3 class="card-title">{{ item.title }}</h3>
-        <p class="card-date">{{ item.month }} {{ item.year }}</p>
-        <p class="card-description">{{ item.description }}</p>
-      </div>
+<div class="space" style="margin-top: 30rem"></div>
+<p-carousel
+  id="careerSteps"
+  [value]="careerSteps"
+  [numVisible]="1"
+  [numScroll]="1"
+  autoplayInterval="3000"
+  [showNavigators]="true"
+  circular="true"
+>
+  <ng-template pTemplate="item" let-careerStep>
+    <div class="career-step-item">
+      <mat-card class="career-step-card">
+        <div class="card-header">
+          <div class="date">{{ careerStep.month }}/{{ careerStep.year }}</div>
+          <div class="icon-container">
+            Java
+          </div>
+        </div>
+
+        <mat-card-content class="card-content">
+          <h3 class="title">{{ careerStep.title }}</h3>
+          <p class="description">{{ careerStep.description }}</p>
+        </mat-card-content>
+
+        <mat-card-actions class="card-actions">
+          <div class="tags">
+            <mat-chip *ngFor="let tag of careerStep.tags">{{ tag }}</mat-chip>
+          </div>
+        </mat-card-actions>
+      </mat-card>
     </div>
-  </div>
-  
-  <div
-    class="right"
-    *ngIf="totalPages > 1"
-    (click)="currentPage != totalPages && changePage(+1)"
-    [ngClass]="{ disabled: currentPage === totalPages }"
-  ></div>
-</div>
+  </ng-template>
+</p-carousel>

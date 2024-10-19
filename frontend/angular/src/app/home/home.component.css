@@ -107,100 +107,85 @@ h1 {
   }
 }
 
-
-.w-100 {
-  width: 100%!important;
-}
-
-.container {
+.career-step-item {
   display: flex;
-  position: relative;
   justify-content: center;
-}
-
-.cards {
-  width: calc(100% - 80px);
-  overflow: hidden;
-}
-
-.overflow {
+  padding: 20px;
   position: relative;
-  transition: left 0.5s ease-in-out;
 }
 
-.card {
+.career-step-card {
+  max-width: 70rem;
   width: 100%;
-  height: 300px;
-  background-color: #d6ebff;
-  border-radius: 5px;
-  display: inline-block;
-  margin-right: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(44, 0, 0, 0.1);
+  overflow: hidden;
   position: relative;
 }
 
-.no-right-margin {
-  margin-right: 0px;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #97c9ff;
 }
 
-.card span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.date {
+  font-size: 0.9rem;
+  color: #ffffff;
 }
 
-.left,
-.right {
-  height: 30px;
-  width: 30px;
-  background-color: #0072bc;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.left.disabled, .right.disabled {
-  background-color:#CCC;
-}
-
-.left {
-  left: 0;
-  bottom: 0;
-}
-
-.right {
-  right: 0;
-}
-
-.card {
-  height: 20rem; /* You can adjust this */
-  background-color: #d7ecff;
-  border-radius: 15px;
-  color: rgb(0, 0, 0);
-  display: inline-block;
-  margin-right: 10px;
+.icon-container {
   position: relative;
-  text-align: center; /* Center content */
 }
 
-.card-image {
-  width: 100%; /* Full width for images */
-  height: auto; /* Maintain aspect ratio */
+.circle-icon {
+  font-size: 1.2rem;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 2px 4px rgba(255, 229, 229, 0.2);
 }
 
-.card-title {
-  font-size: 1.2rem; /* Adjust title size */
-  margin: 10px 0; /* Space around title */
+.card-content {
+  padding: 16px;
 }
 
-.card-date {
-    color: white;
-  font-size: 0.9rem; /* Date size */
-  color: #777; /* Color for date */
+.title {
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: bold;
 }
 
-.card-description {
-    color: white;
-  font-size: 0.9rem; /* Description size */
-  color: #333; /* Color for description */
+.description {
+  font-size: 1rem;
+  margin: 10px 0;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+ button.p-link{
+    color: var(--dark-green-02) !important;
+ }
+
+mat-chip {
+  margin-right: 4px;
+}
+
+.navigation-icons {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
 }
