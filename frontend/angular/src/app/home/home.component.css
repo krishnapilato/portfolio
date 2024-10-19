@@ -4,13 +4,13 @@
   text-shadow: 0 0 5px #80a4c8, 0 0 10px #d3e4f6, 0 0 15px #e0f0ff;
 }
 
-html,
-body {
+html, body {
   height: 100%;
   margin: 0;
 }
 
 h1 {
+  font-size: 5rem;
   color: white;
   text-shadow: 0 0 5px #0080ff, 0 0 10px #003874, 0 0 15px #60b2ff;
 }
@@ -18,20 +18,19 @@ h1 {
 .container {
   display: flex;
   justify-content: center;
-  width: 100%;
   align-items: center;
+  width: 100%;
+  font-size: 2rem;
   height: 65%;
 }
 
 .content {
-  box-shadow: 0 0 5px #80a4c8;
   display: flex;
+  flex-direction: row;
   width: 80%;
-  max-width: 800px;
+  max-width: 75rem;
   padding: 2rem;
   border-radius: 18px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  flex-direction: row;
 }
 
 .left-side {
@@ -62,64 +61,34 @@ h1 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.download-button {
+.download-button, .secondaryAction {
   border: none;
-  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
+  background-color: transparent;
 }
 
-@media (max-width: 768px) {
-  .container {
-    height: 61%;
-    margin-top: 30px;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .content {
-    flex-direction: column;
-    height: 100%;
-    padding: 1rem;
-  }
-
-  .left-side {
-    margin-right: 0;
-    margin-bottom: 2rem;
-  }
-
-  .right-side {
-    margin-bottom: 500px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    flex: 0;
-  }
+.download-button {
+  font-size: 14px;
 }
 
 .secondaryAction {
   margin-top: 0.5rem;
-  border: none;
-  background-color: transparent;
-  color:rgba(174, 255, 217, 0.5);
-
+  color: rgba(174, 255, 217, 0.5);
 }
 
 .career-step-item {
   display: flex;
   justify-content: center;
   padding: 20px;
-  position: relative;
 }
 
 .career-step-card {
   max-width: 70rem;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 13px;
   box-shadow: 0 4px 8px rgba(44, 0, 0, 0.1);
   overflow: hidden;
-  position: relative;
 }
 
 .card-header {
@@ -132,11 +101,7 @@ h1 {
 
 .date {
   font-size: 0.9rem;
-  color: #000000;
-}
-
-.icon-container {
-  position: relative;
+  color: #000;
 }
 
 .circle-icon {
@@ -153,8 +118,8 @@ h1 {
 
 .title {
   font-size: 1.5rem;
-  margin: 0;
   font-weight: bold;
+  margin: 0;
 }
 
 .description {
@@ -174,6 +139,29 @@ h1 {
 }
 
 mat-chip {
-  margin-top: 10px;
-  margin-right: 1rem;
+  margin: 10px 1rem 0 0;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    justify-content: space-between;
+    height: 61%;
+    margin-top: 30px;
+  }
+
+  .content {
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem;
+  }
+
+  .left-side, .right-side {
+    margin: 0 0 2rem 0;
+  }
+
+  .right-side {
+    justify-content: center;
+    align-items: flex-end;
+  }
 }

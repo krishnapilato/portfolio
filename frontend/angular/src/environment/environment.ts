@@ -10,7 +10,8 @@ export const environment = {
     header: {
       title: 'khovakrishnapilato.com',
       style: {
-        backgroundColor: '#e3e9ee',
+        backgroundColor:
+          'radial-gradient(circle, rgba(255,241,247,1) 100%, rgba(174,185,214,1) 100%, rgba(197,207,218,1) 100%);',
         color: '#000',
         fontFamily: 'Arial, sans-serif',
       },
