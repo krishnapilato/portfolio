@@ -4,6 +4,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { LoginComponent } from './auth/login/login.component';
 import { RegistrationComponent } from './auth/registration/registration.component';
 import { HomeComponent } from './home/home.component';
+import { ContactComponent } from './contact/contact.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,7 @@ export const routes: Routes = [
     path: '',
     children: [
       { path: 'home', component: HomeComponent },
+      { path: 'contact', component: ContactComponent },
       {
         path: 'dashboard',
         component: AdminDashboardComponent,

@@ -40,7 +40,7 @@ export const environment = {
         {
           icon: 'fas fa-envelope',
           tooltip: 'Contact',
-          link: 'https://github.com/krishnapilato/portfolio/tree/dev/frontend/angular',
+          link: 'contact',
           color: '#28a745',
           size: '20px',
           isActive: false,

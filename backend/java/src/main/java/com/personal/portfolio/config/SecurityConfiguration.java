@@ -31,7 +31,8 @@ public class SecurityConfiguration {
 			"/swagger-ui.html",
 			"/api/auth/**",
 			"/api/test/**",
-			"/auth/**"
+			"/auth/**",
+			"/api/email/send"
 	};
 
 	@Value("${openapi.contact.url}")

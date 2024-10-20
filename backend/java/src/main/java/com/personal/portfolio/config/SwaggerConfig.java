@@ -84,19 +84,24 @@ public class SwaggerConfig {
 
 	@Bean
 	public GroupedOpenApi authApi() {
-		return GroupedOpenApi.builder()
-				.group("Authentication & Authorization")
-				.packagesToScan("com.personal.portfolio.controller")
-				.pathsToMatch("/auth/**")
-				.build();
+		return createGroupedOpenApi("Authentication & Authorization", "/auth/**");
 	}
 
 	@Bean
 	public GroupedOpenApi userApi() {
+		return createGroupedOpenApi("User", "/api/users/**");
+	}
+
+	@Bean
+	public GroupedOpenApi emailApi() {
+		return createGroupedOpenApi("Email", "/api/email/**");
+	}
+
+	private GroupedOpenApi createGroupedOpenApi(String groupName, String pathPattern) {
 		return GroupedOpenApi.builder()
-				.group("User")
+				.group(groupName)
 				.packagesToScan("com.personal.portfolio.controller")
-				.pathsToMatch("/api/users/**")
+				.pathsToMatch(pathPattern)
 				.build();
 	}
 }
