@@ -2,7 +2,7 @@
 
 [![Java Version](https://img.shields.io/badge/Java-21.0.5-blue?style=flat&logo=java)](https://www.oracle.com/java/technologies/downloads/#java21)
 [![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.4-brightgreen?style=flat&logo=spring-boot)](https://spring.io/projects/spring-boot)
-[![Angular Version](https://img.shields.io/badge/Angular-18.2.8-red?style=flat&logo=angular)](https://angular.dev/overview)
+[![Angular Version](https://img.shields.io/badge/Angular-18.2.9-red?style=flat&logo=angular)](https://angular.dev/overview)
 [![MySQL](https://img.shields.io/badge/MySQL-9.1.0-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql)
 [![Email](https://img.shields.io/badge/Email-white?style=flat&logo=gmail)](mailto:krishnak.pilato@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
