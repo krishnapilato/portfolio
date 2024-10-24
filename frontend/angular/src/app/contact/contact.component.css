@@ -64,6 +64,10 @@ textarea {
   border: 1px solid rgb(0, 94, 255);
 }
 
+button {
+  background-image: -webkit-linear-gradient(0deg, #00a8e8 0%, #007ea7 100%);
+}
+
 input::placeholder {
   font-weight: bold;
   opacity: 0.3;

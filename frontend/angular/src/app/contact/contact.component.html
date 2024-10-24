@@ -76,8 +76,17 @@
                   class="form-control"
                   id="firstName"
                   name="firstName"
-                  placeholder="Wendy"
+                  placeholder="Krishna"
+                  required
                 />
+                <!-- Error message -->
+                <div
+                  id="firstNameError"
+                  class="text-danger"
+                  style="display: none"
+                >
+                  First name is required.
+                </div>
               </div>
             </div>
 
@@ -89,7 +98,7 @@
                   class="form-control"
                   id="lastName"
                   name="lastName"
-                  placeholder="Appleseed"
+                  placeholder="Pilato"
                 />
               </div>
             </div>
@@ -102,7 +111,7 @@
                   class="form-control"
                   id="email"
                   name="email"
-                  placeholder="wendy.apple@seed.com"
+                  placeholder="from.apple@gmail.com"
                 />
               </div>
             </div>
@@ -115,6 +124,7 @@
                   class="form-control"
                   id="phone"
                   name="phone"
+                  placeholder="+1 (555) 555-5555"
                 />
               </div>
             </div>
@@ -133,14 +143,15 @@
                 ></textarea>
               </div>
             </div>
-
             <div class="col-sm-12 mb-3 text-center">
+              <br><br>
               <div class="button-container">
                 <button
                   style="width: 100%"
                   type="button"
                   [@buttonClick]="buttonState"
                   (click)="onButtonClick()"
+                  disabled="form.isValid"
                   mat-flat-button
                 >
                   Send email
