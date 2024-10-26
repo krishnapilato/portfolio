@@ -59,6 +59,12 @@ jobs:
       - name: Install AWS CLI
         run: sudo apt-get install awscli -y
 
+      - name: Configure AWS
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region us-east-1
+
       - name: Build Angular App
         run: |
           cd frontend/angular/ 
@@ -68,6 +74,3 @@ jobs:
       - name: Deploy to S3
         run: |
           aws s3 sync frontend/angular/dist/frontend s3://my-portfolio-frontend-khovakrishna --delete
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
