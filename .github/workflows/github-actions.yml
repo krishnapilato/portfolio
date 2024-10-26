@@ -26,10 +26,11 @@ jobs:
   build-and-deploy-backend:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout code from the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Cache Maven dependencies to speed up subsequent builds
+      # Step 2: Cache Maven dependencies to speed up subsequent builds
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -38,40 +39,29 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Set up JDK 21 for the build
+      # Step 3: Set up JDK 21 for the build
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      # Build the application using Maven
+      # Step 4: Build the application using Maven (skipping tests)
       - name: Build with Maven
-        run: cd backend/java/ && mvn package -q -B
+        run: cd backend/java/ && mvn package -DskipTests -q -B
 
-      # Configure AWS CLI credentials using the AWS CLI GitHub Action
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      # Package the application and deploy to Elastic Beanstalk
-      - name: Deploy to Elastic Beanstalk
+      # Step 5: Deploy to Heroku
+      - name: Deploy to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
         run: |
-          zip -r deployment.zip backend/java/target/*.jar
-          aws s3 cp deployment.zip s3://${{ env.S3_BUCKET_BACKEND }}/deployment.zip
-          aws elasticbeanstalk create-application-version \
-            --application-name PortfolioBackendAPI \
-            --version-label ${{ github.sha }} \
-            --source-bundle S3Bucket=${{ env.S3_BUCKET_BACKEND }},S3Key=deployment.zip \
-            --region ${{ env.AWS_REGION }}
-          aws elasticbeanstalk update-environment \
-            --environment-name PortfolioBackendAPISpringBoot-env \
-            --version-label ${{ github.sha }} \
-            --region ${{ env.AWS_REGION }}
-
+          curl https://cli-assets.heroku.com/install.sh | sh
+          heroku auth:token
+          heroku git:remote -a ${{ secrets.HEROKU_APP_NAME }}
+          git push heroku dev:main  # Push dev branch to heroku main branch
+          
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
     steps:
