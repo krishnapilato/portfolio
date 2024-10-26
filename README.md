@@ -8,7 +8,7 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
 
 Welcome! This web application is designed to highlight my technical skills and experience. The code might still be unstable. A bug fixing process will continue through November 31, 2024 to ensure stability.  
-**CI/CD pipeline is under development and not yet functional.**
+**This is the link for my ALPHA version of the frontend: [ALPHA Frontend](http://my-portfolio-frontend-khovakrishna.s3-website-us-east-1.amazonaws.com/home)**
 
 ## Features
 
