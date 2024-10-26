@@ -19,7 +19,7 @@ export const environment = {
       icons: [
         {
           icon: 'fas fa-tools',
-          tooltip: 'Skills & Experience',
+          tooltip: 'Skills',
           link: '/dashboard',
           color: '##6c757d',
           hoverColor: '#0056b3',
