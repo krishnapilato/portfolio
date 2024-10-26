@@ -52,16 +52,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '23.1.0'
+          
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli@latest
 
       - name: Install AWS CLI
         run: sudo apt-get install awscli -y
 
       - name: Build Angular App
-        run: cd frontend/angular/ && npm install --force && npm build --configuration production
+        run: |
+          cd frontend/angular/ 
+          npm install --force
+          ng build --configuration production
 
       - name: Deploy to S3
         run: |
-          aws s3 sync frontend/angular/dist/frontend s3://my-portfolio-frontend-khovakrishna --delete
+          aws s3 sync frontend/angular/dist/your-app-name s3://my-portfolio-frontend-khovakrishna --delete
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
