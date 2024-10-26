@@ -13,21 +13,39 @@ jobs:
         with:
           ref: dev 
 
+      # Cache Maven dependencies to speed up subsequent builds
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Set up JDK 21 for the build
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
+      # Build the application using Maven
       - name: Build with Maven
         run: cd backend/java/ && mvn package
 
-      - name: Install AWS CLI
-        run: sudo apt-get install awscli -y
+      # Configure AWS CLI credentials using the AWS CLI GitHub Action
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
 
+      # Package the application and deploy to Elastic Beanstalk
       - name: Deploy to Elastic Beanstalk
         run: |
           zip -r deployment.zip backend/java/target/*.jar
+          aws s3 cp deployment.zip s3://PortfolioBackendAPISpringBoot-env/deployment.zip
           aws elasticbeanstalk create-application-version \
             --application-name PortfolioBackendAPI \
             --version-label ${{ github.sha }} \
@@ -37,9 +55,6 @@ jobs:
             --environment-name PortfolioBackendAPISpringBoot-env \
             --version-label ${{ github.sha }} \
             --region eu-west-1
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
@@ -47,6 +62,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: dev
+
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v4
+        with:
+          path: frontend/angular/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('frontend/angular/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -56,24 +79,24 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli@latest
 
-      - name: Install AWS CLI
-        run: sudo apt-get install awscli -y
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-      - name: Configure AWS
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Install Dependencies
         run: |
-          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && \
-          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && \
-          aws configure set default.region us-east-1
+          cd frontend/angular/ 
+          npm ci --force
 
       - name: Build Angular App
         run: |
-          cd frontend/angular/ 
-          npm install --force
+          cd frontend/angular/
           ng build --configuration production
 
-      - name: Deploy to S3
+      - name: Deploy to S3 with Cache-Control
         run: |
-          aws s3 sync frontend/angular/dist/frontend/browser s3://my-portfolio-frontend-khovakrishna --delete
+          aws s3 sync frontend/angular/dist/frontend/browser s3://my-portfolio-frontend-khovakrishna --delete \
+            --cache-control "public, max-age=31536000, immutable"
