@@ -7,7 +7,7 @@
 [![Email](https://img.shields.io/badge/Email-white?style=flat&logo=gmail)](mailto:krishnak.pilato@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
 
-Welcome! This web application is designed to highlight my technical skills and experience. The code might still be unstable. A bug fixing process will continue through November 31, 2024 to ensure stability.
+Welcome! This web application is designed to highlight my technical skills and experience. The code might still be unstable. A bug fixing process will continue through November 31, 2024 to ensure stability. 
 **CI/CD pipeline is under development and not yet functional.**
 
 ## Features
