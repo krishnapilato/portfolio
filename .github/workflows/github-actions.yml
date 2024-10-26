@@ -9,6 +9,16 @@ jobs:
   build-and-deploy-backend:
     runs-on: ubuntu-latest
     steps:
+      - name: Set environment variables
+        run: |
+          export DB_URL=${{ secrets.DB_URL }}
+          export DB_USERNAME=${{ secrets.DB_USERNAME }}
+          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          export ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
+          export ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
+          export MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
+          export MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
+    
       - uses: actions/checkout@v4
         with:
           ref: dev 
