@@ -25,42 +25,25 @@ env:
 jobs:
   build-and-deploy-backend:
     runs-on: ubuntu-latest
+    
     steps:
       # Step 1: Checkout code from the repository
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Step 2: Cache Maven dependencies to speed up subsequent builds
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      # Step 3: Set up JDK 21 for the build
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
-      # Step 4: Build the application using Maven (skipping tests)
-      - name: Build with Maven
-        run: cd backend/java/ && mvn package -DskipTests -q -B
-
-      # Step 5: Deploy to Heroku
+      - uses: actions/checkout@v2
+    
+      # Step 2: Change directory to the subfolder
+      - name: Navigate to the backend/java subfolder
+        run: cd backend/java
+    
+      # Step 3: Deploy to Heroku from the subfolder
       - name: Deploy to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+        # This will specify the directory for deployment
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-        run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
-          heroku auth:token
-          heroku git:remote -a ${{ secrets.HEROKU_APP_NAME }}
-          git push heroku dev:main  # Push dev branch to heroku main branch
+          PROJECT_PATH: backend/java
           
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
