@@ -29,6 +29,26 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Set environment variables
+        run: |
+          export DB_TYPE=mysql
+          export DB_HOST=127.0.0.1
+          export DB_PORT=3306
+          export DB_NAME=portfolio
+          export DB_USERNAME=root
+          export DB_PASSWORD=testpassword
+          export JPA_DDL_AUTO=update
+          export SHOW_SQL=true
+        env:
+          DB_TYPE: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_NAME: portfolio
+          DB_USERNAME: root
+          DB_PASSWORD: testpassword
+          JPA_DDL_AUTO: update
+          SHOW_SQL: true
+
       # Build the application using Maven
       - name: Build with Maven
         run: cd backend/java/ && mvn package
