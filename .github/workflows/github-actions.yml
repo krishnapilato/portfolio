@@ -67,7 +67,7 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync frontend/angular/dist/your-app-name s3://my-portfolio-frontend-khovakrishna --delete
+          aws s3 sync frontend/angular/dist/frontend s3://my-portfolio-frontend-khovakrishna --delete
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
