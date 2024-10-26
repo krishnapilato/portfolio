@@ -39,7 +39,7 @@ export const environment = {
         },
         {
           icon: 'fas fa-envelope',
-          tooltip: 'Contact',
+          tooltip: 'Contact form',
           link: 'contact',
           color: '#28a745',
           size: '20px',
