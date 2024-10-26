@@ -46,7 +46,7 @@ jobs:
           node-version: '23'
 
       - name: Build Angular App
-        run: cd frontend/angular/ && npm install && npm run build -- --force --prod
+        run: cd frontend/angular/ && npm install --force && npm run build --prod
 
       - name: Deploy to S3 (or other service)
         run: |
