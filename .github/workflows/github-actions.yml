@@ -76,4 +76,4 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync frontend/angular/dist/frontend s3://my-portfolio-frontend-khovakrishna --delete
+          aws s3 sync frontend/angular/dist/frontend/browser s3://my-portfolio-frontend-khovakrishna --delete
