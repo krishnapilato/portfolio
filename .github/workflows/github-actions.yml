@@ -8,12 +8,6 @@ on:
     paths:
       - 'backend/java/**'
       - 'frontend/angular/**'
-    paths-ignore:
-      - 'README.md'
-      - '**/*.md'
-      - 'docs/**'   
-      - 'scripts/**' 
-
   pull_request:
     branches:
       - main
@@ -21,45 +15,22 @@ on:
     paths:
       - 'backend/java/**'
       - 'frontend/angular/**'
-    paths-ignore:
-      - 'README.md'
-      - '**/*.md'
-      - 'docs/**'
 
 # Reusable environment variables
 env:
-  IMPORTANT_PATHS: |
-    backend/java/**
-    frontend/angular/**
-  IGNORED_PATHS: |
-    README.md
-    **/*.md
-    docs/**
-    scripts/**
+  AWS_REGION: eu-west-1
+  S3_BUCKET_BACKEND: PortfolioBackendAPISpringBoot-env
+  S3_BUCKET_FRONTEND: my-portfolio-frontend-khovakrishna
 
 jobs:
   build-and-deploy-backend:
     runs-on: ubuntu-latest
-    if: contains(github.ref, 'dev') || github.ref == 'refs/heads/main'
     steps:
-      - name: Set environment variables
-        if: contains(env.IMPORTANT_PATHS, 'backend/java/**')
-        run: |
-          export DB_URL=${{ secrets.DB_URL }}
-          export DB_USERNAME=${{ secrets.DB_USERNAME }}
-          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          export ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
-          export ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
-          export MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
-          export MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
-    
-      - uses: actions/checkout@v4
-        with:
-          ref: dev 
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       # Cache Maven dependencies to speed up subsequent builds
       - name: Cache Maven dependencies
-        if: contains(env.IMPORTANT_PATHS, 'backend/java/**')
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
@@ -69,7 +40,6 @@ jobs:
 
       # Set up JDK 21 for the build
       - name: Set up JDK 21
-        if: contains(env.IMPORTANT_PATHS, 'backend/java/**')
         uses: actions/setup-java@v4
         with:
           java-version: '21'
@@ -77,44 +47,38 @@ jobs:
 
       # Build the application using Maven
       - name: Build with Maven
-        if: contains(env.IMPORTANT_PATHS, 'backend/java/**')
         run: cd backend/java/ && mvn package -q -B
 
       # Configure AWS CLI credentials using the AWS CLI GitHub Action
       - name: Configure AWS Credentials
-        if: contains(env.IMPORTANT_PATHS, 'backend/java/**')
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
+          aws-region: ${{ env.AWS_REGION }}
 
       # Package the application and deploy to Elastic Beanstalk
       - name: Deploy to Elastic Beanstalk
-        if: contains(env.IMPORTANT_PATHS, 'backend/java/**')
         run: |
           zip -r deployment.zip backend/java/target/*.jar
-          aws s3 cp deployment.zip s3://PortfolioBackendAPISpringBoot-env/deployment.zip
+          aws s3 cp deployment.zip s3://${{ env.S3_BUCKET_BACKEND }}/deployment.zip
           aws elasticbeanstalk create-application-version \
             --application-name PortfolioBackendAPI \
             --version-label ${{ github.sha }} \
-            --source-bundle S3Bucket=PortfolioBackendAPISpringBoot-env,S3Key=deployment.zip \
-            --region eu-west-1
+            --source-bundle S3Bucket=${{ env.S3_BUCKET_BACKEND }},S3Key=deployment.zip \
+            --region ${{ env.AWS_REGION }}
           aws elasticbeanstalk update-environment \
             --environment-name PortfolioBackendAPISpringBoot-env \
             --version-label ${{ github.sha }} \
-            --region eu-west-1
+            --region ${{ env.AWS_REGION }}
 
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
-    if: contains(github.ref, 'dev') || github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: dev
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Cache Node.js dependencies
-        if: contains(env.IMPORTANT_PATHS, 'frontend/angular/**')
         uses: actions/cache@v4
         with:
           path: frontend/angular/node_modules
@@ -123,37 +87,31 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install Node.js
-        if: contains(env.IMPORTANT_PATHS, 'frontend/angular/**')
         uses: actions/setup-node@v4
         with:
           node-version: '23.1.0'
-          
+
       - name: Install Angular CLI
-        if: contains(env.IMPORTANT_PATHS, 'frontend/angular/**')
         run: npm install -g @angular/cli@latest
 
       - name: Configure AWS Credentials
-        if: contains(env.IMPORTANT_PATHS, 'frontend/angular/**')
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Install Dependencies
-        if: contains(env.IMPORTANT_PATHS, 'frontend/angular/**')
         run: |
           cd frontend/angular/ 
           npm ci --force
 
       - name: Build Angular App
-        if: contains(env.IMPORTANT_PATHS, 'frontend/angular/**')
         run: |
           cd frontend/angular/
           ng build --configuration production
 
       - name: Deploy to S3 with Cache-Control
-        if: contains(env.IMPORTANT_PATHS, 'frontend/angular/**')
         run: |
-          aws s3 sync frontend/angular/dist/frontend/browser s3://my-portfolio-frontend-khovakrishna --delete \
+          aws s3 sync frontend/angular/dist/frontend/browser s3://${{ env.S3_BUCKET_FRONTEND }} --delete \
             --cache-control "public, max-age=31536000, immutable"
