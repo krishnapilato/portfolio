@@ -25,8 +25,8 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         uses: aws-actions/aws-elastic-beanstalk-deploy@v1
         with:
-          application-name: app-name
-          environment-name: dev-env-name 
+          application-name: Portfolio Backend API (Spring Boot)
+          environment-name: PortfolioBackendAPISpringBoot-env
           region: eu-west-1
           version-label: ${{ github.sha }}
           deployment-package: backend/java/target/*.jar 
@@ -50,7 +50,7 @@ jobs:
 
       - name: Deploy to S3 (or other service)
         run: |
-          aws s3 sync frontend/angular/dist/app-name s3://s3-bucket-name --delete
+          aws s3 sync frontend/angular/dist/frontend s3://my-portfolio-frontend-khovakrishna --delete
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
