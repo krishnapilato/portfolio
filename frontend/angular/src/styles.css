@@ -8,7 +8,7 @@ html {
   margin: 0;
   height: 100%;
   background: rgb(255,241,247);
-  background: radial-gradient(circle, rgba(255,241,247,1) 0%, rgba(174,185,214,1) 95%, rgba(197,207,218,1) 100%);
+  background: radial-gradient(circle, rgb(255, 78, 155) 0%, rgb(84, 118, 211) 95%, rgb(119, 185, 255) 100%);
   font-family: var(--font-family);
 }
 .noselect {
