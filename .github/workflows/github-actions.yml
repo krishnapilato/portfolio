@@ -57,7 +57,7 @@ jobs:
         run: sudo apt-get install awscli -y
 
       - name: Build Angular App
-        run: cd frontend/angular/ && npm install --force && npm run build --configuration production
+        run: cd frontend/angular/ && npm install --force && npm build --configuration production
 
       - name: Deploy to S3
         run: |
