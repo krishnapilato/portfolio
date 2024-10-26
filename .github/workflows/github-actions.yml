@@ -1,0 +1,56 @@
+name: Deploy Backend and Frontend
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev 
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: cd backend/java/ && mvn package
+
+      - name: Deploy to Elastic Beanstalk
+        uses: aws-actions/aws-elastic-beanstalk-deploy@v1
+        with:
+          application-name: app-name
+          environment-name: dev-env-name 
+          region: eu-west-1
+          version-label: ${{ github.sha }}
+          deployment-package: backend/java/target/*.jar 
+          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  build-and-deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23'
+
+      - name: Build Angular App
+        run: cd frontend/angular/ && npm install && npm run build --prod
+
+      - name: Deploy to S3 (or other service)
+        run: |
+          aws s3 sync frontend/angular/dist/app-name s3://s3-bucket-name --delete
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
