@@ -32,18 +32,18 @@ jobs:
     
       # Step 2: Change directory to the subfolder
       - name: Navigate to the backend/java subfolder
-        run: cd backend/java
+        run: cd backend/java/
     
-      # Step 3: Deploy to Heroku from the subfolder
+      # Step 3: Deploy to Heroku from the subfolder with force push
       - name: Deploy to Heroku
         uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
-        # This will specify the directory for deployment
-        env:
-          PROJECT_PATH: backend/java
+          project_path: backend/java
+          dontuseforce: false     
+
           
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
