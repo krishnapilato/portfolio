@@ -1,5 +1,5 @@
 :root {
-  --bg-color: #698da9;
+  --bg-color: #f0f4f7;
   --font-family: "Roboto", "Helvetica Neue", sans-serif;
 }
 
@@ -8,7 +8,7 @@ html {
   margin: 0;
   height: 100%;
   background: rgb(255,241,247);
-  background: radial-gradient(circle, rgb(255, 0, 111) 0%, rgb(0, 68, 255) 95%, rgb(0, 123, 255) 100%);
+  background: radial-gradient(circle, rgba(255,241,247,1) 0%, rgba(174,185,214,1) 95%, rgba(197,207,218,1) 100%);
   font-family: var(--font-family);
 }
 .noselect {
