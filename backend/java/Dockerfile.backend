@@ -1,0 +1,30 @@
+# Use Maven image to build the app
+FROM maven:3.9.4-eclipse-temurin-21 as builder
+
+# Set the working directory
+WORKDIR /app
+
+# Copy pom.xml and download the dependencies
+COPY ../backend/java/pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy the source code
+COPY ../backend/java/src ./src
+
+# Package the application
+RUN mvn clean package -DskipTests
+
+# Use Eclipse Temurin image for Java 21
+FROM eclipse-temurin:21-jre
+
+# Set working directory
+WORKDIR /app
+
+# Copy jar file from the builder stage
+COPY --from=builder /app/target/*.jar app.jar
+
+# Expose application port
+EXPOSE 8080
+
+# Run application
+CMD ["java", "-jar", "app.jar"]
