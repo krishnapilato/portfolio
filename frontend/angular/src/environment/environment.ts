@@ -2,7 +2,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080',
+  apiUrl: 'https://backend-portfolio-v1-411a08a68df2.herokuapp.com',
 
   website: {
     backgroundColor: '#f0f4f7',
