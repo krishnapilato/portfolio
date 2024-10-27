@@ -60,7 +60,7 @@ public class SecurityConfiguration {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("http://localhost:4200", contactUrl));
+		configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://my-portfolio-frontend-khovakrishna.s3-website-us-east-1.amazonaws.com"));
 		configuration.setAllowedMethods(List.of(HttpMethod.GET.name(), HttpMethod.POST.name(),
 				HttpMethod.PUT.name(), HttpMethod.DELETE.name(),
 				HttpMethod.OPTIONS.name()));
