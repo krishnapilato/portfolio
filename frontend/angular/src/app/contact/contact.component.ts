@@ -57,7 +57,7 @@ export class ContactComponent {
     this.buttonState = 'clicked';
 
     const emailData = {
-      recipient: 'wendy.apple@seed.com',
+      to: 'krishnak.pilato@gmail.com',
       subject: '123-456-7890',
       body: 'Hello, I need assistance.',
     };

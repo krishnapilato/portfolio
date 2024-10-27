@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
@@ -10,7 +10,7 @@ export class EmailService {
   constructor(private http: HttpClient) {}
 
   sendEmail(emailData: {
-    recipient: string;
+    to: string;
     subject: string;
     body: string;
   }): Observable<any> {
@@ -18,8 +18,18 @@ export class EmailService {
       'Content-Type': 'application/json',
     });
 
-    return this.http.post(environment.apiUrl + '/api/email/send', emailData, {
-      headers,
-    });
+    const params = new HttpParams()
+      .set('to', encodeURIComponent(emailData.to))
+      .set('subject', encodeURIComponent(emailData.subject))
+      .set('body', encodeURIComponent(emailData.body));
+
+    return this.http.post(
+      environment.apiUrl + '/api/email/send',
+      {},
+      {
+        headers,
+        params,
+      }
+    );
   }
 }

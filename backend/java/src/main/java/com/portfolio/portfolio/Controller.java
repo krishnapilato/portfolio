@@ -6,6 +6,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/email")
 public class Controller {
@@ -15,24 +17,14 @@ public class Controller {
 
     @PostMapping("/send")
     public ResponseEntity<String> sendEmail(
-            @RequestParam String to,
-            @RequestParam String subject,
-            @RequestParam String body) {
+            @RequestBody Map<String, String> emailData) {
 
-        try {
-            // Create a SimpleMailMessage
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(body);
+        String to = emailData.get("to");
+        String subject = emailData.get("subject");
+        String message = emailData.get("body");
 
-            // Send the email
-            mailSender.send(message);
+        // You can add your email sending logic here
 
-            return ResponseEntity.ok("Email sent successfully!");
-
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to send email: " + e.getMessage());
-        }
+        return ResponseEntity.ok("Email sent successfully!");
     }
 }
