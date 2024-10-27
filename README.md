@@ -4,9 +4,8 @@
 [![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.5-brightgreen?style=flat&logo=spring-boot)](https://spring.io/projects/spring-boot)
 [![Angular Version](https://img.shields.io/badge/Angular-18.2.10-red?style=flat&logo=angular)](https://angular.dev/overview)
 [![MySQL](https://img.shields.io/badge/MySQL-9.1.0-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql)
-[![Email](https://img.shields.io/badge/Email-white?style=flat&logo=gmail)](mailto:krishnak.pilato@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
-[![Deploy](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml)
+![GitHub Actions](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)
 
 Welcome! This web application is designed to highlight my technical skills and experience. The code might still be unstable. A bug fixing process will continue through November 31, 2024 to ensure stability.  
 **This is the link for my ALPHA version of the frontend: [ALPHA Frontend](http://my-portfolio-frontend-khovakrishna.s3-website-us-east-1.amazonaws.com/home)**
