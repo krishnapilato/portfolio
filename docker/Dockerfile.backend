@@ -4,12 +4,12 @@ FROM maven:3.9.4-eclipse-temurin-21 as builder
 # Set the working directory
 WORKDIR /app
 
-# Copy the pom.xml and download the dependencies
-COPY backend/java/pom.xml .
+# Copy pom.xml and download the dependencies
+COPY ../backend/java/pom.xml .
 RUN mvn dependency:go-offline
 
-# Copy the rest of the source code
-COPY backend/java/src ./src
+# Copy the source code
+COPY ../backend/java/src ./src
 
 # Package the application
 RUN mvn clean package -DskipTests
@@ -17,14 +17,14 @@ RUN mvn clean package -DskipTests
 # Use Eclipse Temurin image for Java 21
 FROM eclipse-temurin:21-jre
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
 # Copy jar file from the builder stage
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose the application port
+# Expose application port
 EXPOSE 8080
 
-# Run the application
+# Run application
 CMD ["java", "-jar", "app.jar"]
