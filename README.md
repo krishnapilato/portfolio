@@ -5,7 +5,7 @@
 [![Angular Version](https://img.shields.io/badge/Angular-18.2.10-red?style=flat&logo=angular)](https://angular.dev/overview)
 [![MySQL](https://img.shields.io/badge/MySQL-9.1.0-blue?style=flat&logo=mysql)](https://dev.mysql.com/downloads/mysql)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
-![GitHub Actions](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)
+[![GitHub Actions](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
 
 Welcome! This web application is designed to highlight my technical skills and experience. The code might still be unstable. A bug fixing process will continue through November 31, 2024 to ensure stability.  
 **This is the link for my ALPHA version of the frontend: [ALPHA Frontend](http://my-portfolio-frontend-khovakrishna.s3-website-us-east-1.amazonaws.com/home)**
