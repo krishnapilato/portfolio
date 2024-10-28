@@ -1,20 +1,10 @@
-<div class="wrapper">
-  <div class="content"></div>
-  <footer
-    [ngStyle]="{
-      backgroundColor: env.website.footer.backgroundColor,
-      color: env.website.footer.style.color,
-      font: env.website.footer.style.font
-    }"
-  >
-    <p>
-      {{
-        env.website.footer.showYear
-          ? "&copy; " + env.website.footer.year + " • "
-          : ""
-      }}
-      {{ env.website.footer.owner.name }} •
-      {{ env.website.footer.owner.message }}
+<div class="d-flex flex-column min-vh-100">
+  <div class="flex-grow-1"></div>
+  
+  <footer class="text-center py-2 bg-light custom-footer">
+    <p class="mb-0 small">
+      <span *ngIf="env.website.footer.showYear">&copy; {{ env.website.footer.year }} • </span>
+      {{ env.website.footer.owner.name }} • {{ env.website.footer.owner.message }}
     </p>
   </footer>
 </div>

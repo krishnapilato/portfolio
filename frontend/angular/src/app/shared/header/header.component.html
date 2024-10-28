@@ -1,50 +1,42 @@
-<mat-toolbar
-  [ngStyle]="{ 'background': env.website.header.style.backgroundColor, position: 'sticky' }"
->
-  <button
-    [style.color]="env.website.header.style.color"
-    class="home-button"
-    [routerLink]="['/home']"
-    mat-button
-    matTooltip="{{ env.website.header.titleTooltip }}"
-    [matTooltipPosition]="'below'"
-  >
-    {{ env.website.header.title }}
-  </button>
-  <span class="spacer"></span>
+<mat-toolbar class="navbar navbar-expand-lg bg-light mt-1 custom-toolbar">
+  <div class="container-fluid">
+    <a
+      class="navbar-brand d-flex align-items-center ms-3"
+      routerLink="/home"
+      style="font-family: 'JetBrains Mono', monospace;"
+    >
+      <mat-icon>device_hub</mat-icon>
+      <b class="ms-2">{{ header.title }}</b>
+    </a>
 
-  <div class="toolbar-icons">
-    <ng-container *ngFor="let icon of env.website.header.icons">
-      <ng-container
-        *ngIf="!(icon.tooltip.toLowerCase() === 'logout' && !isAuthenticated())"
-      >
-        <a
-          [href]="icon.link"
-          [target]="icon.link.startsWith('http') ? '_blank' : '_self'"
-          class="icon-link"
-        >
-          <button
-            class="icon-buttons"
-            [matMenuTriggerFor]="icon.isLogoutMenuTrigger ? menu : null"
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" [matMenuTriggerFor]="mobileMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto me-3">
+        <li class="nav-item" *ngFor="let icon of header.icons">
+          <a
+            class="nav-link {{ icon.color }} mx-2"
+            [routerLink]="[icon.link]"
             mat-icon-button
-            [matTooltip]="icon.tooltip"
-            [matTooltipPosition]="'below'"
-            [ngStyle]="{ color: icon.color, fontSize: icon.size }"
-            [ngClass]="{ active: icon.isActive, disabled: icon.disabled }"
-            [disabled]="icon.disabled"
-            (click)="headerIconAction(icon)"
+            matTooltip="{{ icon.tooltip }}"
+            matTooltipPosition="below"
+            *ngIf="!(icon.tooltip.toLowerCase() === 'logout' && !authService.isAuthenticated())"
+            (click)="icon.tooltip.toLowerCase() === 'logout' ? authService.logout() : null"
           >
-            <i [class]="icon.icon"></i>
-          </button>
-        </a>
-      </ng-container>
-    </ng-container>
+            <mat-icon>{{ icon.matIcon }}</mat-icon>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
-  <span class="spacer-right"></span>
-</mat-toolbar>
 
-<mat-menu #menu="matMenu">
-  <button (click)="authService.logout()" mat-menu-item>
-    <mat-icon fontIcon="logout"></mat-icon>Logout
-  </button>
-</mat-menu>
+  <mat-menu #mobileMenu="matMenu">
+    <ng-container *ngFor="let icon of header.icons">
+      <button mat-menu-item [routerLink]="icon.link">
+        <mat-icon>{{ icon.matIcon }}</mat-icon> {{ icon.tooltip }}
+      </button>
+    </ng-container>
+  </mat-menu>
+</mat-toolbar>

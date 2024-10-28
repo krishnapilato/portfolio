@@ -2,84 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>khovakrishnapilato.com</title>
+    <title>khovakrishna.pilato</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="dashboard.svg" />
+    <link rel="icon" type="image/svg+xml" href="device_hub.svg" />
     <link
-      rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
     />
-    <style>
-      body {
-        overflow: hidden;
-      }
-
-      .blur-effect {
-        filter: blur(120px);
-        pointer-events: none;
-      }
-      .overlay-message {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.6);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-      }
-
-      .overlay-message h4 {
-        color: rgb(141, 221, 255);
-        font-size: 24px;
-        text-align: center;
-        background-color: rgba(255, 255, 255, 0.2);
-        padding: 20px;
-        border-radius: 8px;
-      }
-    </style>
   </head>
-  <body class="mat-typography noselect"  ondragstart="return false">
+  <body class="mat-typography noselect">
     <app-root></app-root>
-    <div class="overlay-message" id="overlay-message" style="display: none">
-      <h4>This site is being updated. Please check back soon!</h4>
-    </div>
-
-    <script>
-      document.querySelector("app-root").classList.add("blur-effect");
-      document.getElementById("overlay-message").style.display = "flex";
-
-      document.addEventListener("contextmenu", function (e) {
-        e.preventDefault();
-      });
-
-      // Disable right-click on the entire page
-      document.addEventListener("contextmenu", function (e) {
-        e.preventDefault();
-      });
-
-      // Disable common keyboard shortcuts
-      document.addEventListener("keydown", function (e) {
-        // Disable F12 (open DevTools)
-        if (e.key === "F12") {
-          e.preventDefault();
-        }
-        // Disable Ctrl+Shift+I (open DevTools)
-        if (e.ctrlKey && e.shiftKey && e.key === "I") {
-          e.preventDefault();
-        }
-        // Disable Ctrl+U (view source)
-        if (e.ctrlKey && e.key === "u") {
-          e.preventDefault();
-        }
-        // Disable Ctrl+Shift+C (inspect element)
-        if (e.ctrlKey && e.shiftKey && e.key === "C") {
-          e.preventDefault();
-        }
-      });
-    </script>
   </body>
 </html>

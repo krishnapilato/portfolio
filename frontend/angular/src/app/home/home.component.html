@@ -1,62 +1,22 @@
-<div class="container">
-  <div class="content">
-    <div class="left-side">
-      <h1>Hi, I am {{ env.website.home.name }}</h1>
-      <p>
-        {{ env.website.home.subtitle }}
-        <span>
-          {{ env.website.home.location.country }}.
-        </span>
-        {{ env.website.home.mainMessage }}
-        <b><span class="typed-element"></span></b>
+<div class="d-flex align-items-center justify-content-center vh-100">
+  <div class="text-center">
+    <h1 class="display-4 fw-bold">Hi, I am Krishna</h1>
+   <div class="d-flex justify-content-center">
+      <p class="lead text-secondary text-center w-75">
+        Java Full Stack Developer based in Northern Italy. Passionate about backend development, cloud services, building impactful applications, and creating efficient, scalable solutions in Java Spring Boot, Angular, and AWS.
       </p>
-      <br /><br />
-      <div class="action-buttons">
-        <a
-          mat-button
-          (click)="moveToAboutMeSection()"
-          [style.color]="env.website.home.actions.primaryAction.style.color"
-          [target]="'_self'"
-          [ngClass]="env.website.home.actions.primaryAction.style.customClass"
-        >
-          <i></i>
-          {{ env.website.home.actions.primaryAction.text }}
-        </a>
-        <a
-          *ngIf="
-            env.website.home.actions.secondaryAction.text &&
-            env.website.home.actions.secondaryAction.externalLink
-          "
-          mat-button
-          [href]="env.website.home.actions.secondaryAction.externalLink"
-          [target]="
-            env.website.home.actions.secondaryAction.externalLink.startsWith(
-              'http'
-            )
-              ? '_blank'
-              : '_self'
-          "
-          [style.color]="env.website.home.actions.secondaryAction.style.color"
-          [ngClass]="env.website.home.actions.secondaryAction.style.customClass"
-        >
-          <i></i>
-          {{ env.website.home.actions.secondaryAction.text }}
-        </a>
-      </div>
     </div>
-    <div class="space" style="margin-left: 5rem"></div>
-    <div class="right-side">
-      <img
-        src="{{ env.website.home.image }}"
-        alt="Mocked Image"
-        class="mocked-image"
-      />
-      <br /><br />
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <a href="#about-me" class="btn btn-primary btn-lg custom-btn">Who am I</a>
+      <a href="https://www.linkedin.com/in/khovakrishnapilato" class="btn btn-secondary btn-lg custom-btn" target="_blank">LinkedIn</a>
     </div>
   </div>
 </div>
 
-<div id="careerSteps" class="space" style="margin-top: 30rem"></div>
+
+
+
+<!-- <div id="careerSteps" class="space" style="margin-top: 30rem"></div>
 <div id="careerSteps" class="hidden"></div>
 <div
   style="
@@ -105,4 +65,4 @@
       </mat-card>
     </div>
   </ng-template>
-</p-carousel>
+</p-carousel> -->

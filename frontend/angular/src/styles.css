@@ -9,7 +9,6 @@ html {
   height: 100%;
   background: rgb(255,241,247);
   background: radial-gradient(circle, rgb(255, 255, 255) 0%, rgb(220, 229, 255) 95%, rgb(226, 240, 255) 100%);
-  font-family: var(--font-family);
 }
 .noselect {
   user-select: none;

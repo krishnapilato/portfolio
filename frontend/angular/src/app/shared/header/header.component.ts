@@ -22,20 +22,10 @@ import { AuthService } from '../../auth/auth.service';
     RouterModule,
   ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css',
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  public env = environment;
+  public header = environment.website.header;
 
   constructor(public authService: AuthService) {}
-
-  public isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
-  }
-
-  public headerIconAction(icon: { tooltip: string }): void {
-    if (icon.tooltip.toLowerCase() === 'logout') {
-      this.authService.logout();
-    }
-  }
 }

@@ -1,41 +1,5 @@
-.home-button {
-  font-size: 15px;
-  font-weight: bold;
-  text-decoration: underline;
-  transition: box-shadow 0.3s ease;
-  text-shadow: 0 0 5px #80a4c8, 0 0 10px #d3e4f6, 0 0 15px #e0f0ff;
-}
-
-.spacer {
-  flex: 1 1 auto;
-}
-
-.icon-buttons {
-  margin: 10px;
-  text-shadow: 0 0 5px #80a4c8;
-}
-
-.icon-buttons:hover i {
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@media (max-width: 768px) {
-  .toolbar-container {
-    flex-direction: column;
-  }
-  .toolbar-icons {
-    flex-grow: 0;
-  }
+.custom-toolbar {
+  border-radius: 1rem;
+  background: transparent;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }

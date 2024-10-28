@@ -1,167 +1,24 @@
-* {
-  box-sizing: border-box;
-  font-family: "Fira Code", monospace;
-  text-shadow: 0 0 5px #80a4c8, 0 0 10px #d3e4f6, 0 0 15px #e0f0ff;
+.custom-btn {
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
+.custom-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-h1 {
-  font-size: 5rem;
+.custom-btn.btn-primary {
+  background: linear-gradient(135deg, #3a86ff, #5390d9);
   color: white;
-  text-shadow: 0 0 5px #0080ff, 0 0 10px #003874, 0 0 15px #60b2ff;
+  border: none;
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  font-size: 2rem;
-  height: 65%;
-}
-
-.content {
-  display: flex;
-  flex-direction: row;
-  width: 80%;
-  max-width: 75rem;
-  padding: 2rem;
-  border-radius: 18px;
-}
-
-.left-side {
-  flex: 1;
-  margin-right: 2rem;
-}
-
-.right-side {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  margin-left: 2rem;
-}
-
-.mocked-image {
-  max-width: 100%;
-  height: auto;
-}
-
-.skills-button {
-  background-color: #2c6fb6;
+.custom-btn.btn-secondary {
+  background: linear-gradient(135deg, #6c757d, #adb5bd);
   color: white;
-  padding: 12px 24px;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.download-button, .secondaryAction {
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  background-color: transparent;
-}
-
-.download-button {
-  font-size: 14px;
-}
-
-.secondaryAction {
-  margin-top: 0.5rem;
-  color: rgba(174, 255, 217, 0.5);
-}
-
-.career-step-item {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-}
-
-.career-step-card {
-  max-width: 70rem;
-  width: 100%;
-  border-radius: 13px;
-  box-shadow: 0 4px 8px rgba(44, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  background-color: #97c9ff;
-}
-
-.date {
-  font-size: 0.9rem;
-  color: #000;
-}
-
-.circle-icon {
-  font-size: 1.2rem;
-  background-color: #6f1212;
-  border-radius: 50%;
-  padding: 4px;
-  box-shadow: 0 2px 4px rgba(255, 229, 229, 0.2);
-}
-
-.card-content {
-  padding: 16px;
-}
-
-.title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 0;
-}
-
-.description {
-  font-size: 1rem;
-  margin: 10px 0;
-}
-
-.card-actions {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-mat-chip {
-  margin: 10px 1rem 0 0;
-}
-
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    justify-content: space-between;
-    height: 61%;
-    margin-top: 30px;
-  }
-
-  .content {
-    flex-direction: column;
-    height: 100%;
-    padding: 1rem;
-  }
-
-  .left-side, .right-side {
-    margin: 0 0 2rem 0;
-  }
-
-  .right-side {
-    justify-content: center;
-    align-items: flex-end;
-  }
 }
