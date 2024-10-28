@@ -5,48 +5,32 @@ on:
     branches:
       - main
       - dev
-    paths:
-      - 'backend/java/**'
-      - 'frontend/angular/**'
   pull_request:
     branches:
       - main
       - dev
-    paths:
-      - 'backend/java/**'
-      - 'frontend/angular/**'
-
-# Reusable environment variables
-env:
-  AWS_REGION: eu-west-1
-  S3_BUCKET_BACKEND: PortfolioBackendAPISpringBoot-env
-  S3_BUCKET_FRONTEND: my-portfolio-frontend-khovakrishna
 
 jobs:
   build-and-deploy-backend:
     runs-on: ubuntu-latest
-    
+    if: github.event_name == 'push' && contains(github.event.head_commit.message, 'backend') || contains(github.ref, 'backend')
     steps:
-      # Step 1: Checkout code from the repository
-      - uses: actions/checkout@v2
-    
-      # Step 2: Change directory to the subfolder
+      - uses: actions/checkout@v4
       - name: Navigate to the backend/java subfolder
         run: cd backend/java/
-    
-      # Step 3: Deploy to Heroku from the subfolder with force push
+        
       - name: Deploy to Heroku
-        uses: AkhileshNS/heroku-deploy@v3.12.12
+        uses: AkhileshNS/heroku-deploy@v3
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           project_path: backend/java
-          dontuseforce: false     
+          dontuseforce: false      
 
-          
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && contains(github.event.head_commit.message, 'frontend') || contains(github.ref, 'frontend')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -68,11 +52,11 @@ jobs:
         run: npm install -g @angular/cli@latest
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: eu-west-1
 
       - name: Install Dependencies
         run: |
@@ -86,5 +70,5 @@ jobs:
 
       - name: Deploy to S3 with Cache-Control
         run: |
-          aws s3 sync frontend/angular/dist/frontend/browser s3://${{ env.S3_BUCKET_FRONTEND }} --delete \
+          aws s3 sync frontend/angular/dist/frontend/browser s3://my-portfolio-frontend-khovakrishna --delete \
             --cache-control "public, max-age=31536000, immutable"
