@@ -13,7 +13,6 @@ on:
 jobs:
   build-and-deploy-backend:
     runs-on: ubuntu-latest
-    if: contains(github.event.commits.*.modified, 'backend/java') || contains(github.event.commits.*.added, 'backend/java') || contains(github.event.commits.*.removed, 'backend/java')
     steps:
       - uses: actions/checkout@v4
       - name: Navigate to the backend/java subfolder
@@ -30,7 +29,6 @@ jobs:
 
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
-    if: contains(github.event.commits.*.modified, 'frontend/angular') || contains(github.event.commits.*.added, 'frontend/angular') || contains(github.event.commits.*.removed, 'frontend/angular')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
