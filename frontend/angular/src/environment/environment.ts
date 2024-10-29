@@ -69,37 +69,37 @@ export const environment = {
     ],
     
     contactForm: {
-      fields: [
-        {
-          id: 'name',
-          label: 'Name',
-          type: 'text',
-          placeholder: 'Enter your name',
-          validationMessage: 'Name is required and should only contain letters.',
-        },
-        {
-          id: 'surname',
-          label: 'Surname',
-          type: 'text',
-          placeholder: 'Enter your surname',
-          validationMessage:
-            'Surname is required and should only contain letters.',
-        },
-        {
-          id: 'email',
-          label: 'Email',
-          type: 'email',
-          placeholder: 'Enter your email',
-          validationMessage: 'Please enter a valid email address.',
-        },
-        {
-          id: 'message',
-          label: 'Message',
-          type: 'textarea',
-          placeholder: 'Write your message here',
-          validationMessage:
-            'Message is required and should be at least 10 characters long.',
-        },
+    fields: [
+      {
+        id: 'name',
+        label: 'Name',
+        type: 'text',
+        placeholder: 'Enter your name',
+        validationMessage: 'Name is required and should only contain letters.',
+      },
+      {
+        id: 'surname',
+        label: 'Surname',
+        type: 'text',
+        placeholder: 'Enter your surname',
+        validationMessage:
+          'Surname is required and should only contain letters.',
+      },
+      {
+        id: 'email',
+        label: 'Email',
+        type: 'email',
+        placeholder: 'Enter your email',
+        validationMessage: 'Please enter a valid email address.',
+      },
+      {
+        id: 'message',
+        label: 'Message',
+        type: 'textarea',
+        placeholder: 'Write your message here',
+        validationMessage:
+          'Message is required and should be at least 10 characters long.',
+      },
       ],
     },
     socialLinks: [

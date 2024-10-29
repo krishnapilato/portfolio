@@ -67,13 +67,13 @@ export class ContactComponent {
   socialLinks = [
     {
       label: 'LinkedIn',
-      href: 'https://linkedin.com/in/yourlinkedin',
+      href: 'https://linkedin.com/in/khovakrishnapilato',
       btnClass: 'btn-outline-primary',
       iconClass: 'fa-brands fa-linkedin',
     },
     {
       label: 'GitHub',
-      href: 'https://github.com/yourgithub',
+      href: 'https://github.com/krishnapilato/portfolio/tree/dev',
       btnClass: 'btn-outline-dark',
       iconClass: 'fa-brands fa-github',
     },

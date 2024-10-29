@@ -275,3 +275,19 @@
 2024-10-29 19:08:52 - Frontend Docker containers started successfully.
 2024-10-29 19:09:01 - User quit the installation process.
 2024-10-29 19:09:03 - All Docker containers stopped and removed.
+2024-10-29 19:16:28 - Starting installation process...
+2024-10-29 19:16:29 - Loaded application data from JSON file.
+2024-10-29 19:16:30 - Detected installed application: Java v21.0.5
+2024-10-29 19:16:31 - Detected installed application: Maven v3.9.9
+2024-10-29 19:16:32 - Detected installed application: Node.js v23.1.0
+2024-10-29 19:16:33 - Detected installed application: Docker v20.10.7
+2024-10-29 19:16:34 - Detected installed application: Angular CLI v18.2.9
+2024-10-29 19:16:35 - Detected installed application: Git vlatest
+2024-10-29 19:16:36 - Detected installed application: DBeaver vlatest
+2024-10-29 19:16:36 - Listed already installed applications.
+2024-10-29 19:16:36 - All applications are already installed.
+2024-10-29 19:16:36 - Installation process completed.
+2024-10-29 19:16:36 - Starting Docker containers for the backend.
+2024-10-29 19:16:37 - Backend Docker containers started successfully.
+2024-10-29 19:16:37 - Starting Docker containers for the frontend.
+2024-10-29 19:16:38 - Frontend Docker containers started successfully.
