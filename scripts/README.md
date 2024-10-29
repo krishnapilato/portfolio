@@ -14,7 +14,7 @@ This installer script allows you to check for and install specific applications,
 2. **Select Applications**:
    - The script will automatically check if applications are installed and prompt you to install any missing applications.
 3. **Installation Log**:
-   - A log file (`log.txt`) will be generated in the `logs/` folder to record installation progress and errors.
+   - A log file (`install_log.txt`) will be generated in the `logs/` folder to record installation progress and errors.
 
 ## Adding Applications
 

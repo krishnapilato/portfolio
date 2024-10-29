@@ -1,68 +1,71 @@
 <div class="d-flex align-items-center justify-content-center vh-100">
   <div class="text-center">
-    <h1 class="display-4 fw-bold">Hi, I am Krishna</h1>
-   <div class="d-flex justify-content-center">
-      <p class="lead text-secondary text-center w-75">
+    <h2 class="display-4 fw-bold" data-aos="fade-up">Hi, I am Krishna</h2>
+    <div class="d-flex justify-content-center">
+      <p class="lead text-secondary text-center w-75" data-aos="fade-up" data-aos-delay="200">
         Java Full Stack Developer based in Northern Italy. Passionate about backend development, cloud services, building impactful applications, and creating efficient, scalable solutions in Java Spring Boot, Angular, and AWS.
       </p>
     </div>
-    <div class="d-flex justify-content-center gap-3 mt-4">
+    <div class="d-flex justify-content-center gap-3 mt-4" data-aos="fade-up" data-aos-delay="400">
       <a href="#about-me" class="btn btn-primary btn-lg custom-btn">Who am I</a>
       <a href="https://www.linkedin.com/in/khovakrishnapilato" class="btn btn-secondary btn-lg custom-btn" target="_blank">LinkedIn</a>
     </div>
   </div>
 </div>
 
-
-
-
-<!-- <div id="careerSteps" class="space" style="margin-top: 30rem"></div>
-<div id="careerSteps" class="hidden"></div>
-<div
-  style="
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  "
->
-  <h1 style="text-align: center">WHO AM I?</h1>
-  <p style="text-align: center; width: 70%; max-width: 500px;">
-    I’m Krishna Pilato, a passionate Java Backend Developer with expertise in
-    Full-Stack Development. With over three years of hands-on experience, I’ve
-    honed my skills working with technologies like Spring Boot, Angular, and
-    relational/non-relational databases.
-  </p>
+<div class="container my-5 text-center">
+  <h2 data-aos="fade-up" data-aos-delay="100" class="mb-4 fw-bold text-gradient display-5">
+    <i class="fas fa-tools me-2"></i> My Skills
+  </h2>
+  <div class="d-flex justify-content-center mb-4">
+    <hr class="w-25 border-3" style="border-color: #5390d9;">
+  </div>
+  
+  <div class="row justify-content-center">
+    <!-- Skill Cards -->
+    <div class="col-lg-2 col-md-4 col-sm-6 d-flex justify-content-center mb-4" *ngFor="let skill of skills" data-aos="fade-up" [attr.data-aos-delay]="skill.delay">
+      <div class="card-container">
+        <mat-card class="card-front" [ngStyle]="{'background': skill.gradient}">
+          <mat-card-content>
+            <i class="text-white mb-3"></i>
+            <h6 class="fw-bold text-white">{{ skill.title }}</h6>
+            <p class="text-light">{{ skill.subtitle }}</p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="card-back bg-light">
+          <mat-card-content>
+            <p class="text-secondary">{{ skill.description }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
 </div>
-<p-carousel
-  [value]="careerSteps"
-  [numVisible]="1"
-  [numScroll]="1"
-  autoplayInterval="10000"
-  [showNavigators]="true"
-  circular="true"
->
-  <ng-template pTemplate="item" let-careerStep>
-    <div class="career-step-item">
-      <mat-card class="career-step-card">
-        <div class="card-header">
-          <div class="date">
-            <h3 class="title">{{ careerStep.title }}</h3>
-          </div>
-          <div class="icon-container">
-            {{ careerStep.month }}/{{ careerStep.year }}
-          </div>
-        </div>
-        <mat-card-content class="card-content">
-          <p class="description">{{ careerStep.description }}</p>
-        </mat-card-content>
 
-        <mat-card-actions class="card-actions">
-          <div class="tags">
-            <mat-chip *ngFor="let tag of careerStep.tags">{{ tag }}</mat-chip>
-          </div>
-        </mat-card-actions>
+<div class="container my-5" style="padding-top: 1rem;">
+  <h2 data-aos="fade-up" data-aos-delay="100" class="text-center mb-4 display-5 fw-bold text-gradient">
+    <i class="fas fa-briefcase me-2"></i> Case Studies
+  </h2>
+
+  <div class="d-flex justify-content-center mb-4">
+    <hr class="w-25 border-3" style="border-color: #5390d9;">
+  </div>
+  
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col" *ngFor="let caseStudy of caseStudies" data-aos="fade-up" [attr.data-aos-delay]="caseStudy.delay">
+      <mat-card class="p-3 shadow-sm rounded-3 bg-light">
+        <mat-card-content>
+          <h5 class="fw-bold mb-2">{{ caseStudy.title }}</h5>
+          <p class="text-secondary">{{ caseStudy.summary }}</p>
+          <ul class="list-unstyled mb-2">
+            <li><strong>Technologies:</strong> {{ caseStudy.technologies }}</li>
+            <li><strong>Role:</strong> {{ caseStudy.role }}</li>
+            <li><strong>Outcome:</strong> {{ caseStudy.outcome }}</li>
+          </ul>
+        </mat-card-content>
       </mat-card>
     </div>
-  </ng-template>
-</p-carousel> -->
+  </div>
+</div>
+
+<app-contact></app-contact>

@@ -1,176 +1,61 @@
-<div class="container" style="margin-top: 5rem">
-  <div class="contact__wrapper shadow-lg mt-n9">
-    <div class="row no-gutters">
-      <div
-        class="col-lg-5 contact-info__wrapper gradient-brand-color p-5 order-lg-2"
-      >
-        <h3 class="color--white mb-5">Get in Touch</h3>
-
-        <ul
-          class="contact-info__list list-style--none position-relative z-index-101"
-        >
-          <li class="mb-4 pl-4">
-            <span class="position-absolute"
-              ><i class="fas fa-envelope"></i
-            ></span>
-            krishnak.pilato&#64;gmail.com
-          </li>
-          <li class="mb-4 pl-4">
-            <span class="position-absolute"
-              ><i class="fab fa-linkedin-in"></i
-            ></span>
-            Khova Krishna Pilato
-          </li>
-          <li class="mb-4 pl-4">
-            <span class="position-absolute"><i class="fab fa-github"></i></span>
-            &#64;krishnapilato
-          </li>
-        </ul>
-
-        <figure
-          class="figure position-absolute m-0 opacity-06 z-index-100"
-          style="bottom: 0; right: 10px"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="444px"
-            height="626px"
-          >
-            <defs>
-              <linearGradient
-                id="PSgrad_1"
-                x1="0%"
-                x2="81.915%"
-                y1="57.358%"
-                y2="0%"
-              >
-                <stop
-                  offset="0%"
-                  stop-color="rgb(255,255,255)"
-                  stop-opacity="1"
-                ></stop>
-                <stop
-                  offset="100%"
-                  stop-color="rgb(0,54,207)"
-                  stop-opacity="0"
-                ></stop>
-              </linearGradient>
-            </defs>
-          </svg>
-        </figure>
-      </div>
-
-      <div class="col-lg-7 contact-form__wrapper p-5 order-lg-1">
-        <form
-          action="#"
-          class="contact-form form-validate"
-          novalidate="novalidate"
-        >
-          <div class="row">
-            <div class="col-sm-6 mb-3">
-              <div class="form-group">
-                <label class="required-field" for="firstName">First Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="firstName"
-                  name="firstName"
-                  placeholder="Krishna"
-                  required
-                />
-                <!-- Error message -->
-                <div
-                  id="firstNameError"
-                  class="text-danger"
-                  style="display: none"
-                >
-                  First name is required.
-                </div>
-              </div>
-            </div>
-
-            <div class="col-sm-6 mb-3">
-              <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="lastName"
-                  name="lastName"
-                  placeholder="Pilato"
-                />
-              </div>
-            </div>
-
-            <div class="col-sm-6 mb-3">
-              <div class="form-group">
-                <label class="required-field" for="email">Email</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="email"
-                  name="email"
-                  placeholder="from.apple@gmail.com"
-                />
-              </div>
-            </div>
-
-            <div class="col-sm-6 mb-3">
-              <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input
-                  type="tel"
-                  class="form-control"
-                  id="phone"
-                  name="phone"
-                  placeholder="+1 (555) 555-5555"
-                />
-              </div>
-            </div>
-
-            <div class="col-sm-12 mb-3">
-              <div class="form-group">
-                <label class="required-field" for="message"
-                  >How can we help?</label
-                >
-                <textarea
-                  [maxLength]="1000"
-                  class="form-control"
-                  id="message"
-                  name="message"
-                  rows="4"
-                ></textarea>
-              </div>
-            </div>
-            <div class="col-sm-12 mb-3 text-center">
-              <br><br>
-              <div class="button-container">
-                <button
-                  style="width: 100%"
-                  type="button"
-                  [@buttonClick]="buttonState"
-                  (click)="onButtonClick()"
-                  mat-flat-button
-                >
-                  Send email
-                  <mat-icon iconPositionEnd fontIcon="send"></mat-icon>
-                </button>
-                <div
-                  *ngIf="sendStatus"
-                  [ngClass]="{
-                    'status-sending': sendStatusType === 'sending',
-                    'status-success': sendStatusType === 'success',
-                    'status-error': sendStatusType === 'error'
-                  }"
-                  class="send-status"
-                >
-                  {{ sendStatus }}
-                </div>
-              </div>
+<div class="container my-5" id="contact" data-aos="fade-up" data-aos-delay="300" style="padding-top: 10rem;">
+  <div class="card p-4 shadow-lg border-0 rounded-3">
+    <div class="row g-0">
+      <div class="col-lg-7 p-4" data-aos="fade-up" data-aos-delay="300">
+        <h2 class="text-center mb-4 display-5 fw-bold text-gradient">
+          <i class="fas fa-comments me-2"></i> Get in Touch
+        </h2>
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3" *ngFor="let field of fields">
+            <label [for]="field.id" class="form-label">{{ field.label }}</label>
+            <input
+              *ngIf="field.type !== 'textarea'"
+              [type]="field.type"
+              [id]="field.id"
+              [placeholder]="field.placeholder"
+              [formControlName]="field.controlName"
+              class="form-control p-3"
+              [ngClass]="{ 'is-invalid': isInvalid(field.controlName) }"
+            />
+            <textarea
+              *ngIf="field.type === 'textarea'"
+              [id]="field.id"
+              [placeholder]="field.placeholder"
+              [formControlName]="field.controlName"
+              class="form-control p-3"
+              rows="4"
+              [ngClass]="{ 'is-invalid': isInvalid(field.controlName) }"
+            ></textarea>
+            <div *ngIf="isInvalid(field.controlName)" class="invalid-feedback">
+              {{ field.errorMessage }}
             </div>
           </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary rounded w-100"
+            [disabled]="contactForm.invalid"
+          >
+            Send Message
+          </button>
         </form>
+      </div>
+      <div
+        class="col-lg-5 d-flex flex-column align-items-center justify-content-center p-4 bg-light rounded"
+        data-aos="fade-up"
+        data-aos-delay="300"
+      >
+        <div *ngFor="let link of socialLinks" class="mb-3 w-75">
+          <a
+            [href]="link.href"
+            [ngClass]="link.btnClass"
+            target="_blank"
+            class="btn w-100 p-3 d-flex align-items-center justify-content-center"
+          >
+            <i [class]="link.iconClass + ' me-2'"></i> {{ link.label }}
+          </a>
+        </div>
+        <p class="text-muted mt-3">Phone number available upon email request.</p>
       </div>
     </div>
   </div>

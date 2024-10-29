@@ -25,7 +25,7 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  public header = environment.website.header;
+  public header = environment.header;
 
   constructor(public authService: AuthService) {}
 }

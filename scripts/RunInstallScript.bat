@@ -2,7 +2,7 @@
 setlocal
 
 echo Running installer...
-powershell -ExecutionPolicy Bypass -File "%~dp0InstallApplications.ps1"
+powershell -ExecutionPolicy Bypass -File "%~dp0/src/InstallApplications.ps1"
 
 pause
 endlocal

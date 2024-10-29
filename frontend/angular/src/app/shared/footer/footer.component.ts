@@ -10,5 +10,5 @@ import { environment } from '../../../environment/environment';
   styleUrl: './footer.component.css',
 })
 export class FooterComponent {
-  public env = environment;
+  public footer = environment.footer;
 }

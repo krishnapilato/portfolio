@@ -15,17 +15,17 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto me-3">
-        <li class="nav-item" *ngFor="let icon of header.icons">
+        <li class="nav-item" *ngFor="let icon of header.links">
           <a
             class="nav-link {{ icon.color }} mx-2"
-            [routerLink]="[icon.link]"
+            [routerLink]="[icon]"
             mat-icon-button
             matTooltip="{{ icon.tooltip }}"
             matTooltipPosition="below"
             *ngIf="!(icon.tooltip.toLowerCase() === 'logout' && !authService.isAuthenticated())"
             (click)="icon.tooltip.toLowerCase() === 'logout' ? authService.logout() : null"
           >
-            <mat-icon>{{ icon.matIcon }}</mat-icon>
+            <mat-icon>{{ icon }}</mat-icon>
           </a>
         </li>
       </ul>
@@ -33,9 +33,9 @@
   </div>
 
   <mat-menu #mobileMenu="matMenu">
-    <ng-container *ngFor="let icon of header.icons">
-      <button mat-menu-item [routerLink]="icon.link">
-        <mat-icon>{{ icon.matIcon }}</mat-icon> {{ icon.tooltip }}
+    <ng-container *ngFor="let icon of header.links">
+      <button mat-menu-item [routerLink]="icon.route">
+        <mat-icon>{{ icon }}</mat-icon> {{ icon.tooltip }}
       </button>
     </ng-container>
   </mat-menu>

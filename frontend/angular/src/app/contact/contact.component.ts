@@ -1,17 +1,15 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { EmailService } from '../shared/services/email.service';
 
 @Component({
   selector: 'app-contact',
@@ -20,64 +18,83 @@ import { EmailService } from '../shared/services/email.service';
     MatButtonModule,
     MatIcon,
     MatFormFieldModule,
+    ReactiveFormsModule,
     MatInputModule,
     CommonModule,
   ],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css',
-  animations: [
-    trigger('buttonClick', [
-      state(
-        'normal',
-        style({
-          transform: 'scale(1)',
-          backgroundColor: 'rgba(0, 54, 207, 1)',
-          color: 'white',
-        })
-      ),
-      state(
-        'clicked',
-        style({
-          transform: 'scale(0.95)',
-          backgroundColor: 'rgba(0, 54, 207, 0.8)',
-        })
-      ),
-      transition('normal <=> clicked', [animate('0.2s ease-in-out')]),
-    ]),
-  ],
 })
 export class ContactComponent {
-  buttonState: string = 'normal';
-  sendStatus: string | null = null;
-  sendStatusType: string | null = null;
+  public contactForm: FormGroup;
 
-  constructor(private emailService: EmailService) {}
+  fields = [
+    {
+      id: 'name',
+      label: 'Name',
+      type: 'text',
+      controlName: 'name',
+      placeholder: 'Enter your name',
+      errorMessage: 'Name is required and should only contain letters.',
+    },
+    {
+      id: 'surname',
+      label: 'Surname',
+      type: 'text',
+      controlName: 'surname',
+      placeholder: 'Enter your surname',
+      errorMessage: 'Surname is required and should only contain letters.',
+    },
+    {
+      id: 'email',
+      label: 'Email',
+      type: 'email',
+      controlName: 'email',
+      placeholder: 'Enter your email',
+      errorMessage: 'Please enter a valid email address.',
+    },
+    {
+      id: 'message',
+      label: 'Message',
+      type: 'textarea',
+      controlName: 'message',
+      placeholder: 'Write your message here',
+      errorMessage:
+        'Message is required and should be at least 10 characters long.',
+    },
+  ];
 
-  onButtonClick() {
-    this.buttonState = 'clicked';
+  socialLinks = [
+    {
+      label: 'LinkedIn',
+      href: 'https://linkedin.com/in/yourlinkedin',
+      btnClass: 'btn-outline-primary',
+      iconClass: 'fa-brands fa-linkedin',
+    },
+    {
+      label: 'GitHub',
+      href: 'https://github.com/yourgithub',
+      btnClass: 'btn-outline-dark',
+      iconClass: 'fa-brands fa-github',
+    },
+  ];
 
-    const emailData = {
-      to: 'krishnak.pilato@gmail.com',
-      subject: '123-456-7890',
-      body: 'Hello, I need assistance.',
-    };
+  constructor(private fb: FormBuilder) {
+    this.contactForm = this.fb.group({
+      name: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+      surname: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+      email: ['', [Validators.required, Validators.email]],
+      message: ['', [Validators.required, Validators.minLength(10)]],
+    });
+  }
 
-    this.sendStatusType = 'sending';
-    this.sendStatus = 'Sending...';
+  isInvalid(controlName: string): boolean {
+    const control = this.contactForm.get(controlName);
+    return control ? control.invalid && control.touched : false;
+  }
 
-    this.emailService.sendEmail(emailData).subscribe(
-      (response: any) => {
-        this.sendStatusType = 'success';
-        this.sendStatus = 'Email sent successfully!';
-      },
-      (error: any) => {
-        this.sendStatusType = 'error';
-        this.sendStatus = 'Error sending email. Please try again.';
-      }
-    );
-
-    setTimeout(() => {
-      this.buttonState = 'normal';
-    }, 200);
+  onSubmit() {
+    if (this.contactForm.valid) {
+    }
   }
 }

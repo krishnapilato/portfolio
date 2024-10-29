@@ -1,93 +1,136 @@
-// #5F5E79 for undraw
-
 export const environment = {
   production: false,
   apiUrl: 'https://backend-portfolio-v1-411a08a68df2.herokuapp.com',
 
-  website: {
-    backgroundColor: '#f0f4f7',
+  theme: {
+    primaryColor: '#3a86ff',
+    secondaryColor: '#5390d9',
     fontFamily: "'Segoe UI', Tahoma, Geneva, sans-serif",
-    header: {
-      title: 'khovakrishna.pilato',
-      fontFamily: '"Roboto", Arial, sans-serif',
-      icons: [
+    backgroundColor: '#f0f4f7',
+    footerBackgroundColor: '#e3e9ee',
+  },
+
+  header: {
+    title: 'khovakrishna.pilato',
+    fontFamily: '"Roboto", Arial, sans-serif',
+    links: [
+      {
+        icon: 'build',
+        tooltip: 'Skills',
+        route: '/dashboard',
+        color: 'text-secondary',
+      },
+      {
+        icon: 'person',
+        tooltip: 'About Me',
+        route: '/profile',
+        color: 'text-primary',
+      },
+      {
+        icon: 'email',
+        tooltip: 'Contact',
+        route: '/contact',
+        color: 'text-success',
+      },
+      {
+        icon: 'logout',
+        tooltip: 'Logout',
+        route: '/logout',
+        color: 'text-danger',
+      },
+    ],
+  },
+
+  footer: {
+    name: 'Khova Krishna Pilato',
+    text: `© ${new Date().getFullYear()} Khova Krishna Pilato • All rights reserved`,
+    style: { color: '#000', fontSize: '11px Arial' },
+    year: '2024'
+  },
+
+  home: {
+    title: 'Hi, I am Krishna',
+    subtitle: 'Java Full Stack Developer based in Milan, Italy',
+    description:
+      'Passionate about backend development, cloud services, and impactful applications.',
+    actions: [
+      {
+        text: 'Discover more about me',
+        link: '#about-me',
+        color: '#FFFFFF',
+        customClass: 'skills-button',
+      },
+      {
+        text: 'Download resume',
+        link: 'https://drive.google.com',
+        color: '#007BFF',
+        customClass: 'download-button',
+      },
+    ],
+    
+    contactForm: {
+      fields: [
         {
-          matIcon: 'build',
-          tooltip: 'Skills',
-          link: '/dashboard',
-          color: 'text-secondary',
+          id: 'name',
+          label: 'Name',
+          type: 'text',
+          placeholder: 'Enter your name',
+          validationMessage: 'Name is required and should only contain letters.',
         },
         {
-          matIcon: 'person',
-          tooltip: 'About Me',
-          link: '/profile',
-          color: 'text-primary',
+          id: 'surname',
+          label: 'Surname',
+          type: 'text',
+          placeholder: 'Enter your surname',
+          validationMessage:
+            'Surname is required and should only contain letters.',
         },
         {
-          matIcon: 'email',
-          tooltip: 'Contact',
-          link: '/contact',
-          color: 'text-success',
+          id: 'email',
+          label: 'Email',
+          type: 'email',
+          placeholder: 'Enter your email',
+          validationMessage: 'Please enter a valid email address.',
         },
         {
-          matIcon: 'logout',
-          tooltip: 'Logout',
-          link: '/logout',
-          color: 'text-danger',
+          id: 'message',
+          label: 'Message',
+          type: 'textarea',
+          placeholder: 'Write your message here',
+          validationMessage:
+            'Message is required and should be at least 10 characters long.',
         },
       ],
     },
-
-    footer: {
-      backgroundColor: '#e3e9ee',
-      year: new Date().getFullYear().toString(),
-      owner: {
-        name: 'Khova Krishna Pilato',
-        message: 'All rights reserved',
-      },
-      style: {
-        color: '#000000',
-        font: '11px Arial',
-      },
-      showYear: true,
-    },
-
-    home: {
-      name: 'Krishna',
-      subtitle: 'Full Stack developer from',
-      location: {
-        country: 'Italy',
-        province: 'Milan',
-        city: 'Milan',
-        address: 'XXXXXXXXXXXXXXXX',
-        postalCode: '00122',
-      },
-      mainMessage: 'Working with ',
-      actions: {
-        primaryAction: {
-          text: 'Discover more about me >',
-          style: {
-            color: '#FFFFFF',
-            customClass: 'skills-button',
-          },
-        },
-        secondaryAction: {
-          externalLink: 'https://drive.google.com',
-          text: 'Download resume',
-          style: {
-            color: '#007BFF',
-            customClass: 'download-button',
-          },
+    socialLinks: [
+      {
+        label: 'LinkedIn',
+        href: 'https://www.linkedin.com/in/khovakrishnapilato',
+        btnStyle: {
+          colorClass: 'btn-outline-primary',
+          textColor: '#0077b5',
+          icon: 'fa-linkedin',
         },
       },
-      image: 'developer.svg',
-      skills: ['Java', 'Spring Boot', 'Angular', 'AWS', 'Docker'],
-      carrrierTitle: 'My Career',
-      carrrierSubtitle: '(Working with a lot of techs)',
-      socialLinks: {
-        linkedin: 'https://www.linkedin.com/in/khovakrishnapilato',
-        github: 'https://github.com/krishnapilato',
+      {
+        label: 'GitHub',
+        href: 'https://github.com/krishnapilato',
+        btnStyle: {
+          colorClass: 'btn-outline-dark',
+          textColor: '#333',
+          icon: 'fa-github',
+        },
       },
-    },
+      {
+        label: 'Email',
+        href: 'mailto:youremail@example.com',
+        btnStyle: {
+          colorClass: 'btn-outline-secondary',
+          textColor: '#6c757d',
+          icon: 'fa-envelope',
+        },
+      },
+
+    ],
   },
 };

@@ -1,10 +1,10 @@
 <div class="d-flex flex-column min-vh-100">
   <div class="flex-grow-1"></div>
-  
-  <footer class="text-center py-2 bg-light custom-footer">
+
+  <footer class="text-center py-2 bg-light footer mt-auto">
     <p class="mb-0 small">
-      <span *ngIf="env.website.footer.showYear">&copy; {{ env.website.footer.year }} • </span>
-      {{ env.website.footer.owner.name }} • {{ env.website.footer.owner.message }}
+      <span>&copy; {{ footer.year }} • </span>
+      {{ footer.name }} • {{ footer.text }}
     </p>
   </footer>
 </div>
