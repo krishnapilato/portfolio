@@ -6,10 +6,20 @@
   --gradient-end: #e2f0ff;
 }
 
-body, html {
+body,
+html {
   margin: 0;
   height: 100%;
   background: var(--bg-color);
-  background: radial-gradient(circle, var(--gradient-start) 0%, var(--gradient-mid) 95%, var(--gradient-end) 100%);
+  background: radial-gradient(
+    circle,
+    var(--gradient-start) 0%,
+    var(--gradient-mid) 95%,
+    var(--gradient-end) 100%
+  );
   font-family: var(--font-family);
+}
+
+.no-select {
+  user-select: none;
 }

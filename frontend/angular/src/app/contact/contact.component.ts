@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import L from 'leaflet';
 
 @Component({
   selector: 'app-contact',
@@ -27,6 +28,21 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class ContactComponent {
   public contactForm: FormGroup;
+  successMessage: string | null = null;
+
+  private map: L.Map;
+
+  ngOnInit(): void {
+    this.initMap();
+  }
+
+  private initMap(): void {
+    this.map = L.map('map').setView([45.4642, 9.19], 13); 
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap',
+    }).addTo(this.map);
+  }
 
   fields = [
     {
@@ -36,14 +52,6 @@ export class ContactComponent {
       controlName: 'name',
       placeholder: 'Enter your name',
       errorMessage: 'Name is required and should only contain letters.',
-    },
-    {
-      id: 'surname',
-      label: 'Surname',
-      type: 'text',
-      controlName: 'surname',
-      placeholder: 'Enter your surname',
-      errorMessage: 'Surname is required and should only contain letters.',
     },
     {
       id: 'email',
@@ -66,15 +74,21 @@ export class ContactComponent {
 
   socialLinks = [
     {
+      label: 'Email',
+      href: 'mailto:krishnak.pilato@gmail.com',
+      btnClass: 'btn-danger',
+      iconClass: 'fa-regular fa-paper-plane',
+    },
+    {
       label: 'LinkedIn',
       href: 'https://linkedin.com/in/khovakrishnapilato',
-      btnClass: 'btn-outline-primary',
+      btnClass: 'btn-primary',
       iconClass: 'fa-brands fa-linkedin',
     },
     {
       label: 'GitHub',
       href: 'https://github.com/krishnapilato/portfolio/tree/dev',
-      btnClass: 'btn-outline-dark',
+      btnClass: 'btn-dark',
       iconClass: 'fa-brands fa-github',
     },
   ];
@@ -95,6 +109,15 @@ export class ContactComponent {
 
   onSubmit() {
     if (this.contactForm.valid) {
+      // Mock sending logic
+      this.successMessage = 'Your message has been sent successfully!';
+      // Reset the form
+      this.contactForm.reset();
+
+      // Optionally hide the message after a delay
+      setTimeout(() => {
+        this.successMessage = null;
+      }, 3000);
     }
   }
 }

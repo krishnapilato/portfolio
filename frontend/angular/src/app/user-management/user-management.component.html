@@ -1,0 +1,35 @@
+<div class="container my-5" id="user-management">
+  <div class="card shadow rounded-3">
+    <div class="row g-0">
+      <div class="col-md-6 p-4 bg-light border-end rounded-4">
+        <img src="private_data.svg" alt="" height="400px" width="360px">
+      </div>
+      <div class="col-md-6 p-4 rounded-4">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div *ngFor="let input of inputs" class="mb-3">
+            <label [for]="input.formControlName" class="form-label">{{ input.label }}</label>
+            <input
+              [id]="input.formControlName"
+              [type]="input.type"
+              [formControlName]="input.formControlName"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': isInvalid(input.formControlName) }"
+              [placeholder]="input.placeholder"
+            />
+            <div *ngIf="isInvalid(input.formControlName)" class="invalid-feedback">
+              {{ input.label }} is required.
+            </div>
+          </div>
+
+          <div *ngFor="let button of buttons">
+            <button [type]="button.type" [ngClass]="button.class" [disabled]="userForm.invalid">{{ button.label }}</button>
+          </div>
+        </form>
+
+        <div *ngIf="successMessage" class="alert alert-success mt-3">
+          {{ successMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

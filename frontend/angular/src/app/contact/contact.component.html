@@ -2,8 +2,8 @@
   <div class="card p-4 shadow-lg border-0 rounded-3">
     <div class="row g-0">
       <div class="col-lg-7 p-4" data-aos="fade-up" data-aos-delay="300">
-        <h2 class="text-center mb-4 display-5 fw-bold text-gradient">
-          <i class="fas fa-comments me-2"></i> Get in Touch
+        <h2 class="text-center mb-4 display-5 fw-bold">
+          <i class="fas fa-comments me-2"></i> Contact me
         </h2>
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
           <div class="mb-3" *ngFor="let field of fields">
@@ -31,32 +31,26 @@
             </div>
           </div>
 
-          <button
-            type="submit"
-            class="btn btn-primary rounded w-100"
-            [disabled]="contactForm.invalid"
-          >
+          <button type="submit" (click)="onSubmit()" class="btn btn-primary rounded w-100">
             Send Message
           </button>
+
+          <div *ngIf="successMessage" class="alert alert-success mt-3">
+            {{ successMessage }}
+          </div>
         </form>
       </div>
-      <div
-        class="col-lg-5 d-flex flex-column align-items-center justify-content-center p-4 bg-light rounded"
-        data-aos="fade-up"
-        data-aos-delay="300"
-      >
+      <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center p-4 bg-light rounded" data-aos="fade-up" data-aos-delay="300">
         <div *ngFor="let link of socialLinks" class="mb-3 w-75">
-          <a
-            [href]="link.href"
-            [ngClass]="link.btnClass"
-            target="_blank"
-            class="btn w-100 p-3 d-flex align-items-center justify-content-center"
-          >
+          <a [href]="link.href" [ngClass]="link.btnClass" target="_blank" class="btn w-100 p-3 d-flex align-items-center justify-content-center">
             <i [class]="link.iconClass + ' me-2'"></i> {{ link.label }}
           </a>
         </div>
-        <p class="text-muted mt-3">Phone number available upon email request.</p>
+        <small class="text-muted mt-5">Phone number available upon email request.</small>
       </div>
     </div>
   </div>
+
+  <!-- Add the Map Component here -->
+  <div data-aos="fade-up" data-aos-delay="300" id="map" style="border-radius: 1%; height: 300px; width: 100%;"></div>
 </div>

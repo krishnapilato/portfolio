@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
-import { AuthGuard } from './auth/auth.guard';
 import { LoginComponent } from './auth/login/login.component';
 import { RegistrationComponent } from './auth/registration/registration.component';
-import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
+import { HomeComponent } from './home/home.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { ErrorComponent } from './shared/error/error.component';
 
 export const routes: Routes = [
   {
@@ -21,11 +21,11 @@ export const routes: Routes = [
       { path: 'contact', component: ContactComponent },
       {
         path: 'dashboard',
-        component: AdminDashboardComponent,
-        canActivate: [AuthGuard],
+        component: UserManagementComponent,
+        canActivate: [], // Add your guards here if needed
       },
     ],
   },
-  { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', component: ErrorComponent }, 
 ];

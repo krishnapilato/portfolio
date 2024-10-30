@@ -1,31 +1,56 @@
 <div class="d-flex align-items-center justify-content-center vh-100">
   <div class="text-center">
-    <h2 class="display-4 fw-bold" data-aos="fade-up">Hi, I am Krishna Pilato</h2>
+    <h2 class="display-4 fw-bold" data-aos="fade-up">{{ home.title }}</h2>
     <div class="d-flex justify-content-center">
       <p class="lead text-secondary text-center w-75" data-aos="fade-up" data-aos-delay="200">
-        Java Full Stack Developer based in Northern Italy. Passionate about backend development, cloud services, building impactful applications, and creating efficient, scalable solutions <br> with <span class="font-weight-bold" id="element"></span>.
+        {{ home.description }} <br />
+        I work with <span class="font-weight-bold" id="element"></span>.
       </p>
     </div>
     <div class="d-flex justify-content-center gap-3 mt-4" data-aos="fade-up" data-aos-delay="100">
-      <a href="#about-me" class="btn btn-lg btn-primary custom-btn px-4 py-2 rounded-pill">LinkedIn</a>
-      <a href="https://www.linkedin.com/in/khovakrishnapilato" class="btn btn-lg btn-secondary custom-btn px-4 py-2 rounded-pill" target="_blank">Resume</a>
+      <a
+        target="_blank"
+        [href]="home.actions[0].link"
+        class="btn btn-lg btn-primary custom-btn px-4 py-2 rounded-pill"
+      >
+        {{ home.actions[0].text }}
+      </a>
+      <a
+        target="_blank"
+        [href]="home.actions[1].link"
+        class="btn btn-lg btn-secondary custom-btn px-4 py-2 rounded-pill"
+      >
+        {{ home.actions[1].text }}
+      </a>
     </div>
   </div>
 </div>
+
+<svg data-aos="fade-down" class="arrows">
+  <path class="a1" d="M0 0 L30 32 L60 0"></path>
+  <path class="a2" d="M0 20 L30 52 L60 20"></path>
+  <path class="a3" d="M0 40 L30 72 L60 40"></path>
+  <path class="a3" d="M0 40 L30 72 L60 40"></path>
+</svg>
 
 <div class="container my-5 text-center">
   <h2 data-aos="fade-up" data-aos-delay="100" class="mb-4 fw-bold text-gradient display-5">
     <i class="fas fa-tools me-2"></i> Main Skills
   </h2>
   <div data-aos="fade-up" data-aos-delay="100" class="d-flex justify-content-center mb-4">
-    <hr class="w-25 border-3" style="border-color: #5390d9;">
+    <hr class="w-25 border-3" style="border-color: #000000" />
   </div>
-  
+
   <div class="row justify-content-center">
     <!-- Skill Cards -->
-    <div class="col-lg-2 col-md-4 col-sm-6 d-flex justify-content-center mb-4" *ngFor="let skill of skills" data-aos="fade-up" [attr.data-aos-delay]="skill.delay">
+    <div
+      class="col-lg-2 col-md-4 col-sm-6 d-flex justify-content-center mb-4"
+      *ngFor="let skill of skills"
+      data-aos="fade-up"
+      [attr.data-aos-delay]="skill.delay"
+    >
       <div class="card-container">
-        <mat-card class="card-front" [ngStyle]="{'background': skill.gradient}">
+        <mat-card class="card-front" [ngStyle]="{ background: skill.gradient }">
           <mat-card-content>
             <i class="text-white mb-3"></i>
             <h6 class="fw-bold text-white">{{ skill.title }}</h6>
@@ -42,21 +67,22 @@
   </div>
 </div>
 
-  <div data-aos="fade-up" data-aos-delay="100" class="d-flex justify-content-center mb-4">
-    <hr class="w-50 border-3" style="border-color: #5390d9;">
-  </div>
-
-<div class="container my-5" style="padding-top: 1rem;">
+<div class="container my-5" style="padding-top: 1rem">
   <h2 data-aos="fade-up" data-aos-delay="100" class="text-center mb-4 display-5 fw-bold text-gradient">
     <i class="fas fa-briefcase me-2"></i> Case Studies
   </h2>
 
   <div data-aos="fade-up" data-aos-delay="100" class="d-flex justify-content-center mb-4">
-    <hr class="w-25 border-3" style="border-color: #5390d9;">
+    <hr class="w-25 border-3" style="border-color: #000000" />
   </div>
-  
+
   <div class="row row-cols-1 row-cols-md-2 g-4">
-    <div class="col" *ngFor="let caseStudy of caseStudies" data-aos="fade-up" [attr.data-aos-delay]="caseStudy.delay">
+    <div
+      class="col"
+      *ngFor="let caseStudy of caseStudies"
+      data-aos="fade-up"
+      [attr.data-aos-delay]="caseStudy.delay"
+    >
       <mat-card class="p-3 shadow-sm rounded-3 bg-light">
         <mat-card-content>
           <h5 class="fw-bold mb-2">{{ caseStudy.title }}</h5>
@@ -71,9 +97,5 @@
     </div>
   </div>
 </div>
-
-  <div data-aos="fade-up" data-aos-delay="100" class="d-flex justify-content-center mb-4">
-    <hr class="w-50 border-3" style="border-color: #5390d9;">
-  </div>
 
 <app-contact></app-contact>

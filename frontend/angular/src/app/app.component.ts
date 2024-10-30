@@ -22,6 +22,21 @@ export class AppComponent {
   title: string = 'khovakrishnapilato.com';
   private env = environment;
 
+  ngOnInit(): void {
+    this.forceHTTPS();
+  }
+
+  forceHTTPS(): void {
+    if (
+      window.location.protocol !== 'https:' &&
+      window.location.hostname !== 'localhost'
+    ) {
+      window.location.href = `https:${window.location.href.substring(
+        window.location.protocol.length
+      )}`;
+    }
+  }
+
   constructor(private elementRef: ElementRef) {}
   ngAfterViewInit() {
     //this.elementRef.nativeElement.ownerDocument.body.style.color = '#000';

@@ -1,44 +1,60 @@
-<div class="login-container">
-    <mat-card class="login-card">
-        <mat-card-title>Welcome back.</mat-card-title>
-        <mat-card-subtitle>Sign in to continue.</mat-card-subtitle>
-        <div class="space"></div>
-        <mat-card-content>
+<div class="container d-flex align-items-center justify-content-center vh-100">
+    <div class="card login-card" style="width: 600px; padding: 30px;">
+        <div class="card-body text-center">
+            <h2 class="card-title mb-4">Welcome back.</h2>
+            <h6 class="card-subtitle mb-4 text-muted">Sign in to continue.</h6>
             <form (ngSubmit)="login(loginForm)" #loginForm="ngForm">
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Email</mat-label>
-                    <input [placeholder]="'Insert email'" matInput [(ngModel)]="loginRequest.email" name="loginRequest.email" required email/>
-                    <mat-error *ngIf=" loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input 
+                        type="email" 
+                        class="form-control" 
+                        id="email" 
+                        placeholder="Insert email" 
+                        [(ngModel)]="loginRequest.email" 
+                        name="loginRequest.email" 
+                        required 
+                        email
+                    />
+                    <div class="invalid-feedback" *ngIf="loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched">
                         <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')">Email is required</ng-container>
                         <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')">Please enter a valid email</ng-container>
-                    </mat-error>
-                    <mat-icon matSuffix fontIcon="mail"></mat-icon>
-                </mat-form-field>
-                <div class="space"></div>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Password</mat-label>
-                    <mat-icon *ngIf="loginForm.controls['loginRequest.password']?.value?.length === 0" matSuffix fontIcon="key"></mat-icon>
-                    <input [placeholder]="'Insert password'" matInput [minLength]="7" [type]="hide ? 'password' : 'text'" [(ngModel)]="loginRequest.password" name="loginRequest.password" required/>
-                    <mat-icon [matTooltipPosition]="'after'" [matTooltip]="hide ? 'Show password' : 'Hide password'" *ngIf="loginForm.controls['loginRequest.password']?.value?.length > 0" matSuffix (click)="hide = !hide">{{hide ? "visibility_off" : "visibility"}}</mat-icon>
-                    <mat-error *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="{{ hide ? 'password' : 'text' }}" 
+                        class="form-control" 
+                        id="password" 
+                        placeholder="Insert password" 
+                        [minLength]="7" 
+                        [(ngModel)]="loginRequest.password" 
+                        name="loginRequest.password" 
+                        required
+                    />
+                    <div class="invalid-feedback" *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched">
                         Password is required
-                    </mat-error>
-                </mat-form-field>
-                <div class="space"></div>
-                <div *ngIf="error" class="error">{{ error }}</div>
-                <div class="space"></div>
-                <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid" class="full-width">
-                    Login <mat-icon iconPositionEnd fontIcon="login"></mat-icon>
+                    </div>
+                    <div class="form-text">
+                        <a (click)="hide = !hide">{{ hide ? "Show" : "Hide" }} password</a>
+                    </div>
+                </div>
+
+                <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+                <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">
+                    Login
                 </button>
             </form>
-            <div class="space"></div>
-            <p class="signup-link">
-                Don't have an account? 
-                <u
-                ><a routerLink="/auth/signup"
-                  >Sign Up  <i class="fa-solid fa-plus"></i></a
-              ></u>
-            </p>
-        </mat-card-content>
-    </mat-card>
+
+            <div class="mt-4">
+                <p class="signup-link">
+                    Don't have an account? 
+                    <a routerLink="/auth/signup" class="link-primary">Sign Up</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </div>

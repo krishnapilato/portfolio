@@ -1,161 +1,79 @@
-<div class="registration-container">
-  <mat-card class="registration-card">
-    <mat-card-title>Let's get started.</mat-card-title>
-    <mat-card-subtitle>Create an account to connect.</mat-card-subtitle>
-    <div class="space"></div>
-    <mat-card-content>
-      <form (ngSubmit)="signUp(registrationForm)" #registrationForm="ngForm">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Full Name</mat-label>
-          <input
-            matInput
-            [placeholder]="'Insert full name'"
-            [(ngModel)]="registrationRequest.fullName"
-            name="registrationRequest.fullName"
-            required
-            minlength="2"
-            pattern="[a-zA-Z\s]+"
-          />
-          <mat-error
-            *ngIf="
-              registrationForm.controls['registrationRequest.fullName']
-                ?.errors &&
-              (registrationForm.controls['registrationRequest.fullName']
-                ?.dirty ||
-                registrationForm.controls['registrationRequest.fullName']
-                  ?.touched)
-            "
-          >
-            <ng-container
-              *ngIf="
-                registrationForm.controls[
-                  'registrationRequest.fullName'
-                ]?.hasError('required')
-              "
-              >Full name is required</ng-container
-            >
-          </mat-error>
-          <mat-icon matSuffix fontIcon="person"></mat-icon>
-        </mat-form-field>
-        <div class="space"></div>
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input
-            [placeholder]="'Insert email'"
-            matInput
-            [(ngModel)]="registrationRequest.email"
-            name="registrationRequest.email"
-            type="email"
-            required
-            email
-          />
-          <mat-error
-            *ngIf="
-              registrationForm.controls['registrationRequest.email']?.errors &&
-              (registrationForm.controls['registrationRequest.email']?.dirty ||
-                registrationForm.controls['registrationRequest.email']?.touched)
-            "
-          >
-            <ng-container
-              *ngIf="
-                registrationForm.controls[
-                  'registrationRequest.email'
-                ]?.hasError('required')
-              "
-              >Email is required</ng-container
-            >
-            <ng-container
-              *ngIf="
-                registrationForm.controls[
-                  'registrationRequest.email'
-                ]?.hasError('email')
-              "
-              >Please enter a valid email</ng-container
-            >
-          </mat-error>
-          <mat-icon matSuffix fontIcon="mail"></mat-icon>
-        </mat-form-field>
-        <div class="space"></div>
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input
-            matInput
-            [placeholder]="'Insert password'"
-            [type]="hide ? 'password' : 'text'"
-            [(ngModel)]="registrationRequest.password"
-            name="registrationRequest.password"
-            required
-            minlength="9"
-          />
-          <mat-icon
-            *ngIf="
-              registrationForm.controls['registrationRequest.password']?.value
-                ?.length === 0
-            "
-            matSuffix
-            fontIcon="key"
-          ></mat-icon>
-          <mat-icon
-            [matTooltipPosition]="'after'"
-            [matTooltip]="hide ? 'Show password' : 'Hide password'"
-            *ngIf="
-              registrationForm.controls['registrationRequest.password']?.value
-                ?.length > 0
-            "
-            matSuffix
-            (click)="hide = !hide"
-            >{{ hide ? "visibility_off" : "visibility" }}</mat-icon
-          >
-          <mat-error
-            *ngIf="
-              registrationForm.controls['registrationRequest.password']
-                ?.errors &&
-              (registrationForm.controls['registrationRequest.password']
-                ?.dirty ||
-                registrationForm.controls['registrationRequest.password']
-                  ?.touched)
-            "
-          >
-            <ng-container
-              *ngIf="
-                registrationForm.controls[
-                  'registrationRequest.password'
-                ]?.hasError('required')
-              "
-              >Password is required</ng-container
-            >
-            <ng-container
-              *ngIf="
-                registrationForm.controls[
-                  'registrationRequest.password'
-                ]?.hasError('minlength')
-              "
-              >Password must be at least 9 characters</ng-container
-            >
-          </mat-error>
-        </mat-form-field>
-        <div *ngIf="error" class="error">{{ error }}</div>
-        <div class="space"></div>
-        <div class="button-container">
-          <button
-            class="full-width"
-            id="registrationButton"
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="registrationForm.invalid"
-          >
-            Sign Up <mat-icon iconPositionEnd fontIcon="person_add"></mat-icon>
-          </button>
+<div class="container d-flex align-items-center justify-content-center vh-100">
+    <div class="card registration-card" style="width: 600px; padding: 30px;">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Let's get started.</h2>
+            <h6 class="card-subtitle text-center mb-4">Create an account to connect.</h6>
+            <form (ngSubmit)="signUp(registrationForm)" #registrationForm="ngForm">
+                
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="fullName" 
+                        class="form-control" 
+                        placeholder="Insert full name" 
+                        [(ngModel)]="registrationRequest.fullName" 
+                        name="registrationRequest.fullName" 
+                        required 
+                        minlength="2" 
+                        pattern="[a-zA-Z\s]+"
+                    />
+                    <div *ngIf="registrationForm.controls['registrationRequest.fullName']?.invalid && (registrationForm.controls['registrationRequest.fullName']?.dirty || registrationForm.controls['registrationRequest.fullName']?.touched)" class="text-danger">
+                        <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('required')">Full name is required</ng-container>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        class="form-control" 
+                        placeholder="Insert email" 
+                        [(ngModel)]="registrationRequest.email" 
+                        name="registrationRequest.email" 
+                        required 
+                        email
+                    />
+                    <div *ngIf="registrationForm.controls['registrationRequest.email']?.invalid && (registrationForm.controls['registrationRequest.email']?.dirty || registrationForm.controls['registrationRequest.email']?.touched)" class="text-danger">
+                        <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('required')">Email is required</ng-container>
+                        <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('email')">Please enter a valid email</ng-container>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="{{ hide ? 'password' : 'text' }}" 
+                        id="password" 
+                        class="form-control" 
+                        placeholder="Insert password" 
+                        [(ngModel)]="registrationRequest.password" 
+                        name="registrationRequest.password" 
+                        required 
+                        minlength="9"
+                    />
+                    <div class="form-text">
+                        <a (click)="hide = !hide">{{ hide ? "Show" : "Hide" }} password</a>
+                    </div>
+                    <div *ngIf="registrationForm.controls['registrationRequest.password']?.invalid && (registrationForm.controls['registrationRequest.password']?.dirty || registrationForm.controls['registrationRequest.password']?.touched)" class="text-danger">
+                        <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('required')">Password is required</ng-container>
+                        <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('minlength')">Password must be at least 9 characters</ng-container>
+                    </div>
+                </div>
+
+                <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+                <button type="submit" class="btn btn-primary w-100" [disabled]="registrationForm.invalid">
+                    Sign Up <i class="fas fa-user-plus"></i>
+                </button>
+
+                <div class="mt-3 text-center">
+                    <p>Already have an account? 
+                        <a routerLink="/auth/login" class="link-primary">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+                    </p>
+                </div>
+            </form>
         </div>
-        <p mat-raised-button color="primary">
-          Already have an account?
-          <u
-            ><a routerLink="/login"
-              >Login <i class="fa-solid fa-right-to-bracket"></i></a
-          ></u>
-        </p>
-      </form>
-    </mat-card-content>
-  </mat-card>
+    </div>
 </div>

@@ -42,9 +42,9 @@ export class HomeComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
       this.typed = new Typed('#element', {
-        strings: ['Java', 'Spring Boot', 'Angular', 'AWS', 'Database'],
-        typeSpeed: 150,
-        backSpeed: 100,
+        strings: this.home.skills,
+        typeSpeed: 250,
+        backSpeed: 200,
         fadeOut: true,
         loop: true,
       });
