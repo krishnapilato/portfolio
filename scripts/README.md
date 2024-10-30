@@ -2,6 +2,7 @@
 # Application Installer
 
 This installer script simplifies the process of checking for and installing essential applications like Java, Node.js, Docker, and more. 
+**New features coming next week!**
 
 ---
 
