@@ -5,8 +5,11 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --prod",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -24,14 +27,9 @@
     "aos": "^2.3.4",
     "bootstrap": "^5.3.3",
     "date-fns": "^3.6.0",
-    "install": "^0.13.0",
     "ngx-typed-js": "^2.1.1",
-    "npm": "^10.8.2",
-    "primeicons": "^7.0.0",
-    "primeng": "^17.18.11",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "typed.js": "^2.1.0",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {

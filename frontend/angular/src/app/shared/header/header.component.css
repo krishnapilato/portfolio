@@ -3,3 +3,11 @@
   background: transparent;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
+
+body.modal-open {
+  filter: blur(200px);
+}
+
+.nav-icon {
+  margin-left: 10px;
+}

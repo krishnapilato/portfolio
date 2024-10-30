@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,9 +7,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import * as AOS from 'aos';
 import { NgxTypedJsModule } from 'ngx-typed-js';
-import { CarouselModule } from 'primeng/carousel';
+import Typed from 'typed.js';
 import { environment } from '../../environment/environment';
 import { ContactComponent } from "../contact/contact.component";
 
@@ -17,7 +16,6 @@ import { ContactComponent } from "../contact/contact.component";
   selector: 'app-home',
   standalone: true,
   imports: [
-    CarouselModule,
     MatIcon,
     MatChipsModule,
     MatButtonModule,
@@ -30,13 +28,27 @@ import { ContactComponent } from "../contact/contact.component";
     MatTooltip,
     MatCardModule,
     RouterModule,
-    ContactComponent
-],
+    ContactComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
   public home = environment.home;
+
+  typed: any;
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+      this.typed = new Typed('#element', {
+        strings: ['Java', 'Spring Boot', 'Angular', 'AWS', 'Database'],
+        typeSpeed: 150,
+        backSpeed: 100,
+        fadeOut: true,
+        loop: true,
+      });
+  }
 
   skills = [
     {

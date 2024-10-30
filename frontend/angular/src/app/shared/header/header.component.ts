@@ -27,5 +27,22 @@ import { AuthService } from '../../auth/auth.service';
 export class HeaderComponent {
   public header = environment.header;
 
+  headerTitle = 'khovakrishna.pilato';
+
+  // Array of objects for each nav link
+  navLinks = [
+    { icon: 'fa-home', label: 'Home', route: '#' },
+    { icon: 'fa-smile', label: 'About', route: '#' },
+    { icon: 'fa-envelope', label: 'Contact', route: '#' },
+    { icon: 'fa-arrow-right-to-bracket', label: 'Login', route: '/auth/login' },
+  ];
   constructor(public authService: AuthService) {}
+
+  hoverEffect(event: any) {
+    event.target.style.color = '#007bff';
+  }
+
+  normalEffect(event: any) {
+    event.target.style.color = 'inherit';
+  }
 }

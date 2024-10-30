@@ -13,6 +13,16 @@ function Log-Message {
     "$timestamp - $message" | Out-File -FilePath $logPath -Append -Encoding UTF8
 }
 
+function Show-Progress {
+    param (
+        [string]$action,
+        [int]$current,
+        [int]$total
+    )
+    $percentComplete = [math]::round(($current / $total) * 100)
+    Write-Progress -Activity $action -Status "$percentComplete% Complete" -PercentComplete $percentComplete
+}
+
 Log-Message "Starting installation process..."
 
 if (Test-Path -Path $jsonPath) {
@@ -33,7 +43,6 @@ function Check-ApplicationInstalled {
 
 $installedApps = @()
 $installSelections = @()
-
 
 foreach ($app in $applications) {
     $isInstalled = Check-ApplicationInstalled -appCommand $app.checkCommand
@@ -59,9 +68,11 @@ else {
     Log-Message "No applications from the list are currently installed."
 }
 
-
 if ($installSelections.Count -gt 0) {
     Write-Host "`nThe following applications are not installed and can be selected for installation:"
+    $totalApps = $installSelections.Count
+    $currentAppIndex = 0
+
     foreach ($app in $installSelections) {
         $selection = Read-Host "[ ] Install $($app.name) v$($app.version)? (Y/N/Q to quit)"
 
@@ -73,6 +84,10 @@ if ($installSelections.Count -gt 0) {
 
         $app.install = $selection -match '^[yY]$'
         Log-Message "User selected to install $($app.name): $($app.install)"
+        
+        # Show progress after each selection
+        currentAppIndex++
+        Show-Progress "Processing installations" $currentAppIndex $totalApps
     }
 
     Write-Host "`nYou selected the following applications to install: "
@@ -142,12 +157,11 @@ else {
 Write-Host "Docker containers are running. Press any key to exit and keep containers running."
 [System.Console]::ReadKey() | Out-Null
 
-
 $confirmQuit = Read-Host "Are you sure you want to stop and remove all Docker containers? (Y/N)"
 if ($confirmQuit -match '^[yY]$') {
     Write-Host "Quitting the installation process."
     Log-Message "User quit the installation process."
-    
+
     Start-Process -FilePath "powershell" -ArgumentList "-Command docker stop -f $(docker ps -aq)" -NoNewWindow -Wait
     Start-Process -FilePath "powershell" -ArgumentList "-Command docker rm -f $(docker ps -aq)" -NoNewWindow -Wait
 

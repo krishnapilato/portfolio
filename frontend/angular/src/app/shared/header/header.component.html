@@ -1,42 +1,39 @@
-<mat-toolbar class="navbar navbar-expand-lg bg-light mt-1 custom-toolbar">
+<!-- Bootstrap Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light rounded-3">
   <div class="container-fluid">
-    <a
-      class="navbar-brand d-flex align-items-center ms-3"
-      routerLink="/home"
-      style="font-family: 'JetBrains Mono', monospace;"
-    >
+    <a class="navbar-brand d-flex align-items-center ms-3" [routerLink]="'/home'" style="font-family: 'JetBrains Mono', monospace;">
       <mat-icon>device_hub</mat-icon>
-      <b class="ms-2">{{ header.title }}</b>
+      <strong class="ms-2">{{ headerTitle }}</strong>
     </a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" [matMenuTriggerFor]="mobileMenu">
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto me-3">
-        <li class="nav-item" *ngFor="let icon of header.links">
-          <a
-            class="nav-link {{ icon.color }} mx-2"
-            [routerLink]="[icon]"
-            mat-icon-button
-            matTooltip="{{ icon.tooltip }}"
-            matTooltipPosition="below"
-            *ngIf="!(icon.tooltip.toLowerCase() === 'logout' && !authService.isAuthenticated())"
-            (click)="icon.tooltip.toLowerCase() === 'logout' ? authService.logout() : null"
-          >
-            <mat-icon>{{ icon }}</mat-icon>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item" *ngFor="let link of navLinks">
+          <a class="nav-link mx-4" [href]="link.route" (mouseover)="hoverEffect($event)" (mouseout)="normalEffect($event)">
+            <i class="fa" [class]="link.icon"></i> {{ link.label }}
           </a>
         </li>
       </ul>
     </div>
   </div>
+</nav>
 
-  <mat-menu #mobileMenu="matMenu">
-    <ng-container *ngFor="let icon of header.links">
-      <button mat-menu-item [routerLink]="icon.route">
-        <mat-icon>{{ icon }}</mat-icon> {{ icon.tooltip }}
-      </button>
-    </ng-container>
-  </mat-menu>
-</mat-toolbar>
+<!-- Fullscreen Offcanvas Menu -->
+<div class="offcanvas offcanvas-start mw-100 rounded-4" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <p class="text-secondary">Select an option:</p>
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+      <li class="nav-item" *ngFor="let link of navLinks">
+        <a class="nav-link mt-4" [href]="link.route" (mouseover)="hoverEffect($event)" (mouseout)="normalEffect($event)">
+          <i class="fa" [class]="link.icon"></i> {{ link.label }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
