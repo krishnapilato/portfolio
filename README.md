@@ -1,5 +1,5 @@
 
-# khovakrishnapilato.com
+# khovakrishna.pilato
 
 ![Java Version](https://img.shields.io/badge/Java-21.0.5-blue?style=flat&logo=java)
 ![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.5-brightgreen?style=flat&logo=spring-boot)
