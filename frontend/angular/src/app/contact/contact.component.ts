@@ -30,18 +30,7 @@ export class ContactComponent {
   public contactForm: FormGroup;
   successMessage: string | null = null;
 
-  private map: L.Map;
-
   ngOnInit(): void {
-    this.initMap();
-  }
-
-  private initMap(): void {
-    this.map = L.map('map').setView([45.4642, 9.19], 13); 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap',
-    }).addTo(this.map);
   }
 
   fields = [

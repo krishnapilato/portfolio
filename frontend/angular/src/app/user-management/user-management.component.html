@@ -2,7 +2,7 @@
   <div class="card shadow rounded-3">
     <div class="row g-0">
       <div class="col-md-6 p-4 bg-light border-end rounded-4">
-        <img src="private_data.svg" alt="" height="400px" width="360px">
+        <img src="private_data.svg" alt="Private Data" class="img-fluid" height="400" width="360">
       </div>
       <div class="col-md-6 p-4 rounded-4">
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
@@ -21,8 +21,13 @@
             </div>
           </div>
 
-          <div *ngFor="let button of buttons">
-            <button [type]="button.type" [ngClass]="button.class" [disabled]="userForm.invalid">{{ button.label }}</button>
+          <div class="d-flex justify-content-between mt-3">
+            <button *ngFor="let button of buttons" 
+                    [type]="button.type" 
+                    [ngClass]="button.class" 
+                    [disabled]="userForm.invalid">
+              {{ button.label }}
+            </button>
           </div>
         </form>
 

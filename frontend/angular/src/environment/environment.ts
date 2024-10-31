@@ -17,7 +17,7 @@ export const environment = {
       {
         icon: 'fa-solid fa-wrench',
         tooltip: 'Skills',
-        route: '/dashboard',
+        route: '#skills-page',
         color: 'text-secondary',
       },
       {

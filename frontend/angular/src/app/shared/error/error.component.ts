@@ -1,28 +1,25 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-error',
-  standalone: true,
-  imports: [RouterModule],
-  templateUrl: './error.component.html',
-  styles: [
-    `
-      :host {
-        display: block;
-        overflow: hidden;
-        height: 100vh;
-      }
-    `,
-  ],
+  template: `
+    <div
+      class="container my-5 d-flex align-items-center justify-content-center"
+      style="min-height: 70vh;"
+    >
+      <div class="text-center">
+        <img
+          src="page_not_found.svg"
+          alt="Page Not Found"
+          class="img-fluid mb-4"
+          width="200"
+          height="200"
+        />
+        <h2 class="mb-3">An error has occurred</h2>
+        <p class="lead mb-4">The page you're looking for doesn't exist.</p>
+        <a routerLink="/home" class="btn btn-outline-primary">Go Back Home</a>
+      </div>
+    </div>
+  `,
 })
-export class ErrorComponent {
-  message: string = '';
-
-  constructor(private route: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    this.message =
-      this.route.snapshot.data['message'] || 'An error has occurred';
-  }
-}
+export class ErrorComponent {}

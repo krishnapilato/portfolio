@@ -1,7 +1,7 @@
 <!-- Bootstrap Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light rounded-3">
   <div class="container-fluid">
-    <a class="navbar-brand d-flex align-items-center ms-3" [routerLink]="'/home'" style="font-family: 'JetBrains Mono', monospace;">
+    <a class="navbar-brand d-flex align-items-center ms-3" [routerLink]="['/home']" style="font-family: 'JetBrains Mono', monospace;">
       <mat-icon>device_hub</mat-icon>
       <strong class="ms-2">{{ headerTitle }}</strong>
     </a>
@@ -11,8 +11,8 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" *ngFor="let link of navLinks">
-          <a class="nav-link mx-4" [href]="link.route" (mouseover)="hoverEffect($event)" (mouseout)="normalEffect($event)">
-            <i class="fa" [class]="link.icon"></i> {{ link.label }}
+          <a class="nav-link mx-4" [routerLink]="link.route" (mouseover)="toggleHover($event, true)" (mouseout)="toggleHover($event, false)">
+            <i class="fa" [ngClass]="link.icon"></i> {{ link.label }}
           </a>
         </li>
       </ul>
@@ -20,8 +20,8 @@
   </div>
 </nav>
 
-<!-- Fullscreen Offcanvas Menu -->
-<div class="offcanvas offcanvas-start mw-100 rounded-4" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+<!-- Offcanvas Menu -->
+<div class="offcanvas offcanvas-bottom h-auto rounded-3" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -30,8 +30,8 @@
     <p class="text-secondary">Select an option:</p>
     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
       <li class="nav-item" *ngFor="let link of navLinks">
-        <a class="nav-link mt-4" [href]="link.route" (mouseover)="hoverEffect($event)" (mouseout)="normalEffect($event)">
-          <i class="fa" [class]="link.icon"></i> {{ link.label }}
+        <a class="nav-link mt-4" [routerLink]="link.route" (mouseover)="toggleHover($event, true)" (mouseout)="toggleHover($event, false)">
+          <i class="fa" [ngClass]="link.icon"></i> {{ link.label }}
         </a>
       </li>
     </ul>

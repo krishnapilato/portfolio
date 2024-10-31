@@ -25,30 +25,33 @@ import { AuthService } from '../auth.service';
     MatButtonModule,
     RouterModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
 })
 export class LoginComponent implements OnInit {
   public loginRequest: LoginRequest = { email: '', password: '' };
-  public error: string | null = null; 
+  public error: string | null = null;
   public hide: boolean = true;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
+    // Redirect to home if user is already authenticated
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['home']);
     }
   }
 
-  public login(loginForm: NgForm) {
+  public login(loginForm: NgForm): void {
+    // Proceed if the form is valid
     if (loginForm.valid) {
       this.authService.login(this.loginRequest).subscribe({
         next: () => {
-          this.error = null;
+          this.error = null; // Clear error on successful login
+          this.router.navigate(['home']); // Redirect to home page after login
         },
         error: (err) => {
-          this.error = err.error.message;
+          this.error = err.error.message; // Set error message for failed login
         },
       });
     }

@@ -6,10 +6,10 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  status: string;
+  status: 'success' | 'error';
   message: string;
   token: string;
   expiresIn: number;
-  errorCode: string;
+  errorCode?: string;
   role: Role;
 }

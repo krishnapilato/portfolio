@@ -6,15 +6,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterModule } from '@angular/router';
-
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router, RouterModule } from '@angular/router';
 import {
   RegistrationRequest,
   RegistrationResponse,
 } from '../../shared/models/registration.model';
 import { AuthService } from '../auth.service';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-registration',
@@ -40,26 +39,30 @@ export class RegistrationComponent {
     email: '',
     password: '',
   };
-  public error: string | null = null;
-  public hide: boolean = true;
+  public error: string | null = null; // Variable to hold error messages
+  public hide: boolean = true; // Variable to toggle password visibility
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private _snackbar: MatSnackBar
+    private snackbar: MatSnackBar // Changed variable name to follow convention
   ) {}
 
   public signUp(registrationForm: NgForm): void {
     if (registrationForm.valid) {
       this.authService.signUp(this.registrationRequest).subscribe({
         next: (data: RegistrationResponse) => {
-          this._snackbar.open('Login successful!', 'Close', { duration: 3000 });
+          this.snackbar.open(
+            'Registration successful! Please log in.',
+            'Close',
+            { duration: 3000 }
+          );
           this.router.navigate(['auth/login']);
         },
         error: (error: any) => {
           this.error =
-            error.error.message || 'Registration failed. Please try again.';
-          console.log(error);
+            error.error.message || 'Registration failed. Please try again.'; // Display appropriate error message
+          console.error(error); // Logging errors
         },
       });
     }

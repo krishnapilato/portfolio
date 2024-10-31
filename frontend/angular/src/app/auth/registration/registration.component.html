@@ -1,10 +1,11 @@
 <div class="container d-flex align-items-center justify-content-center vh-100">
     <div class="card registration-card" style="width: 600px; padding: 30px;">
         <div class="card-body">
-            <h2 class="card-title text-center mb-4">Let's get started.</h2>
+            <h2 class="card-title text-center mb-4">Let's Get Started</h2>
             <h6 class="card-subtitle text-center mb-4">Create an account to connect.</h6>
-            <form (ngSubmit)="signUp(registrationForm)" #registrationForm="ngForm">
-                
+            <form (ngSubmit)="signUp(registrationForm)" #registrationForm="ngForm" novalidate>
+
+                <!-- Full Name Input -->
                 <div class="mb-3">
                     <label for="fullName" class="form-label">Full Name</label>
                     <input 
@@ -19,10 +20,11 @@
                         pattern="[a-zA-Z\s]+"
                     />
                     <div *ngIf="registrationForm.controls['registrationRequest.fullName']?.invalid && (registrationForm.controls['registrationRequest.fullName']?.dirty || registrationForm.controls['registrationRequest.fullName']?.touched)" class="text-danger">
-                        <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('required')">Full name is required</ng-container>
+                        <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('required')">Full name is required.</ng-container>
                     </div>
                 </div>
 
+                <!-- Email Input -->
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input 
@@ -36,11 +38,12 @@
                         email
                     />
                     <div *ngIf="registrationForm.controls['registrationRequest.email']?.invalid && (registrationForm.controls['registrationRequest.email']?.dirty || registrationForm.controls['registrationRequest.email']?.touched)" class="text-danger">
-                        <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('required')">Email is required</ng-container>
-                        <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('email')">Please enter a valid email</ng-container>
+                        <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('required')">Email is required.</ng-container>
+                        <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('email')">Please enter a valid email.</ng-container>
                     </div>
                 </div>
 
+                <!-- Password Input -->
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input 
@@ -54,20 +57,23 @@
                         minlength="9"
                     />
                     <div class="form-text">
-                        <a (click)="hide = !hide">{{ hide ? "Show" : "Hide" }} password</a>
+                        <a href="#" (click)="hide = !hide; $event.preventDefault();">{{ hide ? "Show" : "Hide" }} password</a>
                     </div>
                     <div *ngIf="registrationForm.controls['registrationRequest.password']?.invalid && (registrationForm.controls['registrationRequest.password']?.dirty || registrationForm.controls['registrationRequest.password']?.touched)" class="text-danger">
-                        <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('required')">Password is required</ng-container>
-                        <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('minlength')">Password must be at least 9 characters</ng-container>
+                        <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('required')">Password is required.</ng-container>
+                        <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('minlength')">Password must be at least 9 characters.</ng-container>
                     </div>
                 </div>
 
+                <!-- Error Message -->
                 <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
+                <!-- Submit Button -->
                 <button type="submit" class="btn btn-primary w-100" [disabled]="registrationForm.invalid">
                     Sign Up <i class="fas fa-user-plus"></i>
                 </button>
 
+                <!-- Login Link -->
                 <div class="mt-3 text-center">
                     <p>Already have an account? 
                         <a routerLink="/auth/login" class="link-primary">Login <i class="fa-solid fa-right-to-bracket"></i></a>

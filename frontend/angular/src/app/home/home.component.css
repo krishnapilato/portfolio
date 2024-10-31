@@ -82,14 +82,6 @@
 100% {opacity:0}
 }
 
-@-webkit-keyframes arrow
-{
-0% {opacity:0}
-40% {opacity:1}
-80% {opacity:0}
-100% {opacity:0}
-}
-
 .arrows path.a1 {
 	animation-delay:-1s;
 	-webkit-animation-delay:-1s;

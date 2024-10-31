@@ -1,9 +1,9 @@
 <div class="container d-flex align-items-center justify-content-center vh-100">
     <div class="card login-card" style="width: 600px; padding: 30px;">
         <div class="card-body text-center">
-            <h2 class="card-title mb-4">Welcome back.</h2>
+            <h2 class="card-title mb-4">Welcome</h2>
             <h6 class="card-subtitle mb-4 text-muted">Sign in to continue.</h6>
-            <form (ngSubmit)="login(loginForm)" #loginForm="ngForm">
+            <form (ngSubmit)="login(loginForm)" #loginForm="ngForm" novalidate>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input 
@@ -15,10 +15,11 @@
                         name="loginRequest.email" 
                         required 
                         email
+                        aria-describedby="emailHelp"
                     />
                     <div class="invalid-feedback" *ngIf="loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched">
-                        <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')">Email is required</ng-container>
-                        <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')">Please enter a valid email</ng-container>
+                        <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')">Email is required.</ng-container>
+                        <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')">Please enter a valid email.</ng-container>
                     </div>
                 </div>
 
@@ -35,10 +36,10 @@
                         required
                     />
                     <div class="invalid-feedback" *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched">
-                        Password is required
+                        Password is required.
                     </div>
-                    <div class="form-text">
-                        <a (click)="hide = !hide">{{ hide ? "Show" : "Hide" }} password</a>
+                    <div class="form-text mt-2">
+                        <a href="#" (click)="hide = !hide; $event.preventDefault();">{{ hide ? "Show" : "Hide" }} password</a>
                     </div>
                 </div>
 
