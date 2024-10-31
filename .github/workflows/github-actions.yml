@@ -66,10 +66,10 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
-          cd frontend/angular/dist/frontend  # Navigate to the build output directory
+          cd frontend/angular/dist/frontend/browser  # Navigate to the build output directory
           git init  # Initialize a new Git repository
           git config user.email "krishnak.pilato@gmail.com"  # Change to your email
           git config user.name "krishnapilato"  # Change to your name
           git add .  # Add all files to the staging area
           git commit -m "Deploy frontend to GitHub Pages"  # Commit the changes
-          git push --force --set-upstream https://github.com/krishnapilato/portfolio.git master:gh-pages  # Push to gh-pages branch
+          git push --force --set-upstream https://x-access-token:${{ secrets.TOKEN }}@github.com/krishnapilato/portfolio.git master:gh-pages  # Push to gh-pages branch
