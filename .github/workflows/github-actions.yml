@@ -54,16 +54,9 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli@latest
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
-
       - name: Install Dependencies
         run: |
-          cd frontend/angular/ 
+          cd frontend/angular/
           npm ci --force
 
       - name: Build Angular App
@@ -71,7 +64,12 @@ jobs:
           cd frontend/angular/
           ng build --configuration production
 
-      - name: Deploy to S3 with Cache-Control
+      - name: Deploy to GitHub Pages
         run: |
-          aws s3 sync frontend/angular/dist/frontend/browser s3://my-portfolio-frontend-khovakrishna --delete \
-            --cache-control "public, max-age=31536000, immutable"
+          cd frontend/angular/dist/frontend/browser  # Navigate to the build output directory
+          git config --local user.email "krishnak.pilato@gmail.com"
+          git config --local user.name "Khova Krishna Pilato"
+          git init 
+          git add .
+          git commit -m "Deploy frontend to GitHub Pages"
+          git push --force --set-upstream https://github.com/krishnapilato/portfolio.git master:gh-pages
