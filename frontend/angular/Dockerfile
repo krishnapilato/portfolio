@@ -1,14 +1,14 @@
 # Use Node.js image as the base for building
-FROM node:23.1.0 AS builder
+FROM node:latest AS builder
 
 # Set the working directory
 WORKDIR /app
 
 # Copy package.json and package-lock.json (if available) to leverage caching
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json* ./
 
 # Install dependencies (this layer will be cached)
-RUN npm install --force
+RUN npm ci --force
 
 # Copy the rest of the source code
 COPY . .
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build -- --configuration production
 
 # Use Node.js image to serve the application
-FROM node:23.1.0 AS production
+FROM node:latest AS production
 
 # Set the working directory
 WORKDIR /app

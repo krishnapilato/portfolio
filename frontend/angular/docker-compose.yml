@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "4200:4200"  # Map port 80 in the container to port 4200 on the host
+      - "4200:4200"
     networks:
       - app-network
     restart: unless-stopped
