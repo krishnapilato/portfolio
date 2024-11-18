@@ -66,7 +66,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
-          cd frontend/angular/dist/frontend/browser  # Navigate to the build output directory
+          cd frontend/angular/dist/frontend/browser/  # Navigate to the build output directory
           git init  # Initialize a new Git repository
           git config user.email "krishnak.pilato@gmail.com"  # Change to your email
           git config user.name "krishnapilato"  # Change to your name
