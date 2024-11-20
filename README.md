@@ -3,14 +3,12 @@
 
 ![Java Version](https://img.shields.io/badge/Java-21.0.5-blue?style=flat&logo=java)
 ![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.5-brightgreen?style=flat&logo=spring-boot)
-![Angular Version](https://img.shields.io/badge/Angular-18.2.9-red?style=flat&logo=angular)
+![Angular Version](https://img.shields.io/badge/Angular-19.0.0-red?style=flat&logo=angular)
 ![MySQL](https://img.shields.io/badge/MySQL-9.1.0-blue?style=flat&logo=mysql)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
 [![GitHub Actions](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
 
 This web application showcases my technical skills and professional experience. Please note that the code is currently in ALPHA and may contain bugs. A bug-fixing process is ongoing and will continue through **November 31, 2024** to ensure stability.
-
-**Explore the ALPHA version of the frontend [here](http://my-portfolio-frontend-khovakrishna.s3-website-us-east-1.amazonaws.com/home)**
 
 ---
 
