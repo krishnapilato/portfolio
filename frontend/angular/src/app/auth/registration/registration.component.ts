@@ -16,22 +16,21 @@ import {
 import { AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-registration',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    RouterModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatSnackBarModule,
-  ],
-  templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.css'],
+    selector: 'app-registration',
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        RouterModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatSnackBarModule,
+    ],
+    templateUrl: './registration.component.html',
+    styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent {
   public registrationRequest: RegistrationRequest = {

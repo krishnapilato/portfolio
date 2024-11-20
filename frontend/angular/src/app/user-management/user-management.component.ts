@@ -24,25 +24,23 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { environment } from '../../environment/environment';
 
 @Component({
-  selector: 'app-user-management',
-  encapsulation: ViewEncapsulation.None,
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatMenuModule,
-    MatIconModule,
-    MatToolbar,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    MatTooltipModule,
-  ],
-  templateUrl: './user-management.component.html',
-  styleUrls: ['./user-management.component.css'],
+    selector: 'app-user-management',
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        CommonModule,
+        MatTableModule,
+        MatMenuModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        MatTooltipModule,
+    ],
+    templateUrl: './user-management.component.html',
+    styleUrls: ['./user-management.component.css']
 })
 export class UserManagementComponent implements OnInit {
   userForm: FormGroup;

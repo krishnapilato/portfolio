@@ -13,18 +13,16 @@ import { MatInputModule } from '@angular/material/input';
 import L from 'leaflet';
 
 @Component({
-  selector: 'app-contact',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIcon,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    CommonModule,
-  ],
-  templateUrl: './contact.component.html',
-  styleUrl: './contact.component.css',
+    selector: 'app-contact',
+    imports: [
+        MatButtonModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        CommonModule,
+    ],
+    templateUrl: './contact.component.html',
+    styleUrl: './contact.component.css'
 })
 export class ContactComponent {
   public contactForm: FormGroup;

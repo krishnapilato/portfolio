@@ -13,22 +13,21 @@ import { environment } from '../../environment/environment';
 import { ContactComponent } from '../contact/contact.component';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatChipsModule,
-    MatIconModule,
-    MatTooltipModule,
-    NgxTypedJsModule,
-    RouterModule,
-    ContactComponent,
-  ],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+    selector: 'app-home',
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatButtonModule,
+        MatCardModule,
+        MatChipsModule,
+        MatIconModule,
+        MatTooltipModule,
+        NgxTypedJsModule,
+        RouterModule,
+        ContactComponent,
+    ],
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   public home = environment.home;

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-error',
-  template: `
+    selector: 'app-error',
+    template: `
     <div
       class="container my-5 d-flex align-items-center justify-content-center"
       style="min-height: 70vh;"
@@ -21,5 +21,6 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
+    standalone: false
 })
 export class ErrorComponent {}
