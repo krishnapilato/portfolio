@@ -5,27 +5,22 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import bootstrap from './src/main.server';
 
-// The Express app is exported so that it can be used by serverless Functions.
-export function app(): express.Express {
+export function createApp(): express.Express {
   const server = express();
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
   const indexHtml = join(serverDistFolder, 'index.server.html');
-
   const commonEngine = new CommonEngine();
 
+  // Set up view engine and static files
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
+  server.use(express.static(browserDistFolder, { maxAge: '1y', index: false }));
 
-  // Example Express Rest API endpoints
+  // Handle API routes (placeholder)
   // server.get('/api/**', (req, res) => { });
-  // Serve static files from /browser
-  server.get('**', express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: 'index.html',
-  }));
 
-  // All regular routes use the Angular engine
+  // Universal rendering for Angular routes
   server.get('**', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
 
@@ -37,21 +32,23 @@ export function app(): express.Express {
         publicPath: browserDistFolder,
         providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
       })
-      .then((html) => res.send(html))
-      .catch((err) => next(err));
+      .then((html: string) => res.send(html))
+      .catch((err: Error) => {
+        console.error('Error rendering Angular app:', err);
+        next(err);
+      });
   });
 
   return server;
 }
 
-function run(): void {
+function startServer(): void {
   const port = process.env['PORT'] || 4000;
 
-  // Start up the Node server
-  const server = app();
+  const server = createApp();
   server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
 
-run();
+startServer();

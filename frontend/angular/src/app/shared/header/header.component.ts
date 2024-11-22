@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 
@@ -24,6 +25,7 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class HeaderComponent {
   public headerTitle = 'khovakrishna.pilato';
+  @ViewChild('offcanvasElement') offcanvasElement!: ElementRef;
 
   navLinks = [
     { icon: 'fa-home', label: 'Home', route: '/home' },
@@ -34,8 +36,9 @@ export class HeaderComponent {
 
   constructor(private authService: AuthService, private renderer: Renderer2) {}
 
-  public toggleHover(event: MouseEvent, isHovering: boolean): void {
-    const color = isHovering ? '#007bff' : 'inherit';
-    this.renderer.setStyle(event.target, 'color', color);
+  public onLinkClick(): void {
+    const Offcanvas = (window as any).bootstrap.Offcanvas;
+    const offcanvas = Offcanvas.getInstance(this.offcanvasElement.nativeElement) || new Offcanvas(this.offcanvasElement.nativeElement);
+    offcanvas.hide();
   }
 }

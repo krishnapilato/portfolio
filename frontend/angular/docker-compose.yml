@@ -1,8 +1,6 @@
 services:
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
       - "4200:4200"
     networks:

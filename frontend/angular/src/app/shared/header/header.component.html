@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" *ngFor="let link of navLinks">
-          <a class="nav-link mx-4" [routerLink]="link.route" (mouseover)="toggleHover($event, true)" (mouseout)="toggleHover($event, false)">
+          <a class="nav-link mx-4" [routerLink]="link.route">
             <i class="fa" [ngClass]="link.icon"></i> {{ link.label }}
           </a>
         </li>
@@ -21,17 +21,30 @@
 </nav>
 
 <!-- Offcanvas Menu -->
-<div class="offcanvas offcanvas-bottom h-auto rounded-3" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <p class="text-secondary">Select an option:</p>
-    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-      <li class="nav-item" *ngFor="let link of navLinks">
-        <a class="nav-link mt-4" [routerLink]="link.route" (mouseover)="toggleHover($event, true)" (mouseout)="toggleHover($event, false)">
-          <i class="fa" [ngClass]="link.icon"></i> {{ link.label }}
+<div
+  #offcanvasElement
+  class="offcanvas offcanvas-bottom h-auto rounded-3 d-flex flex-column align-items-center"
+  tabindex="-1"
+  id="offcanvasNavbar"
+  aria-labelledby="offcanvasNavbarLabel"
+>
+  <div class="offcanvas-body d-flex flex-column align-items-center">
+    <p class="text-secondary text-center">Click outside to close</p>
+    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+      <li
+        class="nav-item"
+        *ngFor="let link of navLinks"
+      >
+        <a
+          class="nav-link mt-4 text-center"
+          [routerLink]="link.route"
+          (click)="onLinkClick()"
+        >
+          <i
+            class="fa"
+            [ngClass]="link.icon"
+          ></i>
+          {{ link.label }}
         </a>
       </li>
     </ul>

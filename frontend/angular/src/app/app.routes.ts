@@ -19,13 +19,9 @@ export const routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'contact', component: ContactComponent },
-      {
-        path: 'dashboard',
-        component: UserManagementComponent,
-        canActivate: [], // TODO: Add route guards if required for access control
-      },
+      { path: 'dashboard', component: UserManagementComponent, canActivate: [] },
     ],
   },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home on empty path
-  { path: '**', component: ErrorComponent }, // Catch-all route for undefined paths
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', component: ErrorComponent },
 ];
