@@ -1,33 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { NgxTypedJsModule } from 'ngx-typed-js';
 import Typed from 'typed.js';
+
+import { MatIconModule } from '@angular/material/icon';
 import { environment } from '../../environment/environment';
 import { ContactComponent } from '../contact/contact.component';
 
 @Component({
-    selector: 'app-home',
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatButtonModule,
-        MatCardModule,
-        MatChipsModule,
-        MatIconModule,
-        MatTooltipModule,
-        NgxTypedJsModule,
-        RouterModule,
-        ContactComponent,
-    ],
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css']
+  selector: 'app-home',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    RouterModule,
+    ContactComponent,
+  ],
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   public home = environment.home;

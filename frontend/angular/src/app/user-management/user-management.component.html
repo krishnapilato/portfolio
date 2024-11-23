@@ -1,13 +1,22 @@
 <div class="container my-5" id="user-management">
-  <div class="card shadow rounded-3">
+  <div class="card shadow rounded-3 overflow-hidden">
     <div class="row g-0">
-      <div class="col-md-6 p-4 bg-light border-end rounded-4">
-        <img src="private_data.svg" alt="Private Data" class="img-fluid" height="400" width="360">
+      <div class="col-md-6 p-4 bg-light border-end d-flex align-items-center justify-content-center">
+        <img
+          src="private_data.svg"
+          alt="Private Data Illustration"
+          class="img-fluid"
+          width="360"
+          height="400"
+        />
       </div>
-      <div class="col-md-6 p-4 rounded-4">
+
+      <div class="col-md-6 p-4">
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
           <div *ngFor="let input of inputs" class="mb-3">
-            <label [for]="input.formControlName" class="form-label">{{ input.label }}</label>
+            <label [for]="input.formControlName" class="form-label fw-bold">
+              {{ input.label }}
+            </label>
             <input
               [id]="input.formControlName"
               [type]="input.type"
@@ -17,21 +26,24 @@
               [placeholder]="input.placeholder"
             />
             <div *ngIf="isInvalid(input.formControlName)" class="invalid-feedback">
-              {{ input.label }} is required.
+              {{ input.label + ' is required.' }}
             </div>
           </div>
 
-          <div class="d-flex justify-content-between mt-3">
-            <button *ngFor="let button of buttons" 
-                    [type]="button.type" 
-                    [ngClass]="button.class" 
-                    [disabled]="userForm.invalid">
+          <div class="d-flex justify-content-between mt-4">
+            <button
+              *ngFor="let button of buttons"
+              [type]="button.type"
+              class="btn"
+              [ngClass]="button.class"
+              [disabled]="userForm.invalid"
+            >
               {{ button.label }}
             </button>
           </div>
         </form>
 
-        <div *ngIf="successMessage" class="alert alert-success mt-3">
+        <div *ngIf="successMessage" class="alert alert-success mt-3 text-center">
           {{ successMessage }}
         </div>
       </div>

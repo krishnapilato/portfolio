@@ -1,54 +1,69 @@
-<div class="container my-5" id="contact" data-aos="fade-up" data-aos-delay="300" style="padding-top: 6rem;">
+<div class="container my-5" id="contact" data-aos="fade-up" data-aos-delay="300">
   <div class="card p-4 shadow-lg border-0 rounded-3">
     <div class="row g-0">
+      <!-- Contact Form Section -->
       <div class="col-lg-7 p-4" data-aos="fade-up" data-aos-delay="300">
-        <h2 class="text-center mb-4 display-5 fw-bold">
-          <i class="fas fa-comments me-2"></i> Contact me
+        <h2 class="text-center mb-4 display-5 fw-bold text-dark">
+          <i class="fas fa-comments me-2"></i> Contact Me
         </h2>
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
           <div class="mb-3" *ngFor="let field of fields">
-            <label [for]="field.id" class="form-label">{{ field.label }}</label>
-            <input
-              *ngIf="field.type !== 'textarea'"
-              [type]="field.type"
-              [id]="field.id"
-              [placeholder]="field.placeholder"
-              [formControlName]="field.controlName"
-              class="form-control p-3"
-              [ngClass]="{ 'is-invalid': isInvalid(field.controlName) }"
-            />
-            <textarea
-              *ngIf="field.type === 'textarea'"
-              [id]="field.id"
-              [placeholder]="field.placeholder"
-              [formControlName]="field.controlName"
-              class="form-control p-3"
-              rows="4"
-              [ngClass]="{ 'is-invalid': isInvalid(field.controlName) }"
-            ></textarea>
+            <label [for]="field.id" class="form-label fw-bold text-dark">{{ field.label }}</label>
+            <ng-container [ngSwitch]="field.type">
+              <input
+                *ngSwitchDefault
+                [type]="field.type"
+                [id]="field.id"
+                [placeholder]="field.placeholder"
+                [formControlName]="field.controlName"
+                class="form-control p-3 rounded"
+                [ngClass]="{ 'is-invalid': isInvalid(field.controlName) }"
+              />
+              <textarea
+                *ngSwitchCase="'textarea'"
+                [id]="field.id"
+                [placeholder]="field.placeholder"
+                [formControlName]="field.controlName"
+                class="form-control p-3 rounded"
+                rows="4"
+                [ngClass]="{ 'is-invalid': isInvalid(field.controlName) }"
+              ></textarea>
+            </ng-container>
             <div *ngIf="isInvalid(field.controlName)" class="invalid-feedback">
               {{ field.errorMessage }}
             </div>
           </div>
 
-          <button type="submit" (click)="onSubmit()" class="btn btn-primary rounded w-100">
+          <button type="submit" class="btn btn-primary rounded-pill w-100 p-3 fw-bold">
             Send Message
           </button>
 
-          <div *ngIf="successMessage" class="alert alert-success mt-3">
+          <div *ngIf="successMessage" class="alert alert-success mt-3 text-center">
             {{ successMessage }}
           </div>
         </form>
       </div>
-      <div class="col-lg-5 d-flex flex-column align-items-center justify-content-center p-4 bg-light rounded" data-aos="fade-up" data-aos-delay="300">
-        <div *ngFor="let link of socialLinks" class="mb-3 w-75">
-          <a [href]="link.href" [ngClass]="link.btnClass" target="_blank" class="btn w-100 p-3 d-flex align-items-center justify-content-center">
+
+      <!-- Social Links Section -->
+      <div
+        class="col-lg-5 d-flex flex-column align-items-center justify-content-center p-4 bg-light rounded"
+        data-aos="fade-up" data-aos-delay="300"
+      >
+        <h4 class="fw-bold text-dark mb-4">Connect with me</h4>
+        <div *ngFor="let link of socialLinks" class="mb-3 w-100">
+          <a
+            [href]="link.href"
+            [ngClass]="link.btnClass"
+            target="_blank"
+            class="btn w-100 p-3 d-flex align-items-center justify-content-center rounded-pill fw-bold"
+          >
             <i [class]="link.iconClass + ' me-2'"></i> {{ link.label }}
           </a>
         </div>
-        <small class="text-muted mt-5">Phone number available upon email request.</small>
+        <p class="text-muted mt-5 text-center">
+          <small>Phone number available upon email request.</small>
+        </p>
       </div>
     </div>
   </div>
-
 </div>

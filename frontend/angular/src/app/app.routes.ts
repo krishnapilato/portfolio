@@ -17,11 +17,15 @@ export const routes: Routes = [
   {
     path: '',
     children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' }, 
       { path: 'home', component: HomeComponent },
       { path: 'contact', component: ContactComponent },
-      { path: 'dashboard', component: UserManagementComponent, canActivate: [] },
+      {
+        path: 'dashboard',
+        component: UserManagementComponent,
+        canActivate: [],
+      },
     ],
   },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: '**', component: ErrorComponent },
+  { path: '**', component: ErrorComponent }, 
 ];

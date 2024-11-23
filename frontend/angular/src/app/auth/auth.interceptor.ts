@@ -16,25 +16,24 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const token = this.authService.currentUserValue?.token; // Retrieve the current user's token
-    const isLoginOrSignup = this.isLoginOrSignupRequest(request.url); // Check if the request is for login or signup
+    const token = this.authService.currentUserValue?.token;
+    const isLoginOrSignup = this.isLoginOrSignupRequest(request.url);
 
-    // If token exists and request is not for login or signup, set the Authorization header
     if (token && !isLoginOrSignup) {
       request = this.addAuthorizationHeader(request, token);
     }
 
-    return next.handle(request); // Pass the modified request to the next handler
+    return next.handle(request);
   }
 
   private isLoginOrSignupRequest(url: string): boolean {
-    return url.includes('login') || url.includes('signup'); // Check if the URL contains login or signup
+    return url.includes('login') || url.includes('signup');
   }
 
   private addAuthorizationHeader(
     request: HttpRequest<any>,
     token: string
   ): HttpRequest<any> {
-    return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } }); // Clone the request and add the Authorization header
+    return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
   }
 }

@@ -1,61 +1,84 @@
 <div class="container d-flex align-items-center justify-content-center vh-100">
-    <div class="card login-card" style="width: 600px; padding: 30px;">
-        <div class="card-body text-center">
-            <h2 class="card-title mb-4">Welcome</h2>
-            <h6 class="card-subtitle mb-4 text-muted">Sign in to continue.</h6>
-            <form (ngSubmit)="login(loginForm)" #loginForm="ngForm" novalidate>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input 
-                        type="email" 
-                        class="form-control" 
-                        id="email" 
-                        placeholder="Insert email" 
-                        [(ngModel)]="loginRequest.email" 
-                        name="loginRequest.email" 
-                        required 
-                        email
-                        aria-describedby="emailHelp"
-                    />
-                    <div class="invalid-feedback" *ngIf="loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched">
-                        <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')">Email is required.</ng-container>
-                        <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')">Please enter a valid email.</ng-container>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input 
-                        type="{{ hide ? 'password' : 'text' }}" 
-                        class="form-control" 
-                        id="password" 
-                        placeholder="Insert password" 
-                        [minLength]="7" 
-                        [(ngModel)]="loginRequest.password" 
-                        name="loginRequest.password" 
-                        required
-                    />
-                    <div class="invalid-feedback" *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched">
-                        Password is required.
-                    </div>
-                    <div class="form-text mt-2">
-                        <a href="#" (click)="hide = !hide; $event.preventDefault();">{{ hide ? "Show" : "Hide" }} password</a>
-                    </div>
-                </div>
-
-                <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-
-                <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">
-                    Login
-                </button>
-            </form>
-
-            <div class="mt-4">
-                <p class="signup-link">
-                    Don't have an account? 
-                    <a routerLink="/auth/signup" class="link-primary">Sign Up</a>
-                </p>
-            </div>
+  <div
+    class="card shadow-lg border-0"
+    style="width: 600px; padding: 30px; border-radius: 12px;"
+  >
+    <div class="card-body text-center">
+      <h2 class="card-title mb-4">Welcome back</h2>
+      <h6 class="card-subtitle mb-4 text-muted">Sign in to continue.</h6>
+      <form (ngSubmit)="login(loginForm)" #loginForm="ngForm" novalidate>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            placeholder="Insert email"
+            [(ngModel)]="loginRequest.email"
+            name="loginRequest.email"
+            required
+            email
+            aria-describedby="emailHelp"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              loginForm.controls['loginRequest.email']?.invalid &&
+              loginForm.controls['loginRequest.email']?.touched
+            "
+          >
+            <ng-container
+              *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')"
+              >Email is required.</ng-container
+            >
+            <ng-container
+              *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')"
+              >Please enter a valid email.</ng-container
+            >
+          </div>
         </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="{{ hide ? 'password' : 'text' }}"
+            class="form-control"
+            id="password"
+            placeholder="Insert password"
+            [minLength]="7"
+            [(ngModel)]="loginRequest.password"
+            name="loginRequest.password"
+            required
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              loginForm.controls['loginRequest.password']?.invalid &&
+              loginForm.controls['loginRequest.password']?.touched
+            "
+          >
+            Password is required.
+          </div>
+          <div class="form-text mt-2">
+            <a href="#" (click)="hide = !hide; $event.preventDefault();">{{
+              hide ? 'Show' : 'Hide'
+            }} password</a>
+          </div>
+        </div>
+
+        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+        <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">
+          Login
+        </button>
+      </form>
+
+      <div class="mt-4">
+        <p class="signup-link">
+          Don't have an account?
+          <a routerLink="/auth/signup" class="link-primary">Sign Up</a>
+        </p>
+      </div>
     </div>
+  </div>
 </div>

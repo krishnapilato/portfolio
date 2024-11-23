@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,28 +8,24 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import L from 'leaflet';
 
 @Component({
-    selector: 'app-contact',
-    imports: [
-        MatButtonModule,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        CommonModule,
-    ],
-    templateUrl: './contact.component.html',
-    styleUrl: './contact.component.css'
+  selector: 'app-contact',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
+  templateUrl: './contact.component.html',
+  styleUrls: ['./contact.component.css'],
 })
-export class ContactComponent {
-  public contactForm: FormGroup;
+export class ContactComponent implements OnInit {
+  contactForm!: FormGroup;
   successMessage: string | null = null;
-
-  ngOnInit(): void {
-  }
 
   fields = [
     {
@@ -39,6 +35,7 @@ export class ContactComponent {
       controlName: 'name',
       placeholder: 'Enter your name',
       errorMessage: 'Name is required and should only contain letters.',
+      validators: [Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
     },
     {
       id: 'email',
@@ -47,6 +44,7 @@ export class ContactComponent {
       controlName: 'email',
       placeholder: 'Enter your email',
       errorMessage: 'Please enter a valid email address.',
+      validators: [Validators.required, Validators.email],
     },
     {
       id: 'message',
@@ -56,6 +54,7 @@ export class ContactComponent {
       placeholder: 'Write your message here',
       errorMessage:
         'Message is required and should be at least 10 characters long.',
+      validators: [Validators.required, Validators.minLength(10)],
     },
   ];
 
@@ -80,31 +79,31 @@ export class ContactComponent {
     },
   ];
 
-  constructor(private fb: FormBuilder) {
-    this.contactForm = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
-      surname: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
-      email: ['', [Validators.required, Validators.email]],
-      message: ['', [Validators.required, Validators.minLength(10)]],
-    });
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.initializeForm();
   }
 
-  isInvalid(controlName: string): boolean {
+  private initializeForm(): void {
+    const formControls = this.fields.reduce((controls, field) => {
+      controls[field.controlName] = ['', field.validators];
+      return controls;
+    }, {} as Record<string, any>);
+    this.contactForm = this.fb.group(formControls);
+  }
+
+  public isInvalid(controlName: string): boolean {
     const control = this.contactForm.get(controlName);
-    return control ? control.invalid && control.touched : false;
+    return !!(control?.invalid && control.touched);
   }
 
-  onSubmit() {
+  public onSubmit(): void {
     if (this.contactForm.valid) {
-      // Mock sending logic
       this.successMessage = 'Your message has been sent successfully!';
-      // Reset the form
       this.contactForm.reset();
 
-      // Optionally hide the message after a delay
-      setTimeout(() => {
-        this.successMessage = null;
-      }, 3000);
+      setTimeout(() => (this.successMessage = null), 3000);
     }
   }
 }

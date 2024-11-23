@@ -1,51 +1,31 @@
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
-import {
-  FormGroup,
   FormBuilder,
-  Validators,
+  FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { environment } from '../../environment/environment';
 
 @Component({
-    selector: 'app-user-management',
-    encapsulation: ViewEncapsulation.None,
-    imports: [
-        CommonModule,
-        MatTableModule,
-        MatMenuModule,
-        MatIconModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatProgressSpinnerModule,
-        ReactiveFormsModule,
-        MatDialogModule,
-        MatSnackBarModule,
-        MatTooltipModule,
-    ],
-    templateUrl: './user-management.component.html',
-    styleUrls: ['./user-management.component.css']
+  selector: 'app-user-management',
+  encapsulation: ViewEncapsulation.None,
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+  ],
+  templateUrl: './user-management.component.html',
+  styleUrls: ['./user-management.component.css'],
 })
 export class UserManagementComponent implements OnInit {
   userForm: FormGroup;
-  inputs = environment.formData.inputs; // Get inputs from environment variables
-  buttons = environment.formData.buttons; // Get buttons from environment variables
+  inputs = environment.formData.inputs;
+  buttons = environment.formData.buttons;
   successMessage: string | null = null;
 
   constructor(private fb: FormBuilder) {
@@ -58,11 +38,11 @@ export class UserManagementComponent implements OnInit {
 
   private initializeForm(): void {
     this.inputs.forEach((input) => {
-      const validators = input.required ? [Validators.required] : [];
-      this.userForm.addControl(
-        input.formControlName,
-        this.fb.control('', validators)
+      const control = this.fb.control(
+        '',
+        input.required ? Validators.required : []
       );
+      this.userForm.addControl(input.formControlName, control);
     });
   }
 
@@ -70,12 +50,12 @@ export class UserManagementComponent implements OnInit {
     if (this.userForm.valid) {
       console.log(this.userForm.value);
       this.successMessage = 'Your information has been updated successfully!';
-      this.userForm.reset(); // Reset the form
+      this.userForm.reset();
     }
   }
 
-  public isInvalid(controlName: string) {
+  public isInvalid(controlName: string): boolean {
     const control = this.userForm.get(controlName);
-    return control?.invalid && (control.touched || control.dirty);
+    return !!(control?.invalid && (control.touched || control.dirty));
   }
 }

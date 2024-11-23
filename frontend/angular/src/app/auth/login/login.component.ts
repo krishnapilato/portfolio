@@ -4,55 +4,57 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { LoginRequest } from '../../shared/models/login.model';
 import { AuthService } from '../auth.service';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css'],
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        RouterModule,
-        MatIconModule,
-        MatTooltipModule,
-    ]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    RouterModule,
+  ],
 })
 export class LoginComponent implements OnInit {
-  public loginRequest: LoginRequest = { email: '', password: '' };
-  public error: string | null = null;
-  public hide: boolean = true;
+  loginRequest: LoginRequest = { email: '', password: '' };
+  error: string | null = null;
+  hide: boolean = true;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    // Redirect to home if user is already authenticated
+    this.redirectIfAuthenticated();
+  }
+
+  private redirectIfAuthenticated(): void {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['home']);
     }
   }
 
   public login(loginForm: NgForm): void {
-    // Proceed if the form is valid
-    if (loginForm.valid) {
-      this.authService.login(this.loginRequest).subscribe({
-        next: () => {
-          this.error = null; // Clear error on successful login
-          this.router.navigate(['home']); // Redirect to home page after login
-        },
-        error: (err) => {
-          this.error = err.error.message; // Set error message for failed login
-        },
-      });
-    }
+    if (!loginForm.valid) return; 
+
+    this.authService.login(this.loginRequest).subscribe({
+      next: () => this.handleSuccessfulLogin(),
+      error: (err) => this.handleLoginError(err),
+    });
+  }
+
+  private handleSuccessfulLogin(): void {
+    this.error = null;
+    this.router.navigate(['home']);
+  }
+
+  private handleLoginError(err: any): void {
+    this.error = err.error?.message || 'An unexpected error occurred.';
   }
 }

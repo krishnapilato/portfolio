@@ -19,7 +19,6 @@
   height: 250px;
   transform-style: preserve-3d;
   transition: transform 0.6s;
-  animation: rotateY(180deg) 2s;
 }
 
 .card-container:hover {
@@ -34,18 +33,12 @@
   backface-visibility: hidden;
   border-radius: 0.75rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.card-front {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .card-back {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transform: rotateY(180deg);
   padding: 1rem;
 }
@@ -54,45 +47,43 @@
 .case-study-card ul {
   font-size: 0.9rem;
   color: #6c757d;
-  border-radius: 25%;
 }
 
 .arrows {
-	width: 60px;
-	height: 72px;
-	position: absolute;
-	left: 50%;
-	margin-left: -30px;
-	bottom: 5rem;
+  width: 60px;
+  height: 72px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 5rem;
 }
 
 .arrows path {
-	stroke: #000000;
-	fill: transparent;
-	stroke-width: 1px;	
-	animation: arrow 2s infinite;
-	-webkit-animation: arrow 2s infinite; 
-}
-
-@keyframes arrow
-{
-0% {opacity:0}
-40% {opacity:1}
-80% {opacity:0}
-100% {opacity:0}
+  stroke: #000;
+  fill: transparent;
+  stroke-width: 1px;
+  animation: arrow 2s infinite;
 }
 
 .arrows path.a1 {
-	animation-delay:-1s;
-	-webkit-animation-delay:-1s;
+  animation-delay: -1s;
 }
 
 .arrows path.a2 {
-	animation-delay:-0.5s;
-	-webkit-animation-delay:-0.5s;
+  animation-delay: -0.5s;
 }
 
-.arrows path.a3 {	
-	animation-delay:0s;
-	-webkit-animation-delay:0s;
+.arrows path.a3 {
+  animation-delay: 0s;
+}
+
+@keyframes arrow {
+  0%,
+  80%,
+  100% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
 }
