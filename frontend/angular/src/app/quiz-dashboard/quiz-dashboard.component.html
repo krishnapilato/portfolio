@@ -1,0 +1,44 @@
+<div class="quiz-container">
+  <!-- Quiz Card -->
+  <div *ngIf="!quizFinished">
+    <h2>Question {{ questionIndex + 1 + " / " + questions.length }}:</h2>
+    <p>{{ question.text }}</p>
+
+    <ul class="options">
+      <li
+        *ngFor="let option of question.options; let i = index"
+        (click)="checkAnswer(option, i)"
+        [class.correct]="option.isCorrect && showCorrectAnswer"
+        [class.incorrect]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
+        [class.disabled]="selectedOptionIndex !== null"
+      >
+        {{ option.text }}
+      </li>
+    </ul>
+
+    <!-- Explanation Section -->
+    <div *ngIf="showCorrectAnswer && selectedOptionIndex !== null && question.options[selectedOptionIndex].isCorrect === false" class="explanation">
+      <strong>Explanation:</strong> {{ question.explanation }}
+    </div>
+
+    <button (click)="nextOrFinish()" [disabled]="!showCorrectAnswer">
+      {{ questionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz' }}
+    </button>
+  </div>
+
+  <!-- Results Card -->
+  <div *ngIf="quizFinished" class="results-card">
+    <h2>Quiz Results</h2>
+    <p><strong>Your Score:</strong> {{ getResults().score }}%</p>
+    <p>{{ getResults().advice }}</p>
+
+    <h3>Statistics</h3>
+    <ul class="stats">
+      <li>Total Questions: {{ questions.length }}</li>
+      <li>Correct Answers: {{ correctAnswersCount }}</li>
+      <li>Incorrect Answers: {{ questions.length - correctAnswersCount }}</li>
+    </ul>
+
+    <button (click)="restartQuiz()">Restart Quiz</button>
+  </div>
+</div>

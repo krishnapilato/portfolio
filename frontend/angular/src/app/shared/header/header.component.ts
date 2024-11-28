@@ -26,7 +26,7 @@ export class HeaderComponent {
 
   navLinks = [
     { icon: 'fa-home', label: 'Home', route: '/home' },
-    { icon: 'fa-smile', label: 'About', route: '/home' },
+    { icon: 'fa-solid fa-circle-question', label: 'Quiz', route: '/dashboard' },
     { icon: 'fa-envelope', label: 'Contact', route: '/contact' },
     { icon: 'fa-arrow-right-to-bracket', label: 'Login', route: '/auth/login' },
   ];

@@ -1,0 +1,133 @@
+.quiz-container {
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.options li {
+  list-style-type: none;
+  padding: 15px 20px;
+  margin: 10px 0;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ffffff, #f0f0f0);
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.options li:hover:not(.disabled) {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  border-color: #64b5f6;
+}
+
+.options li.correct {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  border-color: #28a745;
+  color: #155724;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+}
+
+.options li.incorrect {
+  background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+  border-color: #dc3545;
+  color: #721c24;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+}
+
+.options li.disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.explanation {
+  margin-top: 20px;
+  padding: 15px;
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+  color: #856404;
+  font-size: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  border: 2px solid black;
+  border-radius: 5px;
+  color: white;
+  background: linear-gradient(135deg, #0056b3, #003d7a);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #0056b3, #003d7a);
+  transform: scale(1.05);
+  color: white;
+}
+
+button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.results-card {
+  text-align: center;
+  padding: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.results-card h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.results-card p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.results-card .stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.results-card .stats li {
+  margin: 0 15px;
+  font-size: 1.1rem;
+}
+
+.results-card button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #28a745;
+  color: #fff;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.results-card button:hover {
+  background: #218838;
+  transform: scale(1.05);
+}

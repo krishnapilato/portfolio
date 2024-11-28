@@ -4,7 +4,7 @@ import { RegistrationComponent } from './auth/registration/registration.componen
 import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './shared/error/error.component';
-import { UserManagementComponent } from './user-management/user-management.component';
+import { QuizDashboardComponent } from './quiz-dashboard/quiz-dashboard.component';
 
 export const routes: Routes = [
   {
@@ -22,7 +22,7 @@ export const routes: Routes = [
       { path: 'contact', component: ContactComponent },
       {
         path: 'dashboard',
-        component: UserManagementComponent,
+        component: QuizDashboardComponent,
         canActivate: [],
       },
     ],
