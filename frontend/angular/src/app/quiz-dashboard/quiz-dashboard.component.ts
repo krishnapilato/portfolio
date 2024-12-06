@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation } from '@angular/core';
-import {
-  ReactiveFormsModule
-} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -19,18 +17,20 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrls: ['./quiz-dashboard.component.css'],
 })
 export class QuizDashboardComponent {
+  currentView: 'welcome' | 'quiz' | 'results' = 'welcome';
   questionIndex = 0;
   selectedOptionIndex: number | null = null;
   showCorrectAnswer = false;
   correctAnswersCount = 0;
-  quizFinished = false;
 
-  // Mock questions array
   questions = [
     {
       text: 'What is the purpose of a preflight checklist?',
       options: [
-        { text: 'To ensure the plane is in safe operating condition.', isCorrect: true },
+        {
+          text: 'To ensure the plane is in safe operating condition.',
+          isCorrect: true,
+        },
         { text: 'To review recent weather conditions.', isCorrect: false },
         { text: 'To calculate fuel requirements.', isCorrect: false },
         { text: 'To verify the flight path.', isCorrect: false },
@@ -54,7 +54,10 @@ export class QuizDashboardComponent {
       options: [
         { text: 'Ensure passenger comfort.', isCorrect: false },
         { text: 'Operate the aircraft safely.', isCorrect: true },
-        { text: 'Follow air traffic control instructions blindly.', isCorrect: false },
+        {
+          text: 'Follow air traffic control instructions blindly.',
+          isCorrect: false,
+        },
         { text: 'Log flight hours.', isCorrect: false },
       ],
       explanation:
@@ -73,32 +76,47 @@ export class QuizDashboardComponent {
     },
   ];
 
-  // Current question
-  get question() {
+  public get question() {
     return this.questions[this.questionIndex];
   }
 
-  checkAnswer(option: any, index: number): void {
-    this.selectedOptionIndex = index;
-    this.showCorrectAnswer = true;
+  public startQuiz(): void {
+    this.currentView = 'quiz';
+  }
 
-    if (option.isCorrect) {
-      this.correctAnswersCount++;
+  public checkAnswer(option: any, index: number): void {
+    if (this.selectedOptionIndex === null) {
+      this.selectedOptionIndex = index;
+      this.showCorrectAnswer = true;
+
+      if (option.isCorrect) {
+        this.correctAnswersCount++;
+      }
     }
   }
 
-  nextOrFinish(): void {
+  public nextOrFinish(): void {
     if (this.questionIndex < this.questions.length - 1) {
       this.questionIndex++;
       this.selectedOptionIndex = null;
       this.showCorrectAnswer = false;
     } else {
-      this.quizFinished = true;
+      this.currentView = 'results';
     }
   }
 
-  getResults(): { score: number; advice: string } {
-    const score = (this.correctAnswersCount / this.questions.length) * 100;
+  public skipQuestion(): void {
+    if (this.questionIndex < this.questions.length - 1) {
+      this.questionIndex++;
+      this.selectedOptionIndex = null;  // Reset the selected option
+      this.showCorrectAnswer = false;  // Hide the correct answer
+    } else {
+      this.currentView = 'results';  // If it's the last question, show the results
+    }
+  }
+
+  public getResults(): { score: number; advice: string } {
+    const score = Math.round((this.correctAnswersCount / this.questions.length) * 100);
     let advice = '';
 
     if (score === 100) {
@@ -114,10 +132,10 @@ export class QuizDashboardComponent {
     return { score, advice };
   }
 
-  restartQuiz(): void {
+  public restartQuiz(): void {
+    this.currentView = 'quiz';
     this.questionIndex = 0;
     this.correctAnswersCount = 0;
-    this.quizFinished = false;
     this.selectedOptionIndex = null;
     this.showCorrectAnswer = false;
   }

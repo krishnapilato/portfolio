@@ -1,11 +1,31 @@
 <div class="quiz-container">
-  <!-- Quiz Card -->
-  <div *ngIf="!quizFinished">
-    <h2>Question {{ questionIndex + 1 + " / " + questions.length }}:</h2>
-    <p>{{ question.text }}</p>
+  <div *ngIf="currentView === 'welcome'" class="welcome-screen" data-aos="fade-up" data-aos-delay="100">
+    <h1>Welcome to the PPL Quiz!</h1>
+    <p>
+      Ready to test your aviation knowledge? This quiz is designed to help you prepare for the Private Pilot License (PPL) by 
+      challenging your understanding of key concepts.
+    </p>
+    <h3>How It Works:</h3>
+    <ul class="list-unstyled" data-aos="fade-up" data-aos-delay="200">
+      <li>You'll be presented with a series of multiple-choice questions.</li>
+      <li>Click on the answer you believe is correct.</li>
+      <li>If you're wrong, we'll provide an explanation to help you learn.</li>
+      <li>Your final score will reflect your overall performance.</li>
+    </ul>
+    <p data-aos="fade-up" data-aos-delay="300">
+      Don't worry if you get a few wrong—this is a great opportunity to improve. Aim for the skies!
+    </p>
+    <button (click)="startQuiz()" data-aos="fade-up" data-aos-delay="400">Start Quiz</button>
+  </div>
+
+  <div *ngIf="currentView === 'quiz'" data-aos="fade-in" data-aos-delay="100">
+    <h2 data-aos="fade-right" data-aos-delay="200">Question {{ questionIndex + 1 }} / {{ questions.length }}:</h2>
+    <p data-aos="fade-right" data-aos-delay="300">{{ question.text }}</p>
 
     <ul class="options">
       <li
+        data-aos="fade-left" 
+        data-aos-delay="400"
         *ngFor="let option of question.options; let i = index"
         (click)="checkAnswer(option, i)"
         [class.correct]="option.isCorrect && showCorrectAnswer"
@@ -16,29 +36,35 @@
       </li>
     </ul>
 
-    <!-- Explanation Section -->
-    <div *ngIf="showCorrectAnswer && selectedOptionIndex !== null && question.options[selectedOptionIndex].isCorrect === false" class="explanation">
+    <div
+      *ngIf="showCorrectAnswer && selectedOptionIndex !== null && !question.options[selectedOptionIndex].isCorrect"
+      class="explanation"
+      data-aos="fade-up" data-aos-delay="500"
+    >
       <strong>Explanation:</strong> {{ question.explanation }}
     </div>
 
-    <button (click)="nextOrFinish()" [disabled]="!showCorrectAnswer">
+    <button [disabled]="showCorrectAnswer" data-aos="fade-left" data-aos-delay="500" (click)="skipQuestion()">
+      Skip Question
+    </button>
+
+    <button class="m-lg-5" data-aos="fade-left" data-aos-delay="600" (click)="nextOrFinish()" [disabled]="!showCorrectAnswer">
       {{ questionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz' }}
     </button>
   </div>
 
-  <!-- Results Card -->
-  <div *ngIf="quizFinished" class="results-card">
+  <div *ngIf="currentView === 'results'" class="results-card" data-aos="fade-up" data-aos-delay="100">
     <h2>Quiz Results</h2>
     <p><strong>Your Score:</strong> {{ getResults().score }}%</p>
     <p>{{ getResults().advice }}</p>
 
-    <h3>Statistics</h3>
-    <ul class="stats">
+    <h3 data-aos="fade-up" data-aos-delay="200">Statistics</h3>
+    <ul class="stats" data-aos="fade-up" data-aos-delay="300">
       <li>Total Questions: {{ questions.length }}</li>
       <li>Correct Answers: {{ correctAnswersCount }}</li>
       <li>Incorrect Answers: {{ questions.length - correctAnswersCount }}</li>
     </ul>
 
-    <button (click)="restartQuiz()">Restart Quiz</button>
+    <button (click)="restartQuiz()" data-aos="fade-up" data-aos-delay="400">Restart Quiz</button>
   </div>
 </div>
