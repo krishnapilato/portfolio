@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
-    <title>Khovakrishna Pilato - Portfolio</title>
+    <title>Krishna - Portfolio</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="device_hub.svg" />
-
-    <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
-    <!-- AOS (Animate on Scroll) Library -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-</head>
-<body class="font-sans select-none">
-    <!-- Angular Root Component -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
+  </head>
+  <body class="select-none" oncontextmenu="return false">
     <app-root></app-root>
 
-    <!-- AOS Library Script -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gradient-to-br from-red-900 via-red-800 to-red-900 text-white py-4 text-sm text-center font-small shadow-lg z-50 rounded-lg">
+      <i class="fa fa-exclamation-circle mr-2"></i>
+      Working hard to bring you something amazing: 
+      <a href="https://github.com/krishnapilato/portfolio/tree/dev" target="_blank" class="underline">GitHub</a>.
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        // Initialize AOS library
-        AOS.init({
-            duration: 800,
-            offset: 200,
-        });
+    AOS.init({
+        duration: 800,
+        offset: 200,           
+        easing: 'ease',       
+        delay: 100,
+        once: false, 
+        mirror: true
+    });
     </script>
-</body>
+  </body>
 </html>
