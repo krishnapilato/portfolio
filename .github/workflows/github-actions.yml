@@ -11,17 +11,16 @@ on:
       - dev
 
 permissions:
-  contents: read
+  contents: write
   pages: write
-  id-token: write 
+  id-token: write
 
 jobs:
   build-and-deploy-backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Navigate to the backend/java subfolder
-        run: cd backend/java/
+      - name: Checkout repository
+        uses: actions/checkout@v4
         
       - name: Deploy to Heroku
         uses: AkhileshNS/heroku-deploy@v3.13.15
@@ -35,7 +34,7 @@ jobs:
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Cache Node.js dependencies
@@ -46,30 +45,26 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '23.1.0'
+          node-version: '16.x' # Use a stable version of Node.js for Angular
 
       - name: Install Angular CLI
-        run: npm install -g @angular/cli@latest
+        run: npm install -g @angular/cli@latest --force
 
       - name: Install Dependencies
         run: |
-          cd frontend/angular/
-          npm ci --force
+          cd frontend/angular
+          npm ci
 
       - name: Build Angular App
         run: |
-          cd frontend/angular/
-          ng build --configuration production
+          cd frontend/angular
+          ng build --configuration production --output-path dist
 
       - name: Deploy to GitHub Pages
-        run: |
-          cd frontend/angular/dist/frontend/browser/  # Navigate to the build output directory
-          git init  # Initialize a new Git repository
-          git config user.email "krishnak.pilato@gmail.com"  # Change to your email
-          git config user.name "krishnapilato"  # Change to your name
-          git add .  # Add all files to the staging area
-          git commit -m "Deploy frontend to GitHub Pages"  # Commit the changes 
-          git push --force --set-upstream https://x-access-token:${{ secrets.TOKEN }}@github.com/krishnapilato/portfolio.git master:gh-pages  # Push to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: frontend/angular/dist/browser
