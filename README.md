@@ -1,63 +1,93 @@
+# Portfolio
 
-# khovakrishna.pilato
-
-![Java Version](https://img.shields.io/badge/Java-21.0.5-blue?style=flat&logo=java)
-![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.5-brightgreen?style=flat&logo=spring-boot)
-![Angular Version](https://img.shields.io/badge/Angular-19.0.0-red?style=flat&logo=angular)
+![Java Version](https://img.shields.io/badge/Java-23-blue?style=flat&logo=java)
+![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.6-brightgreen?style=flat&logo=spring-boot)
+![Angular Version](https://img.shields.io/badge/Angular-19.0.5-red?style=flat&logo=angular)
 ![MySQL](https://img.shields.io/badge/MySQL-9.1.0-blue?style=flat&logo=mysql)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
 [![GitHub Actions](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
 
-This web application showcases my technical skills and professional experience. Please note that the code is currently in ALPHA and may contain bugs. A bug-fixing process is ongoing and will continue through **November 31, 2024** to ensure stability.
+Welcome to my portfolio! This web application highlights my technical expertise, professional experience, and ongoing projects. 
+
+**Check it out live:** [Portfolio Website](https://krishnapilato.github.io/portfolio)
+
+![image](https://github.com/user-attachments/assets/19487c36-1bcb-4965-a186-5cf251b4cb5e)
 
 ---
 
 ## Features
 
-- **Skills & Experience:** Detailed insights into my expertise with various technologies and frameworks.
-- **About Me:** A personal introduction that outlines my professional interests and background.
-- **Contact:** A contact form for reaching out and connecting with me.
+- **Showcase of Skills and Experience:** Explore my expertise in modern technologies and frameworks.
+- **About Me Section:** Get to know my professional background and interests.
+- **Contact Form:** Easily reach out to me for collaborations, questions, or feedback.
+- **Project Gallery:** Visual representations and explanations of my work.
 
 ---
 
 ## Local Development Setup
 
-To set up the project locally, follow these steps:
+Follow these steps to set up the project locally:
 
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/krishnapilato/portfolio.git && cd portfolio && git checkout dev
    ```
 
-2. **See Scripts Folder**:
-   - For detailed setup instructions, please refer to the scripts located in the `scripts` folder. This will guide you through the necessary commands to get both the backend and frontend running.
+2. **Install Dependencies:**
+   - For the backend:
+     ```bash
+     cd backend
+     ./mvnw install
+     ./mvnw spring-boot:run
+     ```
+   - For the frontend:
+     ```bash
+     cd frontend
+     npm install
+     ng serve
+     ```
+
+3. **Scripts Folder:**
+   Refer to the `scripts` folder for additional setup instructions. It contains commands to streamline local development for both backend and frontend.
 
 ---
 
 ## Work in Progress
 
-This project is actively under development. The frontend application has a few bugs that are being addressed. I welcome feedback from the community to help bring this project to its full potential.
+This portfolio is under active development, with regular updates to enhance functionality and user experience. While most features are operational, the frontend is undergoing final refinements to address minor bugs and improve performance.
 
-**Thank you for your understanding and support!**
+Your feedback is highly appreciated as it helps shape this project into a robust platform.
+
+---
+
+## Skills
+
+Here are the technical skills and tools I specialize in:
+
+- **Languages:** Java, JavaScript, TypeScript, Python, C#
+- **Frameworks & Libraries:** Spring Boot, Angular, React
+- **Database Management:** MySQL, MongoDB
+- **Tools & Platforms:** Docker, Kubernetes, Git, Jenkins
+- **Other Expertise:** REST APIs, Microservices, Agile Development
 
 ---
 
 ## Contribution Guidelines
 
-If you would like to contribute to the project, please follow these guidelines:
+Contributions are welcome! To contribute:
 
-1. **Fork the Repository**: Create your own fork of the project.
-2. **Create a Feature Branch**: 
+1. **Fork the Repository:** Create your own copy of the project.
+2. **Create a Feature Branch:**
    ```bash
    git checkout -b feature/YourFeature
    ```
-3. **Make Your Changes**: Implement your feature or fix.
-4. **Commit Your Changes**: 
+3. **Implement Your Changes:** Add your feature or bug fix.
+4. **Commit Your Changes:**
    ```bash
-   git commit -m "message"
+   git commit -m "commit message here"
    ```
-5. **Push to the Branch**: 
+5. **Push to Your Branch:**
    ```bash
    git push origin feature/YourFeature
    ```
-6. **Open a Pull Request**: Submit your changes for review.
+6. **Submit a Pull Request:** Open a PR for review and merge.
