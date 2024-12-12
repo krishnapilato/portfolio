@@ -56,7 +56,7 @@ jobs:
       - name: Install Dependencies
         run: |
           cd frontend/angular
-          npm ci
+          npm ci --force
   
       - name: Build Angular App
         run: |
