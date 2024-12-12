@@ -69,9 +69,8 @@ export class HomeComponent implements OnInit {
   private initializeTyped(): void {
     this.typed = new Typed('#element', {
       strings: this.home.skills,
-      typeSpeed: 250,
-      backSpeed: 200,
-      fadeOut: true,
+      typeSpeed: 50,
+      backSpeed: 100,
       loop: true,
     });
   }
