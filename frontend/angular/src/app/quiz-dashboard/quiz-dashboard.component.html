@@ -1,70 +1,112 @@
-<div class="quiz-container">
-  <div *ngIf="currentView === 'welcome'" class="welcome-screen" data-aos="fade-up" data-aos-delay="100">
-    <h1>Welcome to the PPL Quiz!</h1>
-    <p>
-      Ready to test your aviation knowledge? This quiz is designed to help you prepare for the Private Pilot License (PPL) by 
-      challenging your understanding of key concepts.
-    </p>
-    <h3>How It Works:</h3>
-    <ul class="list-unstyled" data-aos="fade-up" data-aos-delay="200">
-      <li>You'll be presented with a series of multiple-choice questions.</li>
-      <li>Click on the answer you believe is correct.</li>
-      <li>If you're wrong, we'll provide an explanation to help you learn.</li>
-      <li>Your final score will reflect your overall performance.</li>
-    </ul>
-    <p data-aos="fade-up" data-aos-delay="300">
-      Don't worry if you get a few wrong—this is a great opportunity to improve. Aim for the skies!
-    </p>
-    <button (click)="startQuiz()" data-aos="fade-up" data-aos-delay="400">Start Quiz</button>
-  </div>
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600"  data-aos="fade-up"
+  data-aos-delay="300">
+  <div
+    class="bg-white shadow-lg rounded-lg p-8 w-full"
+    style="width: 800px; height: 700px;"
+  >
+    <div class="quiz-container">
+      <!-- Welcome Screen -->
+      <div *ngIf="currentView === 'welcome'" class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
+        <h1 class="text-3xl font-bold mb-4 text-gray-800">Welcome to the PPL Quiz!</h1>
+        <p class="text-gray-600 mb-6">
+          Ready to test your aviation knowledge? This quiz will challenge your understanding of key concepts for the Private Pilot License (PPL).
+        </p>
+        <h3 class="text-xl font-semibold text-gray-700 mb-4">How It Works:</h3>
+        <ul class="list-none space-y-2 text-gray-600" data-aos="fade-up" data-aos-delay="200">
+          <li>Answer multiple-choice questions.</li>
+          <li>Click on the answer you think is correct.</li>
+          <li>If incorrect, an explanation will help you learn.</li>
+          <li>Your final score reflects your performance.</li>
+        </ul>
+        <p class="text-gray-600 mt-6" data-aos="fade-up" data-aos-delay="300">
+          Aim for the skies!
+        </p>
+        <button
+          (click)="startQuiz()"
+          class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300"
+          data-aos="fade-up"
+          data-aos-delay="400"
+        >
+          Start Quiz
+        </button>
+      </div>
 
-  <div *ngIf="currentView === 'quiz'" data-aos="fade-in" data-aos-delay="100">
-    <h2 data-aos="fade-right" data-aos-delay="200">Question {{ questionIndex + 1 }} / {{ questions.length }}:</h2>
-    <p data-aos="fade-right" data-aos-delay="300">{{ question.text }}</p>
+      <!-- Quiz Screen -->
+      <div *ngIf="currentView === 'quiz'" class="p-6" data-aos="fade-in" data-aos-delay="100">
+        <h2 class="text-xl font-bold text-gray-800 mb-4" data-aos="fade-right" data-aos-delay="200">
+          Question {{ questionIndex + 1 }} / {{ questions.length }}:
+        </h2>
+        <p class="text-gray-700 mb-6" data-aos="fade-right" data-aos-delay="300">{{ question.text }}</p>
 
-    <ul class="options">
-      <li
-        data-aos="fade-left" 
-        data-aos-delay="400"
-        *ngFor="let option of question.options; let i = index"
-        (click)="checkAnswer(option, i)"
-        [class.correct]="option.isCorrect && showCorrectAnswer"
-        [class.incorrect]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
-        [class.disabled]="selectedOptionIndex !== null"
-      >
-        {{ option.text }}
-      </li>
-    </ul>
+        <ul class="space-y-4">
+          <li
+            *ngFor="let option of question.options; let i = index"
+            (click)="checkAnswer(option, i)"
+            [class.bg-green-100]="option.isCorrect && showCorrectAnswer"
+            [class.bg-red-100]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
+            [class.pointer-events-none]="selectedOptionIndex !== null"
+            class="px-4 py-3 bg-gray-100 rounded-lg shadow-md cursor-pointer hover:bg-gray-200 transition duration-200"
+            data-aos="fade-left"
+            data-aos-delay="400"
+          >
+            {{ option.text }}
+          </li>
+        </ul>
 
-    <div
-      *ngIf="showCorrectAnswer && selectedOptionIndex !== null && !question.options[selectedOptionIndex].isCorrect"
-      class="explanation"
-      data-aos="fade-up" data-aos-delay="500"
-    >
-      <strong>Explanation:</strong> {{ question.explanation }}
+        <div class="flex justify-between mt-6">
+          <button
+            (click)="skipQuestion()"
+            [disabled]="showCorrectAnswer || !selectedOptionIndex"
+            class="px-6 py-3 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition disabled:opacity-50"
+            data-aos="fade-left"
+            data-aos-delay="500"
+          >
+            Skip Question
+          </button>
+          <button
+            (click)="nextOrFinish()"
+            [disabled]="!showCorrectAnswer"
+            class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+            data-aos="fade-left"
+            data-aos-delay="600"
+          >
+            {{ questionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz' }}
+          </button>
+        </div>
+
+        <div
+          *ngIf="showCorrectAnswer && selectedOptionIndex !== null && !question.options[selectedOptionIndex].isCorrect"
+          class="mt-4 bg-yellow-100 text-yellow-800 p-4 rounded-md"
+        >
+          <strong>Explanation:</strong> {{ question.explanation }}
+        </div>
+      </div>
+
+      <!-- Results Screen -->
+      <div *ngIf="currentView === 'results'" class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Quiz Results</h2>
+        <p class="text-lg text-gray-700 mb-4">
+          <strong>Your Score:</strong> {{ getResults().score }}%
+        </p>
+        <p class="text-gray-600 mb-6">{{ getResults().advice }}</p>
+
+        <h3 class="text-xl font-semibold text-gray-700 mb-4" data-aos="fade-up" data-aos-delay="200">Statistics</h3>
+        <ul class="space-y-2 text-gray-600" data-aos="fade-up" data-aos-delay="300">
+          <li>Total Questions: {{ questions.length }}</li>
+          <li>Correct Answers: {{ correctAnswersCount }}</li>
+          <li>Incorrect Answers: {{ questions.length - correctAnswersCount }}</li>
+        </ul>
+
+        <button
+          (click)="restartQuiz()"
+          [disabled]="currentView !== 'results'"
+          class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300"
+          data-aos="fade-up"
+          data-aos-delay="400"
+        >
+          Restart Quiz
+        </button>
+      </div>
     </div>
-
-    <button [disabled]="showCorrectAnswer" data-aos="fade-left" data-aos-delay="500" (click)="skipQuestion()">
-      Skip Question
-    </button>
-
-    <button class="m-lg-5" data-aos="fade-left" data-aos-delay="600" (click)="nextOrFinish()" [disabled]="!showCorrectAnswer">
-      {{ questionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz' }}
-    </button>
-  </div>
-
-  <div *ngIf="currentView === 'results'" class="results-card" data-aos="fade-up" data-aos-delay="100">
-    <h2>Quiz Results</h2>
-    <p><strong>Your Score:</strong> {{ getResults().score }}%</p>
-    <p>{{ getResults().advice }}</p>
-
-    <h3 data-aos="fade-up" data-aos-delay="200">Statistics</h3>
-    <ul class="stats" data-aos="fade-up" data-aos-delay="300">
-      <li>Total Questions: {{ questions.length }}</li>
-      <li>Correct Answers: {{ correctAnswersCount }}</li>
-      <li>Incorrect Answers: {{ questions.length - correctAnswersCount }}</li>
-    </ul>
-
-    <button (click)="restartQuiz()" data-aos="fade-up" data-aos-delay="400">Restart Quiz</button>
   </div>
 </div>

@@ -18,7 +18,7 @@ import { ContactComponent } from '../contact/contact.component';
     MatCardModule,
     MatIconModule,
     RouterModule,
-    ContactComponent,
+    ContactComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
@@ -31,6 +31,39 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeTyped();
+  }
+
+  activeSkillIndex = 0;
+  activeCaseStudyIndex = 0;
+
+  // Methods for Skills Carousel
+  prevSkill() {
+    this.activeSkillIndex =
+      (this.activeSkillIndex - 1 + this.skills.length) % this.skills.length;
+  }
+
+  nextSkill() {
+    this.activeSkillIndex = (this.activeSkillIndex + 1) % this.skills.length;
+  }
+
+  goToSkill(index: number) {
+    this.activeSkillIndex = index;
+  }
+
+  // Methods for Case Studies Carousel
+  prevCaseStudy() {
+    this.activeCaseStudyIndex =
+      (this.activeCaseStudyIndex - 1 + this.caseStudies.length) %
+      this.caseStudies.length;
+  }
+
+  nextCaseStudy() {
+    this.activeCaseStudyIndex =
+      (this.activeCaseStudyIndex + 1) % this.caseStudies.length;
+  }
+
+  goToCaseStudy(index: number) {
+    this.activeCaseStudyIndex = index;
   }
 
   private initializeTyped(): void {

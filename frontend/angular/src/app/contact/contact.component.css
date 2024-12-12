@@ -1,0 +1,38 @@
+.arrows {
+  width: 60px;
+  height: 72px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 5rem;
+}
+
+.arrows path {
+  stroke: #000;
+  fill: transparent;
+  stroke-width: 1px;
+  animation: arrow 2s infinite;
+}
+
+.arrows path.a1 {
+  animation-delay: -1s;
+}
+
+.arrows path.a2 {
+  animation-delay: -0.5s;
+}
+
+.arrows path.a3 {
+  animation-delay: 0s;
+}
+
+@keyframes arrow {
+  0%,
+  80%,
+  100% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+}

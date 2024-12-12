@@ -1,100 +1,170 @@
-<div class="d-flex align-items-center justify-content-center vh-100">
-  <div class="text-center">
-    <h2 class="display-4 fw-bold" data-aos="fade-up">{{ home.title }}</h2>
-    <div class="d-flex justify-content-center">
-      <p class="lead text-secondary text-center w-75" data-aos="fade-up" data-aos-delay="200">
-        {{ home.description }} <br />
-        I work with <span class="font-weight-bold" id="element"></span>.
-      </p>
-    </div>
-    <div class="d-flex justify-content-center gap-3 mt-4" data-aos="fade-up" data-aos-delay="100">
-      <a
-        target="_blank"
-        [href]="home.actions[0].link"
-        class="btn btn-lg btn-primary custom-btn px-4 py-2 rounded-pill"
-      >
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 px-4 sm:px-8 lg:px-16">
+  <div class="text-center space-y-6">
+    <!-- Main Title and Description -->
+    <h2 class="text-4xl font-bold text-white" data-aos="fade-up">{{ home.title }}</h2>
+    <p class="text-lg text-gray-300 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+      {{ home.description }} <br />
+      I work with <span class="font-bold text-blue-400" id="element"></span>.
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-center gap-4 mt-4" data-aos="fade-up" data-aos-delay="100">
+      <a href="{{ home.actions[0].link }}" target="_blank" class="btn btn-primary px-6 py-3 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition duration-300">
         {{ home.actions[0].text }}
       </a>
-      <a
-        target="_blank"
-        [href]="home.actions[1].link"
-        class="btn btn-lg btn-secondary custom-btn px-4 py-2 rounded-pill"
-      >
+      <a href="{{ home.actions[1].link }}" target="_blank" class="btn btn-secondary px-6 py-3 bg-gray-800 text-white font-semibold rounded-full hover:bg-gray-700 transition duration-300">
         {{ home.actions[1].text }}
       </a>
     </div>
   </div>
 </div>
 
-<svg data-aos="fade-down" class="arrows">
-  <path class="a1" d="M0 0 L30 32 L60 0"></path>
-  <path class="a2" d="M0 20 L30 52 L60 20"></path>
-  <path class="a3" d="M0 40 L30 72 L60 40"></path>
-  <path class="a3" d="M0 40 L30 72 L60 40"></path>
+<svg data-aos="fade-down" class="arrows mx-auto mt-6 w-10 h-10">
+  <path class="a1" d="M0 0 L30 32 L60 0" stroke="#3490dc" stroke-width="2"></path>
+  <path class="a2" d="M0 20 L30 52 L60 20" stroke="#3490dc" stroke-width="2"></path>
+  <path class="a3" d="M0 40 L30 72 L60 40" stroke="#3490dc" stroke-width="2"></path>
 </svg>
 
-<div class="container my-5 text-center">
-  <h2 data-aos="fade-up" data-aos-delay="100" class="mb-4 fw-bold text-gradient display-5">
-    <i class="fas fa-tools me-2"></i> Main Skills
-  </h2>
-  <div data-aos="fade-up" data-aos-delay="100" class="d-flex justify-content-center mb-4">
-    <hr class="w-25 border-3" style="border-color: #000000" />
-  </div>
 
-  <div class="row justify-content-center">
-    <div
-      class="col-lg-2 col-md-4 col-sm-6 d-flex justify-content-center mb-4"
-      *ngFor="let skill of skills"
-      data-aos="fade-up"
-      [attr.data-aos-delay]="skill.delay"
-    >
-      <div class="card-container">
-        <mat-card class="card-front" [ngStyle]="{ background: skill.gradient }">
-          <mat-card-content>
-            <i class="text-white mb-3"></i>
-            <h6 class="fw-bold text-white">{{ skill.title }}</h6>
-            <p class="text-light">{{ skill.subtitle }}</p>
-          </mat-card-content>
-        </mat-card>
-        <mat-card class="card-back bg-light">
-          <mat-card-content>
-            <p class="text-secondary">{{ skill.description }}</p>
-          </mat-card-content>
-        </mat-card>
+<!-- About Me Section -->
+<div class="mt-1 bg-gray-800 py-20 px-6 sm:px-12 lg:px-16 text-center text-white">
+  <h3 class="text-4xl lg:text-5xl font-bold" data-aos="fade-up">About Me</h3>
+  <p class="text-lg lg:text-xl text-gray-300 max-w-4xl mx-auto mt-6" data-aos="fade-up" data-aos-delay="100">
+    I'm a passionate developer with experience in building high-quality, user-friendly applications. With a background in both front-end and back-end technologies, I specialize in frameworks like Angular, React, and Vue.js. I'm also highly proficient in working with databases and API integrations. What truly drives me is the constant evolution of technology, and I am always eager to dive into new challenges, learn emerging tools, and tackle complex problems.
+  </p>
+
+  <div class="flex flex-wrap justify-center gap-12 mt-12">
+    <div class="w-full sm:w-1/2 lg:w-1/3 text-center">
+      <h4 class="text-2xl font-semibold text-gray-400">Aviation Enthusiast</h4>
+      <div class="mt-4">
+        <img width="310" height="250" src="https://images.unsplash.com/photo-1532200624530-cc3d3d0d636c?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Plane" class="mx-auto rounded-lg" />
       </div>
+      <p class="text-gray-300 mt-4">
+        Apart from coding, I'm passionate about <span class="font-semibold text-blue-400">planes</span> and the vast world of <span class="font-semibold text-blue-400">technology</span>. I enjoy following the latest advancements in aviation and aerospace, and I’m always amazed by innovations in technology that push the limits of what’s possible.
+      </p>
+    </div>
+
+    <div class="w-full sm:w-1/2 lg:w-1/3 text-center">
+      <h4 class="text-2xl font-semibold text-gray-400">Travel & Exploration</h4>
+      <div class="mt-4">
+        <!-- Travel-related image -->
+        <img width="310" height="250" src="https://images.unsplash.com/photo-1549918864-48ac978761a4?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Travel" class="mx-auto rounded-lg" />
+      </div>
+      <p class="text-gray-300 mt-4">
+        I have a deep passion for exploring new places around the world. Whether it's hiking through the mountains, discovering vibrant city streets, or experiencing diverse cultures, travel is one of my greatest joys. I believe that every journey has the power to open your mind and enrich your life. 
+        I dream of traveling to faraway destinations and immersing myself in the beauty of the world.
+      </p>
+    </div>
+
+    <div class="w-full sm:w-1/2 lg:w-1/3 text-center">
+      <h4 class="text-2xl font-semibold text-gray-400">Technology Passion</h4>
+      <div class="mt-4">
+        <img width="310" height="250" src="https://images.unsplash.com/photo-1607798748738-b15c40d33d57?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Technology" class="mx-auto rounded-lg" />
+      </div>
+      <p class="text-gray-300 mt-4">
+        My passion for technology goes beyond just coding. I enjoy exploring the latest gadgets, understanding new tech trends, and applying my knowledge to real-world projects. Staying up to date with the ever-changing tech landscape is something I find exhilarating.
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-12">
+    <p class="text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto">
+      Whether it's coding or exploring the skies, I believe in pushing boundaries. If you're looking for a developer who is eager to learn, create, and innovate, feel free to get in touch!
+    </p>
+  </div>
+</div>
+
+<!-- Skills Section -->
+<div id="skills" class="mt-1 bg-gray-900 py-16 px-4 sm:px-8 lg:px-16 text-center text-white">
+  <h3 class="text-3xl font-bold" data-aos="fade-up">My Skills</h3>
+
+  <!-- General Skills Overview -->
+  <p class="text-lg text-gray-300 max-w-3xl mx-auto mt-4" data-aos="fade-up" data-aos-delay="100">
+    As a passionate full-stack developer, I have extensive experience working with various technologies across the development stack. From front-end frameworks like Angular and React to back-end technologies such as Java, C#, and Python, I have built robust applications and integrated complex systems. I am also skilled in cloud technologies, DevOps, databases, and more.
+  </p>
+  
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8" data-aos="fade-up" data-aos-delay="200">
+    
+    <!-- Frontend Development Card -->
+    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <h4 class="text-xl font-semibold text-blue-400">Frontend Development</h4>
+      <p class="text-gray-300">React, Angular, Vue.js, HTML, CSS, JavaScript, TypeScript</p>
+    </div>
+    
+    <!-- Backend Development Card -->
+    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <h4 class="text-xl font-semibold text-blue-400">Backend Development</h4>
+      <p class="text-gray-300">Java (Spring Boot), C#, Python, Node.js, Express, Django</p>
+    </div>
+    
+    <!-- Databases Card -->
+    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <h4 class="text-xl font-semibold text-blue-400">Databases</h4>
+      <p class="text-gray-300">MySQL, PostgreSQL, MongoDB, Oracle DB</p>
+    </div>
+    
+    <!-- Version Control Card -->
+    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <h4 class="text-xl font-semibold text-blue-400">Version Control</h4>
+      <p class="text-gray-300">Git, GitHub, GitLab, Bitbucket</p>
+    </div>
+    
+    <!-- Cloud Technologies Card -->
+    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <h4 class="text-xl font-semibold text-blue-400">Cloud Technologies</h4>
+      <p class="text-gray-300">AWS, Azure, Docker, Kubernetes</p>
+    </div>
+    
+    <!-- Testing & Debugging Card -->
+    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <h4 class="text-xl font-semibold text-blue-400">Testing & Debugging</h4>
+      <p class="text-gray-300">JUnit, Mockito, Selenium, Postman, Cypress</p>
+    </div>
+    
+    <!-- DevOps & CI/CD Card -->
+    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <h4 class="text-xl font-semibold text-blue-400">DevOps & CI/CD</h4>
+      <p class="text-gray-300">Jenkins, Maven, Gradle, Ansible</p>
+    </div>
+    
+    <!-- Other Languages & Tools Card -->
+    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <h4 class="text-xl font-semibold text-blue-400">Other Languages & Tools</h4>
+      <p class="text-gray-300">C#, Python, Bash, PHP, Redis, Elasticsearch</p>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Projects Section -->
+<div class="mt-1 bg-gray-800 py-16 px-4 sm:px-8 lg:px-16 text-center text-white">
+  <h3 class="text-3xl font-bold" data-aos="fade-up">My Projects</h3>
+  <p class="text-lg text-gray-300 max-w-3xl mx-auto mt-4" data-aos="fade-up" data-aos-delay="100">
+    Here are some of the projects I have worked on, demonstrating my skills in various technologies and problem-solving approaches.
+  </p>
+  
+  <!-- Project Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8" data-aos="fade-up" data-aos-delay="200">
+    
+    <!-- Project 1 Card -->
+    <div class="project-card bg-gray-700 p-6 rounded-lg shadow-md">
+      <h4 class="text-xl font-semibold text-blue-400">Task Management App</h4>
+      <p class="text-gray-300 mt-2">A web application built with Angular that allows users to efficiently manage tasks, set reminders, and track progress in real-time using Firebase as the back-end.</p>
+    </div>
+    
+    <!-- Project 2 Card -->
+    <div class="project-card bg-gray-700 p-6 rounded-lg shadow-md">
+      <h4 class="text-xl font-semibold text-blue-400">Professional Networking Platform</h4>
+      <p class="text-gray-300 mt-2">A social networking platform built using React and Node.js, designed to connect professionals, allowing them to create profiles, interact via messaging, and network seamlessly.</p>
+    </div>
+    
+    <!-- Project 3 Card -->
+    <div class="project-card bg-gray-700 p-6 rounded-lg shadow-md">
+      <h4 class="text-xl font-semibold text-blue-400">Personal Finance Tracker</h4>
+      <p class="text-gray-300 mt-2">A personal finance tracking application created with Python and Django. It helps users manage their finances, track income and expenses, and generate reports with visual charts and summaries.</p>
     </div>
   </div>
 </div>
 
-<div class="container my-5" style="padding-top: 1rem">
-  <h2 data-aos="fade-up" data-aos-delay="100" class="text-center mb-4 display-5 fw-bold text-gradient">
-    <i class="fas fa-briefcase me-2"></i> Case Studies
-  </h2>
-
-  <div data-aos="fade-up" data-aos-delay="100" class="d-flex justify-content-center mb-4">
-    <hr class="w-25 border-3" style="border-color: #000000" />
-  </div>
-
-  <div class="row row-cols-1 row-cols-md-2 g-4">
-    <div
-      class="col"
-      *ngFor="let caseStudy of caseStudies"
-      data-aos="fade-up"
-      [attr.data-aos-delay]="caseStudy.delay"
-    >
-      <mat-card class="p-3 shadow-sm rounded-3 bg-light">
-        <mat-card-content>
-          <h5 class="fw-bold mb-2">{{ caseStudy.title }}</h5>
-          <p class="text-secondary">{{ caseStudy.summary }}</p>
-          <ul class="list-unstyled mb-2">
-            <li><strong>Technologies:</strong> {{ caseStudy.technologies }}</li>
-            <li><strong>Role:</strong> {{ caseStudy.role }}</li>
-            <li><strong>Outcome:</strong> {{ caseStudy.outcome }}</li>
-          </ul>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  </div>
-</div>
-
+<!-- Contact Section -->
 <app-contact></app-contact>

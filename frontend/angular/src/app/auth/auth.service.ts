@@ -41,7 +41,7 @@ export class AuthService {
         tap((response: LoginResponse) => {
           if (response && response.token) {
             localStorage.setItem('currentUser', JSON.stringify(response));
-            this.router.navigate(['/home']);
+            this.router.navigate(['']);
           }
         }),
         catchError((error: HttpErrorResponse) => {

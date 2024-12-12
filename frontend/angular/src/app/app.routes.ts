@@ -17,8 +17,8 @@ export const routes: Routes = [
   {
     path: '',
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' }, 
-      { path: 'home', component: HomeComponent },
+      { path: '', redirectTo: '', pathMatch: 'full' }, 
+      { path: '', component: HomeComponent },
       { path: 'contact', component: ContactComponent },
       {
         path: 'dashboard',

@@ -1,44 +1,40 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, RouterModule, MatIconModule, MatTooltipModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
+  styleUrls: [],
 })
 export class HeaderComponent {
   public headerTitle = 'khovakrishna.pilato';
-  @ViewChild('offcanvasElement') offcanvasElement!: ElementRef;
+  public isOffcanvasOpen = false;
+  public isDarkTheme = false;
 
   navLinks = [
-    { icon: 'fa-home', label: 'Home', route: '/home' },
     { icon: 'fa-solid fa-circle-question', label: 'Quiz', route: '/dashboard' },
     { icon: 'fa-envelope', label: 'Contact', route: '/contact' },
     { icon: 'fa-arrow-right-to-bracket', label: 'Login', route: '/auth/login' },
+    { icon: '', label: 'Theme', route: '', iconClass: 'fa' },
   ];
 
-  constructor(private authService: AuthService, private renderer: Renderer2) {}
+  constructor(private authService: AuthService) {}
+
+  toggleOffcanvas(): void {
+    this.isOffcanvasOpen = !this.isOffcanvasOpen;
+  }
 
   public onLinkClick(): void {
-    const bootstrap = (window as any).bootstrap;
-    const Offcanvas = bootstrap.Offcanvas;
-    const offcanvas =
-      Offcanvas.getInstance(this.offcanvasElement.nativeElement) ||
-      new Offcanvas(this.offcanvasElement.nativeElement);
-    offcanvas.hide();
+    this.isOffcanvasOpen = false;
+  }
+
+  toggleTheme(): void {
+    this.isDarkTheme = !this.isDarkTheme;
   }
 }

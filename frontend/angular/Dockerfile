@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build -- --configuration production
 
-FROM node:lts-slim AS production
+FROM node:latest AS production
 
 WORKDIR /app
 

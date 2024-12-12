@@ -1,109 +1,122 @@
-<div class="container d-flex align-items-center justify-content-center vh-100">
-  <div
-    class="card shadow-lg border-0"
-    style="width: 600px; padding: 30px; border-radius: 12px;"
-  >
-    <div class="card-body text-center">
-      <h2 class="card-title mb-4">Create Your Account</h2>
-      <h6 class="card-subtitle mb-4 text-muted">Sign up to get started.</h6>
-      <form (ngSubmit)="signUp(registrationForm)" #registrationForm="ngForm" novalidate>
-        <div class="mb-3">
-          <label for="fullName" class="form-label">Full Name</label>
-          <input
-            type="text"
-            id="fullName"
-            class="form-control"
-            placeholder="Insert full name"
-            [(ngModel)]="registrationRequest.fullName"
-            name="registrationRequest.fullName"
-            required
-            minlength="2"
-            pattern="[a-zA-Z\s]+"
-            [ngClass]="{
-              'is-invalid': registrationForm.controls['registrationRequest.fullName'].invalid &&
-              registrationForm.controls['registrationRequest.fullName'].touched
-            }"
-          />
-          <div class="invalid-feedback">
-            <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('required')">
-              Full name is required.
-            </ng-container>
-            <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('pattern')">
-              Full name can only contain letters and spaces.
-            </ng-container>
-          </div>
+<div class="flex items-center justify-center min-h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
+  <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+    <div class="text-center">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Create Your Account</h2>
+      <p class="text-gray-500 mb-6">Sign up to get started.</p>
+    </div>
+    <form (ngSubmit)="signUp(registrationForm)" #registrationForm="ngForm" novalidate>
+      <!-- Full Name Input -->
+      <div class="mb-4">
+        <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+        <input
+          type="text"
+          id="fullName"
+          placeholder="Insert full name"
+          [(ngModel)]="registrationRequest.fullName"
+          name="registrationRequest.fullName"
+          required
+          minlength="2"
+          pattern="[a-zA-Z\s]+"
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        <div
+          class="text-red-500 text-sm mt-1"
+          *ngIf="
+            registrationForm.controls['registrationRequest.fullName']?.invalid &&
+            registrationForm.controls['registrationRequest.fullName']?.touched
+          "
+        >
+          <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('required')">
+            Full name is required.
+          </ng-container>
+          <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('pattern')">
+            Full name can only contain letters and spaces.
+          </ng-container>
         </div>
+      </div>
 
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input
-            type="email"
-            id="email"
-            class="form-control"
-            placeholder="Insert email"
-            [(ngModel)]="registrationRequest.email"
-            name="registrationRequest.email"
-            required
-            email
-            [ngClass]="{
-              'is-invalid': registrationForm.controls['registrationRequest.email'].invalid &&
-              registrationForm.controls['registrationRequest.email'].touched
-            }"
-          />
-          <div class="invalid-feedback">
-            <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('required')">
-              Email is required.
-            </ng-container>
-            <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('email')">
-              Please enter a valid email.
-            </ng-container>
-          </div>
+      <!-- Email Input -->
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Insert email"
+          [(ngModel)]="registrationRequest.email"
+          name="registrationRequest.email"
+          required
+          email
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        <div
+          class="text-red-500 text-sm mt-1"
+          *ngIf="
+            registrationForm.controls['registrationRequest.email']?.invalid &&
+            registrationForm.controls['registrationRequest.email']?.touched
+          "
+        >
+          <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('required')">
+            Email is required.
+          </ng-container>
+          <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('email')">
+            Please enter a valid email.
+          </ng-container>
         </div>
+      </div>
 
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input
-            type="{{ hide ? 'password' : 'text' }}"
-            id="password"
-            class="form-control"
-            placeholder="Insert password"
-            [(ngModel)]="registrationRequest.password"
-            name="registrationRequest.password"
-            required
-            minlength="9"
-            [ngClass]="{
-              'is-invalid': registrationForm.controls['registrationRequest.password'].invalid &&
-              registrationForm.controls['registrationRequest.password'].touched
-            }"
-          />
-          <div class="invalid-feedback">
-            <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('required')">
-              Password is required.
-            </ng-container>
-            <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('minlength')">
-              Password must be at least 9 characters.
-            </ng-container>
-          </div>
-          <div class="form-text mt-2">
-            <a href="#" (click)="hide = !hide; $event.preventDefault();">
-              {{ hide ? 'Show' : 'Hide' }} password
-            </a>
-          </div>
+      <!-- Password Input -->
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input
+          type="{{ hide ? 'password' : 'text' }}"
+          id="password"
+          placeholder="Insert password"
+          [(ngModel)]="registrationRequest.password"
+          name="registrationRequest.password"
+          required
+          minlength="9"
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        <div
+          class="text-red-500 text-sm mt-1"
+          *ngIf="
+            registrationForm.controls['registrationRequest.password']?.invalid &&
+            registrationForm.controls['registrationRequest.password']?.touched
+          "
+        >
+          <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('required')">
+            Password is required.
+          </ng-container>
+          <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('minlength')">
+            Password must be at least 9 characters.
+          </ng-container>
         </div>
-
-        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-
-        <button type="submit" class="btn btn-primary w-100 fw-bold" [disabled]="registrationForm.invalid">
-          Sign Up
-        </button>
-      </form>
-
-      <div class="mt-4">
-        <p>
-          Already have an account?
-          <a routerLink="/auth/login" class="link-primary">Login</a>
+        <p class="text-sm text-gray-500 mt-2">
+          <a href="#" (click)="hide = !hide; $event.preventDefault();" class="text-indigo-500 hover:underline">{{
+            hide ? 'Show' : 'Hide'
+          }} password</a>
         </p>
       </div>
+
+      <!-- Error Message -->
+      <div *ngIf="error" class="text-red-500 text-sm mb-4">{{ error }}</div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="registrationForm.invalid"
+        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition disabled:opacity-50"
+      >
+        Sign Up
+      </button>
+    </form>
+
+    <!-- Login Link -->
+    <div class="mt-6 text-center">
+      <p class="text-sm text-gray-600">
+        Already have an account?
+        <a routerLink="/auth/login" class="text-indigo-500 hover:underline">Login</a>
+      </p>
     </div>
   </div>
 </div>
