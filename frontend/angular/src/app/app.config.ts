@@ -10,7 +10,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     importProvidersFrom(
       BrowserAnimationsModule,
-      RouterModule.forRoot(routes, { anchorScrolling: 'enabled' })
+      RouterModule.forRoot(routes, {
+        anchorScrolling: 'enabled',
+        useHash: true,
+      })
     ),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
