@@ -61,7 +61,7 @@ jobs:
       - name: Build Angular App
         run: |
           cd frontend/angular
-          ng build --configuration production --output-path dist
+          ng build --output-path dist
   
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
