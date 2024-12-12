@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+  
       - name: Cache Node.js dependencies
         uses: actions/cache@v4
         with:
@@ -44,27 +44,27 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/angular/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
+  
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16.x' # Use a stable version of Node.js for Angular
-
+          node-version: '23.4.0'
+  
       - name: Install Angular CLI
-        run: npm install -g @angular/cli@latest --force
-
+        run: npm install -g @angular/cli@latest
+  
       - name: Install Dependencies
         run: |
           cd frontend/angular
-          npm ci --force
-
+          npm ci
+  
       - name: Build Angular App
         run: |
           cd frontend/angular
           ng build --configuration production --output-path dist
-
+  
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: frontend/angular/dist/browser
+          publish_dir: frontend/angular/dist
