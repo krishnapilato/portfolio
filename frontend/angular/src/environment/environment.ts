@@ -1,58 +1,133 @@
 export const environment = {
+  // General settings
   production: false,
+  version: '1.0.0',
+  appName: 'Portfolio App',
   apiUrl: 'https://backend-portfolio-v1-411a08a68df2.herokuapp.com',
+  contactEmail: 'khovakrishna.pilato@gmail.com',
+  phoneNumber: '+39 123 456 7890',
+  defaultLanguage: 'en',
+  supportedLanguages: ['en', 'it'],
+  googleAnalyticsId: 'UA-XXXXXXXXX-X',
+  dateFormat: 'DD/MM/YYYY',
+  timeFormat: 'HH:mm:ss',
+  socialMedia: {
+    linkedIn: 'https://www.linkedin.com/in/khovakrishnapilato',
+    github: 'https://github.com/krishnapilato',
+    twitter: 'https://twitter.com/khovakrishna',
+    email: 'mailto:khovakrishna.pilato@gmail.com',
+  },
 
+  // Theming
   theme: {
     primaryColor: '#3a86ff',
     secondaryColor: '#5390d9',
+    accentColor: '#ff006e',
     fontFamily: "'Segoe UI', Tahoma, Geneva, sans-serif",
     backgroundColor: '#f0f4f7',
+    textColor: '#333333',
     footerBackgroundColor: '#e3e9ee',
+    borderRadius: '8px',
+    buttonStyles: {
+      primary: 'btn-primary',
+      secondary: 'btn-secondary',
+      danger: 'btn-danger',
+    },
   },
 
+  // Header Configuration
   header: {
-    title: 'khovakrishna.pilato',
+    title: 'Khova Krishna Pilato',
     fontFamily: '"Roboto", Arial, sans-serif',
+    logo: {
+      url: '/assets/logo.png',
+      alt: 'Portfolio Logo',
+    },
     links: [
       {
         icon: 'fa-solid fa-wrench',
         tooltip: 'Skills',
         route: '#skills-page',
         color: 'text-secondary',
+        external: false,
       },
       {
         icon: 'fa-regular fa-face-smile',
         tooltip: 'About Me',
         route: '/profile',
         color: 'text-primary',
+        external: false,
       },
       {
-        icon: 'email',
+        icon: 'fa-envelope',
         tooltip: 'Contact',
         route: '/contact',
         color: 'text-success',
+        external: false,
       },
       {
-        icon: 'logout',
+        icon: 'fa-sign-out-alt',
         tooltip: 'Logout',
         route: '/logout',
         color: 'text-danger',
+        external: false,
+      },
+      {
+        icon: 'fa-linkedin',
+        tooltip: 'LinkedIn',
+        route: 'https://www.linkedin.com/in/khovakrishnapilato',
+        color: 'text-primary',
+        external: true,
+      },
+    ],
+    actions: [
+      {
+        label: 'Login',
+        route: '/auth/login',
+        class: 'btn btn-primary',
+      },
+      {
+        label: 'Register',
+        route: '/auth/signup',
+        class: 'btn btn-outline-primary',
       },
     ],
   },
 
+  // Footer Configuration
   footer: {
     name: 'Khova Krishna Pilato',
     text: `© ${new Date().getFullYear()} Khova Krishna Pilato • All rights reserved`,
     style: { color: '#000', fontSize: '11px Arial' },
-    year: '2024',
+    links: [
+      { label: 'Privacy Policy', route: '/privacy-policy' },
+      { label: 'Terms of Service', route: '/terms-of-service' },
+      { label: 'Contact', route: '/contact' },
+    ],
+    socialLinks: [
+      {
+        label: 'LinkedIn',
+        href: 'https://www.linkedin.com/in/khovakrishnapilato',
+        icon: 'fa-linkedin',
+      },
+      {
+        label: 'GitHub',
+        href: 'https://github.com/krishnapilato',
+        icon: 'fa-github',
+      },
+      {
+        label: 'Twitter',
+        href: 'https://twitter.com/khovakrishna',
+        icon: 'fa-twitter',
+      },
+    ],
   },
 
+  // Home Section Configuration
   home: {
     title: 'Hi, I am Krishna',
     subtitle: 'Java Full Stack Developer based in Milan, Italy',
-    description:
-      'I am a passionate Java Full Stack Developer based in Northern Italy, dedicated to creating applications that enhance user experiences.',
+    description: 'I am a passionate Java Full Stack Developer based in Northern Italy, dedicated to creating applications that enhance user experiences.',
     skills: [
       'Java',
       'Spring Boot',
@@ -76,6 +151,25 @@ export const environment = {
       'JUnit',
       'Scrum',
       'Microservices architecture',
+      'Kubernetes',
+      'CI/CD',
+      'GraphQL',
+    ],
+    portfolioProjects: [
+      {
+        name: 'E-Commerce Platform',
+        description: 'A full-stack e-commerce web application.',
+        technologies: ['Angular', 'Spring Boot', 'PostgreSQL'],
+        link: 'https://github.com/krishnapilato/e-commerce',
+        image: '/assets/projects/e-commerce.png',
+      },
+      {
+        name: 'Task Management System',
+        description: 'A task manager for agile teams.',
+        technologies: ['React', 'Node.js', 'MongoDB'],
+        link: 'https://github.com/krishnapilato/task-manager',
+        image: '/assets/projects/task-manager.png',
+      },
     ],
     actions: [
       {
@@ -84,10 +178,9 @@ export const environment = {
       },
       {
         text: 'Resume',
-        link: 'https://drive.usercontent.google.com/download?id=1vXJCBHQ_ZofGUYmpVsuAr-i-gqcpjkaA&export=download&authuser=0&confirm=t&uuid=677fcf3c-7ffc-48b4-bec5-45b9fa74bff6&at=AN_67v06s10Z9DaeuerLsXcN7zb4:1730295103202',
+        link: 'https://drive.google.com/download/resume',
       },
     ],
-
     contactForm: {
       fields: [
         {
@@ -97,14 +190,6 @@ export const environment = {
           placeholder: 'Enter your name',
           validationMessage:
             'Name is required and should only contain letters.',
-        },
-        {
-          id: 'surname',
-          label: 'Surname',
-          type: 'text',
-          placeholder: 'Enter your surname',
-          validationMessage:
-            'Surname is required and should only contain letters.',
         },
         {
           id: 'email',
@@ -122,82 +207,10 @@ export const environment = {
             'Message is required and should be at least 10 characters long.',
         },
       ],
+      submitButton: {
+        text: 'Send Message',
+        class: 'btn btn-primary',
+      },
     },
-    socialLinks: [
-      {
-        label: 'LinkedIn',
-        href: 'https://www.linkedin.com/in/khovakrishnapilato',
-        btnStyle: {
-          colorClass: 'btn-outline-primary',
-          textColor: '#0077b5',
-          icon: 'fa-linkedin',
-        },
-      },
-      {
-        label: 'GitHub',
-        href: 'https://github.com/krishnapilato',
-        btnStyle: {
-          colorClass: 'btn-outline-dark',
-          textColor: '#333',
-          icon: 'fa-github',
-        },
-      },
-      {
-        label: 'Email',
-        href: 'mailto:youremail@example.com',
-        btnStyle: {
-          colorClass: 'btn-outline-secondary',
-          textColor: '#6c757d',
-          icon: 'fa-envelope',
-        },
-      },
-    ],
-  },
-
-  formData: {
-    inputs: [
-      {
-        label: 'Full Name',
-        type: 'text',
-        placeholder: 'Enter your full name',
-        formControlName: 'name',
-        required: true,
-      },
-      {
-        label: 'Date of Birth',
-        type: 'date',
-        placeholder: 'Select your date of birth',
-        formControlName: 'dob',
-        required: true,
-      },
-      {
-        label: 'Old Password',
-        type: 'password',
-        placeholder: 'Enter your old password',
-        formControlName: 'oldPassword',
-        required: true,
-      },
-      {
-        label: 'New Password',
-        type: 'password',
-        placeholder: 'Enter your new password',
-        formControlName: 'newPassword',
-        required: true,
-      },
-      {
-        label: 'Confirm New Password',
-        type: 'password',
-        placeholder: 'Confirm your new password',
-        formControlName: 'confirmPassword',
-        required: true,
-      },
-    ],
-    buttons: [
-      {
-        label: 'Save Changes',
-        type: 'submit',
-        class: 'btn btn-primary w-100',
-      },
-    ],
   },
 };

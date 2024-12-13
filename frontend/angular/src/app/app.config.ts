@@ -8,6 +8,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
+    
     importProvidersFrom(
       BrowserAnimationsModule,
       RouterModule.forRoot(routes, {
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
         useHash: true,
       })
     ),
+    
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
 };

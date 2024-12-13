@@ -10,7 +10,7 @@ import { AuthService } from '../../auth/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule, MatIconModule, MatTooltipModule],
   templateUrl: './header.component.html',
-  styleUrls: [],
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
   public headerTitle = 'khovakrishna.pilato';
@@ -24,13 +24,11 @@ export class HeaderComponent {
     { icon: '', label: 'Theme', route: '', iconClass: 'fa' },
   ];
 
-  constructor(private authService: AuthService) {}
-
   toggleOffcanvas(): void {
     this.isOffcanvasOpen = !this.isOffcanvasOpen;
   }
 
-  public onLinkClick(): void {
+  onLinkClick(): void {
     this.isOffcanvasOpen = false;
   }
 
