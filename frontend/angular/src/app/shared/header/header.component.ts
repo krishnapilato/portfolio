@@ -13,7 +13,7 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  public headerTitle = 'khovakrishna.pilato';
+  public headerTitle = '><Scripted Horizons/><';
   public isOffcanvasOpen = false;
   public isDarkTheme = false;
 

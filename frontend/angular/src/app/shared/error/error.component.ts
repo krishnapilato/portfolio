@@ -23,15 +23,6 @@ import { Component } from '@angular/core';
           <i class="fa fa-home mr-2"></i> Go Back Home
         </a>
       </div>
-      <!-- Copyright Notice -->
-      <div class="absolute bottom-2 right-4 text-sm text-xs text-gray-100">
-        <a
-          href="https://unsplash.com/@unsplash"
-          class="underline"
-          target="_blank"
-          >Photos by Unsplash</a
-        >
-      </div>
     </div>
   `,
 })
