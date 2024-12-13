@@ -28,12 +28,9 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/aos/dist/aos.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "node_modules/@fontsource/material-icons/css/material-icons.css"
+              "node_modules/aos/dist/aos.css"
             ],
             "scripts": [
-              "node_modules/aos/dist/aos.js"
             ]
           },
           "configurations": {
