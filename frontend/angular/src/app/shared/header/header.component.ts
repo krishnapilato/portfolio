@@ -21,7 +21,7 @@ export class HeaderComponent {
     { icon: 'fa-solid fa-circle-question', label: 'Quiz', route: '/dashboard' },
     { icon: 'fa-envelope', label: 'Contact', route: '/contact' },
     { icon: 'fa-arrow-right-to-bracket', label: 'Login', route: '/auth/login' },
-    { icon: '', label: 'Theme', route: '', iconClass: 'fa' },
+    { icon: '', label: 'Theme' },
   ];
 
   toggleOffcanvas(): void {

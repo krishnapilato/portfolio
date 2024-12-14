@@ -1,5 +1,5 @@
 <div class="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600" data-aos="fade-up" data-aos-delay="300">
-  <div class="bg-white shadow-lg rounded-lg p-8 w-full" style="width: 800px; height: 700px;">
+  <div class="bg-white shadow-lg rounded-3xl p-8 w-full" style="width: 800px; height: 700px;">
     <div class="quiz-container">
       <!-- Welcome Screen -->
       <div *ngIf="currentView === 'welcome'" class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
@@ -19,7 +19,7 @@
         </p>
         <button
           (click)="startQuiz()"
-          class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300"
+          class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-lg"
           data-aos="fade-up"
           data-aos-delay="400"
         >
@@ -41,7 +41,7 @@
             [class.bg-green-100]="option.isCorrect && showCorrectAnswer"
             [class.bg-red-100]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
             [class.pointer-events-none]="selectedOptionIndex !== null"
-            class="px-4 py-3 bg-gray-100 rounded-lg shadow-md cursor-pointer hover:bg-gray-200 transition duration-200"
+            class="px-4 py-3 bg-gray-100 rounded-lg shadow-lg cursor-pointer hover:bg-gray-200 transition duration-200"
             data-aos="fade-left"
             data-aos-delay="400"
           >
@@ -53,7 +53,7 @@
           <button
             (click)="skipQuestion()"
             [disabled]="showCorrectAnswer || selectedOptionIndex !== null"
-            class="px-6 py-3 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition disabled:opacity-50"
+            class="px-6 py-3 bg-gray-300 text-gray-700 shadow-lg rounded-md hover:bg-gray-400 transition disabled:opacity-50"
             data-aos="fade-left"
             data-aos-delay="500"
           >
@@ -62,7 +62,7 @@
           <button
             (click)="nextOrFinish()"
             [disabled]="selectedOptionIndex === null"
-            class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+            class="px-6 py-3 bg-blue-600 text-white shadow-lg rounded-md hover:bg-blue-700 transition disabled:opacity-50"
             data-aos="fade-left"
             data-aos-delay="600"
           >
@@ -72,7 +72,7 @@
 
         <div
           *ngIf="showCorrectAnswer && selectedOptionIndex !== null && !questions[questionIndex].options[selectedOptionIndex].isCorrect"
-          class="mt-4 bg-yellow-100 text-yellow-800 p-4 rounded-md"
+          class="mt-4 bg-yellow-100 text-yellow-800 p-4 rounded-md shadow-lg"
         >
           <strong><i class="fa-solid fa-circle-info"></i> Explanation:</strong> {{ questions[questionIndex].explanation }}
         </div>
@@ -93,7 +93,7 @@
         <button
           (click)="restartQuiz()"
           [disabled]="currentView !== 'results'"
-          class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300"
+          class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-lg"
           data-aos="fade-up"
           data-aos-delay="400"
         >

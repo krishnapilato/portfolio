@@ -1,5 +1,5 @@
 <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900" data-aos="fade-down" data-aos-delay="0">
-  <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+  <div class="bg-white shadow-lg rounded-3xl p-8 max-w-md w-full">
     <div class="text-center">
       <h2 class="text-2xl font-semibold text-gray-800 mb-4">Create Your Account</h2>
       <p class="text-gray-500 mb-6">Sign up to get started.</p>
@@ -67,7 +67,7 @@
         />
         <p class="text-sm text-gray-500 mt-2">
           <a href="#" (click)="hide = !hide; $event.preventDefault();" class="text-indigo-500 hover:underline">
-            {{ hide ? 'Show' : 'Hide' }} password
+            <i class="fa-solid fa-eye{{hide ? '' : '-slash'}}"></i>  {{ hide ? 'Show' : 'Hide' }} password
           </a>
         </p>
         <div class="text-red-500 text-sm mt-1" *ngIf="registrationForm.controls['password']?.invalid && registrationForm.controls['password']?.touched">
@@ -95,7 +95,7 @@
         [disabled]="registrationForm.invalid"
         class="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition disabled:opacity-50"
       >
-        Sign Up
+        Sign Up <i class="fa-solid fa-user-plus"></i>
       </button>
     </form>
 
@@ -116,7 +116,7 @@
     <div class="mt-6 text-center">
       <p class="text-sm text-gray-600">
         Already have an account?
-        <a routerLink="/auth/login" class="text-indigo-500 hover:underline">Login</a>
+        <a routerLink="/auth/login" class="text-indigo-500 hover:underline">Login <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
       </p>
     </div>
   </div>

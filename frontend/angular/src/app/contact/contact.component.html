@@ -10,7 +10,7 @@
   id="contact"
   class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 px-4 sm:px-6 lg:px-12"
 >
-  <div class="bg-gray-800 shadow-2xl rounded-lg w-full max-w-5xl text-gray-100" data-aos="fade-up" data-aos-delay="300">
+  <div class="bg-gray-800 shadow-2xl rounded-3xl w-full max-w-5xl text-gray-100" data-aos="fade-up" data-aos-delay="300">
     <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
       <!-- Contact Form Section -->
       <div class="p-6 sm:p-8">
@@ -42,7 +42,7 @@
                 [formControlName]="field.controlName"
                 maxlength="1000"
                 rows="4"
-                class="w-full p-3 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="shadow-lg w-full p-3 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 [ngClass]="{ 'border-red-500': isInvalid(field.controlName) }"
               ></textarea>
             </ng-container>
@@ -53,7 +53,7 @@
 
           <button
             type="submit"
-            class="w-full p-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-blue-300"
+            class="shadow-lg w-full p-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
             Send Message <i class="fa-regular fa-paper-plane"></i>
           </button>
@@ -65,14 +65,14 @@
       </div>
 
       <!-- Social Links Section -->
-      <div class="flex flex-col justify-center items-center p-6 sm:p-8 bg-gray-900 rounded-lg lg:rounded-r-lg">
+      <div class="flex flex-col justify-center items-center p-6 sm:p-8 bg-gray-900 rounded-3xl">
         <h4 class="text-xl sm:text-2xl font-semibold text-blue-400 mb-6">Connect with me</h4>
         <div *ngFor="let link of socialLinks" class="mb-4 w-full">
           <a
             [href]="link.href"
             [ngClass]="link.btnClass"
             target="_blank"
-            class="w-full flex items-center justify-center p-3 rounded-full bg-gray-800 hover:bg-blue-500 text-gray-200 font-bold transition"
+            class="shadow-lg w-full flex items-center justify-center p-3 rounded-full bg-gray-800 hover:bg-blue-500 text-gray-200 font-bold transition"
           >
             <i [class]="link.iconClass + ' mr-2 text-lg'"></i> {{ link.label }}
           </a>

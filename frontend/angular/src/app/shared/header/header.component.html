@@ -55,12 +55,12 @@
 
           <!-- Theme Icon with Tooltip -->
           <mat-icon
-            *ngIf="link.label === 'Theme'"
-            class="text-gray-400 ml-2 cursor-pointer"
-            (click)="toggleTheme()"
-          >
-            {{ isDarkTheme ? 'wb_sunny' : 'nights_stay' }}
-          </mat-icon>
+          *ngIf="link.label === 'Theme'"
+          class="text-gray-400 ml-2 cursor-pointer animate-pulse hover:animate-bounce"
+          (click)="toggleTheme()"
+        >
+          {{ isDarkTheme ? 'wb_sunny' : 'nights_stay' }}
+        </mat-icon>
         </a>
       </li>
     </ul>
@@ -93,7 +93,8 @@
     <h3 class="text-lg font-bold text-gray-100">Menu </h3>
     <p class="text-xs text-gray-400">Please select an option from the list</p>
 
-    <mat-icon matTooltip="Change theme" matTooltipPosition="left"
+    <mat-icon
+    class="text-gray-400 ml-2 cursor-pointer animate-pulse hover:animate-pulse"
     (click)="toggleTheme()"
   >
     {{ isDarkTheme ? 'wb_sunny' : 'nights_stay' }}
