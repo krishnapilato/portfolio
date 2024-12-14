@@ -33,6 +33,7 @@ export class ContactComponent implements OnInit {
       placeholder: 'Enter your name',
       errorMessage: 'Name is required and should only contain letters.',
       validators: [Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
+      icon: 'user', // Icon for the name field
     },
     {
       id: 'email',
@@ -42,6 +43,7 @@ export class ContactComponent implements OnInit {
       placeholder: 'Enter your email',
       errorMessage: 'Please enter a valid email address.',
       validators: [Validators.required, Validators.email],
+      icon: 'envelope', // Icon for the email field
     },
     {
       id: 'message',
@@ -51,6 +53,7 @@ export class ContactComponent implements OnInit {
       placeholder: 'Write your message here',
       errorMessage: 'Message is required and should be at least 10 characters long.',
       validators: [Validators.required, Validators.minLength(10)],
+      icon: 'comment', // Icon for the message field
     },
   ];
 

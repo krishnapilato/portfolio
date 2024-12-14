@@ -160,6 +160,16 @@ export class HomeComponent implements OnInit {
       },
     ];
   }
+
+  scrollToAboutMe(): void {
+    const element = document.getElementById('about-me');
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }
 }
 
 interface Skill {

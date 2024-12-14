@@ -1,38 +1,29 @@
 <div class="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600" data-aos="fade-up" data-aos-delay="300">
-  <div class="bg-white shadow-lg rounded-3xl p-8 w-full" style="width: 800px; height: 700px;">
+  <div class="bg-white shadow-xl rounded-xl p-8 w-full max-w-3xl mx-4 sm:mx-8 md:mx-12 lg:mx-auto" style="height: 700px;">
     <div class="quiz-container">
+
       <!-- Welcome Screen -->
       <div *ngIf="currentView === 'welcome'" class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
-        <h1 class="text-3xl font-bold mb-4 text-gray-800">Welcome to Aviation Quiz</h1>
-        <p class="text-gray-600 mb-6">
-          Ready to test your aviation knowledge? This quiz will challenge your understanding of key concepts for the Private Pilot License (PPL).
-        </p>
-        <h3 class="text-xl font-semibold text-gray-700 mb-4"><i class="fa-solid fa-circle-info"></i> How It Works:</h3>
-        <ul class="list-none space-y-2 text-gray-600" data-aos="fade-up" data-aos-delay="200">
-          <li>Answer multiple-choice questions.</li>
-          <li>Click on the answer you think is correct.</li>
-          <li>If incorrect, an explanation will help you learn.</li>
-          <li>Your final score reflects your performance.</li>
-        </ul>
-        <p class="text-gray-600 mt-6" data-aos="fade-up" data-aos-delay="300">
-          Aim for the skies! <i class="fa-solid fa-plane-departure"></i>
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-6 animate__animated animate__fadeIn animate__delay-1s">Aviation Quiz</h1>
+        <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+          Ready to test your aviation knowledge? This quiz will challenge your understanding of key concepts for the Private Pilot License (PPL). Are you ready to become a pro?
         </p>
         <button
           (click)="startQuiz()"
-          class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-lg"
+          class="mt-6 px-10 sm:px-12 py-4 sm:py-5 font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           data-aos="fade-up"
-          data-aos-delay="400"
+          data-aos-delay="300"
         >
           Start Quiz <i class="fa-solid fa-circle-arrow-right"></i>
         </button>
       </div>
 
       <!-- Quiz Screen -->
-      <div *ngIf="currentView === 'quiz'" class="p-6" data-aos="fade-in" data-aos-delay="100">
-        <h2 class="text-xl text-gray-800 mb-4" data-aos="fade-right" data-aos-delay="200">
+      <div *ngIf="currentView === 'quiz'" class="p-8" data-aos="fade-in" data-aos-delay="100">
+        <h2 class="text-2xl sm:text-3xl text-gray-800 mb-4" data-aos="fade-right" data-aos-delay="200">
           Question {{ questionIndex + 1 }} / {{ questions.length }}:
         </h2>
-        <p class=" font-bold text-gray-700 mb-6" data-aos="fade-right" data-aos-delay="300">{{ questions[questionIndex].text }}</p>
+        <p class="font-semibold text-lg sm:text-xl text-gray-700 mb-8" data-aos="fade-right" data-aos-delay="300">{{ questions[questionIndex].text }}</p>
 
         <ul class="space-y-4">
           <li
@@ -41,19 +32,24 @@
             [class.bg-green-100]="option.isCorrect && showCorrectAnswer"
             [class.bg-red-100]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
             [class.pointer-events-none]="selectedOptionIndex !== null"
-            class="px-4 py-3 bg-gray-100 rounded-lg shadow-lg cursor-pointer hover:bg-gray-200 transition duration-200"
+            class="px-6 py-4 bg-gray-100 rounded-lg shadow-lg cursor-pointer hover:bg-gray-200 transition duration-300 group relative"
             data-aos="fade-left"
             data-aos-delay="400"
           >
-            {{ option.text }}
+            <span class="font-semibold text-lg">{{ ['A', 'B', 'C', 'D'][i] }}. </span>{{ option.text }}
+            <div
+              class="absolute left-full top-1/2 transform -translate-y-1/2 ml-4 w-max p-3 bg-gray-700 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+              Select option {{ ['A', 'B', 'C', 'D'][i] }}
+            </div>
           </li>
         </ul>
 
-        <div class="flex justify-between mt-6">
+        <div class="flex justify-between mt-8 relative">
           <button
             (click)="skipQuestion()"
             [disabled]="showCorrectAnswer || selectedOptionIndex !== null"
-            class="px-6 py-3 bg-gray-300 text-gray-700 shadow-lg rounded-md hover:bg-gray-400 transition disabled:opacity-50"
+            class="px-6 sm:px-8 py-4 sm:py-5 bg-gray-300 text-gray-700 shadow-lg rounded-md font-bold hover:bg-gray-400 transition disabled:opacity-50 group"
             data-aos="fade-left"
             data-aos-delay="500"
           >
@@ -62,7 +58,7 @@
           <button
             (click)="nextOrFinish()"
             [disabled]="selectedOptionIndex === null"
-            class="px-6 py-3 bg-blue-600 text-white shadow-lg rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+            class="px-6 sm:px-8 py-4 sm:py-5 bg-blue-600 text-white font-bold shadow-lg rounded-md hover:bg-blue-700 transition disabled:opacity-50 group"
             data-aos="fade-left"
             data-aos-delay="600"
           >
@@ -80,26 +76,47 @@
 
       <!-- Results Screen -->
       <div *ngIf="currentView === 'results'" class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4"><strong><i class="fa-solid fa-star"></i> Your Score:</strong> {{ getResults().score }}%</h2>
-        <p class="text-gray-600 mb-6"><i class="fa-solid fa-circle-info"></i> {{ getResults().advice }}</p>
+        <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-6 animate__animated animate__fadeIn animate__delay-1s">
+          <strong><i class="fa-solid fa-star"></i> Your Score:</strong> {{ getResults().score }}%
+        </h2>
 
-        <h3 class="text-xl font-semibold text-gray-700 mb-4" data-aos="fade-up" data-aos-delay="200"><i class="fa-solid fa-chart-simple"></i> Statistics</h3>
-        <ul class="space-y-2 text-gray-600" data-aos="fade-up" data-aos-delay="300">
-          <li><i class="fa-regular fa-rectangle-list"></i> Total Questions: {{ questions.length }}</li>
-          <li><i class="fa-solid fa-check"></i> Correct Answers: {{ correctAnswersCount }}</li>
-          <li><i class="fa-solid fa-xmark"></i> Incorrect Answers: {{ questions.length - correctAnswersCount }}</li>
-        </ul>
+        <div class="text-xl sm:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+          <i class="fa-solid fa-circle-info"></i> {{ getResults().advice }}
+        </div>
+
+        <h3 class="text-2xl sm:text-3xl font-semibold text-gray-700 mb-4" data-aos="fade-up" data-aos-delay="400">
+          <i class="fa-solid fa-chart-simple"></i> Statistics
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
+          <div class="p-6 bg-white shadow-lg rounded-lg hover:scale-105 hover:shadow-2xl transition-all w-full max-w-xs">
+            <i class="fa-regular fa-rectangle-list text-blue-600 text-2xl mb-4"></i>
+            <h4 class="text-xl font-semibold text-gray-800">Total Questions</h4>
+            <p class="text-lg text-gray-600">{{ questions.length }}</p>
+          </div>
+          <div class="p-6 bg-white shadow-lg rounded-lg hover:scale-105 hover:shadow-2xl transition-all w-full max-w-xs">
+            <i class="fa-solid fa-check text-green-600 text-2xl mb-4"></i>
+            <h4 class="text-xl font-semibold text-gray-800">Correct Answers</h4>
+            <p class="text-lg text-gray-600">{{ correctAnswersCount }}</p>
+          </div>
+          <div class="p-6 bg-white shadow-lg rounded-lg hover:scale-105 hover:shadow-2xl transition-all w-full max-w-xs">
+            <i class="fa-solid fa-xmark text-red-600 text-2xl mb-4"></i>
+            <h4 class="text-xl font-semibold text-gray-800">Incorrect</h4>
+            <p class="text-lg text-gray-600">{{ questions.length - correctAnswersCount }}</p>
+          </div>
+        </div>
 
         <button
           (click)="restartQuiz()"
           [disabled]="currentView !== 'results'"
-          class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-lg"
+          class="mt-6 px-10 sm:px-12 py-4 sm:py-5 font-bold bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-full hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           data-aos="fade-up"
-          data-aos-delay="400"
+          data-aos-delay="500"
         >
           Restart Quiz <i class="fa-solid fa-rotate-right"></i>
         </button>
       </div>
+
     </div>
   </div>
 </div>

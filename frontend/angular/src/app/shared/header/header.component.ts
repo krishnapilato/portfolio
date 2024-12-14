@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -13,9 +12,11 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  public headerTitle = '><Scripted Horizons/><';
+  public headerTitle = 'Scripted Horizons';
   public isOffcanvasOpen = false;
   public isDarkTheme = false;
+
+  @Output() themeToggled = new EventEmitter<boolean>();
 
   navLinks = [
     { icon: 'fa-solid fa-circle-question', label: 'Quiz', route: '/dashboard' },
@@ -34,5 +35,6 @@ export class HeaderComponent {
 
   toggleTheme(): void {
     this.isDarkTheme = !this.isDarkTheme;
+    this.themeToggled.emit(this.isDarkTheme);
   }
 }

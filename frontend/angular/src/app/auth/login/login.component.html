@@ -1,24 +1,29 @@
-<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900" data-aos="fade-up" data-aos-delay="0">
-  <div class="bg-white shadow-lg rounded-3xl p-8 max-w-md w-full">
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
+  <div class="bg-gray-800 shadow-lg rounded-3xl p-8 max-w-xl w-full">
     <div class="text-center">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Welcome</h2>
-      <p class="text-gray-500 mb-6">Sign in to continue.</p>
+      <h2 class="text-3xl font-bold text-gray-100 mb-4">Sign In to Continue</h2>
+      <p class="text-gray-400 mb-6">Please enter your credentials to proceed.</p>
     </div>
     <form (ngSubmit)="login(loginForm)" #loginForm="ngForm" novalidate>
+
       <!-- Email Input -->
-      <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Insert email"
-          [(ngModel)]="loginRequest.email"
-          name="loginRequest.email"
-          required
-          email
-          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          aria-describedby="emailHelp"
-        />
+      <div class="mb-6 relative">
+        <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+            <i class="fa-solid fa-envelope text-gray-400"></i>
+          </span>
+          <input
+            type="email"
+            id="email"
+            placeholder="Insert email"
+            [(ngModel)]="loginRequest.email"
+            name="loginRequest.email"
+            required
+            email
+            class="mt-1 block w-full pl-10 pr-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
         <div
           class="text-red-500 text-sm mt-1"
           *ngIf="loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched"
@@ -33,26 +38,33 @@
       </div>
 
       <!-- Password Input -->
-      <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-        <input
-          [type]="hide ? 'password' : 'text'"
-          id="password"
-          placeholder="Insert password"
-          [minLength]="7"
-          [(ngModel)]="loginRequest.password"
-          name="loginRequest.password"
-          required
-          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        />
+      <div class="mb-6 relative">
+        <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+            <i class="fa-solid fa-lock text-gray-400"></i>
+          </span>
+          <input
+            [type]="hide ? 'password' : 'text'"
+            id="password"
+            placeholder="Insert password"
+            [minLength]="7"
+            [(ngModel)]="loginRequest.password"
+            name="loginRequest.password"
+            required
+            class="mt-1 block w-full pl-10 pr-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
         <div
           class="text-red-500 text-sm mt-1"
           *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched"
         >
           Password is required.
         </div>
-        <p class="text-sm text-gray-500 mt-2">
-          <a href="#" (click)="hide = !hide; $event.preventDefault();" class="text-indigo-500 hover:underline"><i class="fa-solid fa-eye{{hide ? '' : '-slash'}}"></i> {{ hide ? 'Show' : 'Hide' }} password</a>
+        <p class="text-sm text-gray-400 mt-2">
+          <a href="#" (click)="hide = !hide; $event.preventDefault();" class="text-blue-500 hover:underline">
+            <i class="fa-solid fa-eye{{hide ? '' : '-slash'}}"></i> {{ hide ? 'Show' : 'Hide' }} password
+          </a>
         </p>
       </div>
 
@@ -69,30 +81,32 @@
       <button
         type="submit"
         [disabled]="loginForm.invalid"
-        class="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition disabled:opacity-50"
+        class="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition disabled:opacity-50"
       >
         Login <i class="fa-solid fa-arrow-right-to-bracket"></i>
       </button>
     </form>
 
     <!-- Social Login Buttons -->
-    <div class="mt-6 space-y-4">
-      <button class="w-full bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
-        <i class="fab fa-google mr-2"></i> Login with Google
+    <div class="mt-6 flex space-x-4">
+      <button class="w-1/3 bg-red-500 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition">
+        <i class="fab fa-google mr-2"></i> Google
       </button>
-      <button class="w-full bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
-        <i class="fab fa-facebook-f mr-2"></i> Login with Facebook
+      <button class="w-1/3 bg-blue-700 hover:bg-blue-800 text-white font-medium py-3 px-4 rounded-lg shadow-md transition">
+        <i class="fab fa-facebook-f mr-2"></i> Facebook
       </button>
-      <button class="w-full bg-black hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
-        <i class="fab fa-apple mr-2"></i> Login with Apple
+      <button class="w-1/3 bg-black hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-lg shadow-md transition">
+        <i class="fab fa-apple mr-2"></i> Apple
       </button>
     </div>
 
     <!-- Sign Up Link -->
     <div class="mt-6 text-center">
-      <p class="text-sm text-gray-600">
+      <p class="text-sm text-gray-400">
         Don't have an account?
-        <a routerLink="/auth/signup" class="text-indigo-500 hover:underline">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+        <a routerLink="/auth/signup" class="text-blue-500 hover:underline">
+          Sign Up <i class="fa-solid fa-user-plus"></i>
+        </a>
       </p>
     </div>
   </div>

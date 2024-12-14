@@ -1,28 +1,30 @@
-<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900" data-aos="fade-down" data-aos-delay="0">
-  <div class="bg-white shadow-lg rounded-3xl p-8 max-w-md w-full">
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
+  <div class="bg-gray-800 shadow-lg rounded-3xl p-8 max-w-xl w-full">
     <div class="text-center">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Create Your Account</h2>
-      <p class="text-gray-500 mb-6">Sign up to get started.</p>
+      <h2 class="text-3xl font-bold text-white mb-4">Create Your Account</h2>
+      <p class="text-gray-300 mb-6">Sign up to get started and join our community.</p>
     </div>
-    <form
-      #registrationForm="ngForm"
-      (ngSubmit)="signUp(registrationForm.value)"
-      novalidate
-    >
+    <form #registrationForm="ngForm" (ngSubmit)="signUp(registrationForm.value)" novalidate>
+
       <!-- Full Name Input -->
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Full Name</label>
-        <input
-          type="text"
-          name="fullName"
-          required
-          minlength="2"
-          pattern="[a-zA-Z\s]+"
-          ngModel
-          placeholder="Insert full name"
-          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        />
-        <div class="text-red-500 text-sm mt-1" *ngIf="registrationForm.controls['fullName']?.invalid && registrationForm.controls['fullName']?.touched">
+      <div class="mb-6 relative">
+        <label class="block text-sm font-medium text-gray-200">Full Name</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <i class="fa-solid fa-user text-gray-400"></i>
+          </span>
+          <input
+            type="text"
+            name="fullName"
+            required
+            minlength="2"
+            pattern="[a-zA-Z\s]+"
+            ngModel
+            placeholder="Insert full name"
+            class="mt-1 block w-full px-10 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <div *ngIf="registrationForm.controls['fullName']?.invalid && registrationForm.controls['fullName']?.touched" class="text-red-500 text-sm mt-1">
           <ng-container *ngIf="registrationForm.controls['fullName']?.hasError('required')">
             Full name is required.
           </ng-container>
@@ -33,44 +35,55 @@
       </div>
 
       <!-- Email Input -->
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          name="email"
-          required
-          ngModel
-          placeholder="Insert email"
-          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        />
-        <div class="text-red-500 text-sm mt-1" *ngIf="registrationForm.controls['email']?.invalid && registrationForm.controls['email']?.touched">
+      <div class="mb-6 relative">
+        <label class="block text-sm font-medium text-gray-200">Email</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <i class="fa-solid fa-envelope text-gray-400"></i>
+          </span>
+          <input
+            type="email"
+            name="email"
+            required
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+            ngModel
+            placeholder="Insert email"
+            class="mt-1 block w-full px-10 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <div *ngIf="registrationForm.controls['email']?.invalid && registrationForm.controls['email']?.touched" class="text-red-500 text-sm mt-1">
           <ng-container *ngIf="registrationForm.controls['email']?.hasError('required')">
             Email is required.
           </ng-container>
-          <ng-container *ngIf="registrationForm.controls['email']?.hasError('email')">
-            Please enter a valid email.
+          <ng-container *ngIf="registrationForm.controls['email']?.hasError('pattern')">
+            Please enter a valid email address.
           </ng-container>
         </div>
       </div>
 
       <!-- Password Input -->
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Password</label>
-        <input
-          type="{{ hide ? 'password' : 'text' }}"
-          name="password"
-          required
-          minlength="9"
-          ngModel
-          placeholder="Insert password"
-          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        />
-        <p class="text-sm text-gray-500 mt-2">
-          <a href="#" (click)="hide = !hide; $event.preventDefault();" class="text-indigo-500 hover:underline">
-            <i class="fa-solid fa-eye{{hide ? '' : '-slash'}}"></i>  {{ hide ? 'Show' : 'Hide' }} password
+      <div class="mb-6 relative">
+        <label class="block text-sm font-medium text-gray-200">Password</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <i class="fa-solid fa-lock text-gray-400"></i>
+          </span>
+          <input
+            type="{{ hide ? 'password' : 'text' }}"
+            name="password"
+            required
+            minlength="9"
+            ngModel
+            placeholder="Insert password"
+            class="mt-1 block w-full px-10 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <p class="text-sm text-gray-400 mt-2">
+          <a href="#" (click)="hide = !hide; $event.preventDefault();" class="text-blue-500 hover:underline">
+            <i class="fa-solid fa-eye{{hide ? '' : '-slash'}}"></i> {{ hide ? 'Show' : 'Hide' }} password
           </a>
         </p>
-        <div class="text-red-500 text-sm mt-1" *ngIf="registrationForm.controls['password']?.invalid && registrationForm.controls['password']?.touched">
+        <div *ngIf="registrationForm.controls['password']?.invalid && registrationForm.controls['password']?.touched" class="text-red-500 text-sm mt-1">
           <ng-container *ngIf="registrationForm.controls['password']?.hasError('required')">
             Password is required.
           </ng-container>
@@ -93,30 +106,30 @@
       <button
         type="submit"
         [disabled]="registrationForm.invalid"
-        class="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition disabled:opacity-50"
+        class="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition disabled:opacity-50"
       >
         Sign Up <i class="fa-solid fa-user-plus"></i>
       </button>
     </form>
 
     <!-- Social Login Buttons -->
-    <div class="mt-6 space-y-4">
-      <button class="w-full bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
-        <i class="fab fa-google mr-2"></i> Sign Up with Google
+    <div class="mt-6 flex space-x-4">
+      <button class="w-1/3 bg-red-500 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition">
+        <i class="fab fa-google mr-2"></i> Google
       </button>
-      <button class="w-full bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
-        <i class="fab fa-facebook-f mr-2"></i> Sign Up with Facebook
+      <button class="w-1/3 bg-blue-700 hover:bg-blue-800 text-white font-medium py-3 px-4 rounded-lg shadow-md transition">
+        <i class="fab fa-facebook-f mr-2"></i> Facebook
       </button>
-      <button class="w-full bg-black hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
-        <i class="fab fa-apple mr-2"></i> Sign Up with Apple
+      <button class="w-1/3 bg-black hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-lg shadow-md transition">
+        <i class="fab fa-apple mr-2"></i> Apple
       </button>
     </div>
 
     <!-- Login Link -->
     <div class="mt-6 text-center">
-      <p class="text-sm text-gray-600">
+      <p class="text-sm text-gray-400">
         Already have an account?
-        <a routerLink="/auth/login" class="text-indigo-500 hover:underline">Login <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+        <a routerLink="/auth/login" class="text-blue-500 hover:underline">Login <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
       </p>
     </div>
   </div>
