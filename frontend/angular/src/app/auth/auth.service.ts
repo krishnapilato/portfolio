@@ -52,11 +52,6 @@ export class AuthService {
               { duration: 3000 }
             );
           } else {
-            this._snackbar.open(
-              'Something went wrong. Please try again later.',
-              'Close',
-              { duration: 3000 }
-            );
           }
           return throwError(error);
         })

@@ -1,4 +1,4 @@
-<div class="flex items-center justify-center min-h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900" data-aos="fade-up" data-aos-delay="0">
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900" data-aos="fade-up" data-aos-delay="0">
   <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
     <div class="text-center">
       <h2 class="text-2xl font-semibold text-gray-800 mb-4">Welcome back</h2>
@@ -21,19 +21,14 @@
         />
         <div
           class="text-red-500 text-sm mt-1"
-          *ngIf="
-            loginForm.controls['loginRequest.email']?.invalid &&
-            loginForm.controls['loginRequest.email']?.touched
-          "
+          *ngIf="loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched"
         >
-          <ng-container
-            *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')"
-            >Email is required.</ng-container
-          >
-          <ng-container
-            *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')"
-            >Please enter a valid email.</ng-container
-          >
+          <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')">
+            Email is required.
+          </ng-container>
+          <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')">
+            Please enter a valid email.
+          </ng-container>
         </div>
       </div>
 
@@ -41,7 +36,7 @@
       <div class="mb-4">
         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
         <input
-          type="{{ hide ? 'password' : 'text' }}"
+          [type]="hide ? 'password' : 'text'"
           id="password"
           placeholder="Insert password"
           [minLength]="7"
@@ -52,32 +47,46 @@
         />
         <div
           class="text-red-500 text-sm mt-1"
-          *ngIf="
-            loginForm.controls['loginRequest.password']?.invalid &&
-            loginForm.controls['loginRequest.password']?.touched
-          "
+          *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched"
         >
           Password is required.
         </div>
         <p class="text-sm text-gray-500 mt-2">
-          <a href="#" (click)="hide = !hide; $event.preventDefault();" class="text-indigo-500 hover:underline">{{
-            hide ? 'Show' : 'Hide'
-          }} password</a>
+          <a href="#" (click)="hide = !hide; $event.preventDefault();" class="text-indigo-500 hover:underline">{{ hide ? 'Show' : 'Hide' }} password</a>
         </p>
       </div>
 
-      <!-- Error Message -->
-      <div *ngIf="error" class="text-red-500 text-sm mb-4">{{ error }}</div>
+      <!-- Message (Error or Success) -->
+      <div
+        class="text-sm mt-4 p-2 rounded-md"
+        [ngClass]="{ 'bg-green-100 text-green-700': isSuccess, 'bg-red-100 text-red-700': !isSuccess }"
+        *ngIf="message"
+      >
+        {{ message }}
+      </div>
 
       <!-- Submit Button -->
       <button
         type="submit"
         [disabled]="loginForm.invalid"
-        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition disabled:opacity-50"
+        class="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition disabled:opacity-50"
       >
         Login
       </button>
     </form>
+
+    <!-- Social Login Buttons -->
+    <div class="mt-6 space-y-4">
+      <button class="w-full bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
+        <i class="fab fa-google mr-2"></i> Login with Google
+      </button>
+      <button class="w-full bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
+        <i class="fab fa-facebook-f mr-2"></i> Login with Facebook
+      </button>
+      <button class="w-full bg-black hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
+        <i class="fab fa-apple mr-2"></i> Login with Apple
+      </button>
+    </div>
 
     <!-- Sign Up Link -->
     <div class="mt-6 text-center">

@@ -1,8 +1,8 @@
-FROM node:latest AS builder
+FROM node:lts AS builder
 
 WORKDIR /app
 
-COPY package.json package-lock.json* ./
+COPY package.json package-lock.json ./
 
 RUN npm ci --force
 
@@ -10,7 +10,7 @@ COPY . .
 
 RUN npm run build -- --configuration production
 
-FROM node:latest AS production
+FROM node:lts AS production
 
 WORKDIR /app
 

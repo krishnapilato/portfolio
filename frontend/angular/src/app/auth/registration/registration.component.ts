@@ -1,70 +1,40 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router, RouterModule } from '@angular/router';
-import {
-  RegistrationRequest,
-  RegistrationResponse,
-} from '../../shared/models/registration.model';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    RouterModule,
-    MatIconModule,
-    MatSnackBarModule,
-  ],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent {
-  public registrationRequest: RegistrationRequest = {
-    fullName: '',
-    email: '',
-    password: '',
-  };
-  public error: string | null = null;
   public hide: boolean = true;
+  public message: string | null = null;
+  public isSuccess: boolean = false;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
-  public signUp(registrationForm: NgForm): void {
-    if (registrationForm.valid) {
-      this.authService.signUp(this.registrationRequest).subscribe({
-        next: (data: RegistrationResponse) => this.handleSuccess(),
-        error: (error: any) => this.handleError(error),
-      });
-    }
-  }
-
-  private handleSuccess(): void {
-    this.snackBar.open('Registration successful! Please log in.', 'Close', {
-      duration: 3000,
+  public signUp(formData: any): void {
+    this.authService.signUp(formData).subscribe({
+      next: () => this.showMessage('Registration successful!', true),
+      error: (error: any) =>
+        this.showMessage(
+          error.error?.message || 'Registration failed. Please try again.',
+          false
+        ),
     });
-    this.router.navigate(['auth/login']);
   }
 
-  private handleError(error: any): void {
-    this.error =
-      error.error?.message || 'Registration failed. Please try again.';
-    console.error(error);
+  private showMessage(message: string, success: boolean): void {
+    this.message = message;
+    this.isSuccess = success;
+
+    setTimeout(() => {
+      this.message = null;
+    }, 3000);
   }
 }

@@ -1,35 +1,32 @@
-<div class="flex items-center justify-center min-h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900" data-aos="fade-down" data-aos-delay="0">
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900" data-aos="fade-down" data-aos-delay="0">
   <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
     <div class="text-center">
       <h2 class="text-2xl font-semibold text-gray-800 mb-4">Create Your Account</h2>
       <p class="text-gray-500 mb-6">Sign up to get started.</p>
     </div>
-    <form (ngSubmit)="signUp(registrationForm)" #registrationForm="ngForm" novalidate>
+    <form
+      #registrationForm="ngForm"
+      (ngSubmit)="signUp(registrationForm.value)"
+      novalidate
+    >
       <!-- Full Name Input -->
       <div class="mb-4">
-        <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+        <label class="block text-sm font-medium text-gray-700">Full Name</label>
         <input
           type="text"
-          id="fullName"
-          placeholder="Insert full name"
-          [(ngModel)]="registrationRequest.fullName"
-          name="registrationRequest.fullName"
+          name="fullName"
           required
           minlength="2"
           pattern="[a-zA-Z\s]+"
+          ngModel
+          placeholder="Insert full name"
           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
         />
-        <div
-          class="text-red-500 text-sm mt-1"
-          *ngIf="
-            registrationForm.controls['registrationRequest.fullName']?.invalid &&
-            registrationForm.controls['registrationRequest.fullName']?.touched
-          "
-        >
-          <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('required')">
+        <div class="text-red-500 text-sm mt-1" *ngIf="registrationForm.controls['fullName']?.invalid && registrationForm.controls['fullName']?.touched">
+          <ng-container *ngIf="registrationForm.controls['fullName']?.hasError('required')">
             Full name is required.
           </ng-container>
-          <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('pattern')">
+          <ng-container *ngIf="registrationForm.controls['fullName']?.hasError('pattern')">
             Full name can only contain letters and spaces.
           </ng-container>
         </div>
@@ -37,28 +34,20 @@
 
       <!-- Email Input -->
       <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <label class="block text-sm font-medium text-gray-700">Email</label>
         <input
           type="email"
-          id="email"
-          placeholder="Insert email"
-          [(ngModel)]="registrationRequest.email"
-          name="registrationRequest.email"
+          name="email"
           required
-          email
+          ngModel
+          placeholder="Insert email"
           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
         />
-        <div
-          class="text-red-500 text-sm mt-1"
-          *ngIf="
-            registrationForm.controls['registrationRequest.email']?.invalid &&
-            registrationForm.controls['registrationRequest.email']?.touched
-          "
-        >
-          <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('required')">
+        <div class="text-red-500 text-sm mt-1" *ngIf="registrationForm.controls['email']?.invalid && registrationForm.controls['email']?.touched">
+          <ng-container *ngIf="registrationForm.controls['email']?.hasError('required')">
             Email is required.
           </ng-container>
-          <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('email')">
+          <ng-container *ngIf="registrationForm.controls['email']?.hasError('email')">
             Please enter a valid email.
           </ng-container>
         </div>
@@ -66,50 +55,62 @@
 
       <!-- Password Input -->
       <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <label class="block text-sm font-medium text-gray-700">Password</label>
         <input
           type="{{ hide ? 'password' : 'text' }}"
-          id="password"
-          placeholder="Insert password"
-          [(ngModel)]="registrationRequest.password"
-          name="registrationRequest.password"
+          name="password"
           required
           minlength="9"
+          ngModel
+          placeholder="Insert password"
           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
         />
-        <div
-          class="text-red-500 text-sm mt-1"
-          *ngIf="
-            registrationForm.controls['registrationRequest.password']?.invalid &&
-            registrationForm.controls['registrationRequest.password']?.touched
-          "
-        >
-          <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('required')">
+        <p class="text-sm text-gray-500 mt-2">
+          <a href="#" (click)="hide = !hide; $event.preventDefault();" class="text-indigo-500 hover:underline">
+            {{ hide ? 'Show' : 'Hide' }} password
+          </a>
+        </p>
+        <div class="text-red-500 text-sm mt-1" *ngIf="registrationForm.controls['password']?.invalid && registrationForm.controls['password']?.touched">
+          <ng-container *ngIf="registrationForm.controls['password']?.hasError('required')">
             Password is required.
           </ng-container>
-          <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('minlength')">
+          <ng-container *ngIf="registrationForm.controls['password']?.hasError('minlength')">
             Password must be at least 9 characters.
           </ng-container>
         </div>
-        <p class="text-sm text-gray-500 mt-2">
-          <a href="#" (click)="hide = !hide; $event.preventDefault();" class="text-indigo-500 hover:underline">{{
-            hide ? 'Show' : 'Hide'
-          }} password</a>
-        </p>
       </div>
 
-      <!-- Error Message -->
-      <div *ngIf="error" class="text-red-500 text-sm mb-4">{{ error }}</div>
+      <!-- Message (Error or Success) -->
+      <div
+        class="text-sm mt-4 p-2 rounded-md"
+        [ngClass]="{ 'bg-green-100 text-green-700': isSuccess, 'bg-red-100 text-red-700': !isSuccess }"
+        *ngIf="message"
+      >
+        {{ message }}
+      </div>
 
       <!-- Submit Button -->
       <button
         type="submit"
         [disabled]="registrationForm.invalid"
-        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition disabled:opacity-50"
+        class="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition disabled:opacity-50"
       >
         Sign Up
       </button>
     </form>
+
+    <!-- Social Login Buttons -->
+    <div class="mt-6 space-y-4">
+      <button class="w-full bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
+        <i class="fab fa-google mr-2"></i> Sign Up with Google
+      </button>
+      <button class="w-full bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
+        <i class="fab fa-facebook-f mr-2"></i> Sign Up with Facebook
+      </button>
+      <button class="w-full bg-black hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-md shadow-md transition">
+        <i class="fab fa-apple mr-2"></i> Sign Up with Apple
+      </button>
+    </div>
 
     <!-- Login Link -->
     <div class="mt-6 text-center">

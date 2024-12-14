@@ -10,16 +10,15 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const token = this.authService.currentUserValue?.token;
-    const isLoginOrSignup = this.isLoginOrSignupRequest(request.url);
 
-    if (token && !isLoginOrSignup) {
+    if (token && !this.isLoginOrSignupRequest(request.url)) {
       request = this.addAuthorizationHeader(request, token);
     }
 
@@ -34,6 +33,10 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     token: string
   ): HttpRequest<any> {
-    return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+    return request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }

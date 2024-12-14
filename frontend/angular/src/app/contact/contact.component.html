@@ -1,7 +1,7 @@
 
 <!-- Contact Section Introduction -->
 <div class="bg-gray-900 py-8 sm:py-12 lg:py-16 text-center text-white">
-  <h2 class="text-4xl font-bold text-blue-400 mb-4" data-aos="fade-up">Let's Get in Touch</h2>
+  <h2 class="text-4xl font-bold text-white-400 mb-4" data-aos="fade-up">Let's Get in Touch <i class="fa-solid fa-envelope"></i></h2>
   <p class="text-lg text-gray-300 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
     I would love to hear from you! Whether you have a question, want to collaborate on a project, or just want to chat about technology and development, feel free to reach out. Fill out the form below or connect with me through social media.
   </p>
@@ -11,13 +11,16 @@
   class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 px-4 sm:px-6 lg:px-12"
 >
   <div class="bg-gray-800 shadow-2xl rounded-lg w-full max-w-5xl text-gray-100" data-aos="fade-up" data-aos-delay="300">
-    <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 mt-4"> <!-- Reduced gap here -->
+    <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
       <!-- Contact Form Section -->
       <div class="p-6 sm:p-8">
-        <h2 class="text-3xl sm:text-4xl font-bold text-center text-blue-400 mb-6">
-          <i class="fas fa-comments mr-2 text-blue-500"></i> Contact Me
+        <h2 class="text-3xl sm:text-4xl font-bold text-center text-blue-400 mb-2">
+          <i class="fa-solid fa-at"></i> Contact me
         </h2>
-        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-5">
+        <p class="text-center text-gray-600">
+          <i class="fa-solid fa-circle-info"></i> Your information is used only for this communication.
+        </p>
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="mt-6 space-y-5">
           <div *ngFor="let field of fields">
             <label [for]="field.id" class="block text-sm font-semibold text-blue-300 mb-2">
               {{ field.label }}
@@ -37,6 +40,7 @@
                 [id]="field.id"
                 [placeholder]="field.placeholder"
                 [formControlName]="field.controlName"
+                maxlength="1000"
                 rows="4"
                 class="w-full p-3 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 [ngClass]="{ 'border-red-500': isInvalid(field.controlName) }"
@@ -51,7 +55,7 @@
             type="submit"
             class="w-full p-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
-            Send Message
+            Send Message <i class="fa-regular fa-paper-plane"></i>
           </button>
 
           <div *ngIf="successMessage" class="mt-4 text-center text-green-400">
@@ -74,7 +78,7 @@
           </a>
         </div>
         <p class="text-gray-500 mt-6 text-center text-sm">
-          Phone number available upon email request.
+          <i class="fa-solid fa-circle-info"></i> Phone number available upon email request.
         </p>
       </div>
     </div>

@@ -12,22 +12,30 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  private readonly signupUrl = '/auth/signup';
+  private readonly loginUrl = '/auth/login';
+
+  constructor(private readonly authService: AuthService, private readonly router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | UrlTree {
     const isAuthenticated = this.authService.isAuthenticated();
-    
-    if (state.url === '/auth/signup') {
-      return isAuthenticated ? this.router.parseUrl('') : true; 
-    }
-    if (isAuthenticated) {
-      return true; 
+    const currentUrl = state.url;
+
+    if (currentUrl === this.signupUrl) {
+      // Redirect authenticated users away from signup
+      return isAuthenticated ? this.router.parseUrl('') : true;
     }
 
-    this.authService.redirectUrl = state.url;
-    return this.router.parseUrl('/auth/login'); 
+    if (isAuthenticated) {
+      // Allow access if authenticated
+      return true;
+    }
+
+    // Redirect to login if not authenticated
+    this.authService.redirectUrl = currentUrl;
+    return this.router.parseUrl(this.loginUrl);
   }
 }

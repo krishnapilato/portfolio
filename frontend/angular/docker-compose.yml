@@ -6,6 +6,16 @@ services:
     networks:
       - app-network
     restart: unless-stopped
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "http://localhost:4200"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
 
 networks:
   app-network:

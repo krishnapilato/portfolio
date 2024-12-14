@@ -125,7 +125,7 @@ export const environment = {
 
   // Home Section Configuration
   home: {
-    title: 'Hi, I am Krishna',
+    title: "Hi, I am Krishna",
     subtitle: 'Java Full Stack Developer based in Milan, Italy',
     description: 'I am a passionate Java Full Stack Developer based in Northern Italy, dedicated to creating applications that enhance user experiences.',
     skills: [
@@ -178,7 +178,7 @@ export const environment = {
       },
       {
         text: 'Resume',
-        link: 'https://drive.google.com/download/resume',
+        link: 'resume.pdf',
       },
     ],
     contactForm: {

@@ -1,14 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import emailjs from 'emailjs-com'; // Import EmailJS
 
 @Component({
   selector: 'app-contact',
@@ -26,6 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 export class ContactComponent implements OnInit {
   contactForm!: FormGroup;
   successMessage: string | null = null;
+  errorMessage: string | null = null;
 
   fields = [
     {
@@ -52,8 +49,7 @@ export class ContactComponent implements OnInit {
       type: 'textarea',
       controlName: 'message',
       placeholder: 'Write your message here',
-      errorMessage:
-        'Message is required and should be at least 10 characters long.',
+      errorMessage: 'Message is required and should be at least 10 characters long.',
       validators: [Validators.required, Validators.minLength(10)],
     },
   ];
@@ -77,6 +73,12 @@ export class ContactComponent implements OnInit {
       btnClass: 'btn-dark',
       iconClass: 'fa-brands fa-github',
     },
+    {
+      label: 'Facebook',
+      href: 'https://www.facebook.com/krishnapilato',
+      btnClass: 'btn-dark',
+      iconClass: 'fa-brands fa-facebook',
+    },
   ];
 
   constructor(private fb: FormBuilder) {}
@@ -98,12 +100,37 @@ export class ContactComponent implements OnInit {
     return !!(control?.invalid && control.touched);
   }
 
+  // Function to send email using EmailJS
+  private sendEmail(formData: any): void {
+    const templateParams = {
+      from_name: formData.name,
+      to_name: 'Krishna',
+      reply_to: formData.email,
+      message: formData.message,
+    };
+
+    emailjs.send("service_xg0zung","template_6yjljvi", templateParams, 'Snh_1YI8Oz07iuS5R')
+      .then((response) => {
+        console.log('SUCCESS!', response);
+        this.successMessage = 'Your message has been sent successfully!';
+        this.contactForm.reset();
+      })
+      .catch((error) => {
+        console.log('FAILED...', error);
+        this.errorMessage = 'Failed to send the email. Please try again later.';
+      });
+
+    setTimeout(() => {
+      this.successMessage = null;
+      this.errorMessage = null;
+    }, 3000);
+  }
+
+  // Handle form submission
   public onSubmit(): void {
     if (this.contactForm.valid) {
-      this.successMessage = 'Your message has been sent successfully!';
-      this.contactForm.reset();
-
-      setTimeout(() => (this.successMessage = null), 3000);
+      const formData = this.contactForm.value;
+      this.sendEmail(formData);
     }
   }
 }

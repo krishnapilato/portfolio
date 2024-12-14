@@ -1,17 +1,13 @@
-<div class="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600"  data-aos="fade-up"
-  data-aos-delay="300">
-  <div
-    class="bg-white shadow-lg rounded-lg p-8 w-full"
-    style="width: 800px; height: 700px;"
-  >
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600" data-aos="fade-up" data-aos-delay="300">
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full" style="width: 800px; height: 700px;">
     <div class="quiz-container">
       <!-- Welcome Screen -->
       <div *ngIf="currentView === 'welcome'" class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
-        <h1 class="text-3xl font-bold mb-4 text-gray-800">Welcome to the PPL Quiz!</h1>
+        <h1 class="text-3xl font-bold mb-4 text-gray-800">Welcome to Aviation Quiz</h1>
         <p class="text-gray-600 mb-6">
           Ready to test your aviation knowledge? This quiz will challenge your understanding of key concepts for the Private Pilot License (PPL).
         </p>
-        <h3 class="text-xl font-semibold text-gray-700 mb-4">How It Works:</h3>
+        <h3 class="text-xl font-semibold text-gray-700 mb-4"><i class="fa-solid fa-circle-info"></i> How It Works:</h3>
         <ul class="list-none space-y-2 text-gray-600" data-aos="fade-up" data-aos-delay="200">
           <li>Answer multiple-choice questions.</li>
           <li>Click on the answer you think is correct.</li>
@@ -19,7 +15,7 @@
           <li>Your final score reflects your performance.</li>
         </ul>
         <p class="text-gray-600 mt-6" data-aos="fade-up" data-aos-delay="300">
-          Aim for the skies!
+          Aim for the skies! <i class="fa-solid fa-plane-departure"></i>
         </p>
         <button
           (click)="startQuiz()"
@@ -27,20 +23,20 @@
           data-aos="fade-up"
           data-aos-delay="400"
         >
-          Start Quiz
+          Start Quiz <i class="fa-solid fa-circle-arrow-right"></i>
         </button>
       </div>
 
       <!-- Quiz Screen -->
       <div *ngIf="currentView === 'quiz'" class="p-6" data-aos="fade-in" data-aos-delay="100">
-        <h2 class="text-xl font-bold text-gray-800 mb-4" data-aos="fade-right" data-aos-delay="200">
+        <h2 class="text-xl text-gray-800 mb-4" data-aos="fade-right" data-aos-delay="200">
           Question {{ questionIndex + 1 }} / {{ questions.length }}:
         </h2>
-        <p class="text-gray-700 mb-6" data-aos="fade-right" data-aos-delay="300">{{ question.text }}</p>
+        <p class=" font-bold text-gray-700 mb-6" data-aos="fade-right" data-aos-delay="300">{{ questions[questionIndex].text }}</p>
 
         <ul class="space-y-4">
           <li
-            *ngFor="let option of question.options; let i = index"
+            *ngFor="let option of questions[questionIndex].options; let i = index"
             (click)="checkAnswer(option, i)"
             [class.bg-green-100]="option.isCorrect && showCorrectAnswer"
             [class.bg-red-100]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
@@ -56,45 +52,42 @@
         <div class="flex justify-between mt-6">
           <button
             (click)="skipQuestion()"
-            [disabled]="showCorrectAnswer || !selectedOptionIndex"
+            [disabled]="showCorrectAnswer || selectedOptionIndex !== null"
             class="px-6 py-3 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition disabled:opacity-50"
             data-aos="fade-left"
             data-aos-delay="500"
           >
-            Skip Question
+            Skip Question <i class="fa-solid fa-forward"></i>
           </button>
           <button
             (click)="nextOrFinish()"
-            [disabled]="!showCorrectAnswer"
+            [disabled]="selectedOptionIndex === null"
             class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50"
             data-aos="fade-left"
             data-aos-delay="600"
           >
-            {{ questionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz' }}
+            {{ questionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz' }} <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
 
         <div
-          *ngIf="showCorrectAnswer && selectedOptionIndex !== null && !question.options[selectedOptionIndex].isCorrect"
+          *ngIf="showCorrectAnswer && selectedOptionIndex !== null && !questions[questionIndex].options[selectedOptionIndex].isCorrect"
           class="mt-4 bg-yellow-100 text-yellow-800 p-4 rounded-md"
         >
-          <strong>Explanation:</strong> {{ question.explanation }}
+          <strong><i class="fa-solid fa-circle-info"></i> Explanation:</strong> {{ questions[questionIndex].explanation }}
         </div>
       </div>
 
       <!-- Results Screen -->
       <div *ngIf="currentView === 'results'" class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Quiz Results</h2>
-        <p class="text-lg text-gray-700 mb-4">
-          <strong>Your Score:</strong> {{ getResults().score }}%
-        </p>
-        <p class="text-gray-600 mb-6">{{ getResults().advice }}</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4"><strong><i class="fa-solid fa-star"></i> Your Score:</strong> {{ getResults().score }}%</h2>
+        <p class="text-gray-600 mb-6"><i class="fa-solid fa-circle-info"></i> {{ getResults().advice }}</p>
 
-        <h3 class="text-xl font-semibold text-gray-700 mb-4" data-aos="fade-up" data-aos-delay="200">Statistics</h3>
+        <h3 class="text-xl font-semibold text-gray-700 mb-4" data-aos="fade-up" data-aos-delay="200"><i class="fa-solid fa-chart-simple"></i> Statistics</h3>
         <ul class="space-y-2 text-gray-600" data-aos="fade-up" data-aos-delay="300">
-          <li>Total Questions: {{ questions.length }}</li>
-          <li>Correct Answers: {{ correctAnswersCount }}</li>
-          <li>Incorrect Answers: {{ questions.length - correctAnswersCount }}</li>
+          <li><i class="fa-regular fa-rectangle-list"></i> Total Questions: {{ questions.length }}</li>
+          <li><i class="fa-solid fa-check"></i> Correct Answers: {{ correctAnswersCount }}</li>
+          <li><i class="fa-solid fa-xmark"></i> Incorrect Answers: {{ questions.length - correctAnswersCount }}</li>
         </ul>
 
         <button
@@ -104,7 +97,7 @@
           data-aos="fade-up"
           data-aos-delay="400"
         >
-          Restart Quiz
+          Restart Quiz <i class="fa-solid fa-rotate-right"></i>
         </button>
       </div>
     </div>

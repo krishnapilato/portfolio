@@ -5,7 +5,6 @@ module.exports = {
     }),
     require("autoprefixer")({
       overrideBrowserslist: ["last 2 versions", "not dead"],
-    }),
-    require("cssnano")({ preset: "default" }),
+    })
   ],
 };

@@ -7,13 +7,6 @@ import { Component } from '@angular/core';
       class="flex items-center justify-center min-h-screen bg-gradient-to-r from-red-500 via-red-600 to-red-700 bg-cover bg-center"
     >
       <div class="text-center text-white">
-        <img
-          src="page_not_found.svg"
-          alt="Page Not Found"
-          class="mx-auto mb-4"
-          width="200"
-          height="200"
-        />
         <h1 class="text-4xl font-bold mb-3">404 - Not Found</h1>
         <p class="text-lg mb-4">The page you're looking for doesn't exist.</p>
         <a
