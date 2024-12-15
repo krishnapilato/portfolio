@@ -30,63 +30,49 @@
 
       <!-- Quiz Screen -->
       <div *ngIf="currentView === 'quiz'" class="p-8" data-aos="fade-in" data-aos-delay="100">
-        <div *ngIf="currentView === 'quiz'" class="relative mt-2">
-          <div class="w-full h-3 bg-gray-300 rounded-full">
-            <div
-              class="h-full bg-gradient-to-r from-blue-600 to-blue-500 rounded-full"
-              [style.width]="progress + '%'">
-            </div>
-          </div>
-          <!-- Percentage Text inside Progress Bar -->
-          <div class="absolute inset-0 flex items-center justify-center text-white font-semibold text-lg">
-            {{ progress | number:'1.0-0' }}%
-          </div>
-        </div>
-
-        <h4 class="text-xl sm:text-2xl text-gray-100 mb-4" data-aos="fade-right" data-aos-delay="200">
+        <h4 class="text-lg sm:text-xl text-gray-100 mb-2" data-aos="fade-right" data-aos-delay="200">
           Question {{ questionIndex + 1 }} / {{ questions.length }}:
         </h4>
-        <p class="font-semibold text-xl sm:text-2xl text-gray-200 mb-8" data-aos="fade-right" data-aos-delay="300">{{ questions[questionIndex].text }}</p>
+        <p class="font-semibold text-lg sm:text-xl text-gray-200 mb-4" data-aos="fade-right" data-aos-delay="300">
+          {{ questions[questionIndex].text }}
+        </p>
 
         <ul class="space-y-4">
           <li
-            *ngFor="let option of questions[questionIndex].options; let i = index"
-            (click)="checkAnswer(option, i)"
-            [class.bg-green-200]="option.isCorrect && showCorrectAnswer"
-            [class.bg-red-200]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
-            [class.pointer-events-none]="selectedOptionIndex !== null"
-            class="px-6 py-4 bg-gray-700 rounded-lg shadow-md cursor-pointer hover:bg-gray-600 transition duration-300 group relative"
-            data-aos="fade-left"
-            data-aos-delay="400"
-          >
-            <span class="font-semibold text-lg">{{ ['A', 'B', 'C', 'D'][i] }}. </span>{{ option.text }}
-            <div
-              class="absolute left-full top-1/2 transform -translate-y-1/2 ml-4 w-max p-3 bg-gray-700 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            >
-              Select option {{ ['A', 'B', 'C', 'D'][i] }}
-            </div>
-          </li>
+          *ngFor="let option of questions[questionIndex].options; let i = index"
+          (click)="checkAnswer(option, i)"
+          [class.bg-green-200]="option.isCorrect && showCorrectAnswer"
+          [class.bg-red-200]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
+          [class.pointer-events-none]="selectedOptionIndex !== null"
+          [class.text-gray-800]="(option.isCorrect && showCorrectAnswer) || (!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer)"
+          class="px-6 py-3 bg-gray-600 rounded-lg shadow-md cursor-pointer hover:bg-gray-500 transition duration-300 group relative text-sm sm:text-base"
+          data-aos="fade-left"
+          data-aos-delay="400"
+        >
+          <span class="font-semibold text-lg">{{ ['A', 'B', 'C', 'D'][i] }}. </span>{{ option.text }}
+        </li>
         </ul>
 
         <div class="flex justify-between mt-8 relative">
           <button
-            (click)="skipQuestion()"
-            [disabled]="showCorrectAnswer || selectedOptionIndex !== null"
-            class="px-6 sm:px-8 py-4 sm:py-5 bg-gray-600 text-gray-300 shadow-lg rounded-md font-bold hover:bg-gray-700 transition disabled:opacity-50 group"
-            data-aos="fade-left"
-            data-aos-delay="500"
-          >
-            Skip <i class="fa-solid fa-forward"></i>
-          </button>
-          <button
-            (click)="nextOrFinish()"
-            [disabled]="selectedOptionIndex === null"
-            class="px-6 sm:px-8 py-4 sm:py-5 bg-blue-600 text-white font-bold shadow-lg rounded-md hover:bg-blue-700 transition disabled:opacity-50 group"
-            data-aos="fade-left"
-            data-aos-delay="600"
-          >
-            {{ questionIndex < questions.length - 1 ? 'Next' : 'Finish' }} <i class="fa-solid fa-arrow-right"></i>
-          </button>
+          (click)="skipQuestion()"
+          [disabled]="showCorrectAnswer || selectedOptionIndex !== null"
+          class="px-6 sm:px-8 py-2 sm:py-3 bg-gray-600 text-gray-300 shadow-lg rounded-md font-semibold hover:bg-gray-700 transition disabled:opacity-50 group"
+          data-aos="fade-left"
+          data-aos-delay="500"
+        >
+          Skip <i class="fa-solid fa-forward"></i>
+        </button>
+
+        <button
+          (click)="nextOrFinish()"
+          [disabled]="selectedOptionIndex === null"
+          class="px-6 sm:px-8 py-2 sm:py-3 bg-blue-600 text-white font-semibold shadow-lg rounded-md hover:bg-blue-700 transition disabled:opacity-50 group"
+          data-aos="fade-left"
+          data-aos-delay="600"
+        >
+          {{ questionIndex < questions.length - 1 ? 'Next' : 'Finish' }} <i class="fa-solid fa-arrow-right"></i>
+        </button>
         </div>
 
         <div
