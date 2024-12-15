@@ -1,24 +1,24 @@
 <!-- Contact Section Introduction -->
-<div class="bg-gradient-to-r from-indigo-800 via-purple-700 to-blue-700 py-12 text-center text-white">
-  <h2 class="text-4xl font-bold mb-4" data-aos="fade-up">Let's Get in Touch <i class="fa-solid fa-envelope"></i></h2>
+<div class="bg-gradient-to-br from-gray-700 to-gray-800 py-16 text-center text-white">
+  <h2 class="text-4xl font-bold mb-6" data-aos="fade-up">Let's Get in Touch <i class="fa-solid fa-envelope"></i></h2>
   <p class="text-lg text-gray-300 mx-auto max-w-3xl" data-aos="fade-up" data-aos-delay="200">
     I would love to hear from you! Whether you have a question, want to collaborate, or simply want to chat about technology, feel free to reach out. Fill out the form below or connect with me through social media.
   </p>
 </div>
 
 <!-- Contact Form and Social Links Section -->
-<div id="contact" class="rounded-lg flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 bg-gray-900">
-  <div class="bg-gray-800 shadow-2xl rounded-xl w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 text-gray-100 p-8" data-aos="fade-up" data-aos-delay="300">
+<div id="contact" class="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 bg-gray-900">
+  <div class="bg-gray-800 shadow-2xl rounded-xl w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 p-8" data-aos="fade-up" data-aos-delay="300">
 
     <!-- Contact Form Section -->
-    <div class="p-6 lg:p-8 bg-gray-700 rounded-xl">
-      <h3 class="text-3xl sm:text-4xl font-bold text-center text-blue-400 mb-4">
+    <div class="p-6 lg:p-8 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl">
+      <h3 class="text-3xl sm:text-4xl font-bold text-center text-blue-400 mb-6">
         <i class="fa-solid fa-at"></i> Contact Me
       </h3>
-      <p class="text-center text-gray-400 mb-6">
+      <p class="text-center text-gray-400 mb-8">
         <i class="fa-solid fa-circle-info"></i> Your information is used only for this communication.
       </p>
-      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-5">
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
         <div *ngFor="let field of fields" class="relative">
           <label [for]="field.id" class="block text-sm font-semibold text-blue-300 mb-2">
             {{ field.label }}
@@ -67,19 +67,21 @@
     </div>
 
     <!-- Social Links Section -->
-    <div class="flex flex-col justify-center items-center p-6 sm:p-8 bg-gray-900 rounded-xl">
-      <h4 class="text-xl sm:text-2xl font-semibold text-blue-400 mb-6">Connect with Me</h4>
-      <div *ngFor="let link of socialLinks" class="mb-4 w-full">
-        <a
-          [href]="link.href"
-          [ngClass]="link.btnClass"
-          target="_blank"
-          class="shadow-lg w-full flex items-center justify-center p-3 rounded-full bg-gray-800 hover:bg-blue-500 text-gray-200 font-bold transition"
-        >
-          <i [class]="link.iconClass + ' mr-2 text-lg'"></i> {{ link.label }}
-        </a>
+    <div class="flex flex-col justify-center items-center p-6 sm:p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl">
+      <h4 class="text-2xl font-semibold text-blue-400 mb-6">Connect with Me</h4>
+      <div class="flex flex-col w-full space-y-4">
+        <div *ngFor="let link of socialLinks" class="w-full">
+          <a
+            [href]="link.href"
+            [ngClass]="link.btnClass"
+            target="_blank"
+            class="shadow-lg w-full flex items-center justify-center p-3 rounded-full bg-gray-800 hover:bg-blue-500 text-gray-200 font-bold transition"
+          >
+            <i [class]="link.iconClass + ' mr-2 text-lg'"></i> {{ link.label }}
+          </a>
+        </div>
       </div>
-      <p class="text-gray-500 mt-6 text-center text-sm">
+      <p class="text-gray-500 mt-8 text-center text-sm">
         <i class="fa-solid fa-circle-info"></i> Phone number available upon email request.
       </p>
     </div>
