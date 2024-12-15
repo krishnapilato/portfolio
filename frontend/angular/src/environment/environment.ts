@@ -173,11 +173,11 @@ export const environment = {
     ],
     actions: [
       {
-        text: 'LinkedIn',
+        text: 'View LinkedIn',
         link: 'https://www.linkedin.com/in/khovakrishnapilato',
       },
       {
-        text: 'Resume',
+        text: 'Download Resume',
         link: 'resume.pdf',
       },
     ],

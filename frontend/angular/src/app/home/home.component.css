@@ -1,19 +1,22 @@
-
-
 .arrows {
   width: 60px;
   height: 72px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 5rem;
+  bottom: 0.55rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .arrows path {
   stroke: #d2c6ff;
   fill: transparent;
-  stroke-width: 1px;
+  stroke-width: 2px;
   animation: arrow 2s infinite;
+  transition: stroke 0.3s ease-in-out;
 }
 
 .arrows path.a1 {
@@ -28,6 +31,13 @@
   animation-delay: 0s;
 }
 
+/* Hover Effect for Arrows */
+.arrows path:hover {
+  stroke: #6c63ff; /* Change to a brighter color on hover */
+  cursor: pointer;
+}
+
+/* Keyframes for animation */
 @keyframes arrow {
   0%,
   80%,
@@ -37,4 +47,58 @@
   40% {
     opacity: 1;
   }
+}
+
+/* Optional: Add a subtle glow effect to arrows */
+.arrows path {
+  box-shadow: 0 0 15px rgba(104, 90, 255, 0.7);
+}
+
+.arrows path:hover {
+  box-shadow: 0 0 25px rgba(104, 90, 255, 1);
+}
+
+
+/* Modal background */
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+
+.bg-opacity-50 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.bg-white {
+  background-color: white;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* Modal content */
+.bg-white {
+  width: 80%;
+  max-width: 400px;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
 }

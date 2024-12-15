@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, MatTooltipModule],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
 })
@@ -16,6 +16,12 @@ export class RegistrationComponent {
   public hide: boolean = true;
   public message: string | null = null;
   public isSuccess: boolean = false;
+
+  public registrationRequest = {
+    fullName: '',
+    email: '',
+    password: ''
+  };
 
   constructor(private readonly authService: AuthService) {}
 

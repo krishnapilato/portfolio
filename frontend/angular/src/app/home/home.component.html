@@ -13,12 +13,16 @@
     </p>
 
     <!-- Action Buttons -->
-    <div class="flex justify-center gap-4 mt-4" data-aos="fade-up" data-aos-delay="100">
-      <a href="{{ home.actions[0].link }}" target="_blank" class="shadow-lg btn btn-primary px-6 py-3 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition duration-300">
-        {{ home.actions[0].text }} <i class="fa-brands fa-linkedin"></i>
+    <div class="flex justify-center gap-8 mt-8">
+      <a href="{{ home.actions[0].link }}" target="_blank"
+         class="btn px-10 py-5 bg-blue-700 text-white font-bold rounded-full shadow-2xl hover:bg-blue-800 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
+        <span class="text-xl">{{ home.actions[0].text }}</span>
+        <i class="fa-brands fa-linkedin text-3xl ml-3"></i>
       </a>
-      <a href="{{ home.actions[1].link }}" target="_blank" class="shadow-lg btn btn-secondary px-6 py-3 bg-gray-800 text-white font-semibold rounded-full hover:bg-gray-700 transition duration-300">
-        {{ home.actions[1].text }} <i class="fa-solid fa-file-pdf"></i>
+      <a href="{{ home.actions[1].link }}" target="_blank"
+         class="btn px-10 py-5 bg-gray-800 text-white font-bold rounded-full shadow-2xl hover:bg-gray-700 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
+        <span class="text-xl">{{ home.actions[1].text }}</span>
+        <i class="fa-solid fa-file-pdf text-3xl ml-3"></i>
       </a>
     </div>
   </div>
@@ -29,7 +33,7 @@
   </div>
 </div>
 
-<svg data-aos="fade-down" class="arrows mx-auto mt-6 w-10 h-10" (click)="scrollToAboutMe()">
+<svg class="arrows mx-auto mt-12 8 w-10 h-10" (click)="scrollToAboutMe()">
   <path class="a1" d="M0 0 L30 32 L60 0" stroke="white" stroke-width="2"></path>
   <path class="a2" d="M0 20 L30 52 L60 20" stroke="white" stroke-width="2"></path>
   <path class="a3" d="M0 40 L30 72 L60 40" stroke="white" stroke-width="2"></path>
@@ -83,67 +87,7 @@
   </div>
 </div>
 
-<!-- Skills Section -->
-<div id="skills" class="mt-1 bg-gray-900 py-16 px-4 sm:px-8 lg:px-16 text-center text-white">
-  <h3 class="text-3xl font-bold" data-aos="fade-up">My Skills <i class="fa-solid fa-screwdriver-wrench"></i></h3>
-
-  <!-- General Skills Overview -->
-  <p class="text-lg text-gray-300 max-w-3xl mx-auto mt-4" data-aos="fade-up" data-aos-delay="100">
-    As a passionate full-stack developer, I have extensive experience working with various technologies across the development stack. From front-end frameworks like Angular and React to back-end technologies such as Java, C#, and Python, I have built robust applications and integrated complex systems. I am also skilled in cloud technologies, DevOps, databases.
-  </p>
-
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8" data-aos="fade-up" data-aos-delay="200">
-
-    <!-- Frontend Development Card -->
-    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-      <h4 class="text-xl font-semibold text-blue-400">Frontend <i class="fa-brands fa-angular"></i></h4>
-      <p class="text-gray-300">React, Angular, Vue.js, HTML, CSS, JavaScript, TypeScript</p>
-    </div>
-
-    <!-- Backend Development Card -->
-    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-      <h4 class="text-xl font-semibold text-blue-400">Backend <i class="fa-brands fa-java"></i></h4>
-      <p class="text-gray-300">Java (Spring Boot), C#, Python, Node.js, Express, Django</p>
-    </div>
-
-    <!-- Databases Card -->
-    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-      <h4 class="text-xl font-semibold text-blue-400">Databases <i class="fa-solid fa-database"></i></h4>
-      <p class="text-gray-300">MySQL, PostgreSQL, MongoDB, Oracle DB</p>
-    </div>
-
-    <!-- Version Control Card -->
-    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-      <h4 class="text-xl font-semibold text-blue-400">Version Control <i class="fa-solid fa-code-branch"></i></h4>
-      <p class="text-gray-300">Git, GitHub, GitLab, Bitbucket</p>
-    </div>
-
-    <!-- Cloud Technologies Card -->
-    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-      <h4 class="text-xl font-semibold text-blue-400">Cloud Technologies <i class="fa-brands fa-aws"></i></h4>
-      <p class="text-gray-300">AWS, Azure, Docker, Kubernetes</p>
-    </div>
-
-    <!-- Testing & Debugging Card -->
-    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-      <h4 class="text-xl font-semibold text-blue-400">Testing <i class="fa-solid fa-microscope"></i></h4>
-      <p class="text-gray-300">JUnit, Mockito, Selenium, Postman, Cypress</p>
-    </div>
-
-    <!-- DevOps & CI/CD Card -->
-    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-      <h4 class="text-xl font-semibold text-blue-400">DevOps <i class="fa-brands fa-jenkins"></i></h4>
-      <p class="text-gray-300">Jenkins, Maven, Gradle, Ansible</p>
-    </div>
-
-    <!-- Other Languages & Tools Card -->
-    <div class="skill-card bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-      <h4 class="text-xl font-semibold text-blue-400">Other <i class="fa-brands fa-python"></i></h4>
-      <p class="text-gray-300">C#, Python, Bash, PHP, Redis, Elasticsearch</p>
-    </div>
-
-  </div>
-</div>
+<app-skills-carousel></app-skills-carousel>
 
 <!-- Projects Section -->
 <div class="mt-1 bg-gray-800 py-16 px-4 sm:px-8 lg:px-16 text-center text-white">

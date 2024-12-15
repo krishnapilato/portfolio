@@ -1,16 +1,26 @@
-<div class="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600" data-aos="fade-up" data-aos-delay="300">
+<!-- Quiz Section Introduction -->
+<div class="bg-gradient-to-br from-gray-700 to-gray-800 py-16 text-center text-white" data-aos="fade-up" data-aos-delay="100">
+  <h2 class="text-4xl font-bold mb-6" data-aos="fade-up">
+    Welcome to the Aviation Quiz <i class="fa-solid fa-plane-departure"></i>
+  </h2>
+  <p class="text-lg text-gray-300 mx-auto max-w-3xl" data-aos="fade-up" data-aos-delay="200">
+    Ready to test your aviation knowledge? This quiz will challenge your understanding of key concepts for the Private Pilot.
+  </p>
+</div>
+
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-700 to-gray-800" data-aos="fade-up" data-aos-delay="300">
   <div class="bg-white shadow-xl rounded-xl p-8 w-full max-w-3xl mx-4 sm:mx-8 md:mx-12 lg:mx-auto" style="height: 700px;">
     <div class="quiz-container">
 
-      <!-- Welcome Screen -->
+      <!-- Introduction Section -->
       <div *ngIf="currentView === 'welcome'" class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
-        <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-6 animate__animated animate__fadeIn animate__delay-1s">Aviation Quiz</h1>
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-6 animate__animated animate__fadeIn animate__delay-1s">Welcome to the Aviation Quiz</h1>
         <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
-          Ready to test your aviation knowledge? This quiz will challenge your understanding of key concepts for the Private Pilot License (PPL). Are you ready to become a pro?
+          Ready to test your aviation knowledge? This quiz will challenge your understanding of key concepts for the Private Pilot License (PPL). Are you ready to take the challenge?
         </p>
         <button
           (click)="startQuiz()"
-          class="mt-6 px-10 sm:px-12 py-4 sm:py-5 font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          class="mt-6 px-10 sm:px-12 py-4 sm:py-5 font-bold bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-full hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           data-aos="fade-up"
           data-aos-delay="300"
         >
@@ -20,6 +30,18 @@
 
       <!-- Quiz Screen -->
       <div *ngIf="currentView === 'quiz'" class="p-8" data-aos="fade-in" data-aos-delay="100">
+        <div *ngIf="currentView === 'quiz'" class="relative mt-4">
+          <div class="w-full h-4 bg-gray-300 rounded-full">
+            <div
+              class="h-full bg-gradient-to-r from-blue-600 to-blue-500 rounded-full"
+              [style.width]="progress + '%'"
+            ></div>
+          </div>
+          <!-- Percentage Text inside Progress Bar -->
+          <div class="absolute inset-0 flex items-center justify-center text-white font-semibold text-lg">
+            {{ progress | number:'1.0-0' }}%
+          </div>
+        </div>
         <h4 class="text-2xl sm:text-sm text-gray-800 mb-4" data-aos="fade-right" data-aos-delay="200">
           Question {{ questionIndex + 1 }} / {{ questions.length }}:
         </h4>
@@ -58,7 +80,7 @@
           <button
             (click)="nextOrFinish()"
             [disabled]="selectedOptionIndex === null"
-            class="px-6 sm:px-8 py-4 sm:py-5 bg-blue-600 text-white font-bold shadow-lg rounded-md hover:bg-blue-700 transition disabled:opacity-50 group"
+            class="px-6 sm:px-8 py-4 sm:py-5 bg-blue-700 text-white font-bold shadow-lg rounded-md hover:bg-blue-800 transition disabled:opacity-50 group"
             data-aos="fade-left"
             data-aos-delay="600"
           >
@@ -109,7 +131,7 @@
         <button
           (click)="restartQuiz()"
           [disabled]="currentView !== 'results'"
-          class="mt-6 px-10 sm:px-12 py-4 sm:py-5 font-bold bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-full hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          class="mt-6 px-10 sm:px-12 py-4 sm:py-5 font-bold bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-full hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           data-aos="fade-up"
           data-aos-delay="500"
         >

@@ -27,10 +27,7 @@ export class QuizDashboardComponent {
     {
       text: 'What is the purpose of a preflight checklist?',
       options: [
-        {
-          text: 'To ensure the plane is in safe operating condition.',
-          isCorrect: true,
-        },
+        { text: 'To ensure the plane is in safe operating condition.', isCorrect: true },
         { text: 'To review recent weather conditions.', isCorrect: false },
         { text: 'To calculate fuel requirements.', isCorrect: false },
         { text: 'To verify the flight path.', isCorrect: false },
@@ -49,35 +46,16 @@ export class QuizDashboardComponent {
       explanation:
         'VFR stands for Visual Flight Rules, which are a set of regulations under which a pilot operates an aircraft in weather conditions clear enough to see where the aircraft is going.',
     },
-    {
-      text: 'What is the primary responsibility of a pilot?',
-      options: [
-        { text: 'Ensure passenger comfort.', isCorrect: false },
-        { text: 'Operate the aircraft safely.', isCorrect: true },
-        {
-          text: 'Follow air traffic control instructions blindly.',
-          isCorrect: false,
-        },
-        { text: 'Log flight hours.', isCorrect: false },
-      ],
-      explanation:
-        'The primary responsibility of a pilot is to ensure the safe operation of the aircraft during all phases of flight.',
-    },
-    {
-      text: 'What is the purpose of an altimeter?',
-      options: [
-        { text: 'To measure airspeed.', isCorrect: false },
-        { text: 'To indicate altitude.', isCorrect: true },
-        { text: 'To display engine RPM.', isCorrect: false },
-        { text: 'To calculate wind speed.', isCorrect: false },
-      ],
-      explanation:
-        'An altimeter indicates the altitude of an aircraft above sea level, which is crucial for navigation and maintaining safe separation from terrain and other aircraft.',
-    },
+    // Additional questions here...
   ];
 
   public get question() {
     return this.questions[this.questionIndex];
+  }
+
+  // Progress calculation
+  public get progress(): number {
+    return (this.questionIndex / this.questions.length) * 100;
   }
 
   public startQuiz(): void {
@@ -108,10 +86,10 @@ export class QuizDashboardComponent {
   public skipQuestion(): void {
     if (this.questionIndex < this.questions.length - 1) {
       this.questionIndex++;
-      this.selectedOptionIndex = null;  // Reset the selected option
-      this.showCorrectAnswer = false;  // Hide the correct answer
+      this.selectedOptionIndex = null;
+      this.showCorrectAnswer = false;
     } else {
-      this.currentView = 'results';  // If it's the last question, show the results
+      this.currentView = 'results';
     }
   }
 
