@@ -1,26 +1,26 @@
 <!-- Quiz Section Introduction -->
-<div class="bg-gradient-to-br from-gray-700 to-gray-800 py-16 text-center text-white" data-aos="fade-up" data-aos-delay="100">
-  <h2 class="text-4xl font-bold mb-6" data-aos="fade-up">
+<div class="bg-gradient-to-br from-gray-800 to-gray-900 py-16 text-center text-white" data-aos="fade-up" data-aos-delay="100">
+  <h2 class="text-4xl font-extrabold mb-6" data-aos="fade-up">
     Welcome to the Aviation Quiz <i class="fa-solid fa-plane-departure"></i>
   </h2>
-  <p class="text-lg text-gray-300 mx-auto max-w-3xl" data-aos="fade-up" data-aos-delay="200">
-    Ready to test your aviation knowledge? This quiz will challenge your understanding of key concepts for the Private Pilot.
+  <p class="text-lg text-gray-400 mx-auto max-w-3xl" data-aos="fade-up" data-aos-delay="200">
+    Ready to test your aviation knowledge? This quiz will challenge your understanding of key concepts for the Private Pilot License (PPL).
   </p>
 </div>
 
-<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-700 to-gray-800" data-aos="fade-up" data-aos-delay="300">
-  <div class="bg-white shadow-xl rounded-xl p-8 w-full max-w-3xl mx-4 sm:mx-8 md:mx-12 lg:mx-auto" style="height: 700px;">
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-800 to-gray-900 py-12" data-aos="fade-up" data-aos-delay="300">
+  <div class="bg-gray-800 shadow-2xl rounded-xl p-8 w-full max-w-3xl mx-4 sm:mx-8 md:mx-12 lg:mx-auto" style="height: 700px;">
     <div class="quiz-container">
 
       <!-- Introduction Section -->
       <div *ngIf="currentView === 'welcome'" class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
-        <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-6 animate__animated animate__fadeIn animate__delay-1s">Welcome to the Aviation Quiz</h1>
-        <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-100 mb-6 animate__animated animate__fadeIn animate__delay-1s">Welcome to the Aviation Quiz</h1>
+        <p class="text-lg sm:text-xl text-gray-300 mb-8 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
           Ready to test your aviation knowledge? This quiz will challenge your understanding of key concepts for the Private Pilot License (PPL). Are you ready to take the challenge?
         </p>
         <button
           (click)="startQuiz()"
-          class="mt-6 px-10 sm:px-12 py-4 sm:py-5 font-bold bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-full hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          class="mt-6 px-10 sm:px-12 py-4 sm:py-5 font-bold bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-full hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:translate-y-1"
           data-aos="fade-up"
           data-aos-delay="300"
         >
@@ -30,31 +30,32 @@
 
       <!-- Quiz Screen -->
       <div *ngIf="currentView === 'quiz'" class="p-8" data-aos="fade-in" data-aos-delay="100">
-        <div *ngIf="currentView === 'quiz'" class="relative mt-4">
-          <div class="w-full h-4 bg-gray-300 rounded-full">
+        <div *ngIf="currentView === 'quiz'" class="relative mt-2">
+          <div class="w-full h-3 bg-gray-300 rounded-full">
             <div
               class="h-full bg-gradient-to-r from-blue-600 to-blue-500 rounded-full"
-              [style.width]="progress + '%'"
-            ></div>
+              [style.width]="progress + '%'">
+            </div>
           </div>
           <!-- Percentage Text inside Progress Bar -->
           <div class="absolute inset-0 flex items-center justify-center text-white font-semibold text-lg">
             {{ progress | number:'1.0-0' }}%
           </div>
         </div>
-        <h4 class="text-2xl sm:text-sm text-gray-800 mb-4" data-aos="fade-right" data-aos-delay="200">
+
+        <h4 class="text-xl sm:text-2xl text-gray-100 mb-4" data-aos="fade-right" data-aos-delay="200">
           Question {{ questionIndex + 1 }} / {{ questions.length }}:
         </h4>
-        <p class="font-semibold text-lg sm:text-xl text-gray-700 mb-8" data-aos="fade-right" data-aos-delay="300">{{ questions[questionIndex].text }}</p>
+        <p class="font-semibold text-xl sm:text-2xl text-gray-200 mb-8" data-aos="fade-right" data-aos-delay="300">{{ questions[questionIndex].text }}</p>
 
         <ul class="space-y-4">
           <li
             *ngFor="let option of questions[questionIndex].options; let i = index"
             (click)="checkAnswer(option, i)"
-            [class.bg-green-100]="option.isCorrect && showCorrectAnswer"
-            [class.bg-red-100]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
+            [class.bg-green-200]="option.isCorrect && showCorrectAnswer"
+            [class.bg-red-200]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
             [class.pointer-events-none]="selectedOptionIndex !== null"
-            class="px-6 py-4 bg-gray-100 rounded-lg shadow-lg cursor-pointer hover:bg-gray-200 transition duration-300 group relative"
+            class="px-6 py-4 bg-gray-700 rounded-lg shadow-md cursor-pointer hover:bg-gray-600 transition duration-300 group relative"
             data-aos="fade-left"
             data-aos-delay="400"
           >
@@ -71,7 +72,7 @@
           <button
             (click)="skipQuestion()"
             [disabled]="showCorrectAnswer || selectedOptionIndex !== null"
-            class="px-6 sm:px-8 py-4 sm:py-5 bg-gray-300 text-gray-700 shadow-lg rounded-md font-bold hover:bg-gray-400 transition disabled:opacity-50 group"
+            class="px-6 sm:px-8 py-4 sm:py-5 bg-gray-600 text-gray-300 shadow-lg rounded-md font-bold hover:bg-gray-700 transition disabled:opacity-50 group"
             data-aos="fade-left"
             data-aos-delay="500"
           >
@@ -80,7 +81,7 @@
           <button
             (click)="nextOrFinish()"
             [disabled]="selectedOptionIndex === null"
-            class="px-6 sm:px-8 py-4 sm:py-5 bg-blue-700 text-white font-bold shadow-lg rounded-md hover:bg-blue-800 transition disabled:opacity-50 group"
+            class="px-6 sm:px-8 py-4 sm:py-5 bg-blue-600 text-white font-bold shadow-lg rounded-md hover:bg-blue-700 transition disabled:opacity-50 group"
             data-aos="fade-left"
             data-aos-delay="600"
           >
@@ -90,7 +91,7 @@
 
         <div
           *ngIf="showCorrectAnswer && selectedOptionIndex !== null && !questions[questionIndex].options[selectedOptionIndex].isCorrect"
-          class="mt-4 bg-yellow-100 text-yellow-800 p-4 rounded-md shadow-lg"
+          class="mt-4 bg-yellow-100 text-yellow-800 p-4 rounded-md shadow-md"
         >
           <strong><i class="fa-solid fa-circle-info"></i> Explanation:</strong> {{ questions[questionIndex].explanation }}
         </div>
@@ -98,15 +99,15 @@
 
       <!-- Results Screen -->
       <div *ngIf="currentView === 'results'" class="text-center p-6" data-aos="fade-up" data-aos-delay="100">
-        <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-6 animate__animated animate__fadeIn animate__delay-1s">
+        <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-100 mb-6 animate__animated animate__fadeIn animate__delay-1s">
           <strong><i class="fa-solid fa-star"></i> Your Score:</strong> {{ getResults().score }}%
         </h2>
 
-        <div class="text-xl sm:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+        <div class="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
           <i class="fa-solid fa-circle-info"></i> {{ getResults().advice }}
         </div>
 
-        <h3 class="text-2xl sm:text-3xl font-semibold text-gray-700 mb-4" data-aos="fade-up" data-aos-delay="400">
+        <h3 class="text-2xl sm:text-3xl font-semibold text-gray-200 mb-4" data-aos="fade-up" data-aos-delay="400">
           <i class="fa-solid fa-chart-simple"></i> Statistics
         </h3>
 
