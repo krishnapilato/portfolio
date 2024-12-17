@@ -13,6 +13,7 @@ import { HeaderComponent } from './shared/header/header.component';
 export class AppComponent {
   title = 'Scripted Horizons';
 
+  readonly currentYear = new Date().getFullYear();
   public isDarkTheme = false;
 
   // Method to update theme based on the emitted event

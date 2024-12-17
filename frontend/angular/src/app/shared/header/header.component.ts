@@ -19,9 +19,9 @@ export class HeaderComponent {
   @Output() themeToggled = new EventEmitter<boolean>();
 
   navLinks = [
-    { icon: 'fa-solid fa-circle-question', label: 'Quiz', route: '/dashboard' },
-    { icon: 'fa-envelope', label: 'Contact', route: '/contact' },
-    { icon: 'fa-arrow-right-to-bracket', label: 'Login', route: '/auth/login' },
+    { icon: 'fa-solid fa-wand-magic-sparkles', label: 'Quiz', route: '/dashboard' },
+    { icon: 'fa-solid fa-link', label: 'Connect', route: '/contact' },
+    { icon: 'fa-solid fa-right-to-bracket', label: 'Login', route: '/auth/login' },
     { icon: '', label: 'Theme' },
   ];
 
