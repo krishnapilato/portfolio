@@ -11,7 +11,7 @@ Welcome to my portfolio! This web application highlights my technical expertise,
 
 **Check it out live:** [Portfolio Website](https://krishnapilato.github.io/portfolio)
 
-![image](https://github.com/user-attachments/assets/19487c36-1bcb-4965-a186-5cf251b4cb5e)
+![image](https://github.com/user-attachments/assets/c8bcc6fb-2057-405d-b9e5-f305609222c3)
 
 ---
 
