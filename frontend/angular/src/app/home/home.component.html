@@ -15,14 +15,14 @@
     <!-- Action Buttons -->
     <div class="flex justify-center gap-12 mt-8">
       <a href="{{ home.actions[0].link }}" target="_blank"
-         class="btn px-10 py-5 bg-blue-700 text-white font-bold rounded-full shadow-2xl hover:bg-blue-800 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
+         class="btn px-10 py-5 bg-blue-700 text-white font-bold rounded-full shadow-3xl hover:bg-blue-800 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
         <span class="text-xl">{{ home.actions[0].text }}</span>
         <i class="fa-brands fa-linkedin text-3xl ml-3"></i>
       </a>
       <a href="{{ home.actions[1].link }}" target="_blank"
-         class="btn px-10 py-5 bg-gray-600 text-white font-bold rounded-full shadow-2xl hover:bg-gray-600 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
+          class="btn px-10 py-5 bg-gray-600 text-white font-bold rounded-full shadow-3xl hover:bg-gray-600 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
         <span class="text-xl">{{ home.actions[1].text }}</span>
-        <i class="fa-regular fa-file-pdf text-3xl ml-3"></i>
+        <i class="fa-solid fa-file-alt text-3xl ml-3"></i> <!-- Icon updated to represent a resume -->
       </a>
     </div>
   </div>
@@ -33,10 +33,40 @@
   </div>
 </div>
 
-<svg class="arrows mx-auto mt-12 8 w-10 h-10" (click)="scrollToAboutMe()">
-  <path class="a1" d="M0 0 L30 32 L60 0" stroke="white" stroke-width="2"></path>
-  <path class="a2" d="M0 20 L30 52 L60 20" stroke="white" stroke-width="2"></path>
-  <path class="a3" d="M0 40 L30 72 L60 40" stroke="white" stroke-width="2"></path>
+<svg
+  class="arrows mx-auto mt-12 w-12 h-12 cursor-pointer transform hover:scale-110 transition duration-300 ease-in-out"
+  (click)="scrollToAboutMe()"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 60 80"
+>
+  <!-- Arrow Paths -->
+  <path
+    class="a1"
+    d="M0 0 L30 32 L60 0"
+    stroke="white"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="transparent"
+  ></path>
+  <path
+    class="a2"
+    d="M0 20 L30 52 L60 20"
+    stroke="white"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="transparent"
+  ></path>
+  <path
+    class="a3"
+    d="M0 40 L30 72 L60 40"
+    stroke="white"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="transparent"
+  ></path>
 </svg>
 
 
@@ -90,32 +120,53 @@
 <app-skills-carousel></app-skills-carousel>
 
 <!-- Projects Section -->
-<div class="mt-1 bg-gray-800 py-16 px-4 sm:px-8 lg:px-16 text-center text-white">
-  <h3 class="text-3xl font-bold" data-aos="fade-up">My Projects <i class="fa-solid fa-briefcase"></i></h3>
-  <p class="text-lg text-gray-300 max-w-3xl mx-auto mt-4" data-aos="fade-up" data-aos-delay="100">
-    Here are some of the projects I have worked on, demonstrating my skills in various technologies and problem-solving approaches.
+<div class="mt-16 bg-gray-900 py-20 px-6 sm:px-8 lg:px-16 text-center text-white">
+  <h3 class="text-4xl text-white tracking-tight" data-aos="fade-up">
+    My Projects <i class="fa-solid fa-briefcase"></i>
+  </h3>
+  <p class="text-lg text-gray-300 max-w-4xl mx-auto mt-4" data-aos="fade-up" data-aos-delay="100">
+    Here are some of the projects I have worked on, showcasing my skills in various technologies and my problem-solving approaches.
   </p>
 
   <!-- Project Grid -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8" data-aos="fade-up" data-aos-delay="200">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mt-12">
 
     <!-- Project 1 Card -->
-    <div class="project-card bg-gray-700 p-6 rounded-lg shadow-lg">
-      <h4 class="text-xl font-semibold text-blue-400">Task Management App <i class="fa-solid fa-list-check"></i></h4>
-      <p class="text-gray-300 mt-2">A web application built with Angular that allows users to efficiently manage tasks, set reminders, and track progress in real-time using Firebase as the back-end.</p>
+    <div class="group relative bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
+      <div class="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 opacity-40 rounded-lg"></div>
+      <h4 class="text-2xl font-semibold text-blue-400 relative z-10">Task Management App <i class="fa-solid fa-list-check ml-2"></i></h4>
+      <p class="text-gray-300 mt-4 relative z-10">
+        A web application built with Angular that allows users to efficiently manage tasks, set reminders, and track progress in real-time using Firebase as the back-end.
+      </p>
+      <div class="absolute inset-x-0 bottom-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-sm bg-gray-800 bg-opacity-80 p-2 rounded-md">
+        <p>Angular, Firebase, Real-time Sync</p>
+      </div>
     </div>
 
     <!-- Project 2 Card -->
-    <div class="project-card bg-gray-700 p-6 rounded-lg shadow-lg">
-      <h4 class="text-xl font-semibold text-blue-400">Professional Networking Platform <i class="fa-solid fa-network-wired"></i></h4>
-      <p class="text-gray-300 mt-2">A social networking platform built using React and Node.js, designed to connect professionals, allowing them to create profiles, interact via messaging, and network seamlessly.</p>
+    <div class="group relative bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
+      <div class="absolute inset-0 bg-gradient-to-r from-green-600 via-green-500 to-green-400 opacity-40 rounded-lg"></div>
+      <h4 class="text-2xl font-semibold text-blue-400 relative z-10">Professional Networking Platform <i class="fa-solid fa-network-wired ml-2"></i></h4>
+      <p class="text-gray-300 mt-4 relative z-10">
+        A social networking platform built using React and Node.js, designed to connect professionals, allowing them to create profiles, interact via messaging, and network seamlessly.
+      </p>
+      <div class="absolute inset-x-0 bottom-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-sm bg-gray-800 bg-opacity-80 p-2 rounded-md">
+        <p>React, Node.js, Real-time Messaging</p>
+      </div>
     </div>
 
     <!-- Project 3 Card -->
-    <div class="project-card bg-gray-700 p-6 rounded-lg shadow-lg">
-      <h4 class="text-xl font-semibold text-blue-400">Personal Finance Tracker <i class="fa-solid fa-dollar-sign"></i></h4>
-      <p class="text-gray-300 mt-2">A personal finance tracking application created with Python and Django. It helps users manage their finances, track income and expenses, and generate reports with visual charts and summaries.</p>
+    <div class="group relative bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
+      <div class="absolute inset-0 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-400 opacity-40 rounded-lg"></div>
+      <h4 class="text-2xl font-semibold text-blue-400 relative z-10">Personal Finance Tracker <i class="fa-solid fa-dollar-sign ml-2"></i></h4>
+      <p class="text-gray-300 mt-4 relative z-10">
+        A personal finance tracking application created with Python and Django. It helps users manage their finances, track income and expenses, and generate reports with visual charts and summaries.
+      </p>
+      <div class="absolute inset-x-0 bottom-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-sm bg-gray-800 bg-opacity-80 p-2 rounded-md">
+        <p>Python, Django, Data Visualization</p>
+      </div>
     </div>
+
   </div>
 </div>
 
