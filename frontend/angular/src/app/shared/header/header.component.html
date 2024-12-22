@@ -1,12 +1,15 @@
+<!-- Navbar -->
 <nav
   data-aos="fade-down"
   data-aos-offset="0"
   data-aos-duration="500"
   [ngClass]="{
     'bg-gradient-to-r from-blue-700/80 to-blue-700/80': isDarkTheme,
-    'bg-gradient-to-r from-blue-900/80 to-blue-800/80': !isDarkTheme
+    'bg-gradient-to-r from-blue-900/80 to-blue-800/80': !isDarkTheme,
+    'fixed top-0 left-0 w-full z-50 rounded-b-lg': true,
+    'hidden': !isHeaderVisible
   }"
-  class="shadow-md sticky top-0 left-0 w-full z-50 rounded-b-lg"
+  class="shadow-md transition-all duration-300 ease-in-out"
 >
   <div class="container mx-auto flex items-center justify-between py-4 px-6 mb-1">
     <!-- Brand Logo -->
@@ -20,7 +23,6 @@
         </g>
       </svg>
       <span>{{ headerTitle }}</span>
-
       <div
         class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-max p-2 bg-gray-700 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
       >
@@ -65,10 +67,16 @@
   *ngIf="isOffcanvasOpen"
   class="fixed inset-0 z-40 flex justify-center items-center bg-black/50 backdrop-blur"
   (click)="toggleOffcanvas()"
+  data-aos="fade-in" 
+  data-aos-duration="500"
+  data-aos-easing="ease-out"
+  data-aos-once="true" 
 >
   <div
     class="bg-gray-700 w-full max-w-md rounded-lg shadow-2xl p-6 space-y-6 text-sm text-gray-300 text-center mx-4 relative"
     (click)="$event.stopPropagation()"
+    data-aos="fade-in"
+    data-aos-duration="500"
   >
     <button
       class="absolute top-4 right-4 text-gray-100 hover:text-red-500 focus:outline-none"
@@ -77,9 +85,8 @@
       <i class="fas fa-times text-2xl"></i>
     </button>
 
-    <h3 class="text-lg font-bold text-gray-100 mb-1">Menu</h3>  <!-- Reduced margin-bottom -->
-    <p class="text-xs text-gray-400 mb-4">Select an option below</p>  <!-- Reduced margin-bottom -->
-
+    <h3 class="text-lg font-bold text-gray-100 mb-1">Menu</h3>
+    <p class="text-xs text-gray-400 mb-4">Select an option below</p>
 
     <ul class="flex flex-col space-y-4">
       <li *ngFor="let link of navLinks" class="relative group">

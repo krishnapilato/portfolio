@@ -1,26 +1,25 @@
 <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 px-4 sm:px-8 lg:px-16 relative">
-  <div class="text-center space-y-6">
+  <div class="text-center space-y-8">
     <!-- Main Title and Description -->
-    <h1
-      class="text-8xl font-extrabold text-white text-center leading-tight drop-shadow-lg transform transition duration-500 hover:scale-105"
-      style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"
-      data-aos="fade-up">
+    <h1 class="text-7xl font-extrabold text-white text-center leading-tight drop-shadow-lg transform transition duration-500 hover:scale-105"
+        style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"
+        data-aos="fade-up">
       {{ home.title }}
     </h1>
-    <p class="text-lg text-gray-300 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+    <p class="text-xl text-gray-300 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
       {{ home.description }} <br />
       I work with <span class="shadow-lg font-bold text-blue-400" id="element"></span>.
     </p>
 
     <!-- Action Buttons -->
-    <div class="flex justify-center gap-12 mt-8">
+    <div class="flex justify-center gap-10 mt-8">
       <a href="{{ home.actions[0].link }}" target="_blank"
-         class="btn px-10 py-5 bg-blue-700 text-white font-bold rounded-full shadow-3xl hover:bg-blue-800 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
+         class="btn px-12 py-5 bg-blue-700 text-white font-bold rounded-full shadow-2xl hover:bg-blue-800 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
         <span class="text-xl">{{ home.actions[0].text }}</span>
         <i class="fa-brands fa-linkedin text-3xl ml-3"></i>
       </a>
       <a href="{{ home.actions[1].link }}" target="_blank"
-          class="btn px-10 py-5 bg-gray-600 text-white font-bold rounded-full shadow-3xl hover:bg-gray-600 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
+          class="btn px-12 py-5 bg-gray-600 text-white font-bold rounded-full shadow-2xl hover:bg-gray-600 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
         <span class="text-xl">{{ home.actions[1].text }}</span>
         <i class="fa-solid fa-file-alt text-3xl ml-3"></i> <!-- Icon updated to represent a resume -->
       </a>
@@ -28,18 +27,20 @@
   </div>
 
   <!-- Copyright Notice -->
-  <div class="shadow-lg absolute bottom-2 right-4 text-3sm text-xs text-gray-100">
-    <a href="https://unsplash.com/@unsplash" class="underline" target="_blank"><i class="fa-solid fa-photo-film"></i> Photos by Unsplash</a>
+  <div class="shadow-lg absolute bottom-4 right-4 text-xs text-gray-100">
+    <a href="https://unsplash.com/@unsplash" class="underline" target="_blank">
+      <i class="fa-solid fa-photo-film"></i> Photos by Unsplash
+    </a>
   </div>
 </div>
 
+<!-- Scroll Down Arrow (Improved Design) -->
 <svg
   class="arrows mx-auto mt-12 w-12 h-12 cursor-pointer transform hover:scale-110 transition duration-300 ease-in-out"
   (click)="scrollToAboutMe()"
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 60 80"
 >
-  <!-- Arrow Paths -->
   <path
     class="a1"
     d="M0 0 L30 32 L60 0"
@@ -68,7 +69,6 @@
     fill="transparent"
   ></path>
 </svg>
-
 
 <!-- About Me Section -->
 <div id="about-me" class="mt-1 bg-gray-800 py-20 px-6 sm:px-12 lg:px-16 text-center text-white">

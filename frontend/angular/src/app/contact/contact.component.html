@@ -1,19 +1,11 @@
-<!-- Contact Section Introduction -->
-<div class="bg-gradient-to-br from-gray-700 to-gray-800 py-16 text-center text-white">
-  <h2 class="text-4xl font-bold mb-6" data-aos="fade-up">Let's Get in Touch <i class="fa-solid fa-envelope"></i></h2>
-  <p class="text-lg text-gray-300 mx-auto max-w-3xl" data-aos="fade-up" data-aos-delay="200">
-    I would love to hear from you! Whether you have a question, want to collaborate, or simply want to chat about technology, feel free to reach out. Fill out the form below or connect with me through social media.
-  </p>
-</div>
-
 <!-- Contact Form and Social Links Section -->
 <div id="contact" class="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 bg-gray-900">
   <div class="bg-gray-800 shadow-2xl rounded-xl w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 p-8" data-aos="fade-up" data-aos-delay="300">
 
     <!-- Contact Form Section -->
     <div class="p-6 lg:p-8 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl">
-      <h3 class="text-3xl sm:text-4xl font-bold text-center text-blue-400 mb-6">
-        <i class="fa-solid fa-at"></i> Contact Me
+      <h3 class="text-3xl sm:text-4xl font-bold text-center text-white mb-6">
+        Contact Me
       </h3>
       <p class="text-center text-gray-400 mb-8">
         <i class="fa-solid fa-circle-info"></i> Your information is used only for this communication.
@@ -32,7 +24,7 @@
                 [id]="field.id"
                 [placeholder]="field.placeholder"
                 [formControlName]="field.controlName"
-                class="w-full p-3 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full p-3 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 [ngClass]="{ 'border-red-500': isInvalid(field.controlName) }"
               />
             </div>
@@ -43,7 +35,7 @@
               [formControlName]="field.controlName"
               maxlength="1000"
               rows="4"
-              class="shadow-lg w-full p-3 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="shadow-lg w-full p-3 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               [ngClass]="{ 'border-red-500': isInvalid(field.controlName) }"
             ></textarea>
           </ng-container>
@@ -68,7 +60,7 @@
 
     <!-- Social Links Section -->
     <div class="flex flex-col justify-center items-center p-6 sm:p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl">
-      <h4 class="text-2xl font-semibold text-blue-400 mb-6">Connect with Me</h4>
+      <h4 class="text-2xl font-semibold text-white mb-6">Connect with Me</h4>
       <div class="flex flex-col w-full space-y-4">
         <div *ngFor="let link of socialLinks" class="w-full">
           <a

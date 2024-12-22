@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Output
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 
@@ -14,6 +19,8 @@ export class HeaderComponent {
   public headerTitle = 'Scripted Horizons';
   public isOffcanvasOpen = false;
   public isDarkTheme = false;
+  public isHeaderVisible = true;
+  private lastScrollTop = 0;
 
   @Output() themeToggled = new EventEmitter<boolean>();
 
@@ -21,11 +28,30 @@ export class HeaderComponent {
     { icon: 'fa-wand-magic-sparkles', label: 'Quiz', route: '/dashboard' },
     { icon: 'fa-link', label: 'Connect', route: '/contact' },
     { icon: 'fa-right-to-bracket', label: 'Login', route: '/auth/login' },
-    { icon: this.isDarkTheme ? 'fa-moon' : 'fa-sun', label: 'Theme' }, // Theme icon based on dark theme state
+    { icon: this.isDarkTheme ? 'fa-moon' : 'fa-sun', label: 'Theme' },
   ];
 
-  toggleOffcanvas(): void {
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(event: Event): void {
+    const currentScroll =
+      window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScroll > this.lastScrollTop) {
+      this.isHeaderVisible = false;
+    } else {
+      this.isHeaderVisible = true;
+    }
+
+    this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+  }
+
+  toggleOffcanvas() {
     this.isOffcanvasOpen = !this.isOffcanvasOpen;
+    if (this.isOffcanvasOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   }
 
   onLinkClick(): void {
@@ -35,8 +61,6 @@ export class HeaderComponent {
   toggleTheme(): void {
     this.isDarkTheme = !this.isDarkTheme;
     this.themeToggled.emit(this.isDarkTheme);
-
-    // Dynamically update the icon for theme toggle
-    this.navLinks[3].icon = this.isDarkTheme ? 'fa-moon' : 'fa-sun'; // Update the icon based on the theme
+    this.navLinks[3].icon = this.isDarkTheme ? 'fa-moon' : 'fa-sun';
   }
 }

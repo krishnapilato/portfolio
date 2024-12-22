@@ -1,17 +1,9 @@
-<!-- Sign In Section Introduction -->
-<div class="bg-gradient-to-br from-gray-700 to-gray-800 py-16 text-center text-white">
-  <h2 class="text-4xl font-bold mb-6" data-aos="fade-up">Sign In to Continue <i class="fa-solid fa-arrow-right-to-bracket"></i></h2>
-  <p class="text-lg text-gray-300 mx-auto max-w-3xl" data-aos="fade-up" data-aos-delay="200">
-    Please enter your credentials to proceed. Your information is secure.
-  </p>
-</div>
-
 <!-- Login Form Section -->
 <div class="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 bg-gray-900">
   <div class="bg-gray-800 shadow-2xl rounded-xl w-full max-w-3xl p-8" data-aos="fade-up" data-aos-delay="300">
 
     <!-- Login Form -->
-    <h3 class="text-3xl sm:text-4xl font-bold text-center text-blue-400 mb-6">
+    <h3 class="text-3xl sm:text-4xl font-bold text-center text-white mb-6">
         Login to Your Account
     </h3>
     <p class="text-center text-gray-400 mb-8">
@@ -32,7 +24,7 @@
             name="loginRequest.email"
             required
             email
-            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
         <div *ngIf="loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched" class="text-red-400 text-sm mt-1">
@@ -54,7 +46,7 @@
             [(ngModel)]="loginRequest.password"
             name="loginRequest.password"
             required
-            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
         <div *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched" class="text-red-400 text-sm mt-1">

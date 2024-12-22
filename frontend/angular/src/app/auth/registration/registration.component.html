@@ -1,17 +1,9 @@
-<!-- Sign Up Section Introduction -->
-<div class="bg-gradient-to-br from-gray-700 to-gray-800 py-16 text-center text-white">
-  <h2 class="text-4xl font-bold mb-6" data-aos="fade-up">Create Your Account <i class="fa-solid fa-user-plus"></i></h2>
-  <p class="text-lg text-gray-300 mx-auto max-w-3xl" data-aos="fade-up" data-aos-delay="200">
-    Join us and explore amazing opportunities. Create an account to get started.
-  </p>
-</div>
-
 <!-- Registration Form Section -->
 <div class="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 bg-gray-900">
   <div class="bg-gray-800 shadow-2xl rounded-xl w-full max-w-3xl p-8" data-aos="fade-up" data-aos-delay="300">
 
     <!-- Registration Form Header -->
-    <h3 class="text-3xl sm:text-4xl font-bold text-center text-blue-400 mb-6">
+    <h3 class="text-3xl sm:text-4xl font-bold text-center text-white mb-6">
         Create an Account
     </h3>
     <p class="text-center text-gray-400 mb-8">
@@ -34,7 +26,7 @@
             name="registrationRequest.fullName"
             required
             minlength="2"
-            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
         <div *ngIf="registrationForm.controls['registrationRequest.fullName']?.invalid && registrationForm.controls['registrationRequest.fullName']?.touched" class="text-red-400 text-sm mt-1">
@@ -56,7 +48,7 @@
             name="registrationRequest.email"
             required
             email
-            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
         <div *ngIf="registrationForm.controls['registrationRequest.email']?.invalid && registrationForm.controls['registrationRequest.email']?.touched" class="text-red-400 text-sm mt-1">
@@ -78,7 +70,7 @@
             [(ngModel)]="registrationRequest.password"
             name="registrationRequest.password"
             required
-            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
         <div *ngIf="registrationForm.controls['registrationRequest.password']?.invalid && registrationForm.controls['registrationRequest.password']?.touched" class="text-red-400 text-sm mt-1">
