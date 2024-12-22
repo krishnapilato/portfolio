@@ -27,21 +27,25 @@
           {{ questions[questionIndex].text }}
         </p>
 
-        <ul class="space-y-4">
-          <li
-          *ngFor="let option of questions[questionIndex].options; let i = index"
-          (click)="checkAnswer(option, i)"
-          [class.bg-green-200]="option.isCorrect && showCorrectAnswer"
-          [class.bg-red-200]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
-          [class.pointer-events-none]="selectedOptionIndex !== null"
-          [class.text-gray-800]="(option.isCorrect && showCorrectAnswer) || (!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer)"
-          class="px-6 py-3 bg-gray-600 rounded-lg shadow-md cursor-pointer hover:bg-gray-500 transition duration-300 group relative text-sm sm:text-base"
-          data-aos="fade-left"
-          data-aos-delay="400"
-        >
-          <span class="font-semibold text-lg">{{ ['A', 'B', 'C', 'D'][i] }}. </span>{{ option.text }}
-        </li>
-        </ul>
+<ul class="space-y-4">
+  <li
+    *ngFor="let option of questions[questionIndex].options; let i = index"
+    (click)="checkAnswer(option, i)"
+    [class.bg-green-200]="option.isCorrect && showCorrectAnswer"
+    [class.bg-red-200]="!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer"
+    [class.pointer-events-none]="selectedOptionIndex !== null"
+    [class.text-gray-800]="(option.isCorrect && showCorrectAnswer) || (!option.isCorrect && selectedOptionIndex === i && showCorrectAnswer)"
+    [class.text-white]="!(option.isCorrect && showCorrectAnswer) && selectedOptionIndex !== i"
+    class="px-6 py-3 bg-gray-600 rounded-lg shadow-md cursor-pointer hover:bg-gray-500 transition duration-300 group relative text-sm sm:text-base"
+    data-aos="fade-left"
+    data-aos-duration="500"
+    data-aos-once="true"
+  >
+    <span class="font-semibold text-lg">{{ ['A', 'B', 'C', 'D'][i] }}. </span>{{ option.text }}
+  </li>
+</ul>
+
+
 
         <div class="flex justify-between mt-8 relative">
           <button

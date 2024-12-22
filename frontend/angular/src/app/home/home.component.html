@@ -1,6 +1,6 @@
 <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 px-4 sm:px-8 lg:px-16 relative">
-  <div class="text-center space-y-8">
-    <!-- Main Title and Description -->
+  <!-- Left Side (Text Content) -->
+  <div class="w-full md:w-1/2 text-center space-y-8">
     <h1 class="text-7xl font-extrabold text-white text-center leading-tight drop-shadow-lg transform transition duration-500 hover:scale-105"
         style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"
         data-aos="fade-up">
@@ -8,7 +8,7 @@
     </h1>
     <p class="text-xl text-gray-300 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
       {{ home.description }} <br />
-      I work with <span class="shadow-lg font-bold text-blue-400" id="element"></span>.
+      I work with <span class="shadow-lg font-bold text-blue-200" id="element"></span>.
     </p>
 
     <!-- Action Buttons -->
@@ -24,6 +24,11 @@
         <i class="fa-solid fa-file-alt text-3xl ml-3"></i> <!-- Icon updated to represent a resume -->
       </a>
     </div>
+  </div>
+
+  <!-- Right Side (Image) -->
+  <div class="hidden md:block w-1/2 h-full">
+    <img style="height: 800px;" src="developer.svg" alt="Background Image" class="w-full object-cover" />
   </div>
 
   <!-- Copyright Notice -->
