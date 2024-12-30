@@ -1,19 +1,21 @@
 <!-- Login Form Section -->
-<div class="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 bg-gray-900">
-  <div class="bg-gray-800 shadow-2xl rounded-xl w-full max-w-3xl p-8" data-aos="fade-up" data-aos-delay="300">
+<div class="flex items-center justify-center min-h-screen px-6 sm:px-8 lg:px-10 bg-gradient-to-r from-pink-200 via-yellow-100 to-green-100">
+  <div class="bg-white shadow-lg rounded-lg w-full max-w-md p-8 transform transition duration-500 hover:scale-105 ease-in-out">
+
+    <!-- Login Form Title -->
+    <h3 class="text-4xl font-extrabold text-center text-gray-900 mb-6">
+      Welcome Back!
+    </h3>
+    <p class="text-center text-gray-500 mb-8">
+      <i class="fa-solid fa-circle-info"></i> Login to access your account.
+    </p>
 
     <!-- Login Form -->
-    <h3 class="text-3xl sm:text-4xl font-bold text-center text-white mb-6">
-        Login to Your Account
-    </h3>
-    <p class="text-center text-gray-400 mb-8">
-      <i class="fa-solid fa-circle-info"></i> Your information is used only for this login.
-    </p>
     <form (ngSubmit)="login(loginForm)" #loginForm="ngForm" novalidate class="space-y-6">
 
       <!-- Email Input -->
       <div class="relative">
-        <label for="email" class="block text-sm font-semibold text-blue-300 mb-2">Email</label>
+        <label for="email" class="block text-sm font-semibold text-teal-600 mb-2">Email</label>
         <div class="relative">
           <i class="fa-solid fa-envelope text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
           <input
@@ -24,10 +26,10 @@
             name="loginRequest.email"
             required
             email
-            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full p-3 pl-12 rounded-md bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
           />
         </div>
-        <div *ngIf="loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched" class="text-red-400 text-sm mt-1">
+        <div *ngIf="loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched" class="text-red-500 text-sm mt-1">
           <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')">Email is required.</ng-container>
           <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')">Please enter a valid email.</ng-container>
         </div>
@@ -35,7 +37,7 @@
 
       <!-- Password Input -->
       <div class="relative">
-        <label for="password" class="block text-sm font-semibold text-blue-300 mb-2">Password</label>
+        <label for="password" class="block text-sm font-semibold text-teal-600 mb-2">Password</label>
         <div class="relative">
           <i class="fa-solid fa-lock text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
           <input
@@ -46,10 +48,10 @@
             [(ngModel)]="loginRequest.password"
             name="loginRequest.password"
             required
-            class="w-full p-3 pl-12 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full p-3 pl-12 rounded-md bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
           />
         </div>
-        <div *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched" class="text-red-400 text-sm mt-1">
+        <div *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched" class="text-red-500 text-sm mt-1">
           Password is required.
         </div>
         <p class="text-sm text-gray-400 mt-2">
@@ -68,29 +70,16 @@
       <button
         type="submit"
         [disabled]="loginForm.invalid"
-        class="w-full p-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-blue-300"
+        class="w-full p-3 rounded-full bg-pink-500 hover:bg-pink-600 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-pink-300"
       >
         Login <i class="fa-solid fa-arrow-right-to-bracket"></i>
       </button>
     </form>
 
-    <!-- Social Login Section -->
-    <div class="mt-6 flex space-x-4">
-      <button class="w-1/3 bg-red-500 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition">
-        <i class="fab fa-google mr-2"></i> Google
-      </button>
-      <button class="w-1/3 bg-blue-700 hover:bg-blue-800 text-white font-medium py-3 px-4 rounded-lg shadow-md transition">
-        <i class="fab fa-facebook-f mr-2"></i> Facebook
-      </button>
-      <button class="w-1/3 bg-black hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-lg shadow-md transition">
-        <i class="fab fa-apple mr-2"></i> Apple
-      </button>
-    </div>
-
     <!-- Sign Up Link -->
     <div class="mt-6 text-center">
-      <p class="text-sm text-gray-400">
-        Don't have an account? <a routerLink="/auth/signup" class="text-blue-500 hover:underline">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+      <p class="text-sm text-gray-500">
+        Don't have an account? <a routerLink="/auth/signup" class="text-teal-500 hover:underline">Sign Up <i class="fa-solid fa-user-plus"></i></a>
       </p>
     </div>
   </div>

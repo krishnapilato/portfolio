@@ -1,162 +1,195 @@
-<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 px-4 sm:px-8 lg:px-16 relative">
-  <!-- Left Side (Text Content) -->
-  <div class="w-full md:w-1/2 text-center space-y-8">
-    <h1 class="text-7xl font-extrabold text-white text-center leading-tight drop-shadow-lg transform transition duration-500 hover:scale-105"
+<!-- Top-Level Container (No <body> Tag) -->
+<div class="bg-gradient-to-r from-blue-800 via-indigo-900 to-gray-900 min-h-screen flex items-center justify-center relative text-white">
+
+  <!-- Main Content Container -->
+  <div class="container mx-auto px-4 sm:px-6 lg:px-12 flex flex-col-reverse lg:flex-row items-center justify-between relative">
+
+    <!-- Left Side: Text and Buttons -->
+    <div class="text-center lg:text-left space-y-6 lg:w-1/2">
+      <h1
+        class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-500 leading-tight drop-shadow-lg transform transition duration-500 hover:scale-105"
         style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;"
-        data-aos="fade-up">
-      {{ home.title }}
-    </h1>
-    <p class="text-xl text-gray-300 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
-      {{ home.description }} <br />
-      I work with <span class="shadow-lg font-bold text-blue-200" id="element"></span>.
-    </p>
+        data-aos="fade-up"
+      >
+        {{ home.title }}
+      </h1>
 
-    <!-- Action Buttons -->
-    <div class="flex justify-center gap-10 mt-8">
-      <a href="{{ home.actions[0].link }}" target="_blank"
-         class="btn px-12 py-5 bg-blue-700 text-white font-bold rounded-full shadow-2xl hover:bg-blue-800 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
-        <span class="text-xl">{{ home.actions[0].text }}</span>
-        <i class="fa-brands fa-linkedin text-3xl ml-3"></i>
-      </a>
-<!-- Action Button for Resume -->
-<a (click)="showResume = true" 
-   class="btn px-12 py-5 bg-gray-600 text-white font-bold rounded-full shadow-2xl hover:bg-gray-600 transform hover:scale-110 hover:translate-y-1 transition duration-300 ease-in-out">
-  <span class="text-xl">{{ home.actions[1].text }}</span>
-  <i class="fa-solid fa-file-alt text-3xl ml-3"></i> <!-- Icon updated to represent a resume -->
-</a>
+      <p class="text-lg text-gray-300 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+        {{ home.description }} <br />
+        I work with <span class="shadow-lg font-bold text-blue-200" id="element"></span>.
+      </p>
 
-<!-- Iframe for Resume (Hidden Initially) -->
-<div *ngIf="showResume" class="fixed inset-0 bg-opacity-50 backdrop-blur-md flex justify-center items-center z-50">
-  <iframe 
-    src="resume.pdf" 
-    width="100%" 
-    height="100%" 
-    class="max-w-4xl rounded-lg w-full h-5/6 mx-4 mb-4"
-    frameborder="0">
-  </iframe>
-  <button (click)="showResume = false"  class="absolute top-0 right-0 p-2 text-white rounded-full">
-    <i class="fa-solid fa-xmark"></i>
-  </button>
-</div>
+      <!-- Action Buttons -->
+      <div class="flex justify-center lg:justify-start gap-6 mt-8">
+        <!-- LinkedIn Button -->
+        <a
+          href="{{ home.actions[0].link }}"
+          target="_blank"
+          class="btn px-10 py-4 bg-blue-700 text-white font-semibold rounded-full shadow-lg hover:bg-blue-800 transform hover:scale-105 transition duration-300 ease-in-out"
+        >
+          <span class="text-lg">{{ home.actions[0].text }}</span>
+          <i class="fa-brands fa-linkedin text-2xl ml-3"></i>
+        </a>
+
+        <!-- Resume Button -->
+        <a
+          (click)="showResume = true"
+          class="btn px-10 py-4 bg-gray-600 text-white font-semibold rounded-full shadow-lg hover:bg-gray-700 transform hover:scale-105 transition duration-300 ease-in-out"
+        >
+          <span class="text-lg">{{ home.actions[1].text }}</span>
+          <i class="fa-solid fa-file-alt text-2xl ml-3"></i>
+        </a>
+      </div>
+
+      <!-- Resume Iframe (Hidden Initially) -->
+      <div *ngIf="showResume" class="fixed inset-0 bg-opacity-50 backdrop-blur-md flex justify-center items-center z-50">
+        <iframe
+          src="resume.pdf"
+          width="80%"
+          height="80%"
+          class="rounded-lg shadow-lg"
+          frameborder="0"
+        ></iframe>
+        <button
+          (click)="showResume = false"
+          class="absolute top-0 right-0 p-3 text-white rounded-full bg-gray-700 hover:bg-gray-600"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
     </div>
+
+    <!-- Right Side: Image -->
+    <div class="hidden lg:block lg:w-1/2 h-full">
+      <img
+        src="developer.svg"
+        alt="Background Image"
+        class="w-full h-full object-cover rounded-lg shadow-lg"
+      />
+    </div>
+
   </div>
 
-  <!-- Right Side (Image) -->
-  <div class="hidden md:block w-1/2 h-full">
-    <img style="height: 800px;" src="developer.svg" alt="Background Image" class="w-full object-cover" />
-  </div>
-
-  <!-- Copyright Notice -->
-  <div class="shadow-lg absolute bottom-4 right-4 text-xs text-gray-100">
-    <a href="https://unsplash.com/@unsplash" class="underline" target="_blank">
-      <i class="fa-solid fa-photo-film"></i> Photos by Unsplash
-    </a>
-  </div>
+  <!-- Scroll Down Arrow -->
+  <svg
+    class="arrows mx-auto mt-12 w-12 h-12 cursor-pointer transform hover:scale-110 transition duration-300 ease-in-out"
+    (click)="scrollToAboutMe()"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 60 80"
+  >
+    <path
+      class="a1"
+      d="M0 0 L30 32 L60 0"
+      stroke="white"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="transparent"
+    ></path>
+    <path
+      class="a2"
+      d="M0 20 L30 52 L60 20"
+      stroke="white"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="transparent"
+    ></path>
+    <path
+      class="a3"
+      d="M0 40 L30 72 L60 40"
+      stroke="white"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="transparent"
+    ></path>
+  </svg>
 </div>
-
-<!-- Scroll Down Arrow (Improved Design) -->
-<svg
-  class="arrows mx-auto mt-12 w-12 h-12 cursor-pointer transform hover:scale-110 transition duration-300 ease-in-out"
-  (click)="scrollToAboutMe()"
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 60 80"
->
-  <path
-    class="a1"
-    d="M0 0 L30 32 L60 0"
-    stroke="white"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    fill="transparent"
-  ></path>
-  <path
-    class="a2"
-    d="M0 20 L30 52 L60 20"
-    stroke="white"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    fill="transparent"
-  ></path>
-  <path
-    class="a3"
-    d="M0 40 L30 72 L60 40"
-    stroke="white"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    fill="transparent"
-  ></path>
-</svg>
 
 <!-- About Me Section -->
-<div id="about-me" class="mt-1 bg-gray-800 py-20 px-6 sm:px-12 lg:px-16 text-center text-white">
-  <h2 class="text-4xl lg:text-5xl font-bold" data-aos="fade-down">About Me <i class="fa-solid fa-user"></i></h2>
-  <p class="text-lg lg:text-xl text-gray-300 max-w-4xl mx-auto mt-6" data-aos="fade-down" data-aos-delay="100">
-    I'm a passionate developer with experience in building high-quality, user-friendly applications. With a background in both front-end and back-end technologies, I specialize in frameworks like Angular, React, and Vue.js. I'm also highly proficient in working with databases and API integrations. What truly drives me is the constant evolution of technology, and I am always eager to dive into new challenges, learn emerging tools, and tackle complex problems.
+<div id="about-me" class="mt-1 py-20 px-6 sm:px-12 lg:px-16 bg-gradient-to-r from-teal-200 via-indigo-100 to-pink-100 text-center text-gray-900">
+  <h2 class="text-4xl lg:text-5xl font-semibold text-gray-800 tracking-tight mb-6" data-aos="fade-down">
+    About Me <i class="fa-solid fa-user"></i>
+  </h2>
+  
+  <!-- Description -->
+  <p class="text-lg lg:text-xl text-gray-700 max-w-4xl mx-auto mt-6" data-aos="fade-down" data-aos-delay="100">
+    I’m a passionate developer, always exploring new technologies. With experience in both front-end and back-end, I specialize in building scalable, user-friendly applications. Whether it’s Angular, React, Vue.js, or exploring databases, I thrive on learning new tools and tackling problems that push me forward.
   </p>
 
+  <!-- Interests Section -->
   <div class="flex flex-wrap justify-center gap-12 mt-12" data-aos="fade-right" data-aos-delay="200">
+    
+    <!-- Aviation Enthusiast Icon -->
     <div class="w-full sm:w-1/2 lg:w-1/3 text-center">
-      <h4 class="text-2xl font-semibold text-gray-400">Aviation Enthusiast <i class="fa-solid fa-plane-up"></i></h4>
+      <h4 class="text-2xl font-semibold text-gray-700">Aviation Enthusiast <i class="fa-solid fa-plane-up"></i></h4>
       <div class="mt-4">
-        <img width="310" height="250" src="https://images.unsplash.com/photo-1532200624530-cc3d3d0d636c?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Plane" class="shadow-lg mx-auto rounded-lg" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 text-teal-500 mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12l5-3 1 3 5-3 1 3 5-3 1 3"></path>
+        </svg>
       </div>
-      <p class="text-gray-300 mt-4">
-        Apart from coding, I'm passionate about <span class="font-semibold text-blue-400">planes</span> and the vast world of <span class="font-semibold text-blue-400">technology</span>. I enjoy following the latest advancements in aviation and aerospace, and I’m always amazed by innovations in technology that push the limits of what’s possible.
+      <p class="text-gray-600 mt-4">
+        When I'm not coding, I’m fascinated by the world of aviation. From following the latest advancements to exploring flight mechanics, aviation inspires me to innovate and think beyond the limits.
       </p>
     </div>
 
+    <!-- Travel & Exploration Icon -->
     <div class="w-full sm:w-1/2 lg:w-1/3 text-center" data-aos="fade-left" data-aos-delay="400">
-      <h4 class="text-2xl font-semibold text-gray-400">Travel & Exploration <i class="fa-solid fa-mountain-sun"></i></h4>
+      <h4 class="text-2xl font-semibold text-gray-700">Travel & Exploration <i class="fa-solid fa-mountain-sun"></i></h4>
       <div class="mt-4">
-        <!-- Travel-related image -->
-        <img width="310" height="250" src="https://images.unsplash.com/photo-1549918864-48ac978761a4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Travel" class="mx-auto rounded-lg" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 text-purple-500 mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v20m8-8l-8 8-8-8"></path>
+        </svg>
       </div>
-      <p class="text-gray-300 mt-4">
-        Traveling is a passion that drives me to explore the world, embracing diverse cultures along the way. Each journey opens my mind and enriches my life, fostering a deeper understanding of the world and its people.
+      <p class="text-gray-600 mt-4">
+        Traveling shapes my perspective on life. I love exploring diverse cultures, gaining new insights, and growing from the places I visit. Each adventure expands my view of the world.
       </p>
     </div>
 
+    <!-- Technology Passion Icon -->
     <div class="w-full sm:w-1/2 lg:w-1/3 text-center" data-aos="fade-up" data-aos-delay="800">
-      <h4 class="text-2xl font-semibold text-gray-400">Technology Passion <i class="fa-solid fa-laptop-code"></i></h4>
+      <h4 class="text-2xl font-semibold text-gray-700">Technology Passion <i class="fa-solid fa-laptop-code"></i></h4>
       <div class="mt-4">
-        <img width="310" height="250" src="https://images.unsplash.com/photo-1607798748738-b15c40d33d57?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Technology" class="mx-auto rounded-lg" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 text-indigo-500 mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16v16H4V4zm8 2v12m-4-6h8"></path>
+        </svg>
       </div>
-      <p class="text-gray-300 mt-4">
-        My passion for technology goes beyond just coding. I enjoy exploring the latest gadgets, understanding new tech trends, and applying my knowledge to real-world projects. Staying up to date with the ever-changing tech landscape is something I find exhilarating.
+      <p class="text-gray-600 mt-4">
+        My passion for technology goes beyond just coding. I’m eager to explore new gadgets, learn about emerging tech trends, and apply this knowledge to real-world projects. The tech world is ever-changing, and I thrive in it.
       </p>
     </div>
   </div>
 
+  <!-- Final Call-to-Action -->
   <div class="mt-12" data-aos="fade-down">
-    <p class="text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto">
-      Whether it's coding or exploring the skies, I believe in pushing boundaries. If you're looking for a developer who is eager to learn, create, and innovate, feel free to get in touch!
+    <p class="text-lg lg:text-xl text-gray-700 max-w-3xl mx-auto">
+      Whether it's coding, traveling, or exploring the skies, I love pushing boundaries. Let’s collaborate and create something amazing! Reach out if you're looking for a developer who's passionate about learning, creating, and innovating.
     </p>
   </div>
 </div>
+
 
 <app-skills-carousel></app-skills-carousel>
 
 <!-- Projects Section -->
-<div class="mt-16 bg-gray-900 py-20 px-6 sm:px-8 lg:px-16 text-center text-white">
-  <h3 class="text-4xl text-white tracking-tight" data-aos="fade-up">
+<div class="mt-16 py-20 px-6 sm:px-8 lg:px-16 bg-gradient-to-r from-green-200 via-purple-200 to-pink-200 text-center text-white">
+  <h3 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-6" data-aos="fade-up">
     My Projects <i class="fa-solid fa-briefcase"></i>
   </h3>
-  <p class="text-lg text-gray-300 max-w-4xl mx-auto mt-4" data-aos="fade-up" data-aos-delay="100">
-    Here are some of the projects I have worked on, showcasing my skills in various technologies and my problem-solving approaches.
+  <p class="text-lg text-gray-700 max-w-4xl mx-auto mt-4" data-aos="fade-up" data-aos-delay="100">
+    Check out some of the exciting projects I’ve worked on, showcasing my skills in development and innovative problem-solving.
   </p>
 
   <!-- Project Grid -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mt-12">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mt-12 justify-center items-center">
 
     <!-- Project 1 Card -->
-    <div class="group relative bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
-      <div class="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 opacity-40 rounded-lg"></div>
-      <h4 class="text-2xl font-semibold text-blue-400 relative z-10">Task Management App <i class="fa-solid fa-list-check ml-2"></i></h4>
-      <p class="text-gray-300 mt-4 relative z-10">
-        A web application built with Angular that allows users to efficiently manage tasks, set reminders, and track progress in real-time using Firebase as the back-end.
+    <div class="group relative bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
+      <div class="absolute inset-0 bg-gradient-to-r from-teal-500 via-teal-400 to-teal-300 opacity-40 rounded-lg"></div>
+      <h4 class="text-2xl font-semibold text-teal-600 relative z-10">Task Management App <i class="fa-solid fa-list-check ml-2"></i></h4>
+      <p class="text-gray-700 mt-4 relative z-10">
+        A web app built with Angular and Firebase, helping users manage tasks, set reminders, and track progress in real-time.
       </p>
       <div class="absolute inset-x-0 bottom-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-sm bg-gray-800 bg-opacity-80 p-2 rounded-md">
         <p>Angular, Firebase, Real-time Sync</p>
@@ -164,11 +197,11 @@
     </div>
 
     <!-- Project 2 Card -->
-    <div class="group relative bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
-      <div class="absolute inset-0 bg-gradient-to-r from-green-600 via-green-500 to-green-400 opacity-40 rounded-lg"></div>
-      <h4 class="text-2xl font-semibold text-blue-400 relative z-10">Professional Networking Platform <i class="fa-solid fa-network-wired ml-2"></i></h4>
-      <p class="text-gray-300 mt-4 relative z-10">
-        A social networking platform built using React and Node.js, designed to connect professionals, allowing them to create profiles, interact via messaging, and network seamlessly.
+    <div class="group relative bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
+      <div class="absolute inset-0 bg-gradient-to-r from-orange-500 via-orange-400 to-orange-300 opacity-40 rounded-lg"></div>
+      <h4 class="text-2xl font-semibold text-orange-600 relative z-10">Professional Networking Platform <i class="fa-solid fa-network-wired ml-2"></i></h4>
+      <p class="text-gray-700 mt-4 relative z-10">
+        A social networking platform built with React and Node.js, designed to connect professionals for seamless networking.
       </p>
       <div class="absolute inset-x-0 bottom-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-sm bg-gray-800 bg-opacity-80 p-2 rounded-md">
         <p>React, Node.js, Real-time Messaging</p>
@@ -176,11 +209,11 @@
     </div>
 
     <!-- Project 3 Card -->
-    <div class="group relative bg-gray-800 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
+    <div class="group relative bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-105">
       <div class="absolute inset-0 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-400 opacity-40 rounded-lg"></div>
-      <h4 class="text-2xl font-semibold text-blue-400 relative z-10">Personal Finance Tracker <i class="fa-solid fa-dollar-sign ml-2"></i></h4>
-      <p class="text-gray-300 mt-4 relative z-10">
-        A personal finance tracking application created with Python and Django. It helps users manage their finances, track income and expenses, and generate reports with visual charts and summaries.
+      <h4 class="text-2xl font-semibold text-purple-700 relative z-10">Personal Finance Tracker <i class="fa-solid fa-dollar-sign ml-2"></i></h4>
+      <p class="text-gray-700 mt-4 relative z-10">
+        A personal finance tracker app built with Python and Django, helping users manage finances and track income and expenses.
       </p>
       <div class="absolute inset-x-0 bottom-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-sm bg-gray-800 bg-opacity-80 p-2 rounded-md">
         <p>Python, Django, Data Visualization</p>

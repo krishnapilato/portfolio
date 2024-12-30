@@ -1,18 +1,18 @@
 <!-- Contact Form and Social Links Section -->
-<div id="contact" class="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 bg-gray-900">
-  <div class="bg-gray-800 shadow-2xl rounded-xl w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 p-8" data-aos="fade-up" data-aos-delay="300">
+<div id="contact" class="flex items-center justify-center min-h-screen px-6 sm:px-8 lg:px-12 bg-gradient-to-r from-teal-100 via-green-200 to-lime-100">
+  <div class="bg-white shadow-xl rounded-xl w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10 p-8">
 
     <!-- Contact Form Section -->
-    <div class="p-6 lg:p-8 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl">
-      <h3 class="text-3xl sm:text-4xl font-bold text-center text-white mb-6">
+    <div class="p-6 lg:p-8 bg-gradient-to-br from-pink-50 to-yellow-50 rounded-xl">
+      <h3 class="text-3xl sm:text-4xl font-semibold text-center text-gray-900 mb-6" data-aos="fade-up">
         Contact Me
       </h3>
-      <p class="text-center text-gray-400 mb-8">
+      <p class="text-center text-gray-600 mb-8">
         <i class="fa-solid fa-circle-info"></i> Your information is used only for this communication.
       </p>
       <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
         <div *ngFor="let field of fields" class="relative">
-          <label [for]="field.id" class="block text-sm font-semibold text-blue-300 mb-2">
+          <label [for]="field.id" class="block text-sm font-semibold text-indigo-600 mb-2">
             {{ field.label }}
           </label>
           <ng-container [ngSwitch]="field.type">
@@ -24,7 +24,7 @@
                 [id]="field.id"
                 [placeholder]="field.placeholder"
                 [formControlName]="field.controlName"
-                class="w-full p-3 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full p-3 rounded-md bg-gray-100 border border-gray-300 placeholder-gray-500 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
                 [ngClass]="{ 'border-red-500': isInvalid(field.controlName) }"
               />
             </div>
@@ -35,11 +35,11 @@
               [formControlName]="field.controlName"
               maxlength="1000"
               rows="4"
-              class="shadow-lg w-full p-3 rounded-md bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="shadow-lg w-full p-3 rounded-md bg-gray-100 border border-gray-300 placeholder-gray-500 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
               [ngClass]="{ 'border-red-500': isInvalid(field.controlName) }"
             ></textarea>
           </ng-container>
-          <div *ngIf="isInvalid(field.controlName)" class="text-red-400 text-sm mt-1">
+          <div *ngIf="isInvalid(field.controlName)" class="text-red-500 text-sm mt-1">
             {{ field.errorMessage }}
           </div>
         </div>
@@ -47,27 +47,27 @@
         <button
           type="submit"
           [disabled]="!contactForm.valid"
-          class="shadow-lg w-full p-3 rounded-full bg-blue-500 hover:bg-blue-600 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-blue-300"
+          class="shadow-lg w-full p-3 rounded-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-indigo-300"
         >
-          Send Message <i class="fa-regular fa-paper-plane"></i>
+          Send Message <i class="fa-regular fa-paper-plane ml-2"></i>
         </button>
 
-        <div *ngIf="successMessage" class="mt-4 text-center text-green-400">
+        <div *ngIf="successMessage" class="mt-4 text-center text-green-500">
           {{ successMessage }}
         </div>
       </form>
     </div>
 
     <!-- Social Links Section -->
-    <div class="flex flex-col justify-center items-center p-6 sm:p-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl">
-      <h4 class="text-2xl font-semibold text-white mb-6">Connect with Me</h4>
+    <div class="flex flex-col justify-center items-center p-6 sm:p-8 bg-gradient-to-br from-teal-50 to-lime-50 rounded-xl">
+      <h4 class="text-2xl font-semibold text-gray-900 mb-6">Connect with Me</h4>
       <div class="flex flex-col w-full space-y-4">
         <div *ngFor="let link of socialLinks" class="w-full">
           <a
             [href]="link.href"
             [ngClass]="link.btnClass"
             target="_blank"
-            class="shadow-lg w-full flex items-center justify-center p-3 rounded-full bg-gray-800 hover:bg-blue-500 text-gray-200 font-bold transition"
+            class="shadow-lg w-full flex items-center justify-center p-3 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition"
           >
             <i [class]="link.iconClass + ' mr-2 text-lg'"></i> {{ link.label }}
           </a>

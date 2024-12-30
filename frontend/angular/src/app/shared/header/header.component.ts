@@ -16,51 +16,24 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  public headerTitle = 'Scripted Horizons';
-  public isOffcanvasOpen = false;
-  public isDarkTheme = false;
-  public isHeaderVisible = true;
-  private lastScrollTop = 0;
+  isMobileMenuOpen: boolean = false;
+  activeLink: string = 'home'; // Default active link
 
-  @Output() themeToggled = new EventEmitter<boolean>();
-
-  navLinks = [
-    { icon: 'fa-wand-magic-sparkles', label: 'Quiz', route: '/dashboard' },
-    { icon: 'fa-link', label: 'Connect', route: '/contact' },
-    { icon: 'fa-right-to-bracket', label: 'Login', route: '/auth/login' },
-    { icon: this.isDarkTheme ? 'fa-moon' : 'fa-sun', label: 'Theme' },
-  ];
-
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll(event: Event): void {
-    const currentScroll =
-      window.pageYOffset || document.documentElement.scrollTop;
-
-    if (currentScroll > this.lastScrollTop) {
-      this.isHeaderVisible = false;
-    } else {
-      this.isHeaderVisible = true;
-    }
-
-    this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-  }
-
-  toggleOffcanvas() {
-    this.isOffcanvasOpen = !this.isOffcanvasOpen;
-    if (this.isOffcanvasOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+  // Toggle the mobile menu
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    const mobileToggleButton = document.querySelector('.mobile-toggle');
+    if (mobileToggleButton) {
+      mobileToggleButton.classList.toggle('active');
     }
   }
-
-  onLinkClick(): void {
-    this.isOffcanvasOpen = false;
+  // Set the active link
+  setActive(link: string) {
+    this.activeLink = link;
   }
 
-  toggleTheme(): void {
-    this.isDarkTheme = !this.isDarkTheme;
-    this.themeToggled.emit(this.isDarkTheme);
-    this.navLinks[3].icon = this.isDarkTheme ? 'fa-moon' : 'fa-sun';
+  // Check if the link is active
+  isActive(link: string): boolean {
+    return this.activeLink === link;
   }
 }

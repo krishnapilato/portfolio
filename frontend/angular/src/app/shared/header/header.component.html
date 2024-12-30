@@ -1,109 +1,77 @@
-<!-- Navbar -->
-<nav
-  data-aos="fade-down"
-  data-aos-offset="0"
-  data-aos-duration="500"
-  [ngClass]="{
-    'bg-gradient-to-r from-blue-700/80 to-blue-700/80': isDarkTheme,
-    'bg-gradient-to-r from-blue-900/80 to-blue-800/80': !isDarkTheme,
-    'fixed top-0 left-0 w-full z-50 rounded-b-lg': true,
-    'hidden': !isHeaderVisible
-  }"
-  class="shadow-md transition-all duration-300 ease-in-out"
->
-  <div class="container mx-auto flex items-center justify-between py-4 px-6 mb-1">
-    <!-- Brand Logo -->
-    <a class="flex items-center space-x-2 text-white font-bold relative group" [routerLink]="['']">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="30" height="30">
-        <g fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="5" y1="30" x2="35" y2="30" />
-          <path d="M 10 18 Q 15 12, 20 18 Q 25 22, 30 18" />
-          <circle cx="20" cy="12" r="5" />
-          <text x="20" y="28" font-size="6" text-anchor="middle" font-family="Arial" fill="currentColor">KK</text>
-        </g>
-      </svg>
-      <span>{{ headerTitle }}</span>
-      <div
-        class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-max p-2 bg-gray-700 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-      >
-        Home
-      </div>
-    </a>
-
-    <!-- Mobile Menu Button -->
-    <button
-      class="lg:hidden text-gray-400 hover:text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
-      (click)="toggleOffcanvas()"
-      aria-label="Toggle Menu"
-    >
-      <!-- Hamburger Icon -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"/>
-      </svg>
-    </button>
-
-    <!-- Desktop Links -->
-    <ul class="hidden lg:flex space-x-8 items-center">
-      <li *ngFor="let link of navLinks" class="relative group">
-        <a
-          class="text-gray-300 hover:text-blue-400 transition font-medium flex items-center space-x-2"
-          [routerLink]="link.route"
-        >
-          <i class="fa" [ngClass]="link.icon"></i>
-          <span>{{ link.label }}</span>
-        </a>
-        <div
-          class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-max p-2 bg-gray-700 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        >
-          {{ link.label }}
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="logo">
+                <span class="logo-text">Premium</span>
+                <div class="logo-shine"></div>
+            </div>
         </div>
-      </li>
-    </ul>
-  </div>
-</nav>
 
-<!-- Offcanvas Menu (Mobile) -->
-<div
-  *ngIf="isOffcanvasOpen"
-  class="fixed inset-0 z-40 flex justify-center items-center bg-black/50 backdrop-blur"
-  (click)="toggleOffcanvas()"
-  data-aos="fade-in" 
-  data-aos-duration="500"
-  data-aos-easing="ease-out"
-  data-aos-once="true" 
->
-  <div
-    class="bg-gray-700 w-full max-w-md rounded-lg shadow-2xl p-6 space-y-6 text-sm text-gray-300 text-center mx-4 relative"
-    (click)="$event.stopPropagation()"
-    data-aos="fade-in"
-    data-aos-duration="500"
-  >
-    <button
-      class="absolute top-4 right-4 text-gray-100 hover:text-red-500 focus:outline-none"
-      (click)="toggleOffcanvas()"
-    >
-      <i class="fas fa-times text-2xl"></i>
-    </button>
-
-    <h3 class="text-lg font-bold text-gray-100 mb-1">Menu</h3>
-    <p class="text-xs text-gray-400 mb-4">Select an option below</p>
-
-    <ul class="flex flex-col space-y-4">
-      <li *ngFor="let link of navLinks" class="relative group">
-        <a
-          class="flex items-center justify-start space-x-4 hover:text-blue-400 transition font-medium px-4 py-2 bg-gray-800 rounded-xl"
-          [routerLink]="link.route"
-          (click)="onLinkClick()"
-        >
-          <i class="fa text-lg" [ngClass]="link.icon"></i>
-          <span>{{ link.label }}</span>
-        </a>
-        <div
-          class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 w-max p-2 bg-gray-700 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        >
-          {{ link.label }}
+        <div class="nav-links">
+            <a href="#" class="nav-link" [ngClass]="{'active': isActive('home')}" (click)="setActive('home')">
+                <span>Home</span>
+                <div class="link-effect"></div>
+            </a>
+            <a href="#" class="nav-link" [ngClass]="{'active': isActive('products')}" (click)="setActive('products')">
+                <span>Products</span>
+                <div class="link-effect"></div>
+            </a>
+            <a href="#" class="nav-link" [ngClass]="{'active': isActive('services')}" (click)="setActive('services')">
+                <span>Services</span>
+                <div class="link-effect"></div>
+            </a>
+            <a href="#" class="nav-link" [ngClass]="{'active': isActive('about')}" (click)="setActive('about')">
+                <span>About</span>
+                <div class="link-effect"></div>
+            </a>
+            <a href="#" class="nav-link" [ngClass]="{'active': isActive('contact')}" (click)="setActive('contact')">
+                <span>Contact</span>
+                <div class="link-effect"></div>
+            </a>
         </div>
-      </li>
-    </ul>
-  </div>
-</div>
+
+        <div class="nav-actions">
+            <button class="action-btn">
+                <div class="btn-text">Sign In <i class="fa-solid fa-arrow-right-to-bracket"></i></div>
+                <div class="btn-effect"></div>
+            </button>
+        </div>
+
+      <button class="mobile-toggle" (click)="toggleMobileMenu()">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
+      </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu backdrop-blur" [ngClass]="{'active': isMobileMenuOpen}">
+        <div class="menu-header">
+            <div class="logo">
+                <span class="logo-text">Premium</span>
+            </div>
+        </div>
+        <div class="menu-links">
+            <a href="#" class="menu-link" [ngClass]="{'active': isActive('home')}" (click)="setActive('home')">
+                <span>Home</span>
+            </a>
+            <a href="#" class="menu-link" [ngClass]="{'active': isActive('products')}" (click)="setActive('products')">
+                <span>Products</span>
+            </a>
+            <a href="#" class="menu-link" [ngClass]="{'active': isActive('services')}" (click)="setActive('services')">
+                <span>Services</span>
+            </a>
+            <a href="#" class="menu-link" [ngClass]="{'active': isActive('about')}" (click)="setActive('about')">
+                <span>About</span>
+            </a>
+            <a href="#" class="menu-link" [ngClass]="{'active': isActive('contact')}" (click)="setActive('contact')">
+                <span>Contact</span>
+            </a>
+        </div>
+        <div class="menu-footer">
+            <button class="mobile-action-btn">
+                <span>Sign In</span>
+            </button>
+        </div>
+    </div>
+</body>
