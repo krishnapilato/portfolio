@@ -1,107 +1,94 @@
 package com.personal.portfolio.config;
 
-import java.util.Arrays;
-
 import org.springdoc.core.models.GroupedOpenApi;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
+import io.swagger.v3.oas.models.info.License;
 
+/**
+ * Configuration class for setting up Swagger and OpenAPI documentation.
+ * Provides metadata and organizes API endpoints into groups for better navigation in the documentation.
+ */
 @Configuration
 public class SwaggerConfig {
 
-	@Value("${openapi.contact.name}")
-	private String contactName;
-
-	@Value("${openapi.contact.url}")
-	private String contactUrl;
-
-	@Value("${openapi.contact.email}")
-	private String contactEmail;
-
-	@Value("${openapi.server.url}")
-	private String serverUrl;
-
-	@Value("${openapi.server.description}")
-	private String serverDescription;
-
-	@Value("${openapi.info.title}")
-	private String apiTitle;
-
-	@Value("${openapi.info.description}")
-	private String apiDescription;
-
-	@Value("${openapi.info.version}")
-	private String apiVersion;
-
-	@Value("${openapi.external.docs.swagger.url}")
-	private String swaggerUrl;
-
-	@Value("${openapi.external.docs.github.url}")
-	private String githubUrl;
-
+	/**
+	 * Configures the OpenAPI metadata for the application.
+	 *
+	 * @return an {@link OpenAPI} object containing metadata such as title, version, contact, and license information.
+	 */
 	@Bean
-	public OpenAPI openAPI() {
-		Contact contact = new Contact()
-				.name(contactName)
-				.url(contactUrl)
-				.email(contactEmail);
-
-		Server server = new Server()
-				.url(serverUrl)
-				.description(serverDescription);
-
+	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
-				.addSecurityItem(new SecurityRequirement().addList("BearerAuth"))
-				.components(new Components().addSecuritySchemes("BearerAuth",
-						new SecurityScheme()
-								.name("BearerAuth")
-								.type(SecurityScheme.Type.HTTP)
-								.scheme("bearer")
-								.bearerFormat("JWT")))
 				.info(new Info()
-						.title(apiTitle)
-						.description(apiDescription)
-						.version(apiVersion)
-						.contact(contact))
-				.servers(Arrays.asList(server))
-				.externalDocs(new ExternalDocumentation()
-						.description("Find out more about Swagger UI")
-						.url(swaggerUrl))
-				.externalDocs(new ExternalDocumentation()
-						.description("GitHub Repository")
-						.url(githubUrl));
+						.title("Portfolio API")
+						.version("v0.8.5")
+						.description("""
+                            This API powers the Portfolio application, offering a comprehensive
+                            set of endpoints for user management, authentication, and more.
+                            
+                            Key Highlights:
+                            - Secure and robust authentication mechanisms
+                            - User and role management features
+                            - Email notification support
+                            
+                            Explore the documentation to understand available endpoints and their usage.
+                            """)
+						.contact(new Contact()
+								.name("Krishna")
+								.url("https://krishnapilato.github.io/portfolio")
+								.email("krishnak.pilato@gmail.com"))
+						.license(new License()
+								.name("MIT License")
+								.url("https://opensource.org/licenses/MIT")))
+				.addServersItem(new io.swagger.v3.oas.models.servers.Server()
+						.url("http://krishnapilato-portfolio-api.us-east-1.elasticbeanstalk.com")
+						.description("Production Server"))
+				.addServersItem(new io.swagger.v3.oas.models.servers.Server()
+						.url("http://localhost:8080")
+						.description("Local Development Server"));
 	}
 
+	/**
+	 * Groups API endpoints related to authentication and authorization.
+	 *
+	 * @return a {@link GroupedOpenApi} instance for authentication and authorization APIs.
+	 */
 	@Bean
 	public GroupedOpenApi authApi() {
-		return createGroupedOpenApi("Authentication & Authorization", "/auth/**");
+		return GroupedOpenApi.builder()
+				.group("Authentication & Authorization")
+				.pathsToMatch("/auth/**")
+				.build();
 	}
 
+	/**
+	 * Groups API endpoints related to user management.
+	 *
+	 * @return a {@link GroupedOpenApi} instance for user-related APIs.
+	 */
 	@Bean
 	public GroupedOpenApi userApi() {
-		return createGroupedOpenApi("User", "/api/users/**");
+		return GroupedOpenApi.builder()
+				.group("User")
+				.pathsToMatch("/api/users/**")
+				.build();
 	}
 
+	/**
+	 * Groups API endpoints related to email functionality.
+	 *
+	 * @return a {@link GroupedOpenApi} instance for email-related APIs.
+	 */
 	@Bean
 	public GroupedOpenApi emailApi() {
-		return createGroupedOpenApi("Email", "/api/email/**");
-	}
-
-	private GroupedOpenApi createGroupedOpenApi(String groupName, String pathPattern) {
 		return GroupedOpenApi.builder()
-				.group(groupName)
-				.packagesToScan("com.personal.portfolio.controller")
-				.pathsToMatch(pathPattern)
+				.group("Email")
+				.pathsToMatch("/api/email/**")
 				.build();
 	}
 }

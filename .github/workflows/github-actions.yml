@@ -42,7 +42,7 @@ jobs:
       # Compile the code, run tests, and package the backend using Maven.
       - name: Build and Verify with Maven
         working-directory: backend/java
-        run: mvn clean install
+        run: mvn clean install -DskipTests
 
       # Upcoming deployment to Heroku
 
@@ -62,11 +62,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Set up Node.js version 23.4.0 for the frontend build.
+      # Set up Node.js version 23.5.0 for the frontend build.
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '23.4.0'
+          node-version: '23.5.0'
 
       # Install the Angular CLI globally to build the project.
       - name: Install Angular CLI

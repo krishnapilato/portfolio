@@ -14,6 +14,10 @@ import com.personal.portfolio.model.Role;
 import com.personal.portfolio.model.User;
 import com.personal.portfolio.repository.UserRepository;
 
+/**
+ * Entry point for the Portfolio Application.
+ * Initializes the application, sets up caching, and ensures an admin user exists.
+ */
 @SpringBootApplication
 @EnableCaching
 public class PortfolioApplication {
@@ -21,15 +25,22 @@ public class PortfolioApplication {
 	private static final Logger logger = LoggerFactory.getLogger(PortfolioApplication.class);
 
 	@Value("${spring.security.user.name}")
-	private String adminUsername;
+	private String adminUsername; // Admin username from application properties
 
 	@Value("${spring.security.user.password}")
-	private String adminPassword;
+	private String adminPassword; // Admin password from application properties
 
 	public static void main(String[] args) {
 		SpringApplication.run(PortfolioApplication.class, args);
 	}
 
+	/**
+	 * Ensures the default admin user is created in the database if it doesn't already exist.
+	 *
+	 * @param userRepository   Repository for user-related operations.
+	 * @param passwordEncoder  Encoder for securing user passwords.
+	 * @return CommandLineRunner to execute database initialization logic.
+	 */
 	@Bean
 	public CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
@@ -41,6 +52,12 @@ public class PortfolioApplication {
 		};
 	}
 
+	/**
+	 * Creates the default admin user with predefined credentials.
+	 *
+	 * @param userRepository   Repository for user-related operations.
+	 * @param passwordEncoder  Encoder for securing user passwords.
+	 */
 	private void createAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		User adminUser = new User();
 		adminUser.setFullName(adminUsername);

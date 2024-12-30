@@ -20,6 +20,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Filter for handling JWT authentication on every request.
+ * Extends {@link OncePerRequestFilter} to ensure the filter is executed once per request.
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -27,25 +31,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtService jwtService;
 	private final UserDetailsService userDetailsService;
 
+	/**
+	 * Filters incoming HTTP requests to authenticate users via JWT.
+	 *
+	 * @param request  the incoming HTTP request
+	 * @param response the outgoing HTTP response
+	 * @param filterChain the filter chain to continue processing the request
+	 * @throws ServletException if an error occurs during the filtering process
+	 * @throws IOException if an I/O error occurs
+	 */
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		// Skip JWT authentication for specific auth endpoints
+		// Skip JWT authentication for login and signup endpoints
 		String requestURI = request.getRequestURI();
 		if (requestURI.startsWith("/auth/login") || requestURI.startsWith("/auth/signup")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
-		// Get the Authorization header and validate the format
+		// Extract the Authorization header
 		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
-		// Extract the token from the header
+		// Extract the JWT token from the Authorization header
 		String jwtToken = authHeader.substring(7);
 
 		// Check if the user is already authenticated
@@ -56,27 +69,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 
 		try {
-			// Extract the username from the token
+			// Extract the username from the JWT token
 			String userEmail = jwtService.extractUsername(jwtToken);
+
+			// Load user details from the database
 			UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
-			// Validate the token and check if the user is enabled
+			// Validate the JWT token and user status
 			if (jwtService.isTokenValid(jwtToken, userDetails) && userDetails.isEnabled()) {
-				// Create an authentication token and set it in the SecurityContext
+				// Authenticate the user and set it in the SecurityContext
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
 		} catch (Exception e) {
-			// Clear the SecurityContext in case of any token error
+			// Handle token errors (e.g., expired or invalid token)
 			SecurityContextHolder.clearContext();
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
 					e.getMessage().contains("expired") ? "Token expired" : "Invalid token");
 			return;
 		}
 
-		// Continue the filter chain
+		// Proceed with the filter chain if no issues occur
 		filterChain.doFilter(request, response);
 	}
 }

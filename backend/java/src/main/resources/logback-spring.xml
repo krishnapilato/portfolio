@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Define the pattern for log messages -->
+    <property name="FILE_LOG_PATTERN" value="%highlight(%-5level) [%cyan(%d{yyyy-MM-dd HH:mm:ss})] [%yellow(%thread)] %green(%logger{36}) - %msg%n" />
+    <property name="LOG_FILE_PATH" value="logs/application.log" />
+
+    <!-- Rolling File Appender Configuration -->
+    <!--
+        Writes log messages to a file.
+        Creates a new log file daily and if the file exceeds 10 MB, archives and compresses the old log files.
+    -->
+    <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- Log file name pattern -->
+            <fileNamePattern>logs/application-%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <!-- Maximum log file size before rolling -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- Maximum number of archived log files to keep -->
+            <maxHistory>30</maxHistory>
+            <!-- Total size of all archived logs -->
+            <totalSizeCap>512MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Console Appender Configuration -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Root Logger Configuration -->
+    <root level="debug">
+        <!-- Attach both the console and rolling file appenders -->
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ROLLING" />
+    </root>
+</configuration>

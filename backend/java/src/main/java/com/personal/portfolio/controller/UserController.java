@@ -11,15 +11,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import com.personal.portfolio.model.User;
-	import com.personal.portfolio.service.UserService;
+import com.personal.portfolio.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api/users")
+/**
+ * Controller to handle user-related operations.
+ * Provides endpoints for CRUD operations and user account management.
+ */
 @RestController
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Tag(name = "Users", description = "Endpoints for managing user data.")
 public class UserController {
@@ -28,6 +32,11 @@ public class UserController {
 
 	private final UserService userService;
 
+	/**
+	 * Retrieve a list of all registered users.
+	 *
+	 * @return ResponseEntity containing the list of users
+	 */
 	@GetMapping
 	@Operation(summary = "Get all users", description = "Retrieve a list of all registered users.")
 	public ResponseEntity<List<User>> getAllUsers() {
@@ -35,6 +44,12 @@ public class UserController {
 		return ResponseEntity.ok(users);
 	}
 
+	/**
+	 * Retrieve a user by their ID.
+	 *
+	 * @param id User ID
+	 * @return ResponseEntity containing the user if found, or 404 if not found
+	 */
 	@GetMapping("/{id}")
 	@Operation(summary = "Get user by ID", description = "Retrieve a user by ID.")
 	public ResponseEntity<User> getUserById(@PathVariable Long id) {
@@ -43,6 +58,12 @@ public class UserController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
+	/**
+	 * Register a new user.
+	 *
+	 * @param newUser User object to be created
+	 * @return ResponseEntity containing the created user and the location URI
+	 */
 	@PostMapping
 	@Operation(summary = "Create a new user", description = "Registers a new user in the system.")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User newUser) {
@@ -52,6 +73,13 @@ public class UserController {
 		return ResponseEntity.created(location).body(createdUser);
 	}
 
+	/**
+	 * Update an existing user's details by their ID.
+	 *
+	 * @param id          User ID
+	 * @param updatedUser Updated User object
+	 * @return ResponseEntity containing the updated user or 404 if the user is not found
+	 */
 	@PutMapping("/{id}")
 	@Operation(summary = "Update user by ID", description = "Update a user's details by ID.")
 	public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
@@ -65,6 +93,12 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * Lock or unlock a user account.
+	 *
+	 * @param id User ID
+	 * @return ResponseEntity containing the updated user or 404 if the user is not found
+	 */
 	@PutMapping("/{id}/lock")
 	@Operation(summary = "Toggle user lock status", description = "Locks or unlocks a user account.")
 	public ResponseEntity<User> toggleLockUser(@PathVariable Long id) {
@@ -78,6 +112,12 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * Delete a user by their ID.
+	 *
+	 * @param id User ID
+	 * @return ResponseEntity with no content if successful or 404 if the user is not found
+	 */
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Delete user by ID", description = "Delete a user by ID.")
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {

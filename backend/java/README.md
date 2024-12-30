@@ -1,54 +1,57 @@
-# Spring Boot Backend 💼
+# Spring Boot Backend
 
-This project is the backend for my portfolio website. It provides a RESTful API built with Spring Boot that handles user authentication, data management, and more.
+This project serves as the backend for my portfolio website, providing a robust RESTful API built with Spring Boot. It supports features like user authentication, data management, and more.
 
-## 🚀 Get Started
+## Getting Started
 
-Here's how you can get this backend up and running:
+Follow these steps to get the backend up and running locally:
 
-1. **Prerequisites:**
-   - Make sure you have the following tools installed on your machine:
-      - Java JDK 21 ☕
-      - Maven (for managing project dependencies) 
-      - MySQL Database 💾
-      - MongoDB Database
-      - Your favorite IDE (Eclipse, IntelliJ IDEA, etc.) 💻
+### 1. Prerequisites:
 
-2. **Configuration:**
-   - Open the `application.properties` file in your project.  
-   - Update the following lines with your database credentials:
-      - `spring.datasource.username`: Your MySQL username
-      - `spring.datasource.password`: Your MySQL password
+Ensure you have the following tools installed:
 
-3. **Clone & Run:**
-   - Clone the repository:
-      ```bash
-      git clone [https://github.com/krishnapilato/portfolio.git](https://github.com/krishnapilato/portfolio.git)
-      ```
+- Java JDK 23
+- Maven (for managing project dependencies)
+- MySQL Database
+- IDE of your choice (Eclipse, IntelliJ IDEA, etc.)
 
-   - Navigate to the backend directory:
-      ```bash
-      cd backend/java
-      ```
+### 2. Configuration:
 
-   - Start the Spring Boot application:
-      ```bash
-      ./mvnw spring-boot:run
-      ```
+Before running the application, configure the database connections:
 
-Now your backend API is alive and well at `http://localhost:8080/`! 🎉
+- Open the `application.properties` file located in the `src/main/resources` folder.
+- Update the following properties with your database credentials:
+    - `spring.datasource.username`: Your MySQL username
+    - `spring.datasource.password`: Your MySQL password
 
-## 🛠️ Technologies Used
+### 3. Clone & Run:
 
-- **Java:** Our reliable workhorse for the backend logic.
-- **Spring Boot:** The superhero framework that makes building Java web applications a breeze.
-- **Spring Security:** The guardian of your API, keeping it safe with authentication and authorization.
-- **Spring Data JPA:** Simplifies database interactions with a touch of magic.
-- **Hibernate:** The bridge between your Java objects and the MySQL database.
-- **JWT (JSON Web Tokens):** The secret handshake for secure user authentication.
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/krishnapilato/portfolio.git
+    ```
 
-## 💡 Need Help?
+2. Navigate to the backend directory:
+    ```bash
+    cd backend/java
+    ```
 
-If you run into any issues or have questions, don't hesitate to reach out! You can create an issue on GitHub, or find me on LinkedIn/Twitter.
+3. Start the Spring Boot application:
+    ```bash
+    ./mvnw spring-boot:run
+    ```
 
-Happy coding!  ✨
+Your backend API should now be running at `http://localhost:8080`.
+
+## Technologies Used
+
+- **Java**: The primary language for backend development.
+- **Spring Boot**: The framework that simplifies building Java web applications.
+- **Spring Security**: Provides authentication and authorization to secure the API.
+- **Spring Data JPA**: Simplifies database operations with JPA.
+- **Hibernate**: The ORM framework that facilitates interaction between Java objects and MySQL database.
+- **JWT (JSON Web Tokens)**: Used for secure user authentication.
+
+## Need Help?
+
+If you run into any issues or have questions, feel free to reach out. You can create an issue on GitHub or connect with me on LinkedIn.

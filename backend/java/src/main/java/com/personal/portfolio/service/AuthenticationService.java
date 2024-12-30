@@ -22,9 +22,13 @@ import com.personal.portfolio.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Service for handling user authentication and registration.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
 	// Constants for logging and exception messages
@@ -37,39 +41,60 @@ public class AuthenticationService {
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
 
+	/**
+	 * Registers a new user.
+	 *
+	 * @param input The registration request containing user details.
+	 * @return The saved user entity.
+	 * @throws DuplicateKeyException if a user with the given email already exists.
+	 */
 	public User signup(RegisterUserRequest input) {
-		logger.info("Starting user registration for email: {}", input.getEmail());
+		logger.info("Starting user registration for email: {}", input.email());
 
-		if (userRepository.existsByEmail(input.getEmail())) {
-			logger.warn("User registration attempt failed: " + USER_EMAIL_EXISTS, input.getEmail());
-			throw new DuplicateKeyException(String.format(USER_EMAIL_EXISTS, input.getEmail()));
+		// Check if the user email already exists
+		if (userRepository.existsByEmail(input.email())) {
+			logger.warn(USER_EMAIL_EXISTS, input.email());
+			throw new DuplicateKeyException(String.format(USER_EMAIL_EXISTS, input.email()));
 		}
 
+		// Create and save the new user
 		User user = new User();
-		user.setFullName(input.getFullName());
-		user.setEmail(input.getEmail());
-		user.setPassword(passwordEncoder.encode(input.getPassword()));
+		user.setFullName(input.fullName());
+		user.setEmail(input.email());
+		user.setPassword(passwordEncoder.encode(input.password()));
 		user.setRole(Role.USER);
 		user.setCreatedAt(Date.from(Instant.now()));
 		user.setUpdatedAt(Date.from(Instant.now()));
 
 		User savedUser = userRepository.save(user);
-		logger.info(String.format(USER_REGISTRATION_SUCCESS, savedUser.getId()));
+		logger.info(USER_REGISTRATION_SUCCESS, savedUser.getId());
 
 		return savedUser;
 	}
 
+	/**
+	 * Authenticates a user.
+	 *
+	 * @param input The login request containing email and password.
+	 * @return The authenticated user entity.
+	 * @throws BadCredentialsException if authentication fails.
+	 * @throws UsernameNotFoundException if the user is not found.
+	 */
 	public User authenticate(LoginUserRequest input) {
-		logger.info("Attempting authentication for email: {}", input.getEmail());
+		logger.info("Attempting authentication for email: {}", input.email());
 
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword()));
+			// Perform authentication
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(input.email(), input.password())
+			);
 		} catch (AuthenticationException e) {
-			logger.error(String.format(AUTHENTICATION_FAILED, input.getEmail()), e);
+			logger.error(AUTHENTICATION_FAILED, input.email(), e);
 			throw new BadCredentialsException("Invalid credentials provided");
 		}
 
-		return userRepository.findByEmail(input.getEmail())
-				.orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, input.getEmail())));
+		// Retrieve and return the authenticated user
+		return userRepository.findByEmail(input.email())
+				.orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, input.email())));
 	}
 }

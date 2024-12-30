@@ -38,9 +38,9 @@ public class AuthenticationController {
 	@Operation(summary = "User Login", description = "Authenticate a user and generate a JWT token.")
 	public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserRequest loginUserDto) {
 		try {
-			User user = (User) userService.loadUserByUsername(loginUserDto.getEmail());
+			User user = (User) userService.loadUserByUsername(loginUserDto.email());
 			if (user.isLocked()) {
-				logger.warn("Authentication failed: user {} is locked.", loginUserDto.getEmail());
+				logger.warn("Authentication failed: user {} is locked.", loginUserDto.email());
 				return ResponseEntity.status(HttpStatus.FORBIDDEN)
 						.body(new LoginResponse("ACCOUNT_LOCKED", "This account is locked. Please contact support."));
 			}
@@ -51,7 +51,7 @@ public class AuthenticationController {
 
 			return ResponseEntity.ok(new LoginResponse(jwtToken, expirationMillis, user.getRole()));
 		} catch (BadCredentialsException e) {
-			logger.warn("Authentication failed for email: {}. Invalid credentials.", loginUserDto.getEmail());
+			logger.warn("Authentication failed for email: {}. Invalid credentials.", loginUserDto.email());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 					.body(new LoginResponse("INVALID_CREDENTIALS", "Invalid credentials provided."));
 		} catch (Exception e) {
@@ -69,7 +69,7 @@ public class AuthenticationController {
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new RegistrationResponse(registeredUser.getId(), Role.USER));
 		} catch (DataIntegrityViolationException ex) {
-			logger.warn("Registration failed due to duplicate email: {}", registerUserDto.getEmail(), ex);
+			logger.warn("Registration failed due to duplicate email: {}", ex);
 			return ResponseEntity.status(HttpStatus.CONFLICT)
 					.body(new RegistrationResponse("DUPLICATE_EMAIL", "Email address already in use."));
 		} catch (Exception ex) {

@@ -2,57 +2,28 @@ package com.personal.portfolio.dto.registration;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
-public class RegisterUserRequest {
+/**
+ * Represents a user registration request with validation constraints.
+ */
+public record RegisterUserRequest(
 
-	@NotBlank(message = "Full name is required")
-	private String fullName;
+		@NotBlank(message = "Full name is required")
+		@Size(max = 100, message = "Full name must not exceed 100 characters")
+		String fullName,
 
-	@Email(message = "Email should be valid")
-	@NotBlank(message = "Email is required")
-	private String email;
+		@Email(message = "Email should be valid")
+		@NotBlank(message = "Email is required")
+		@Size(max = 100, message = "Email must not exceed 100 characters")
+		String email,
 
-	@NotBlank(message = "Password is required")
-	private String password;
-
-	public RegisterUserRequest() {}
-
-	public RegisterUserRequest(String fullName, String email, String password) {
-		this.fullName = fullName;
-		this.email = email;
-		this.password = password;
-	}
-
-	public String getFullName() {
-		return fullName;
-	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@Override
-	public String toString() {
-		return "RegisterUserRequest{" +
-				"fullName='" + fullName + '\'' +
-				", email='" + email + '\'' +
-				", password='" + password + '\'' +
-				'}';
-	}
-}
+		@NotBlank(message = "Password is required")
+		@Size(min = 8, max = 50, message = "Password must be between 8 and 50 characters")
+		@Pattern(
+				regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,50}$",
+				message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character"
+		)
+		String password
+) { }
