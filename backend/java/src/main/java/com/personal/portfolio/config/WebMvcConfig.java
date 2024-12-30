@@ -1,29 +1,21 @@
 package com.personal.portfolio.config;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Web MVC Configuration for customizing request mappings and view controllers.
+ * Web MVC Configuration for handling request mappings and view rendering.
  */
-@Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
+@Controller
+public class WebMvcConfig {
 
 	/**
-	 * Configures view controllers to handle specific mappings.
+	 * Handles the root URL ("/") request and populates the model with portfolio details.
 	 *
-	 * @param registry the registry for view controllers
+	 * @return the name of the Thymeleaf template to render
 	 */
-	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-		// Redirect the root URL ("/") to the Swagger UI index page
-		registry.addRedirectViewController("/", "/swagger-ui/index.html")
-				.setStatusCode(HttpStatus.FOUND);
-
-		// Redirect any unknown URL path to the Swagger UI index page
-		registry.addRedirectViewController("/{path:[^\\.]*}", "/swagger-ui/index.html")
-				.setStatusCode(HttpStatus.FOUND);
+	@GetMapping("/")
+	public String landingPage() {
+		return "portfolioLanding";
 	}
 }

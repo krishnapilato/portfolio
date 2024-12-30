@@ -1,82 +1,73 @@
 <!-- Contact Form and Social Links Section -->
-<div id="contact" class="flex items-center justify-center min-h-screen px-6 sm:px-8 lg:px-12 bg-gradient-to-r from-teal-100 via-green-200 to-lime-100">
-  <div class="bg-white shadow-xl rounded-xl w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10 p-8">
+<div id="contact" class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-teal-100 via-green-200 to-lime-100 px-6 sm:px-8 lg:px-12">
 
-    <!-- Contact Form Section -->
-    <div class="p-6 lg:p-8 bg-gradient-to-br from-pink-50 to-yellow-50 rounded-xl">
-      <h3 class="text-3xl sm:text-4xl font-semibold text-center text-gray-900 mb-6" data-aos="fade-up">
-        Contact Me
-      </h3>
-      <p class="text-center text-gray-600 mb-8">
-        <i class="fa-solid fa-circle-info"></i> Your information is used only for this communication.
-      </p>
-      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
-        <div *ngFor="let field of fields" class="relative">
-          <label [for]="field.id" class="block text-sm font-semibold text-indigo-600 mb-2">
-            {{ field.label }}
-          </label>
-          <ng-container [ngSwitch]="field.type">
-            <div class="flex items-center">
-              <i *ngIf="field.icon" [class]="field.icon + ' text-gray-400 mr-2'"></i>
-              <input
-                *ngSwitchDefault
-                [type]="field.type"
-                [id]="field.id"
-                [placeholder]="field.placeholder"
-                [formControlName]="field.controlName"
-                class="w-full p-3 rounded-md bg-gray-100 border border-gray-300 placeholder-gray-500 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
-                [ngClass]="{ 'border-red-500': isInvalid(field.controlName) }"
-              />
-            </div>
-            <textarea
-              *ngSwitchCase="'textarea'"
-              [id]="field.id"
-              [placeholder]="field.placeholder"
-              [formControlName]="field.controlName"
-              maxlength="1000"
-              rows="4"
-              class="shadow-lg w-full p-3 rounded-md bg-gray-100 border border-gray-300 placeholder-gray-500 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
-              [ngClass]="{ 'border-red-500': isInvalid(field.controlName) }"
-            ></textarea>
-          </ng-container>
-          <div *ngIf="isInvalid(field.controlName)" class="text-red-500 text-sm mt-1">
-            {{ field.errorMessage }}
-          </div>
-        </div>
+  <!-- Title Section -->
+  <div class="text-center mb-16">
+    <h2 class="text-6xl font-extrabold mb-4 text-gray-900">Let's Connect</h2>
+    <p class="text-lg text-gray-700">Feel free to reach out for collaborations, opportunities, or just a friendly chat.</p>
+  </div>
 
-        <button
-          type="submit"
-          [disabled]="!contactForm.valid"
-          class="shadow-lg w-full p-3 rounded-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-indigo-300"
-        >
-          Send Message <i class="fa-regular fa-paper-plane ml-2"></i>
-        </button>
-
-        <div *ngIf="successMessage" class="mt-4 text-center text-green-500">
-          {{ successMessage }}
-        </div>
-      </form>
-    </div>
-
-    <!-- Social Links Section -->
-    <div class="flex flex-col justify-center items-center p-6 sm:p-8 bg-gradient-to-br from-teal-50 to-lime-50 rounded-xl">
-      <h4 class="text-2xl font-semibold text-gray-900 mb-6">Connect with Me</h4>
-      <div class="flex flex-col w-full space-y-4">
-        <div *ngFor="let link of socialLinks" class="w-full">
-          <a
-            [href]="link.href"
-            [ngClass]="link.btnClass"
-            target="_blank"
-            class="shadow-lg w-full flex items-center justify-center p-3 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition"
-          >
-            <i [class]="link.iconClass + ' mr-2 text-lg'"></i> {{ link.label }}
-          </a>
-        </div>
+  <!-- Contact Form -->
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="w-full max-w-3xl bg-white shadow-xl rounded-xl p-10 space-y-8">
+    <div *ngFor="let field of fields" class="">
+      <label [for]="field.id" class="block text-lg font-semibold text-gray-700 mb-2">
+        {{ field.label }}
+      </label>
+      <ng-container [ngSwitch]="field.type">
+        <input
+          *ngSwitchDefault
+          [type]="field.type"
+          [id]="field.id"
+          [placeholder]="field.placeholder"
+          [formControlName]="field.controlName"
+          class="w-full py-3 px-4 rounded-lg bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-800 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+          [ngClass]="{ 'border-red-500': isInvalid(field.controlName) }"
+        />
+        <textarea
+          *ngSwitchCase="'textarea'"
+          [id]="field.id"
+          [placeholder]="field.placeholder"
+          [formControlName]="field.controlName"
+          maxlength="1000"
+          rows="4"
+          class="w-full py-3 px-4 rounded-lg bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-800 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+          [ngClass]="{ 'border-red-500': isInvalid(field.controlName) }"
+        ></textarea>
+      </ng-container>
+      <div *ngIf="isInvalid(field.controlName)" class="text-red-500 text-sm mt-1">
+        {{ field.errorMessage }}
       </div>
-      <p class="text-gray-500 mt-8 text-center text-sm">
-        <i class="fa-solid fa-circle-info"></i> Phone number available upon email request.
-      </p>
     </div>
 
+    <button
+      type="submit"
+      [disabled]="!contactForm.valid"
+      class="w-full py-4 rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold shadow-lg transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-teal-300"
+    >
+      Send Message <i class="fa-regular fa-paper-plane ml-2"></i>
+    </button>
+
+    <div *ngIf="successMessage" class="mt-4 text-center text-green-600">
+      {{ successMessage }}
+    </div>
+  </form>
+
+  <!-- Social Links Section -->
+  <div class="mt-16 text-center">
+    <h3 class="text-4xl font-semibold mb-8 text-gray-900">Find Me Online</h3>
+    <div class="flex justify-center flex-wrap gap-6">
+      <div *ngFor="let link of socialLinks">
+        <a
+          [href]="link.href"
+          target="_blank"
+          class="py-3 px-8 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold shadow-lg transition-all duration-300 flex items-center"
+        >
+          <i [class]="link.iconClass + ' mr-2 text-lg'"></i> {{ link.label }}
+        </a>
+      </div>
+    </div>
+    <p class="text-gray-600 mt-10 text-sm">
+      <i class="fa-solid fa-circle-info"></i> Reach out via email for more details.
+    </p>
   </div>
 </div>
