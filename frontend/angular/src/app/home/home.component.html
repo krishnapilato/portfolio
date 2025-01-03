@@ -1,55 +1,59 @@
 <body class="bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 pt-20">
   <!-- Landing Section -->
-  <section class="flex flex-col justify-center items-center min-h-screen text-center px-6 relative">
-    <!-- Main Heading -->
-    <h1 class="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700 animate-fade-in leading-tight">
+  <section class="flex min-h-screen">
+    <!-- Left Side: Text Content -->
+    <div class="flex flex-col justify-center items-start px-6 w-1/2">
+      <!-- Main Heading -->
+      <h1 class="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700 animate-fade-in leading-tight">
         Hi, I am Krishna
-    </h1>
+      </h1>
 
-    <!-- Brief Description -->
-    <p class="mt-6 text-xl max-w-3xl mx-auto text-gray-700 leading-relaxed animate-fade-in">
+      <!-- Brief Description -->
+      <p class="mt-6 text-xl max-w-3xl text-gray-700 leading-relaxed animate-fade-in">
         I am a passionate full-stack developer with over 3 years of experience building scalable and high-performance applications using modern technologies.
-    </p>
+      </p>
 
-    <span class="mt-6 text-xl max-w-3xl mx-auto text-gray-700 animate-fade-in leading-relaxed">I work with <span id="element" class="text-transparent font-bold bg-clip-text bg-gradient-to-r from-red-500 to-red-500"></span></span>
+      <span class="mt-6 text-xl text-gray-700 animate-fade-in leading-relaxed">I work with
+        <span id="element" class="text-transparent font-bold bg-clip-text bg-gradient-to-r from-red-500 to-red-500"></span>
+      </span>
 
-    <!-- Buttons with FontAwesome Icons -->
-    <div class="mt-12 space-x-6">
+      <!-- Buttons with FontAwesome Icons -->
+      <div class="mt-12 space-x-6">
         <a href="https://www.linkedin.com" class="inline-flex items-center px-8 py-4 bg-red-600 hover:bg-red-500 rounded-lg text-lg font-semibold text-white transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
-            <i class="fab fa-linkedin-in mr-2"></i>LinkedIn
+          <i class="fab fa-linkedin-in mr-2"></i>LinkedIn
         </a>
         <a href="https://www.example.com/resume" class="inline-flex items-center px-8 py-4 bg-gray-700 hover:bg-gray-600 rounded-lg text-lg font-semibold text-white transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
-            <i class="fas fa-file-alt mr-2"></i>Resume
+          <i class="fas fa-file-alt mr-2"></i>Resume
         </a>
+      </div>
     </div>
 
-    <!-- Cards Section -->
-    <div class="mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
-        <!-- Card 1 -->
-        <div class="card p-8 bg-white shadow-xl rounded-lg hover:scale-105 transform transition-all duration-300 hover:shadow-2xl">
-            <h3 class="text-2xl font-semibold text-red-600 mb-4">Problem-Solving Mindset</h3>
-            <p class="text-gray-600 text-lg">
-                I excel at approaching complex challenges with a logical mindset, breaking them down into manageable parts to find efficient and scalable solutions. My problem-solving skills are an asset in both front-end and back-end development.
-            </p>
-        </div>
+    <!-- Right Side: Cards Section with Staggered Layout and Centered Vertically -->
+    <div class="relative flex flex-col justify-center items-end w-1/2 px-6">
+      <!-- Card 1 -->
+      <div class="card p-8 bg-white shadow-xl rounded-lg hover:scale-105 transform transition-all duration-300 hover:shadow-2xl absolute" style="top: 50%; right: 20px; transform: translateY(-50%);">
+        <h3 class="text-2xl font-semibold text-red-600 mb-4">Problem-Solving Mindset</h3>
+        <p class="text-gray-600 text-lg">
+          I excel at approaching complex challenges with a logical mindset, breaking them down into manageable parts to find efficient and scalable solutions.
+        </p>
+      </div>
 
-        <!-- Card 2 -->
-        <div class="card p-8 bg-white shadow-xl rounded-lg hover:scale-105 transform transition-all duration-300 hover:shadow-2xl">
-            <h3 class="text-2xl font-semibold text-red-600 mb-4">Collaboration and Communication</h3>
-            <p class="text-gray-600 text-lg">
-                I thrive in collaborative environments where open communication is key. Whether working with cross-functional teams or engaging with clients, I ensure clear, transparent, and effective communication to achieve shared goals.
-            </p>
-        </div>
+      <!-- Card 2 -->
+      <div class="card p-8 bg-white shadow-xl rounded-lg hover:scale-105 transform transition-all duration-300 hover:shadow-2xl absolute" style="top: 50%; right: 40px; transform: translateY(-50%) scale(1.05);">
+        <h3 class="text-2xl font-semibold text-red-600 mb-4">Collaboration and Communication</h3>
+        <p class="text-gray-600 text-lg">
+          I thrive in collaborative environments where open communication is key. Whether working with cross-functional teams or engaging with clients, I ensure clear, transparent, and effective communication.
+        </p>
+      </div>
 
-        <!-- Card 3 -->
-        <div class="card p-8 bg-white shadow-xl rounded-lg hover:scale-105 transform transition-all duration-300 hover:shadow-2xl">
-            <h3 class="text-2xl font-semibold text-red-600 mb-4">Adaptability and Continuous Learning</h3>
-            <p class="text-gray-600 text-lg">
-                I have a passion for learning and adapting to new technologies and methodologies. My ability to stay up-to-date with industry trends and adopt the latest tools allows me to provide innovative solutions that meet evolving needs.
-            </p>
-        </div>
+      <!-- Card 3 -->
+      <div class="card p-8 bg-white shadow-xl rounded-lg hover:scale-105 transform transition-all duration-300 hover:shadow-2xl absolute" style="top: 50%; right: 30px; transform: translateY(-50%) scale(1.1);">
+        <h3 class="text-2xl font-semibold text-red-600 mb-4">Adaptability and Continuous Learning</h3>
+        <p class="text-gray-600 text-lg">
+          I have a passion for learning and adapting to new technologies and methodologies. My ability to stay up-to-date with industry trends and adopt the latest tools allows me to provide innovative solutions.
+        </p>
+      </div>
     </div>
-
   </section>
 </body>
 

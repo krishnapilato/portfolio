@@ -40,10 +40,23 @@ export class HomeComponent implements OnInit {
 
   private initializeTyped(): void {
     this.typed = new Typed('#element', {
-      strings: this.home.skills,
-      typeSpeed: 50,
-      backSpeed: 100,
-      loop: true,
+      strings: this.home.skills,  // Skills are now dynamic
+      typeSpeed: 60,          // Adjust typing speed
+      backSpeed: 40,          // Adjust backspacing speed
+      backDelay: 1000,        // Delay before starting backspacing (after completing a string)
+      startDelay: 1500,        // Delay before typing starts
+      loop: true,             // Keep typing indefinitely
+      showCursor: true,       // Show the blinking cursor
+      cursorChar: '|',        // Customize cursor character
+      onComplete: (self) => {
+        console.log('Typing animation completed for', self);  // Event when typing completes
+      },
+      preStringTyped: (arrayPos, self) => {
+        console.log(`Typing started for string #${arrayPos}`, self);  // Event before typing each string
+      },
+      onStringTyped: (arrayPos, self) => {
+        console.log(`Typed string #${arrayPos}`, self);  // Event when string has been typed
+      }
     });
   }
 

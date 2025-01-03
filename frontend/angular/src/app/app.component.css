@@ -1,24 +1,32 @@
-/* Ensure full height layout with flexbox */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+/* Custom animation for dot loader */
+@keyframes dotAnimation {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    background-color: #a9b4bb; /* Original color */
+  }
+  40% {
+    transform: translateY(-12px) scale(1.3) rotate(10deg);
+    background-color: #f39c12; /* Change to yellow at peak */
+  }
+  60% {
+    transform: translateY(8px) scale(1.2) rotate(-10deg);
+    background-color: #f39c12; /* Maintain yellow during downward movement */
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    background-color: #3498db; /* Return to original color */
+  }
 }
 
-.flex {
-  display: flex;
+/* Apply custom animation to each dot */
+.animate-dot {
+  animation: dotAnimation 1.5s infinite ease-in-out;
 }
 
-.flex-col {
-  flex-direction: column;
+.delay-200 {
+  animation-delay: 0.2s;
 }
 
-.flex-grow {
-  flex: 1;
-}
-
-.min-h-screen {
-  min-height: 100vh;
+.delay-400 {
+  animation-delay: 0.4s;
 }
