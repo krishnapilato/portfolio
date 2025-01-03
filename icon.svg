@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+  <defs>
+    <linearGradient id="navbar-gradient" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#b71c1c" />
+      <stop offset="100%" stop-color="#f44336" />
+    </linearGradient>
+  </defs>
+  <g fill="url(#navbar-gradient)" stroke="url(#navbar-gradient)" stroke-width="2">
+    <line x1="5" y1="30" x2="35" y2="30" />
+    <path d="M 10 18 Q 15 12, 20 18 Q 25 22, 30 18" />
+    <circle cx="20" cy="12" r="5" />
+    <text x="20" y="28" font-size="6" text-anchor="middle" font-family="Arial" fill="url(#navbar-gradient)">KK</text>
+  </g>
+</svg>
