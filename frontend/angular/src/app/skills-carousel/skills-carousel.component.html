@@ -1,32 +1,41 @@
-<div id="skills" class="bg-gray-900 py-16 px-4 sm:px-8 lg:px-16 text-center text-white">
-  <h3 class="text-4xl font-bold mb-8" data-aos="fade-up">My Skills <i class="fa-solid fa-screwdriver-wrench"></i></h3>
+<div id="skills" class="bg-gradient-to-r blur from-blue-600 via-purple-600 to-pink-600 py-16 px-6 sm:px-8 lg:px-16 text-center text-white">
+
+  <!-- Main Heading -->
+  <h3 class="text-4xl font-extrabold mb-8 animate__animated animate__fadeIn animate__delay-1s">My Skills <i class="fa-solid fa-screwdriver-wrench"></i></h3>
 
   <!-- General Skills Overview -->
-  <p class="text-lg text-gray-300 max-w-3xl mx-auto mt-4" data-aos="fade-up" data-aos-delay="100">
+  <p class="text-lg text-gray-300 max-w-3xl mx-auto mt-4 animate__animated animate__fadeIn animate__delay-2s">
     As a passionate full-stack developer, I have extensive experience working with various technologies across the development stack. From front-end frameworks like Angular and React to back-end technologies such as Java, C#, and Python, I have built robust applications and integrated complex systems. I am also skilled in cloud technologies, DevOps, and databases.
   </p>
 
   <!-- Carousel of Skills -->
-  <div class="relative mt-8 overflow-hidden">
+  <div class="relative mt-12 overflow-hidden">
+
     <!-- Flex container for carousel -->
     <div class="flex transition-transform duration-500 ease-in-out" [ngStyle]="{ 'transform': 'translateX(' + translateValue + '%)' }">
 
       <!-- Skill Cards Loop -->
       <div *ngFor="let skill of skills; let i = index" class="w-full flex-shrink-0 flex justify-center">
-        <div class="skill-card bg-gray-800 p-10 rounded-3xl shadow-xl hover:shadow-2xl transition duration-300 w-[300px] sm:w-[350px] md:w-[400px] mx-4">
-          <h4 class="text-2xl font-semibold text-blue-400 mb-6 flex justify-between items-center">
-            <span>{{ skill.name }} <i [class]="skill.icon"></i></span>
-            <span class="text-gray-300">{{ skill.percentage }}%</span>
+        <div class="skill-card bg-gradient-to-r from-purple-500 via-blue-600 to-pink-500 p-10 rounded-xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:scale-105 w-[350px] sm:w-[400px] md:w-[450px] mx-4">
+
+          <!-- Skill Name & Icon -->
+          <h4 class="text-2xl font-semibold text-white mb-6 flex justify-between items-center">
+            <span class="flex items-center space-x-2">
+              <i class="{{ skill.icon }} text-lg"></i>
+              <span>{{ skill.name }}</span>
+            </span>
+            <span class="text-gray-200">{{ skill.percentage }}%</span>
           </h4>
 
-          <p class="text-lg text-gray-300 mb-6">{{ skill.tech }}</p>
+          <!-- Tech Description -->
+          <p class="text-lg text-gray-200 mb-6">{{ skill.tech }}</p>
 
           <!-- Progress Bar -->
           <div class="relative pt-1 mb-6">
             <div class="flex mb-2 items-center justify-between">
-              <span class="text-sm font-semibold">Skill Progress</span>
+              <span class="text-sm font-semibold text-gray-300">Skill Progress</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div class="w-full bg-gray-300 rounded-full h-2.5">
               <div class="h-2.5 rounded-full"
                 [ngClass]="{
                   'bg-blue-500': skill.percentage >= 90,
@@ -49,13 +58,11 @@
     </div>
 
     <!-- Navigation Arrows -->
-    <!-- Left Arrow Button -->
-    <button (click)="prev()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-xl font-bold hover:text-blue-500 transition">
+    <button (click)="prev()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-xl font-bold hover:text-blue-500 transition ease-in-out duration-300">
       <i class="fa-solid fa-chevron-left"></i>
     </button>
 
-    <!-- Right Arrow Button -->
-    <button (click)="next()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-xl font-bold hover:text-blue-500 transition">
+    <button (click)="next()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-xl font-bold hover:text-blue-500 transition ease-in-out duration-300">
       <i class="fa-solid fa-chevron-right"></i>
     </button>
 

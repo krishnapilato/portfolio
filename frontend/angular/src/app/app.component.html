@@ -1,8 +1,12 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
+<div class="flex flex-col min-h-screen">
+  <!-- Header -->
+  <app-header></app-header>
 
-<footer class="mt-1 bg-gray-900 text-white py-4 text-center text-sm rounded">
-  <p class="flex justify-center items-center space-x-2">
-    <span>&copy; {{currentYear}} Khova Krishna Pilato</span>
-  </p>
-</footer>
+  <!-- Main Content -->
+  <main class="flex-grow">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+</div>

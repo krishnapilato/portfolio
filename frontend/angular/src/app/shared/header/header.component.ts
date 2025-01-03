@@ -1,39 +1,44 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  Output
-} from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
-  isMobileMenuOpen: boolean = false;
-  activeLink: string = 'home'; // Default active link
+export class HeaderComponent implements AfterViewInit {
+  public themeColor: string = environment.themeColor;
+  @ViewChild('progressBar', { static: true }) public progressBar!: ElementRef;
 
-  // Toggle the mobile menu
-  toggleMobileMenu() {
+  public isMobileMenuOpen: boolean = false;
+
+  /**
+   * Lifecycle hook called after the component's view is initialized.
+   * Updates scroll progress.
+   */
+  ngAfterViewInit(): void {
+    this.updateScrollProgress();
+  }
+
+  /**
+   * Toggles the visibility of the mobile menu.
+   */
+  toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    const mobileToggleButton = document.querySelector('.mobile-toggle');
-    if (mobileToggleButton) {
-      mobileToggleButton.classList.toggle('active');
-    }
-  }
-  // Set the active link
-  setActive(link: string) {
-    this.activeLink = link;
   }
 
-  // Check if the link is active
-  isActive(link: string): boolean {
-    return this.activeLink === link;
+  /**
+   * Updates the scroll progress bar width based on the user's scroll position.
+   */
+  @HostListener('window:scroll', [])
+  private updateScrollProgress(): void {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercentage = (scrollTop / docHeight) * 100;
+    this.progressBar.nativeElement.style.width = `${scrollPercentage}%`;
   }
 }

@@ -1,0 +1,24 @@
+/* Ensure full height layout with flexbox */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-grow {
+  flex: 1;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}

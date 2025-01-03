@@ -1,25 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-error',
   template: `
-    <div
-      class="flex items-center justify-center min-h-screen bg-gradient-to-r from-red-300 via-pink-300 to-purple-300"
-    >
-      <div class="text-center text-gray-800">
-        <h1 class="text-6xl font-extrabold mb-4">404</h1>
-        <h2 class="text-2xl font-semibold mb-2">Page Not Found</h2>
-        <p class="text-lg mb-6">
-          Sorry, the page you are looking for does not exist or has been moved.
+    <div class="relative w-full min-h-screen bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 flex items-center justify-center">
+      <!-- Overlay for a slight fade effect -->
+      <div class="absolute inset-0 bg-black opacity-20"></div>
+
+      <!-- Content Container -->
+      <div class="relative text-center text-gray-800 px-6 py-12 space-y-6">
+        <h1 class="text-8xl font-extrabold text-gray-800 mb-4 leading-tight tracking-wide">
+          404
+        </h1>
+        <h2 class="text-4xl font-semibold text-gray-700 mb-4">
+          Page Not Found
+        </h2>
+        <p class="text-xl mb-6 text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          Sorry, the page you are looking for does not exist or has been moved. Let’s get you back on track.
         </p>
-        <a
-          routerLink="/"
-          class="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-full shadow-lg hover:bg-blue-500 transition ease-in-out duration-300"
-        >
-          <i class="fa fa-home mr-2"></i> Back to Home
-        </a>
+
+        <p class="text-xl mb-6 text-gray-700">
+          Redirecting you in <span class="font-bold">{{ countdown }} seconds...</span>
+        </p>
       </div>
     </div>
   `,
 })
-export class ErrorComponent {}
+export class ErrorComponent implements OnInit {
+  countdown: number = 5; // Start countdown from 5 seconds
+
+  constructor(private readonly router: Router) {}
+
+  ngOnInit(): void {
+    // Countdown logic for redirecting
+    const interval = setInterval(() => {
+      this.countdown -= 1;
+      if (this.countdown <= 0) {
+        clearInterval(interval); // Stop the countdown when it reaches 0
+        this.router.navigate(['/']); // Redirect to home
+      }
+    }, 1000); // Decrease the countdown every second
+  }
+}

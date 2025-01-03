@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   selector: 'app-skills-carousel',
   imports: [CommonModule],
   templateUrl: './skills-carousel.component.html',
-  styleUrl: './skills-carousel.component.css'
+  styleUrls: ['./skills-carousel.component.css']
 })
 export class SkillsCarouselComponent {
   skills = [
@@ -29,7 +29,7 @@ export class SkillsCarouselComponent {
   ngOnInit(): void {
     this.autoScroll(); // Start auto-scrolling when component is initialized
     window.addEventListener('resize', this.updateItemsPerSlide.bind(this)); // Recalculate items per slide on resize
-    this.updateItemsPerSlide();
+    this.updateItemsPerSlide(); // Initial calculation
   }
 
   ngOnDestroy(): void {
@@ -40,6 +40,7 @@ export class SkillsCarouselComponent {
   }
 
   next(): void {
+    // Move to the next set of skills
     if (this.currentIndex < this.skills.length - this.itemsPerSlide) {
       this.currentIndex += this.itemsPerSlide;
     } else {
@@ -49,6 +50,7 @@ export class SkillsCarouselComponent {
   }
 
   prev(): void {
+    // Move to the previous set of skills
     if (this.currentIndex > 0) {
       this.currentIndex -= this.itemsPerSlide;
     } else {
@@ -63,7 +65,10 @@ export class SkillsCarouselComponent {
   }
 
   private updateTranslateValue(): void {
-    this.translateValue = -(100 * this.currentIndex / this.itemsPerSlide);
+    // Ensure we're calculating correctly for any number of items per slide
+    const totalSlides = Math.ceil(this.skills.length / this.itemsPerSlide);
+    const percentage = (100 * this.currentIndex) / totalSlides;
+    this.translateValue = -percentage;
   }
 
   private autoScroll(): void {

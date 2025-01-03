@@ -8,6 +8,7 @@ export const environment = {
   phoneNumber: '+39 123 456 7890',
   defaultLanguage: 'en',
   supportedLanguages: ['en', 'it'],
+  themeColor: 'red',
   googleAnalyticsId: 'UA-XXXXXXXXX-X',
   dateFormat: 'DD/MM/YYYY',
   timeFormat: 'HH:mm:ss',

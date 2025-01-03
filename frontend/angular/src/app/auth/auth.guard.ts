@@ -12,11 +12,20 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  private readonly signupUrl = '/auth/signup';
-  private readonly loginUrl = '/auth/login';
+  private readonly signupUrl: string = '/auth/signup';
+  private readonly loginUrl: string = '/auth/login';
 
-  constructor(private readonly authService: AuthService, private readonly router: Router) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router
+  ) {}
 
+  /**
+   * Determines if a route can be activated based on authentication status.
+   * @param route - The target route.
+   * @param state - The current router state.
+   * @returns True, a UrlTree for redirection, or false.
+   */
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -24,18 +33,18 @@ export class AuthGuard implements CanActivate {
     const isAuthenticated = this.authService.isAuthenticated();
     const currentUrl = state.url;
 
+    // Prevent authenticated users from accessing the signup page
     if (currentUrl === this.signupUrl) {
-      // Redirect authenticated users away from signup
       return isAuthenticated ? this.router.parseUrl('') : true;
     }
 
+    // Allow authenticated users to proceed
     if (isAuthenticated) {
-      // Allow access if authenticated
       return true;
     }
 
-    // Redirect to login if not authenticated
-    this.authService.redirectUrl = currentUrl;
+    // Redirect unauthenticated users to the login page
+    this.authService.redirectUrl = currentUrl; // Store the intended URL for post-login redirection
     return this.router.parseUrl(this.loginUrl);
   }
 }

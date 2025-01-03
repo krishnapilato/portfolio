@@ -1,26 +1,24 @@
-import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FooterComponent } from "./shared/footer/footer.component";
 import { HeaderComponent } from './shared/header/header.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, CommonModule, HeaderComponent],
+  imports: [RouterModule, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'Scripted Horizons';
+  private readonly title: string = 'PrismNexus';
 
-  readonly currentYear = new Date().getFullYear();
-
-  ngOnInit() {
-    // Additional initialization logic if needed
-  }
-
+  /**
+   * Prevents the default context menu from appearing on right-click.
+   * @param event - The MouseEvent triggered by the right-click.
+   */
   @HostListener('document:contextmenu', ['$event'])
-  onRightClick(event: MouseEvent) {
-    event.preventDefault();
+  private onRightClick(event: MouseEvent): void {
+    event.preventDefault(); // Disable right-click context menu
   }
 }

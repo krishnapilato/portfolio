@@ -1,22 +1,24 @@
+version: "3.8"
+
 services:
   frontend:
-    build: .
+    build: . # Build the Docker image from the current directory
     ports:
-      - "4200:4200"
+      - "4200:4200" # Map port 4200 on the host to port 4200 in the container
     networks:
-      - app-network
-    restart: unless-stopped
+      - app-network # Connect to the custom network
+    restart: unless-stopped # Restart the container unless manually stopped
     volumes:
-      - .:/app
+      - .:/app # Mount the current directory to the /app directory in the container
     environment:
-      - NODE_ENV=production
-    healthcheck:
+      - NODE_ENV=production # Set the Node.js environment to production
+    healthcheck: # Define a health check for the container
       test: ["CMD", "curl", "--silent", "--fail", "http://localhost:4200"]
-      interval: 30s
-      retries: 3
-      start_period: 10s
-      timeout: 5s
+      interval: 30s # Time between health checks
+      retries: 3 # Number of retries before marking as unhealthy
+      start_period: 10s # Grace period before starting health checks
+      timeout: 5s # Maximum duration for each health check
 
 networks:
   app-network:
-    driver: bridge
+    driver: bridge # Use the default bridge network driver
