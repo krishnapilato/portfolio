@@ -1,0 +1,32 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.globe-container {
+  flex: 1; /* Ensure this container takes remaining space */
+}
+
+footer {
+  position: relative;
+  width: 100%;
+  background-color: #ffffff;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+}
+
+#globeViz {
+  width: 100%;
+  height: 80vh; /* Adjust the height to your preference */
+  /* Ensure it adjusts on smaller screens */
+}
+
+@media (max-width: 768px) {
+  #globeViz {
+    height: 50vh; /* Adjust height for smaller screens */
+  }
+}

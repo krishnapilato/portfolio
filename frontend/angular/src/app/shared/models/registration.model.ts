@@ -8,7 +8,7 @@ export interface RegistrationRequest {
 
 export interface RegistrationResponse {
   status: 'success' | 'error';
-  message: string;
   userId?: number;
   role?: Role;
+  errorMessage?: string;
 }

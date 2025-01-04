@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import anime from 'animejs/lib/anime.es.js';
 import Typed from 'typed.js';
 import { environment } from '../../environment/environment';
+import { AboutMeComponent } from '../about-me/about-me.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [AboutMeComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })

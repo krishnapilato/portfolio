@@ -7,9 +7,9 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   status: 'success' | 'error';
-  message: string;
-  token: string;
-  expiresIn: number;
+  token?: string;
+  expiresIn?: number;
   errorCode?: string;
+  errorMessage?: string;
   role: Role;
 }
