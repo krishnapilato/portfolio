@@ -29,6 +29,18 @@ export class HeaderComponent implements AfterViewInit {
    */
   toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    this.toggleBodyOverflow();
+  }
+
+  /**
+   * Toggle body overflow.
+   */
+  toggleBodyOverflow() {
+    if (this.isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden'; // Disable body scrolling
+    } else {
+      document.body.style.overflow = 'auto'; // Re-enable body scrolling
+    }
   }
 
   /**
