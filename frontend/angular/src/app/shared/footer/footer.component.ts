@@ -9,5 +9,5 @@ export class FooterComponent {
   /**
    * Current year for dynamic display in the footer.
    */
-  public currentYear: number = new Date().getFullYear();
+  currentYear: number = new Date().getFullYear();
 }

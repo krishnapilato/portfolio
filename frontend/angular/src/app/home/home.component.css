@@ -1,49 +1,42 @@
-/* General styling for the body */
-body {
-  font-family: 'Arial', sans-serif;
-  color: #4A5568;
-  line-height: 1.6;
+/* Scroll Down Button Styling */
+.scroll-down-container {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
 }
 
-/* Custom CSS for hover effects */
-.card {
-  background-color: #F7FAFC;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+.scroll-down-button {
+  font-size: 1.5rem;
+  background-color: #DC2626; /* LinkedIn red */
+  border-radius: 50%; /* Rounded circle */
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+.scroll-down-button i {
+  font-size: 1.5rem;
 }
 
-/* Animation for fade-in effect */
-.animate-fade-in {
-  animation: fadeIn 1s ease-in-out;
+.scroll-down-button:hover {
+  background-color: #B91C1C;
+  transform: scale(1.1); /* Slight scaling effect */
 }
 
-@keyframes fadeIn {
+/* Scroll Down Button Animation */
+@keyframes bounce {
   0% {
-      opacity: 0;
-      transform: translateY(20px);
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
   100% {
-      opacity: 1;
-      transform: translateY(0);
+    transform: translateY(0);
   }
 }
 
-/* Custom Styling for Buttons */
-a:hover {
-  transform: scale(1.05);
-}
-
-a:focus {
-  outline: none;
-}
-
-button:focus {
-  outline: none;
+.scroll-down-button {
+  animation: bounce 1s infinite ease-in-out;
 }

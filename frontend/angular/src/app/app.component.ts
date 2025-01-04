@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
-import { RouterModule, Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -14,37 +13,15 @@ import { Subscription } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   private readonly title: string = 'PrismNexus';
 
   isLoading = true;
   isContentVisible = false;
   loadingOpacity = 1;  // Start with full opacity
 
-  private routerSubscription: Subscription;
-
-  constructor(private router: Router) {}
-
   ngOnInit() {
     this.startLoadingAnimation();
-
-    // Subscribe to Router events to show/hide loading screen on navigation
-    this.routerSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        this.isLoading = true;
-        this.isContentVisible = false; // Hide content during route change
-        this.loadingOpacity = 1; // Ensure loading opacity is visible during transition
-      } else if (event instanceof NavigationEnd) {
-        this.startLoadingAnimation(); // Restart loading animation after navigation ends
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    // Clean up the router event subscription when the component is destroyed
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
   }
 
   /**

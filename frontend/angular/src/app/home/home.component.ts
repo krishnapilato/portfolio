@@ -1,220 +1,142 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { Component } from '@angular/core';
+import anime from 'animejs/lib/anime.es.js';
 import Typed from 'typed.js';
-
 import { environment } from '../../environment/environment';
-import { ContactComponent } from '../contact/contact.component';
-import { SkillsCarouselComponent } from '../skills-carousel/skills-carousel.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    RouterModule,
-    SkillsCarouselComponent,
-    ContactComponent,
-  ],
+  imports: [],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   public home = environment.home;
   public typed: Typed;
-  public skills: Skill[] = this.initializeSkills();
-  public caseStudies: CaseStudy[] = this.initializeCaseStudies();
-
-  activeSkillIndex = 0;
-  activeCaseStudyIndex = 0;
 
   ngOnInit(): void {
     this.initializeTyped();
+    this.applyRandomGradientColorsTyped();
   }
 
+  ngAfterViewInit(): void {
+    this.animateWaveColors();
+    this.addWave3DEffect();
+    this.generateRandomShapes();
+  }
+
+  // Initialize the Typed.js animation with dynamic gradient change for each string
   private initializeTyped(): void {
     this.typed = new Typed('#element', {
-      strings: this.home.skills,  // Skills are now dynamic
-      typeSpeed: 60,          // Adjust typing speed
-      backSpeed: 40,          // Adjust backspacing speed
-      backDelay: 1000,        // Delay before starting backspacing (after completing a string)
-      startDelay: 1500,        // Delay before typing starts
-      loop: true,             // Keep typing indefinitely
-      showCursor: true,       // Show the blinking cursor
-      cursorChar: '|',        // Customize cursor character
-      onComplete: (self) => {
-        console.log('Typing animation completed for', self);  // Event when typing completes
-      },
-      preStringTyped: (arrayPos, self) => {
-        console.log(`Typing started for string #${arrayPos}`, self);  // Event before typing each string
-      },
-      onStringTyped: (arrayPos, self) => {
-        console.log(`Typed string #${arrayPos}`, self);  // Event when string has been typed
-      }
+      strings: this.home.skills,  // Skills are dynamic and come from the environment file
+      typeSpeed: 60,
+      backSpeed: 40,
+      backDelay: 1000,
+      startDelay: 1000,
+      loop: true,
+      showCursor: true,
+      cursorChar: '|',
+      preStringTyped: (arrayPos, self) => this.applyRandomGradientColorsTyped(),
     });
   }
 
-  // Carousel Methods for Skills
-  prevSkill(): void {
-    this.activeSkillIndex =
-      (this.activeSkillIndex - 1 + this.skills.length) % this.skills.length;
+  // Generate a random RGB color for text gradient
+  private generateRandomColorsTyped(): string {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
   }
 
-  nextSkill(): void {
-    this.activeSkillIndex = (this.activeSkillIndex + 1) % this.skills.length;
-  }
-
-  goToSkill(index: number): void {
-    this.activeSkillIndex = index;
-  }
-
-  // Carousel Methods for Case Studies
-  prevCaseStudy(): void {
-    this.activeCaseStudyIndex =
-      (this.activeCaseStudyIndex - 1 + this.caseStudies.length) %
-      this.caseStudies.length;
-  }
-
-  nextCaseStudy(): void {
-    this.activeCaseStudyIndex =
-      (this.activeCaseStudyIndex + 1) % this.caseStudies.length;
-  }
-
-  goToCaseStudy(index: number): void {
-    this.activeCaseStudyIndex = index;
-  }
-
-  scrollToAboutMe(): void {
-    const element = document.getElementById('about-me');
+  // Apply random gradient colors to the text using background clip
+  private applyRandomGradientColorsTyped(): void {
+    const element = document.getElementById('element') as HTMLElement;
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const color1 = this.generateRandomColorsTyped();
+      const color2 = this.generateRandomColorsTyped();
+      element.style.backgroundImage = `linear-gradient(to right, ${color1}, ${color2})`;
+      element.style.webkitBackgroundClip = 'text';
+      element.style.color = 'transparent';
     }
   }
 
-  // Skill Data Initialization
-  private initializeSkills(): Skill[] {
-    return [
-      {
-        title: 'Java & Spring Boot',
-        subtitle: 'Backend development, microservices',
-        gradient: 'linear-gradient(135deg, #6bbe92, #4caf50)',
-        description:
-          'Comprehensive backend solutions with Spring Boot and Java for scalable, secure applications.',
-        delay: 100,
-      },
-      {
-        title: 'Angular & TypeScript',
-        subtitle: 'Frontend frameworks, responsive design',
-        gradient: 'linear-gradient(135deg, #dd0031, #c3002f)',
-        description:
-          'Expert in dynamic, responsive web applications with Angular and TypeScript.',
-        delay: 200,
-      },
-      {
-        title: 'JavaScript & Node.js',
-        subtitle: 'Dynamic web applications, REST APIs',
-        gradient: 'linear-gradient(135deg, #f0db4f, #e7c100)',
-        description:
-          'Proficient in building RESTful APIs and interactive UIs with JavaScript and Node.js.',
-        delay: 300,
-      },
-      {
-        title: 'AWS & Cloud',
-        subtitle: 'Deployment, scalability',
-        gradient: 'linear-gradient(135deg, #232f3e, #485769)',
-        description:
-          'Skilled in cloud-based deployment and scalability solutions using AWS.',
-        delay: 400,
-      },
-      {
-        title: 'Databases',
-        subtitle: 'MySQL, MongoDB, PostgreSQL',
-        gradient: 'linear-gradient(135deg, #f29111, #f5a623)',
-        description:
-          'Experienced in relational and NoSQL databases, including MySQL, MongoDB, and PostgreSQL.',
-        delay: 500,
-      },
-    ];
+  // Animate the wave's color dynamically using random colors
+  private animateWaveColors(): void {
+    anime({
+      targets: '#wave path',
+      fill: this.generateRandomColors(),  // Apply randomly generated colors to the wave
+      easing: 'easeInOutSine',
+      duration: 20000,
+      loop: true,
+      direction: 'alternate',
+    });
   }
 
-  showResume = false;
+  // Generate an array of random RGB colors for the wave
+  private generateRandomColors(): string[] {
+    return Array.from({ length: 4 }, () => this.generateRandomColorsTyped());
+  }
 
-  // Function to close the iframe when clicking outside
-  closeResume(event: MouseEvent): void {
-    // Check if the click is on the background (outside the iframe container)
-    if (event.target === event.currentTarget) {
-      this.showResume = false;
+  // Add 3D effect to the wave using Anime.js
+  private addWave3DEffect(): void {
+    anime({
+      targets: '#wave',
+      rotateX: ['0deg', '10deg'],
+      scaleX: [1, 1.1],
+      scaleY: [1, 1.1],
+      translateZ: ['0px', '20px'],
+      duration: 5000,
+      easing: 'easeInOutQuad',
+      loop: true,
+      direction: 'alternate',
+    });
+  }
+
+  // Generate and animate random 3D spheres on the page
+  private generateRandomShapes(): void {
+    const shapesContainer = document.getElementById('shapes-container')!;
+    const numShapes = Math.floor(Math.random() * 6) + 10;
+    for (let i = 0; i < numShapes; i++) {
+      const shape = this.createRandomShape();
+      shapesContainer.appendChild(shape);
+      this.animateShape(shape);
     }
   }
 
-  // Function to prevent closing when clicking inside the iframe container
-  preventClose(event: MouseEvent): void {
-    event.stopPropagation(); // Prevent the click from propagating to the parent div
+  // Create a random sphere with random size, color, and rotation
+  private createRandomShape(): HTMLElement {
+    const shape = document.createElement('div');
+    const size = Math.floor(Math.random() * 50) + 30;
+    shape.classList.add('shape', 'sphere');
+    shape.style.width = `${size}px`;
+    shape.style.height = `${size}px`;
+    shape.style.borderRadius = '50%'; // Make the shape a sphere
+    shape.style.position = 'absolute';
+    shape.style.top = '80%';
+    shape.style.left = '75%';
+    shape.style.backgroundColor = this.generateRandomColor();
+    shape.style.transform = `rotate(${Math.floor(Math.random() * 360)}deg)`;
+    return shape;
   }
 
-  // Case Study Data Initialization
-  private initializeCaseStudies(): CaseStudy[] {
-    return [
-      {
-        title: 'E-Commerce Platform',
-        summary:
-          'Developed a scalable backend for an e-commerce platform, handling 5000+ users daily.',
-        technologies: 'Java, Spring Boot, PostgreSQL',
-        role: 'Backend Developer',
-        outcome: 'Increased user engagement by 30%',
-        delay: 100,
-      },
-      {
-        title: 'Inventory Management System',
-        summary:
-          'Built a system to streamline inventory tracking and order management, reducing errors by 40%.',
-        technologies: 'Node.js, MongoDB, Angular',
-        role: 'Full Stack Developer',
-        outcome: 'Enhanced efficiency by 50%',
-        delay: 200,
-      },
-      {
-        title: 'Social Media Analytics Tool',
-        summary:
-          'Developed analytics features for tracking and visualizing social media metrics in real-time.',
-        technologies: 'Python, Django, MySQL',
-        role: 'Backend Developer',
-        outcome: 'Improved report generation speed by 60%',
-        delay: 300,
-      },
-      {
-        title: 'Mobile Banking App Integration',
-        summary:
-          'Led integration of third-party banking APIs, enabling seamless mobile transactions.',
-        technologies: 'Java, Spring Boot, AWS',
-        role: 'API Integration Specialist',
-        outcome: 'Reduced API response time by 40%',
-        delay: 400,
-      },
-    ];
+  // Generate a random color for each shape
+  private generateRandomColor(): string {
+    return `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
   }
-}
 
-// Types for Skills and Case Studies
-interface Skill {
-  title: string;
-  subtitle: string;
-  gradient: string;
-  description: string;
-  delay: number;
-}
-
-interface CaseStudy {
-  title: string;
-  summary: string;
-  technologies: string;
-  role: string;
-  outcome: string;
-  delay: number;
+  // Animate the shape with random vertical, horizontal movement, rotation, and scaling
+  private animateShape(shape: HTMLElement): void {
+    const rotation = Math.floor(Math.random() * 360);
+    anime({
+      targets: shape,
+      translateY: ['30%', `${Math.random() * 200 + 100}px`],
+      translateX: ['0%', `${Math.random() * 100 - 50}%`],
+      rotate: [rotation, rotation + 360],
+      scale: [1, 1.5],
+      duration: 3000 + Math.random() * 1000,
+      easing: 'easeInOutQuad',
+      loop: true,
+      delay: Math.random() * 1000,
+    });
+  }
 }
