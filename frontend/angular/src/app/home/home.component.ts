@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import anime from 'animejs/lib/anime.es.js';
 import Typed from 'typed.js';
 import { environment } from '../../environment/environment';
@@ -14,6 +14,12 @@ import { AboutMeComponent } from '../about-me/about-me.component';
 export class HomeComponent {
   public home = environment.home;
   public typed: Typed;
+
+  @ViewChild('about') aboutSection: any;
+
+  scrollToAbout(): void {
+    this.aboutSection?.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  }
 
   ngOnInit(): void {
     this.initializeTyped();
