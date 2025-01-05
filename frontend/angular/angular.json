@@ -15,6 +15,11 @@
           "options": {
             "outputPath": "dist/frontend/browser",
             "baseHref": "",
+            "allowedCommonJsDependencies": [
+              "yaot",
+              "frame-ticker",
+              "crypto-js"
+            ],
             "index": "src/index.html",
             "poll": 1000,
             "browser": "src/main.ts",
@@ -27,7 +32,6 @@
               }
             ],
             "styles": [
-              "node_modules/maplibre-gl/dist/maplibre-gl.css",
               "src/styles.css",
               "node_modules/aos/dist/aos.css"
             ],
@@ -39,8 +43,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2MB",
-                  "maximumError": "5MB"
+                  "maximumWarning": "8MB",
+                  "maximumError": "20MB"
                 },
                 {
                   "type": "anyComponentStyle",
