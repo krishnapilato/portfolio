@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "types": ["leaflet"],
+    "types": [],
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,

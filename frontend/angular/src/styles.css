@@ -4,31 +4,40 @@
 
 /* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
-  width: 12px;  /* Slightly thicker scrollbar for better visibility */
-  height: 12px;
+  width: 8px; /* Thin scrollbar for a sleek appearance */
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(50, 50, 50, 0.5);  /* Dark grey background for the track */
+  background: rgba(50, 50, 50, 0.2); /* Subtle dark grey background for the track */
   border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); /* Adds depth to the track */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #2e2e2e, #595959);  /* Dark grey gradient */
+  background: linear-gradient(to bottom, #2e2e2e, #595959); /* Dark grey gradient */
   border-radius: 10px;
-  border: 2px solid rgba(50, 50, 50, 0.5);  /* Slight border to enhance the thumb's appearance */
-  transition: background 0.3s ease;
+  border: 1px solid rgba(50, 50, 50, 0.5); /* Thin border to enhance appearance */
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #434343, #757575);  /* Lighter grey gradient on hover */
+  background: linear-gradient(to bottom, #434343, #757575); /* Lighter grey gradient on hover */
+  box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.5); /* Enhanced shadow on hover */
 }
 
 ::-webkit-scrollbar-horizontal {
-  height: 8px;
+  height: 6px; /* Matches the vertical scrollbar for consistency */
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-  background: linear-gradient(to right, #2e2e2e, #595959);  /* Dark grey gradient for horizontal scrollbar */
+  background: linear-gradient(to right, #2e2e2e, #595959); /* Dark grey gradient for horizontal scrollbar */
   border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+  background: linear-gradient(to right, #434343, #757575); /* Lighter grey gradient on hover */
+  box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.5);
 }
