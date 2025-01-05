@@ -1,32 +1,36 @@
-# Portfolio
+# Welcome to my portfolio
 
-![Java Version](https://img.shields.io/badge/Java-23-blue?style=flat&logo=java)
-![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.3.6-brightgreen?style=flat&logo=spring-boot)
+![Java Version](https://badgen.net/badge/Java/23/blue?icon=java)
+![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.4.1-brightgreen?style=flat&logo=spring-boot)
 ![Angular Version](https://img.shields.io/badge/Angular-19.0.5-red?style=flat&logo=angular)
 ![MySQL](https://img.shields.io/badge/MySQL-9.1.0-blue?style=flat&logo=mysql)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/khovakrishnapilato)
-[![GitHub Actions](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
+![Version](https://img.shields.io/badge/Version-0.8.5-blue?style=flat)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat)
+![Repo Size](https://img.shields.io/github/repo-size/krishnapilato/portfolio?style=flat)
+![Custom Workflow](https://img.shields.io/badge/Workflow-CI/CD-yellow?style=flat&logo=githubactions)
 
-Welcome to my portfolio! This web application highlights my technical expertise, professional experience, and ongoing projects. 
+Explore a curated collection of my **technical expertise**, **professional accomplishments**, and **innovative projects**—all designed to highlight my skills and commitment to excellence.
 
-**Check it out live:** [Portfolio Website](https://krishnapilato.github.io/portfolio)
-
-![image](https://github.com/user-attachments/assets/d5011189-f0ad-49e2-a7b2-d113173492d1)
+**Experience it live:** [visit portfolio](https://krishnapilato.github.io/portfolio)
 
 ---
 
-## Features
+![image](https://github.com/user-attachments/assets/9ff03144-1170-4348-8ece-a254589a76c5)
 
-- **Showcase of Skills and Experience:** Explore my expertise in modern technologies and frameworks.
-- **About Me Section:** Get to know my professional background and interests.
-- **Contact Form:** Easily reach out to me for collaborations, questions, or feedback.
-- **Project Gallery:** Visual representations and explanations of my work.
+---
+
+## Key Features
+
+- **Comprehensive Skills and Experience:** Highlighting my proficiency in cutting-edge technologies and frameworks.  
+- **Professional Background Overview:** A detailed introduction to my career journey, achievements, and interests.  
+- **Interactive Contact Form:** Seamlessly connect with me for collaborations, inquiries, or feedback.  
+- **Dynamic Project Gallery:** Showcasing my work through visual presentations and in-depth explanations.  
 
 ---
 
 ## Local Development Setup
 
-Follow these steps to set up the project locally:
+Set up the project locally by following these steps:
 
 1. **Clone the Repository:**
    ```bash
@@ -54,40 +58,29 @@ Follow these steps to set up the project locally:
 
 ## Work in Progress
 
-This portfolio is under active development, with regular updates to enhance functionality and user experience. While most features are operational, the frontend is undergoing final refinements to address minor bugs and improve performance.
+This portfolio is a continuously evolving project, with frequent updates aimed at enhancing functionality and optimizing the user experience. While the core features are fully operational, the frontend is currently undergoing final refinements to resolve a lot of bugs and ensure peak performance. Your feedback is invaluable in shaping this portfolio into a polished and reliable platform.
 
-Your feedback is highly appreciated as it helps shape this project into a robust platform.
-
----
 
 ## Skills
 
-Here are the technical skills and tools I specialize in:
+A showcase of the technical skills and tools I excel in:
 
-- **Languages:** Java, JavaScript, TypeScript, Python, C#
-- **Frameworks & Libraries:** Spring Boot, Angular, React
-- **Database Management:** MySQL, MongoDB
-- **Tools & Platforms:** Docker, Kubernetes, Git, Jenkins
-- **Other Expertise:** REST APIs, Microservices, Agile Development
-
+- **Programming Languages:** Java, JavaScript, TypeScript, Python, C#  
+- **Frameworks & Libraries:** Spring Boot, Angular, React  
+- **Database Technologies:** MySQL, MongoDB  
+- **Development Tools & Platforms:** Docker, Kubernetes, Git, Jenkins  
+- **Additional Expertise:** RESTful APIs, Microservices Architecture, Agile Development Practices
+  
 ---
 
 ## Contribution Guidelines
 
-Contributions are welcome! To contribute:
+Contributions are always welcome! To get involved, simply follow these steps:
 
-1. **Fork the Repository:** Create your own copy of the project.
-2. **Create a Feature Branch:**
+1. **Fork the Repository**  
+   Create a personal copy of the repository to work on.  
+
+2. **Create a Feature Branch**  
+   Use a descriptive name for your branch:  
    ```bash
    git checkout -b feature/YourFeature
-   ```
-3. **Implement Your Changes:** Add your feature or bug fix.
-4. **Commit Your Changes:**
-   ```bash
-   git commit -m "commit message here"
-   ```
-5. **Push to Your Branch:**
-   ```bash
-   git push origin feature/YourFeature
-   ```
-6. **Submit a Pull Request:** Open a PR for review and merge.
