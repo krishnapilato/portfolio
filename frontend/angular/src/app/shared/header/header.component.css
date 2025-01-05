@@ -1,0 +1,14 @@
+/* Navbar transition */
+nav {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Hidden class to hide navbar */
+nav.hidden {
+  transform: translateY(-100%); /* Hide navbar */
+}
+
+/* Progress bar transition */
+#progressBar {
+  transition: width 0.1s ease-in-out; /* Smooth progress bar update */
+}

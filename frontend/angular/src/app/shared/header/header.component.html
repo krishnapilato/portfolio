@@ -1,11 +1,11 @@
 <!-- Scroll Progress Bar -->
 <div
   #progressBar
-  class="fixed top-0 left-0 h-1 bg-gradient-to-r from-{{themeColor}}-600 to-{{themeColor}}-400 transition-all z-50">
+  class="fixed top-0 left-0 h-1 bg-gradient-to-r from-red-600 to-red-400 transition-all z-50">
 </div>
 
 <!-- Navbar Container -->
-<nav class="fixed rounded-md top-0 left-0 w-full h-16 bg-white bg-opacity-80 backdrop-blur-lg shadow-lg flex items-center justify-center px-4 z-40">
+<nav #navbar class="fixed rounded-md top-0 left-0 w-full h-16 bg-white bg-opacity-80 backdrop-blur-lg shadow-lg flex items-center justify-center px-4 z-40">
   <!-- Navbar Content Wrapper -->
   <div class="w-full max-w-6xl flex items-center justify-between">
 
@@ -67,26 +67,27 @@
   <!-- Mobile Menu Overlay -->
   <div *ngIf="isMobileMenuOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40" (click)="toggleMobileMenu()"></div>
 
-  <!-- Mobile Menu -->
-  <div *ngIf="isMobileMenuOpen" data-aos="fade-down" class="absolute top-16 left-0 w-full rounded-lg bg-white bg-opacity-95 flex flex-col items-center space-y-8 py-8 px-8 shadow-2xl transform transition-transform duration-300 ease-in-out z-50">
-    <!-- Mobile Quiz Link -->
-    <a routerLink="/dashboard" class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-all transform hover:scale-110 duration-200 ease-in-out" aria-label="Go to Quiz Page">
-      <i class="fas fa-question-circle text-xl"></i>
-      <span>Quiz</span>
-    </a>
-    <div class="border-b border-gray-300 w-full"></div>
+<!-- Mobile Menu -->
+<div *ngIf="isMobileMenuOpen" data-aos="fade-down" class="absolute top-16 left-0 w-full rounded-lg bg-white bg-opacity-95 flex flex-col items-center space-y-8 py-8 px-8 shadow-2xl transform transition-transform duration-300 ease-in-out z-50">
+  <!-- Mobile Quiz Link -->
+  <a routerLink="/dashboard" (click)="closeMobileMenuOnLinkClick()" class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-all transform hover:scale-110 duration-200 ease-in-out" aria-label="Go to Quiz Page">
+    <i class="fas fa-question-circle text-xl"></i>
+    <span>Quiz</span>
+  </a>
+  <div class="border-b border-gray-300 w-full"></div>
 
-    <!-- Mobile Connect Link -->
-    <a routerLink="/contact" class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-all transform hover:scale-110 duration-200 ease-in-out" aria-label="Go to Connect Page">
-      <i class="fas fa-users text-xl"></i>
-      <span>Connect</span>
-    </a>
-    <div class="border-b border-gray-300 w-full"></div>
+  <!-- Mobile Connect Link -->
+  <a routerLink="/contact" (click)="closeMobileMenuOnLinkClick()" class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-all transform hover:scale-110 duration-200 ease-in-out" aria-label="Go to Connect Page">
+    <i class="fas fa-users text-xl"></i>
+    <span>Connect</span>
+  </a>
+  <div class="border-b border-gray-300 w-full"></div>
 
-    <!-- Mobile Login Button -->
-    <a routerLink="/auth/login" class="flex items-center space-x-3 border-4 border-{{themeColor}}-600 text-{{themeColor}}-600 px-6 py-2 rounded-lg text-base font-medium transition-all transform hover:scale-105 hover:bg-{{themeColor}}-100 hover:border-{{themeColor}}-800 duration-200 ease-in-out">
-      <i class="fas fa-sign-in-alt text-lg"></i>
-      <span>Login</span>
-    </a>
-  </div>
+  <!-- Mobile Login Button -->
+  <a routerLink="/auth/login" (click)="closeMobileMenuOnLinkClick()" class="flex items-center space-x-3 border-4 border-{{themeColor}}-600 text-{{themeColor}}-600 px-6 py-2 rounded-lg text-base font-medium transition-all transform hover:scale-105 hover:bg-{{themeColor}}-100 hover:border-{{themeColor}}-800 duration-200 ease-in-out">
+    <i class="fas fa-sign-in-alt text-lg"></i>
+    <span>Login</span>
+  </a>
+</div>
+
 </nav>

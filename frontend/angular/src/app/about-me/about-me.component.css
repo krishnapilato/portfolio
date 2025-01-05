@@ -1,32 +1,53 @@
+/* General styling */
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  font-family: Arial, sans-serif;
 }
 
-.globe-container {
-  flex: 1; /* Ensure this container takes remaining space */
-}
-
-footer {
+/* Parallax container that will hold the background and content */
+.parallax-container {
   position: relative;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden;
+}
+
+/* Map as a background with parallax effect */
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  background-color: #ffffff;
-  color: #333;
+  height: 100%;
+  background-image: url('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg'); /* Example image */
+  background-attachment: fixed; /* This is the key to the parallax effect */
+  background-size: cover;
+  background-position: center;
+  z-index: -1; /* Place the map behind the content */
+}
+
+/* Content overlaying the map */
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centering the content */
+  color: white;
   text-align: center;
+  z-index: 1;
+  font-size: 1.5rem;
   padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for better readability */
+  border-radius: 10px;
 }
 
-#globeViz {
-  width: 100%;
-  height: 80vh; /* Adjust the height to your preference */
-  /* Ensure it adjusts on smaller screens */
+/* Add some styles for the heading and paragraph */
+.content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
-  #globeViz {
-    height: 50vh; /* Adjust height for smaller screens */
-  }
+.content p {
+  font-size: 1.2rem;
 }

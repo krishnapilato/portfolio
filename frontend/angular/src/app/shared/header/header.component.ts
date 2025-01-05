@@ -13,12 +13,15 @@ import { environment } from '../../../environment/environment';
 export class HeaderComponent implements AfterViewInit {
   public themeColor: string = environment.themeColor;
   @ViewChild('progressBar', { static: true }) public progressBar!: ElementRef;
+  @ViewChild('navbar', { static: true }) public navbar!: ElementRef; // Navbar reference
+
+  private lastScrollTop: number = 0; // To track the last scroll position
 
   public isMobileMenuOpen: boolean = false;
 
   /**
    * Lifecycle hook called after the component's view is initialized.
-   * Updates scroll progress.
+   * Updates scroll progress and handles scroll events for navbar visibility.
    */
   ngAfterViewInit(): void {
     this.updateScrollProgress();
@@ -33,7 +36,7 @@ export class HeaderComponent implements AfterViewInit {
   }
 
   /**
-   * Toggle body overflow.
+   * Toggle body overflow to prevent scrolling when mobile menu is open.
    */
   toggleBodyOverflow() {
     if (this.isMobileMenuOpen) {
@@ -44,13 +47,37 @@ export class HeaderComponent implements AfterViewInit {
   }
 
   /**
-   * Updates the scroll progress bar width based on the user's scroll position.
+   * Close the mobile menu when a link is clicked.
+   * @param event The click event
+   */
+  closeMobileMenuOnLinkClick(): void {
+    this.isMobileMenuOpen = false;
+    this.toggleBodyOverflow(); // Re-enable scrolling
+  }
+
+  /**
+   * Listens for scroll events to update the progress bar and hide/show the navbar.
    */
   @HostListener('window:scroll', [])
   private updateScrollProgress(): void {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercentage = (scrollTop / docHeight) * 100;
+    const scrollTop = window.scrollY; // Get current scroll position
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight; // Total document height
+    const scrollPercentage = (scrollTop / docHeight) * 100; // Calculate the scroll percentage
+
+    // Smooth update of the progress bar width based on scroll percentage
+    this.progressBar.nativeElement.style.transition = 'width 0.1s ease-in-out'; // Smooth transition
     this.progressBar.nativeElement.style.width = `${scrollPercentage}%`;
+
+    // Handle navbar visibility based on scroll direction
+    if (scrollTop > this.lastScrollTop) {
+      // Scrolling down, hide navbar
+      this.navbar.nativeElement.classList.add('hidden');
+    } else {
+      // Scrolling up, show navbar
+      this.navbar.nativeElement.classList.remove('hidden');
+    }
+
+    // Update last scroll position
+    this.lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Prevent negative scroll position
   }
 }
