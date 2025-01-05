@@ -88,16 +88,25 @@ export class HomeComponent {
   private addWave3DEffect(): void {
     anime({
       targets: '#wave',
-      rotateX: ['0deg', '10deg'],
-      scaleX: [1, 1.1],
-      scaleY: [1, 1.1],
-      translateZ: ['0px', '20px'],
-      duration: 5000,
-      easing: 'easeInOutQuad',
+      translateY: ['0px', '10px'], // Simulate wave movement up and down
+      scaleX: [1, 1.05], // Slight scaling to mimic wave stretching
+      scaleY: [1, 1.05], // Vertical scaling for wave expansion and contraction
+      translateZ: ['0px', '30px'], // Increased depth translation for a more pronounced 3D effect
+      duration: 8000, // Slow down the animation for a smoother wave motion
+      easing: 'easeInOutQuad', // Smooth ease for natural wave-like motion
       loop: true,
-      direction: 'alternate',
+      direction: 'alternate', // Alternate between keyframes for continuous wave motion
+      delay: anime.stagger(100), // Stagger the animation to make it feel like a flowing wave
+      elasticity: 300, // Adds some bounce and smooth elasticity for the wave motion
+      keyframes: [
+        { translateY: '0px', scaleX: 1, scaleY: 1, translateZ: '0px' }, // Starting point (flat wave)
+        { translateY: '5px', scaleX: 1.02, scaleY: 1.02, translateZ: '10px' }, // Mid-wave
+        { translateY: '10px', scaleX: 1.05, scaleY: 1.05, translateZ: '20px' }, // Peak of the wave
+        { translateY: '5px', scaleX: 1.02, scaleY: 1.02, translateZ: '10px' }, // Coming back down
+      ]
     });
   }
+
 
   // Generate and animate random 3D spheres on the page
   private generateRandomShapes(): void {
@@ -133,17 +142,30 @@ export class HomeComponent {
 
   // Animate the shape with random vertical, horizontal movement, rotation, and scaling
   private animateShape(shape: HTMLElement): void {
+    // Generate random rotation, scaling, and movement values
     const rotation = Math.floor(Math.random() * 360);
+    const scale = 1 + Math.random() * 0.5; // Random scale between 1 and 1.5
+    const translateX = `${Math.random() * 100 - 50}%`; // Random horizontal movement
+    const translateY = `${Math.random() * 200 + 100}px`; // Random vertical movement
+
     anime({
       targets: shape,
-      translateY: ['30%', `${Math.random() * 200 + 100}px`],
-      translateX: ['0%', `${Math.random() * 100 - 50}%`],
-      rotate: [rotation, rotation + 360],
-      scale: [1, 1.5],
-      duration: 3000 + Math.random() * 1000,
-      easing: 'easeInOutQuad',
+      translateY: ['30%', translateY], // Vertical movement with random offset
+      translateX: ['0%', translateX], // Horizontal movement with random offset
+      rotate: [rotation, rotation + (Math.random() * 360)], // Random rotation
+      scale: [1, scale], // Random scaling effect
+      translateZ: ['0px', `${Math.random() * 100}px`], // Adding a random depth translation for 3D effect
+      duration: 3000 + Math.random() * 1000, // Random duration between 3000ms and 4000ms
+      easing: 'easeInOutCubic', // Smoother easing for organic motion
       loop: true,
-      delay: Math.random() * 1000,
+      delay: Math.random() * 1000, // Random delay for each animation
+      elasticity: 300, // Adding some elasticity for bounce effect
+      direction: 'alternate', // Alternate between animation steps
+      keyframes: [
+        { translateY: '30%', translateX: '0%', rotate: rotation, scale: 1 }, // Starting position
+        { translateY, translateX, rotate: rotation + 180, scale }, // Mid-animation state
+        { translateY: '30%', translateX: '0%', rotate: rotation + 360, scale: 1 }, // End position
+      ]
     });
   }
 }

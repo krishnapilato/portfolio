@@ -5,12 +5,13 @@
 </div>
 
 <!-- Navbar Container -->
-<nav #navbar class="fixed rounded-md top-0 left-0 w-full h-16 bg-white bg-opacity-80 backdrop-blur-lg shadow-lg flex items-center justify-center px-4 z-40">
+<nav #navbar class="fixed rounded-md top-0 left-0 w-full h-16 bg-white bg-opacity-80 backdrop-blur-lg shadow-lg flex items-center justify-center px-4 z-40"
+     data-aos="fade-down" data-aos-duration="1200">
   <!-- Navbar Content Wrapper -->
-  <div class="w-full max-w-6xl flex items-center justify-between">
+  <div class="w-full max-w-6xl flex items-center justify-between" data-aos="fade-down" data-aos-duration="1200" data-aos-delay="200">
 
     <!-- Brand Section -->
-    <div routerLink="/" class="flex items-center space-x-3" aria-label="Navigate to Home">
+    <div routerLink="/" class="flex items-center space-x-3" aria-label="Navigate to Home" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="300">
       <!-- Logo -->
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
         <defs>
@@ -36,7 +37,7 @@
     </div>
 
     <!-- Desktop Menu Items -->
-    <div class="hidden md:flex items-center space-x-16">
+    <div class="hidden md:flex items-center space-x-16" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="400">
       <!-- Quiz Link -->
       <a routerLink="/dashboard" class="flex items-center space-x-2 text-gray-700 text-base hover:text-red-600 transition-all transform hover:scale-110 duration-200 ease-in-out">
         <i class="fa-solid fa-question-circle text-lg"></i>
@@ -58,7 +59,7 @@
 
     <!-- Mobile Hamburger Icon -->
     <div class="flex items-center md:hidden">
-      <button class="text-2xl text-gray-800 cursor-pointer icon-wrapper" (click)="toggleMobileMenu()" aria-label="Toggle mobile menu">
+      <button class="text-2xl text-gray-800 cursor-pointer icon-wrapper" (click)="toggleMobileMenu()" aria-label="Toggle mobile menu" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="500">
         <i [ngClass]="isMobileMenuOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars-staggered'"></i>
       </button>
     </div>
@@ -67,27 +68,27 @@
   <!-- Mobile Menu Overlay -->
   <div *ngIf="isMobileMenuOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40" (click)="toggleMobileMenu()"></div>
 
-<!-- Mobile Menu -->
-<div *ngIf="isMobileMenuOpen" data-aos="fade-down" class="absolute top-16 left-0 w-full rounded-lg bg-white bg-opacity-95 flex flex-col items-center space-y-8 py-8 px-8 shadow-2xl transform transition-transform duration-300 ease-in-out z-50">
-  <!-- Mobile Quiz Link -->
-  <a routerLink="/dashboard" (click)="closeMobileMenuOnLinkClick()" class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-all transform hover:scale-110 duration-200 ease-in-out" aria-label="Go to Quiz Page">
-    <i class="fas fa-question-circle text-xl"></i>
-    <span>Quiz</span>
-  </a>
-  <div class="border-b border-gray-300 w-full"></div>
+  <!-- Mobile Menu -->
+  <div *ngIf="isMobileMenuOpen" data-aos="fade-down" class="absolute top-16 left-0 w-full rounded-lg bg-white bg-opacity-95 flex flex-col items-center space-y-8 py-8 px-8 shadow-2xl transform transition-transform duration-300 ease-in-out z-50" data-aos-duration="1200" data-aos-delay="600">
+    <!-- Mobile Quiz Link -->
+    <a routerLink="/dashboard" (click)="closeMobileMenuOnLinkClick()" class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-all transform hover:scale-110 duration-200 ease-in-out" aria-label="Go to Quiz Page">
+      <i class="fas fa-question-circle text-xl"></i>
+      <span>Quiz</span>
+    </a>
+    <div class="border-b border-gray-300 w-full"></div>
 
-  <!-- Mobile Connect Link -->
-  <a routerLink="/contact" (click)="closeMobileMenuOnLinkClick()" class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-all transform hover:scale-110 duration-200 ease-in-out" aria-label="Go to Connect Page">
-    <i class="fas fa-users text-xl"></i>
-    <span>Connect</span>
-  </a>
-  <div class="border-b border-gray-300 w-full"></div>
+    <!-- Mobile Connect Link -->
+    <a routerLink="/contact" (click)="closeMobileMenuOnLinkClick()" class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-all transform hover:scale-110 duration-200 ease-in-out" aria-label="Go to Connect Page">
+      <i class="fas fa-users text-xl"></i>
+      <span>Connect</span>
+    </a>
+    <div class="border-b border-gray-300 w-full"></div>
 
-  <!-- Mobile Login Button -->
-  <a routerLink="/auth/login" (click)="closeMobileMenuOnLinkClick()" class="flex items-center space-x-3 border-4 border-{{themeColor}}-600 text-{{themeColor}}-600 px-6 py-2 rounded-lg text-base font-medium transition-all transform hover:scale-105 hover:bg-{{themeColor}}-100 hover:border-{{themeColor}}-800 duration-200 ease-in-out">
-    <i class="fas fa-sign-in-alt text-lg"></i>
-    <span>Login</span>
-  </a>
-</div>
+    <!-- Mobile Login Button -->
+    <a routerLink="/auth/login" (click)="closeMobileMenuOnLinkClick()" class="flex items-center space-x-3 border-4 border-{{themeColor}}-600 text-{{themeColor}}-600 px-6 py-2 rounded-lg text-base font-medium transition-all transform hover:scale-105 hover:bg-{{themeColor}}-100 hover:border-{{themeColor}}-800 duration-200 ease-in-out">
+      <i class="fas fa-sign-in-alt text-lg"></i>
+      <span>Login</span>
+    </a>
+  </div>
 
 </nav>

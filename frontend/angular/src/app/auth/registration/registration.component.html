@@ -1,20 +1,28 @@
 <!-- Registration Form Section -->
-<div class="flex items-center justify-center min-h-screen px-6 sm:px-8 lg:px-10 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 pt-20">
-  <div class="bg-white shadow-lg rounded-3xl w-full max-w-md p-8 transform transition duration-500 hover:scale-110 ease-in-out">
+<div class="flex items-center justify-center min-h-screen px-6 sm:px-8 lg:px-10 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 pt-20"
+     data-aos="fade-up" data-aos-duration="1200">
+  <div class="bg-white shadow-lg rounded-3xl w-full max-w-md p-8 transform transition duration-500 hover:scale-110 ease-in-out"
+       data-aos="fade-up" data-aos-duration="1200" data-aos-delay="100">
 
     <!-- Registration Form Header -->
-    <h3 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;" class="text-3xl font-extrabold text-center text-gray-900 mb-6">
+    <h3 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"
+        class="text-3xl font-extrabold text-center text-gray-900 mb-6"
+        data-aos="fade-down" data-aos-duration="1200" data-aos-delay="200">
       Create your account
     </h3>
-    <p class="text-center text-gray-500 mb-8">
+
+    <p class="text-center text-gray-500 mb-8"
+       data-aos="fade-up" data-aos-duration="1200" data-aos-delay="300">
       <i class="fa-solid fa-circle-info"></i> Join us to start your journey.
     </p>
 
     <!-- Registration Form -->
-    <form (ngSubmit)="signUp(registrationForm)" #registrationForm="ngForm" novalidate class="space-y-6">
+    <form (ngSubmit)="signUp(registrationForm)" #registrationForm="ngForm" novalidate class="space-y-6"
+          data-aos="fade-up" data-aos-duration="1200" data-aos-delay="400">
 
       <!-- Full Name Input -->
-      <div class="relative">
+      <div class="relative"
+           data-aos="fade-up" data-aos-duration="1200" data-aos-delay="500">
         <label for="fullName" class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
         <div class="relative">
           <i class="fa-solid fa-user text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
@@ -29,14 +37,16 @@
             class="w-full p-3 pl-12 rounded-lg bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
           />
         </div>
-        <div *ngIf="registrationForm.controls['registrationRequest.fullName']?.invalid && registrationForm.controls['registrationRequest.fullName']?.touched" class="text-red-500 text-sm mt-1">
+        <div *ngIf="registrationForm.controls['registrationRequest.fullName']?.invalid && registrationForm.controls['registrationRequest.fullName']?.touched"
+             class="text-red-500 text-sm mt-1">
           <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('required')">Full name is required.</ng-container>
           <ng-container *ngIf="registrationForm.controls['registrationRequest.fullName']?.hasError('minlength')">Full name must be at least 2 characters.</ng-container>
         </div>
       </div>
 
       <!-- Email Input -->
-      <div class="relative">
+      <div class="relative"
+           data-aos="fade-up" data-aos-duration="1200" data-aos-delay="600">
         <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
         <div class="relative">
           <i class="fa-solid fa-at text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
@@ -51,14 +61,16 @@
             class="w-full p-3 pl-12 rounded-lg bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
           />
         </div>
-        <div *ngIf="registrationForm.controls['registrationRequest.email']?.invalid && registrationForm.controls['registrationRequest.email']?.touched" class="text-red-500 text-sm mt-1">
+        <div *ngIf="registrationForm.controls['registrationRequest.email']?.invalid && registrationForm.controls['registrationRequest.email']?.touched"
+             class="text-red-500 text-sm mt-1">
           <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('required')">Email is required.</ng-container>
           <ng-container *ngIf="registrationForm.controls['registrationRequest.email']?.hasError('email')">Please enter a valid email.</ng-container>
         </div>
       </div>
 
       <!-- Password Input -->
-      <div class="relative">
+      <div class="relative"
+           data-aos="fade-up" data-aos-duration="1200" data-aos-delay="700">
         <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
         <div class="relative">
           <i class="fa-solid fa-key text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
@@ -76,14 +88,16 @@
             <i class="fa-solid" [ngClass]="hide ? 'fa-eye' : 'fa-eye-slash'"></i>
           </button>
         </div>
-        <div *ngIf="registrationForm.controls['registrationRequest.password']?.invalid && registrationForm.controls['registrationRequest.password']?.touched" class="text-red-500 text-sm mt-1">
+        <div *ngIf="registrationForm.controls['registrationRequest.password']?.invalid && registrationForm.controls['registrationRequest.password']?.touched"
+             class="text-red-500 text-sm mt-1">
           <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('required')">Password is required.</ng-container>
           <ng-container *ngIf="registrationForm.controls['registrationRequest.password']?.hasError('minlength')">Password must be at least 8 characters long.</ng-container>
         </div>
       </div>
 
       <!-- Message (Error or Success) -->
-      <div class="text-sm mt-4 p-2 rounded-md" [ngClass]="{ 'bg-green-100 text-green-700': isSuccess, 'bg-red-100 text-red-700': !isSuccess }" *ngIf="message">
+      <div class="text-sm mt-4 p-2 rounded-md" [ngClass]="{ 'bg-green-100 text-green-700': isSuccess, 'bg-red-100 text-red-700': !isSuccess }" *ngIf="message"
+           data-aos="fade-up" data-aos-duration="1200" data-aos-delay="800">
         {{ message }}
       </div>
 
@@ -92,6 +106,7 @@
         type="submit"
         [disabled]="registrationForm.invalid"
         class="w-full p-3 rounded-full bg-{{themeColor}}-600 hover:bg-{{themeColor}}-800 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-{{themeColor}}-300"
+        data-aos="fade-up" data-aos-duration="1200" data-aos-delay="900"
       >
         Sign Up <i class="fa-solid fa-user-plus"></i>
       </button>

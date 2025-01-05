@@ -28,19 +28,73 @@ body {
   overflow: hidden;
 }
 
-/* Styling for the replay button */
+/* Glowing text effect */
+.glowing-text {
+  color: #DC2626; /* Text color */
+  text-shadow:
+    0 0 5px #dc2626, /* Light glow */
+    0 0 10px #dc2626, /* Stronger glow */
+    0 0 15px #dc2626, /* Even stronger glow */
+    0 0 20px #dc2626; /* Maximum glow */
+  animation: glowing 1.5s infinite alternate; /* Apply animation for continuous glow */
+}
+
+/* Animation for the glowing effect */
+@keyframes glowing {
+  0% {
+    text-shadow:
+      0 0 5px #dc2626,
+      0 0 10px #dc2626,
+      0 0 15px #dc2626,
+      0 0 20px #dc2626;
+  }
+  100% {
+    text-shadow:
+      0 0 10px #dc2626,
+      0 0 20px #dc2626,
+      0 0 30px #dc2626,
+      0 0 40px #dc2626;
+  }
+}
+
+/* Button Styles */
 .replay-btn {
   position: absolute;
-  bottom: 4%;          /* Positioned from the bottom */
-  right: 4%;           /* Positioned from the right */
-  font-size: 2rem;     /* Larger icon size for better visibility */
-  padding: 16px;       /* Larger padding for a more prominent button */
+  bottom: 4%;         /* Position from the bottom */
+  right: 4%;          /* Position from the right */
+  font-size: 2rem;    /* Larger icon size */
+  padding: 16px;      /* Larger padding for a more prominent button */
   background-color: #333; /* Default background color */
-  color: #fff;         /* Icon and text color */
-  border-radius: 50%;  /* Circular button shape */
+  color: #fff;        /* Icon and text color */
+  border-radius: 50%; /* Circular button shape */
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Strong shadow for depth */
   transition: all 0.3s ease; /* Smooth transition for background and shadow */
 }
+
+/* Ensuring better readability of text */
+.readable-text {
+  color: #2d3748; /* Darker color for better contrast */
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Light text shadow for depth */
+}
+
+.glowing-text {
+  color: white; /* Ensure glowing text color is white */
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.7),
+    0 0 16px rgba(255, 255, 255, 0.6),
+    0 0 24px rgba(255, 255, 255, 0.5); /* Soft glow */
+}
+
+/* For the title text (About Me, My Journey) */
+h2.glowing-text {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.7); /* Enhanced glow for headers */
+}
+
+/* Adjust the background for better contrast */
+.about-me-section {
+  background: rgba(0, 0, 0, 0.3); /* Add an overlay for contrast without losing gradient effect */
+}
+
 
 /* Hover effect for the button */
 .replay-btn:hover {
@@ -52,7 +106,7 @@ body {
 /* Font Awesome Icon inside the button */
 .replay-btn i {
   font-size: 2rem; /* Ensure the icon is large and visible */
-  transition: transform 0.3s ease; /* Smooth transition for icon rotation */
+  transition: transform 0.3s ease; /* Smooth rotation effect for icon */
 }
 
 /* Optionally, rotate the icon when clicked or animated */
