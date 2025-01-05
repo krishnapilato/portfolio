@@ -1,9 +1,29 @@
-<div class="parallax-container mt-1">
-  <div id="map" class="map"></div>
+<div class="about-me-container bg-gray-900">
+  <!-- About Me Section Before the Map -->
+  <section class="about-me-section bg-gray-900 text-white py-12 md:py-24">
+    <div class="max-w-screen-lg mx-auto text-center px-6">
+      <h2 class="text-4xl font-bold mb-4">About Me</h2>
+      <p class="text-lg mb-6">Hello! I’m a passionate software developer with a strong background in full-stack development. I love exploring new technologies and building applications that solve real-world problems.</p>
+      <p class="text-lg mb-1">Feel free to explore my journey below. You can track the places that have shaped my life and career!</p>
+    </div>
+  </section>
 
-  <div class="content rounded-3xl bg-opacity-10 backdrop-blur-3xl shadow-lg p-6">
-    <h1>My Journey on the Globe</h1>
-    <p>Explore the journey of my life! Scroll to zoom into each milestone.</p>
-    <p>Apologies in advance, this might still have some bugs. Sorry about that.</p>
+  <!-- Map Container -->
+  <div id="map-container" class="relative w-full flex justify-center items-center py-12">
+    <div id="map" class="w-10/12 h-96 md:h-[600px] rounded-xl shadow-xl">
+      <!-- Replay Button (Font Awesome Icon) -->
+    </div>
+    <button (click)="toggleAnimation()" class="replay-btn absolute bottom-4 right-4 p-4 text-white rounded-pill shadow-lg hover:bg-gradient-to-r hover:from-red-500 hover:to-red-600 transition-all">
+      <i [ngClass]="{ 'fa-solid fa-arrows-rotate': !isAnimating, 'fas fa-play': isAnimating }"></i> <!-- Icon toggling -->
+    </button>
   </div>
+
+  <!-- About Me Section After the Map -->
+  <section class="about-me-section bg-gray-900 text-white py-12 md:py-12">
+    <div class="max-w-screen-lg mx-auto text-center px-6">
+      <h2 class="text-4xl font-bold mb-4">My Journey</h2>
+      <p class="text-lg mb-6">From Bangalore to Italy, my journey has been a fascinating one, filled with learning, challenges, and personal growth. I’m constantly exploring new frontiers in technology, travel, and self-improvement.</p>
+      <p class="text-lg mb-6">I believe in building meaningful connections, embracing new experiences, and always pushing myself to achieve greater things. Thank you for joining me on this journey!</p>
+    </div>
+  </section>
 </div>

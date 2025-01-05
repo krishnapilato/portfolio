@@ -1,53 +1,61 @@
-/* General styling */
-body, html {
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #000000;
   margin: 0;
   padding: 0;
-  height: 100%;
-  font-family: Arial, sans-serif;
 }
 
-/* Parallax container that will hold the background and content */
-.parallax-container {
-  position: relative;
-  height: 100vh; /* Full viewport height */
+#map-container {
+  display: flex;
+  justify-content: center; /* Horizontally center the map */
+  align-items: center;     /* Vertically center the map */
+  width: 100%;             /* Take full width */
+  height: 100vh;           /* Full viewport height */
+}
+
+#map {
+  /* Width as a percentage */
+  width: 50%;  /* Example: 50% of the screen width */
+  height: 100%; /* Adjust height as needed */
+
+  /* Border radius for rounded corners */
+  border-radius: 120px; /* Adjust this value for your desired roundness */
+
+  /* Deep 3D shadow effect */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 15px 60px rgba(0, 0, 0, 0.5);
+
+  /* Optional: Prevent content overflow */
   overflow: hidden;
 }
 
-/* Map as a background with parallax effect */
-#map {
+/* Styling for the replay button */
+.replay-btn {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg'); /* Example image */
-  background-attachment: fixed; /* This is the key to the parallax effect */
-  background-size: cover;
-  background-position: center;
-  z-index: -1; /* Place the map behind the content */
+  bottom: 4%;          /* Positioned from the bottom */
+  right: 4%;           /* Positioned from the right */
+  font-size: 2rem;     /* Larger icon size for better visibility */
+  padding: 16px;       /* Larger padding for a more prominent button */
+  background-color: #333; /* Default background color */
+  color: #fff;         /* Icon and text color */
+  border-radius: 50%;  /* Circular button shape */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Strong shadow for depth */
+  transition: all 0.3s ease; /* Smooth transition for background and shadow */
 }
 
-/* Content overlaying the map */
-.content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* Centering the content */
-  color: white;
-  text-align: center;
-  z-index: 1;
-  font-size: 1.5rem;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for better readability */
-  border-radius: 10px;
+/* Hover effect for the button */
+.replay-btn:hover {
+  background-color: #444; /* Slightly lighter background on hover */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* Larger shadow on hover */
+  transform: translateY(-4px); /* Slight lift effect */
 }
 
-/* Add some styles for the heading and paragraph */
-.content h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+/* Font Awesome Icon inside the button */
+.replay-btn i {
+  font-size: 2rem; /* Ensure the icon is large and visible */
+  transition: transform 0.3s ease; /* Smooth transition for icon rotation */
 }
 
-.content p {
-  font-size: 1.2rem;
+/* Optionally, rotate the icon when clicked or animated */
+.replay-btn.active i {
+  transform: rotate(360deg); /* Rotate the icon */
 }
