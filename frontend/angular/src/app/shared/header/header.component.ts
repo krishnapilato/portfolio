@@ -11,73 +11,51 @@ import { environment } from '../../../environment/environment';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements AfterViewInit {
-  public themeColor: string = environment.themeColor;
-  @ViewChild('progressBar', { static: true }) public progressBar!: ElementRef;
-  @ViewChild('navbar', { static: true }) public navbar!: ElementRef; // Navbar reference
+  public themeColor = environment.themeColor;
 
-  private lastScrollTop: number = 0; // To track the last scroll position
+  @ViewChild('progressBar', { static: true }) progressBar!: ElementRef;
+  @ViewChild('navbar', { static: true }) navbar!: ElementRef;
 
-  public isMobileMenuOpen: boolean = false;
+  public isMobileMenuOpen = false;
+  private lastScrollTop = 0;
 
   /**
-   * Lifecycle hook called after the component's view is initialized.
-   * Updates scroll progress and handles scroll events for navbar visibility.
+   * Called after the component's view is initialized.
    */
   ngAfterViewInit(): void {
     this.updateScrollProgress();
   }
 
   /**
-   * Toggles the visibility of the mobile menu.
+   * Toggles the mobile menu and prevents body scrolling when open.
    */
   toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    this.toggleBodyOverflow();
+    document.body.style.overflow = this.isMobileMenuOpen ? 'hidden' : 'auto';
   }
 
   /**
-   * Toggle body overflow to prevent scrolling when mobile menu is open.
+   * Closes the mobile menu and re-enables body scrolling.
    */
-  toggleBodyOverflow() {
-    if (this.isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden'; // Disable body scrolling
-    } else {
-      document.body.style.overflow = 'auto'; // Re-enable body scrolling
-    }
-  }
-
-  /**
-   * Close the mobile menu when a link is clicked.
-   * @param event The click event
-   */
-  closeMobileMenuOnLinkClick(): void {
+  closeMobileMenu(): void {
     this.isMobileMenuOpen = false;
-    this.toggleBodyOverflow(); // Re-enable scrolling
+    document.body.style.overflow = 'auto';
   }
 
   /**
-   * Listens for scroll events to update the progress bar and hide/show the navbar.
+   * Updates the progress bar and manages navbar visibility on scroll.
    */
   @HostListener('window:scroll', [])
   private updateScrollProgress(): void {
-    const scrollTop = window.scrollY; // Get current scroll position
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight; // Total document height
-    const scrollPercentage = (scrollTop / docHeight) * 100; // Calculate the scroll percentage
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercentage = (scrollTop / docHeight) * 100;
 
-    // Smooth update of the progress bar width based on scroll percentage
-    this.progressBar.nativeElement.style.transition = 'width 0.1s ease-in-out'; // Smooth transition
     this.progressBar.nativeElement.style.width = `${scrollPercentage}%`;
 
-    // Handle navbar visibility based on scroll direction
-    if (scrollTop > this.lastScrollTop) {
-      // Scrolling down, hide navbar
-      this.navbar.nativeElement.classList.add('hidden');
-    } else {
-      // Scrolling up, show navbar
-      this.navbar.nativeElement.classList.remove('hidden');
-    }
+    const isScrollingDown = scrollTop > this.lastScrollTop;
+    this.navbar.nativeElement.classList.toggle('hidden', isScrollingDown);
 
-    // Update last scroll position
-    this.lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Prevent negative scroll position
+    this.lastScrollTop = Math.max(scrollTop, 0); // Avoid negative scroll values
   }
 }

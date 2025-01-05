@@ -1,165 +1,168 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import Globe from 'globe.gl'; // Import the Globe library
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import Globe from 'globe.gl';
 
 @Component({
   selector: 'app-about-me',
   templateUrl: './about-me.component.html',
   styleUrls: ['./about-me.component.css'],
-   standalone: true,  // Set standalone mode to true
-   imports: [CommonModule]  // Import the Globe library
+  standalone: true,
+  imports: [CommonModule],
 })
 export class AboutMeComponent implements OnInit, OnDestroy {
   private globe: any; // Globe instance
-  private isZooming = false; // Prevent multiple zooms
-  private currentEventIndex = 0; // Track current event in timeline
-  private observer: IntersectionObserver; // IntersectionObserver for scroll tracking
-  public isAnimating = false; // Track whether the timeline animation is active
+  private isZooming = false; // Prevents multiple zooms
+  private currentEventIndex = 0; // Current index in the timeline
+  private observer!: IntersectionObserver; // Observer for visibility tracking
+  public isAnimating = false; // Timeline animation state
 
   // Timeline events with coordinates and zoom levels
   private readonly timelineEvents = [
     { label: 'Born in Bangalore, India', lat: 12.9716, lng: 77.5946, zoom: 2 },
     { label: 'Adopted by Italian parents in Italy', lat: 45.4642, lng: 9.1900, zoom: 2 },
     { label: 'Moved to Dublin, Ireland', lat: 53.3498, lng: -6.2603, zoom: 2 },
-    { label: 'Attended school in Genoa, Italy', lat: 44.4068, lng: 8.9331, zoom: 2 }
+    { label: 'Attended school in Genoa, Italy', lat: 44.4068, lng: 8.9331, zoom: 2 },
   ];
 
   ngOnInit(): void {
     this.initializeGlobe(); // Initialize the globe
-    this.setupScrollLock(); // Lock scroll and start timeline animation when map is in view
+    this.setupObserver(); // Set up observer for scroll-based animations
   }
 
   ngOnDestroy(): void {
-    this.cleanUpObserver(); // Clean up IntersectionObserver when component is destroyed
+    this.observer?.disconnect(); // Clean up the observer
   }
 
-  // Function to update the size of the globe container dynamically
-  private updateGlobeSize(widthPercentage: number, height: number): void {
-    const mapElement = document.getElementById('map');
-    if (mapElement) {
-      mapElement.style.width = `${widthPercentage}%`;  // Set width as a percentage of the screen width
-      mapElement.style.height = `${height}px`;         // Set height as specified
-
-      // Re-render the globe after resizing
-      this.globe.width([mapElement.offsetWidth]);
-      this.globe.height([height]);
-    }
-  }
-
-  // Initialize the Globe with default settings
+  /**
+   * Initialize the globe with default settings and appearance.
+   */
   private initializeGlobe(): void {
     const mapElement = document.getElementById('map');
-    if (!mapElement) return;  // Exit if the map element is not found
+    if (!mapElement) return;
 
-    // Create a new Globe instance with image URLs and settings
     this.globe = new Globe(mapElement)
       .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
       .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
       .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png');
 
-    // Enable auto-rotation for the globe
     this.globe.controls().autoRotate = true;
     this.globe.controls().autoRotateSpeed = 1;
 
-    // Set initial dimensions and view
     this.updateGlobeSize(70, 700);
     this.setInitialView();
   }
 
-  // Set the initial view of the globe (zoomed into Bangalore)
-  private setInitialView(): void {
-    const initialPosition = { lat: 12.9716, lng: 77.5946, altitude: 5 }; // Bangalore coordinates
-    this.globe.pointOfView(initialPosition, 1000);  // Smooth transition to the initial view over 1000ms
+  /**
+   * Update the globe container size dynamically.
+   * @param widthPercentage - Width as a percentage of the screen
+   * @param height - Fixed height for the globe container
+   */
+  private updateGlobeSize(widthPercentage: number, height: number): void {
+    const mapElement = document.getElementById('map');
+    if (mapElement) {
+      mapElement.style.width = `${widthPercentage}%`;
+      mapElement.style.height = `${height}px`;
+      this.globe.width([mapElement.offsetWidth]);
+      this.globe.height([height]);
+    }
   }
 
-  // Setup IntersectionObserver to trigger timeline animation when map is 70% visible
-  private setupScrollLock(): void {
+  /**
+   * Set the initial globe view to Bangalore's coordinates.
+   */
+  private setInitialView(): void {
+    this.globe.pointOfView({ lat: 12.9716, lng: 77.5946, altitude: 5 }, 1000);
+  }
+
+  /**
+   * Setup IntersectionObserver to trigger animations when the map is visible.
+   */
+  private setupObserver(): void {
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
 
     this.observer = new IntersectionObserver(
-      ([entry]) => entry.isIntersecting ? this.startTimelineAnimation() : this.resetToDefault(),
-      { threshold: 0.7 } // Trigger when 70% of the map is visible
+      ([entry]) =>
+        entry.isIntersecting ? this.startTimelineAnimation() : this.resetToDefault(),
+      { threshold: 0.7 }
     );
-
-    this.observer.observe(mapElement); // Start observing the map element
+    this.observer.observe(mapElement);
   }
 
-  // Clean up IntersectionObserver when the component is destroyed
-  private cleanUpObserver(): void {
-    if (this.observer) {
-      this.observer.disconnect();
-    }
-  }
-
-  // Toggle the timeline animation state and update the globe's auto-rotation
-  public toggleAnimation(): void {
-    if (this.isAnimating) {
-      this.stopTimelineAnimation(); // Stop animation
-    } else {
-      this.startTimelineAnimation(); // Start animation
-    }
-  }
-
-  // Start timeline animation after a delay of 5 seconds
+  /**
+   * Start the timeline animation, zooming into events sequentially.
+   */
   public startTimelineAnimation(): void {
+    if (this.isAnimating) return;
     this.isAnimating = true;
-    this.globe.controls().autoRotate = true;
-    setTimeout(() => {
-      this.globe.controls().autoRotate = false;
-      this.animateTimeline();  // Begin the timeline animation
-    }, 5000);  // Wait 5 seconds before starting the animation
+
+    this.globe.controls().autoRotate = false; // Stop auto-rotation during animation
+    setTimeout(() => this.animateTimeline(), 5000); // Start after 5 seconds
   }
 
-  // Stop the timeline animation and reset the globe's auto-rotation
-  private stopTimelineAnimation(): void {
-    this.isAnimating = false;
-    this.globe.controls().autoRotate = true; // Keep rotating the globe
+  /**
+   * Stop the timeline animation and reset the globe to auto-rotate.
+   */
+  public toggleAnimation(): void {
+    this.isAnimating = !this.isAnimating;
+    this.isAnimating
+      ? this.startTimelineAnimation()
+      : this.globe.controls().autoRotate = true;
   }
 
-  // Reset the map to the default Earth view with auto-rotation enabled
+  /**
+   * Reset the globe to the initial view and enable auto-rotation.
+   */
   private resetToDefault(): void {
     this.globe.controls().autoRotate = true;
-    this.currentEventIndex = 0;  // Reset event index to start from the beginning
-    this.setInitialView();  // Return to initial view (Bangalore)
+    this.currentEventIndex = 0;
+    this.setInitialView();
   }
 
-  // Animate through the timeline events with smooth zooming
+  /**
+   * Animate the globe through the timeline events.
+   */
   private animateTimeline(): void {
     const event = this.timelineEvents[this.currentEventIndex];
-    const { lat, lng, zoom } = event;
-
-    this.zoomToLocation(lat, lng, zoom, () => {
+    this.zoomToLocation(event.lat, event.lng, event.zoom, () => {
       setTimeout(() => {
         this.resetZoom();
-        this.moveToNextEvent(); // Move to the next event in the timeline
-        this.animateTimeline();  // Recursively animate the next event
-      }, 5000);  // Wait for 5 seconds before moving to the next event
+        this.moveToNextEvent();
+        if (this.isAnimating) this.animateTimeline(); // Recursively continue animation
+      }, 5000);
     });
   }
 
-  // Smooth zoom to a specific location (lat, lng) with specified zoom level
+  /**
+   * Zoom smoothly to a specific location and altitude.
+   * @param lat - Latitude of the location
+   * @param lng - Longitude of the location
+   * @param zoom - Zoom level
+   * @param callback - Function to call after zooming
+   */
   private zoomToLocation(lat: number, lng: number, zoom: number, callback: Function): void {
-    if (this.isZooming) return;  // Prevent multiple zooms at once
+    if (this.isZooming) return;
     this.isZooming = true;
 
-    this.globe.pointOfView({ lat, lng, altitude: zoom }, 1000); // Smooth zoom over 1000ms
-
-    // After zooming is complete, trigger the callback function
+    this.globe.pointOfView({ lat, lng, altitude: zoom }, 1000);
     setTimeout(() => {
       this.isZooming = false;
-      callback();  // Proceed to the next step after zooming
-    }, 1000);  // Wait for zoom to finish
+      callback();
+    }, 1000);
   }
 
-  // Reset zoom to a default altitude
+  /**
+   * Reset the globe zoom to a default altitude.
+   */
   private resetZoom(): void {
     const defaultAltitude = 5;
-    const event = this.timelineEvents[this.currentEventIndex];
-    this.globe.pointOfView({ lat: event.lat, lng: event.lng, altitude: defaultAltitude }, 1000);
+    const { lat, lng } = this.timelineEvents[this.currentEventIndex];
+    this.globe.pointOfView({ lat, lng, altitude: defaultAltitude }, 1000);
   }
 
-  // Move to the next event in the timeline, and loop back if needed
+  /**
+   * Move to the next event in the timeline, looping if necessary.
+   */
   private moveToNextEvent(): void {
     this.currentEventIndex = (this.currentEventIndex + 1) % this.timelineEvents.length;
   }

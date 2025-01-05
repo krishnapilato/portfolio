@@ -1,42 +1,38 @@
-/* Scroll Down Button Styling */
+/* Scroll Down Button Container */
 .scroll-down-container {
   position: absolute;
   bottom: 20px;
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
+/* Scroll Down Button */
 .scroll-down-button {
   font-size: 1.5rem;
-  background-color: #DC2626; /* LinkedIn red */
-  border-radius: 50%; /* Rounded circle */
+  background-color: #DC2626;
+  border-radius: 50%;
   width: 60px;
   height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.scroll-down-button i {
-  font-size: 1.5rem;
+  animation: bounce 1s infinite ease-in-out;
 }
 
 .scroll-down-button:hover {
   background-color: #B91C1C;
-  transform: scale(1.1); /* Slight scaling effect */
+  transform: scale(1.1);
 }
 
-/* Scroll Down Button Animation */
+/* Bounce Animation */
 @keyframes bounce {
-  0% {
+  0%, 100% {
     transform: translateY(0);
   }
   50% {
     transform: translateY(-10px);
   }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-.scroll-down-button {
-  animation: bounce 1s infinite ease-in-out;
 }

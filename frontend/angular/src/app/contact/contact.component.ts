@@ -27,64 +27,25 @@ export class ContactComponent implements OnInit {
   fields = [
     {
       id: 'name',
-      label: 'Name',
       type: 'text',
       controlName: 'name',
-      placeholder: 'Enter your name',
-      errorMessage: 'Name is required and should only contain letters.',
-      validators: [Validators.required, Validators.pattern('^[a-zA-Z ]*$')],
-      icon: 'user', // Icon for the name field
+      validators: [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]
     },
     {
       id: 'email',
-      label: 'Email',
       type: 'email',
       controlName: 'email',
-      placeholder: 'Enter your email',
-      errorMessage: 'Please enter a valid email address.',
-      validators: [Validators.required, Validators.email],
-      icon: 'envelope', // Icon for the email field
+      validators: [Validators.required, Validators.email]
     },
     {
       id: 'message',
-      label: 'Message',
       type: 'textarea',
       controlName: 'message',
-      placeholder: 'Write your message here',
-      errorMessage: 'Message is required and should be at least 10 characters long.',
-      validators: [Validators.required, Validators.minLength(10)],
-      icon: 'comment', // Icon for the message field
+      validators: [Validators.required, Validators.minLength(10)]
     },
   ];
 
-  socialLinks = [
-    {
-      label: 'Email',
-      href: 'mailto:krishnak.pilato@gmail.com',
-      btnClass: 'btn-danger',
-      iconClass: 'fa-regular fa-paper-plane',
-    },
-    {
-      label: 'LinkedIn',
-      href: 'https://linkedin.com/in/khovakrishnapilato',
-      btnClass: 'btn-primary',
-      iconClass: 'fa-brands fa-linkedin',
-    },
-    {
-      label: 'GitHub',
-      href: 'https://github.com/krishnapilato/portfolio/tree/dev',
-      btnClass: 'btn-dark',
-      iconClass: 'fa-brands fa-github',
-    },
-    {
-      label: 'Facebook',
-      href: 'https://www.facebook.com/krishnapilato',
-      btnClass: 'btn-dark',
-      iconClass: 'fa-brands fa-facebook',
-    },
-  ];
-
-  constructor(private fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -103,7 +64,7 @@ export class ContactComponent implements OnInit {
     return !!(control?.invalid && control.touched);
   }
 
-  // Function to send email using EmailJS
+  // Send email using EmailJS
   private sendEmail(formData: any): void {
     const templateParams = {
       from_name: formData.name,
@@ -112,14 +73,12 @@ export class ContactComponent implements OnInit {
       message: formData.message,
     };
 
-    emailjs.send("service_xg0zung","template_6yjljvi", templateParams, 'Snh_1YI8Oz07iuS5R')
-      .then((response) => {
-        console.log('SUCCESS!', response);
+    emailjs.send('service_xg0zung', 'template_6yjljvi', templateParams, 'Snh_1YI8Oz07iuS5R')
+      .then(() => {
         this.successMessage = 'Your message has been sent successfully!';
         this.contactForm.reset();
       })
-      .catch((error) => {
-        console.log('FAILED...', error);
+      .catch(() => {
         this.errorMessage = 'Failed to send the email. Please try again later.';
       });
 

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import anime from 'animejs/lib/anime.es.js';
 import Typed from 'typed.js';
 import { environment } from '../../environment/environment';
@@ -15,10 +15,13 @@ export class HomeComponent {
   public home = environment.home;
   public typed: Typed;
 
-  @ViewChild('about') aboutSection: any;
-
-  scrollToAbout(): void {
-    this.aboutSection?.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  public scrollToAbout(): void {
+    const aboutElement = document.getElementById('about');
+    if (aboutElement) {
+      aboutElement.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      console.error('Unable to find the About-Me section!');
+    }
   }
 
   ngOnInit(): void {

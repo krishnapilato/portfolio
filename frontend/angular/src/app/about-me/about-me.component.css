@@ -1,115 +1,29 @@
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #000000;
   margin: 0;
   padding: 0;
 }
 
-#map-container {
-  display: flex;
-  justify-content: center; /* Horizontally center the map */
-  align-items: center;     /* Vertically center the map */
-  width: 100%;             /* Take full width */
-  height: 100vh;           /* Full viewport height */
-}
-
-#map {
-  /* Width as a percentage */
-  width: 50%;  /* Example: 50% of the screen width */
-  height: 100%; /* Adjust height as needed */
-
-  /* Border radius for rounded corners */
-  border-radius: 120px; /* Adjust this value for your desired roundness */
-
-  /* Deep 3D shadow effect */
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 15px 60px rgba(0, 0, 0, 0.5);
-
-  /* Optional: Prevent content overflow */
-  overflow: hidden;
-}
-
-/* Glowing text effect */
-.glowing-text {
-  color: #DC2626; /* Text color */
-  text-shadow:
-    0 0 5px #dc2626, /* Light glow */
-    0 0 10px #dc2626, /* Stronger glow */
-    0 0 15px #dc2626, /* Even stronger glow */
-    0 0 20px #dc2626; /* Maximum glow */
-  animation: glowing 1.5s infinite alternate; /* Apply animation for continuous glow */
-}
-
-/* Animation for the glowing effect */
 @keyframes glowing {
   0% {
-    text-shadow:
-      0 0 5px #dc2626,
-      0 0 10px #dc2626,
-      0 0 15px #dc2626,
+    text-shadow: 0 0 5px #dc2626, 0 0 10px #dc2626, 0 0 15px #dc2626,
       0 0 20px #dc2626;
   }
   100% {
-    text-shadow:
-      0 0 10px #dc2626,
-      0 0 20px #dc2626,
-      0 0 30px #dc2626,
+    text-shadow: 0 0 10px #dc2626, 0 0 20px #dc2626, 0 0 30px #dc2626,
       0 0 40px #dc2626;
   }
 }
 
-/* Button Styles */
-.replay-btn {
-  position: absolute;
-  bottom: 4%;         /* Position from the bottom */
-  right: 4%;          /* Position from the right */
-  font-size: 2rem;    /* Larger icon size */
-  padding: 16px;      /* Larger padding for a more prominent button */
-  background-color: #333; /* Default background color */
-  color: #fff;        /* Icon and text color */
-  border-radius: 50%; /* Circular button shape */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Strong shadow for depth */
-  transition: all 0.3s ease; /* Smooth transition for background and shadow */
-}
-
-/* Ensuring better readability of text */
-.readable-text {
-  color: #2d3748; /* Darker color for better contrast */
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Light text shadow for depth */
-}
-
 .glowing-text {
-  color: white; /* Ensure glowing text color is white */
-  text-shadow:
-    0 0 8px rgba(255, 255, 255, 0.7),
-    0 0 16px rgba(255, 255, 255, 0.6),
-    0 0 24px rgba(255, 255, 255, 0.5); /* Soft glow */
+  animation: glowing 1.5s infinite alternate;
 }
 
-/* For the title text (About Me, My Journey) */
-h2.glowing-text {
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.7); /* Enhanced glow for headers */
-}
-
-/* Adjust the background for better contrast */
-.about-me-section {
-  background: rgba(0, 0, 0, 0.3); /* Add an overlay for contrast without losing gradient effect */
-}
-
-
-/* Hover effect for the button */
-.replay-btn:hover {
-  background-color: #444; /* Slightly lighter background on hover */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* Larger shadow on hover */
-  transform: translateY(-4px); /* Slight lift effect */
-}
-
-/* Font Awesome Icon inside the button */
-.replay-btn i {
-  font-size: 2rem; /* Ensure the icon is large and visible */
-  transition: transform 0.3s ease; /* Smooth rotation effect for icon */
-}
-
-/* Optionally, rotate the icon when clicked or animated */
-.replay-btn.active i {
-  transform: rotate(360deg); /* Rotate the icon */
+#map {
+  width: 50%;
+  height: 100%;
+  border-radius: 120px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 15px 60px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
 }
