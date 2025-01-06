@@ -78,6 +78,7 @@ private initializeGlobe(): void {
 
   // Disable zoom and pan for simplicity
   this.globe.controls().enableZoom = false;
+  this.globe.controls().enableRotate = false;
   this.globe.controls().enablePan = false;
 
   // Set the initial view to Bangalore
