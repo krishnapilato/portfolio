@@ -1,5 +1,12 @@
 # Application Installer
 
+![Windows](https://img.shields.io/badge/Windows-11-0078D4?logo=windows&logoColor=white)
+![macOS](https://img.shields.io/badge/macOS-15-0078D4?logo=apple&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-22-009639?logo=linux&logoColor=white)
+![Python](https://img.shields.io/badge/language-Python-blue?logo=python&logoColor=white)
+![Shell](https://img.shields.io/badge/shell-PowerShell-blue?logo=powershell&logoColor=white)
+![JSON](https://img.shields.io/badge/format-JSON-lightgray?logo=json&logoColor=white)
+
 The **Application Installer** simplifies the process of checking and installing essential software like Java, Node.js, Docker, and more. With an intuitive interface, it ensures your system is ready with the tools you need, all in just a few clicks.
 
 **New features coming next week!**
