@@ -3,6 +3,8 @@ import { AfterViewInit, Component } from '@angular/core';
 import Globe from 'globe.gl';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import ScrollMagic from 'scrollmagic';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -86,24 +88,95 @@ private initializeGlobe(): void {
 }
 
 initializeAnimations(): void {
-  // Pin and animate the first section
-  gsap.fromTo(
-    '.who-am-i',
-    { opacity: 1, scale: 1 },
+  const animations = [
     {
-      opacity: 0,
-      scale: 1.2,
+      target: '.title',
+      yOffset: 50,
+      rotateStart: 10,
+      scaleStart: 0.9,
       duration: 1.5,
-      ease: 'power2.inOut',
-      scrollTrigger: {
-        trigger: '.who-am-i',
-        start: 'top top',
-        end: '+=100%',
-        scrub: true,
-        pin: true,
+    },
+    {
+      target: '.description',
+      yOffset: 70,
+      rotateStart: -10,
+      scaleStart: 0.8,
+      duration: 1.5,
+    },
+    {
+      target: '.avatar',
+      yOffset: 100,
+      rotateStart: 15,
+      scaleStart: 0.85,
+      duration: 1.8,
+    },
+  ];
+
+  animations.forEach(({ target, yOffset, rotateStart, scaleStart, duration }) => {
+    ScrollTrigger.create({
+      trigger: target, // Target element
+      start: 'top 80%',
+      end: 'top 50%',
+      onEnter: () => {
+        // Animation when scrolling down
+        gsap.fromTo(
+          target,
+          { y: yOffset, opacity: 0, rotate: rotateStart, scale: scaleStart }, // Start state
+          { y: 0, opacity: 1, rotate: 0, scale: 1, duration, ease: 'power3.out' } // End state
+        );
       },
-    }
-  );
+      onLeaveBack: () => {
+        // Animation when scrolling up
+        gsap.fromTo(
+          target,
+          { y: 0, opacity: 1, rotate: 0, scale: 1 }, // Current state
+          { y: -yOffset, opacity: 0, rotate: -rotateStart, scale: scaleStart, duration, ease: 'power3.out' } // Reverse state
+        );
+      },
+    });
+  });
+
+// Pin and animate the first section with 3D effect
+// Pin and animate the first section with 3D effect on exit
+gsap.fromTo(
+  '.who-am-i',
+  { x: '0%', opacity: 1, rotationY: 0, transformPerspective: 1000 }, // Initial state
+  {
+    x: '-100%', // Slide out to the left
+    opacity: 0, // Fade out
+    rotationY: 45, // Add a 3D rotation effect on the Y-axis
+    duration: 1.5,
+    ease: 'power2.inOut', // Smooth easing
+    scrollTrigger: {
+      trigger: '.who-am-i', // Trigger the animation when this section is in view
+      start: 'top top', // Start when the section reaches the top
+      end: '+=100%', // End after the section moves out of view
+      scrub: true, // Synchronize with scroll progress
+      pin: true, // Lock the section in place during the scroll
+    },
+  }
+);
+
+// 3D Enter Animation
+gsap.fromTo(
+  '.who-am-i',
+  { x: '-100%', opacity: 0, rotationY: -45, transformPerspective: 1000 }, // Start state for entry
+  {
+    x: '0%', // Slide into view from the left
+    opacity: 1, // Fade in
+    rotationY: 0, // Reset 3D rotation
+    duration: 1.5,
+    ease: 'power3.out', // Smooth easing for entry
+    scrollTrigger: {
+      trigger: '.who-am-i',
+      start: 'top 100%', // Start animation when the section is just outside the viewport
+      end: 'top 80%', // Complete animation as it enters the viewport
+      scrub: true, // Tie animation progress to scroll
+      onEnter: () => console.log('Entered view'), // Optional callback for debugging or additional effects
+    },
+  }
+);
+
 
   // Handle transitions between points (Bangalore -> Milan -> Zoom Out)
   ScrollTrigger.create({
@@ -136,22 +209,26 @@ initializeAnimations(): void {
     },
   });
 
-  // Fade-in animation for the second section
-  gsap.fromTo(
-    '.second-section',
-    { opacity: 0 },
-    {
-      opacity: 1,
-      duration: 1.5,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.second-section',
-        start: 'top 90%',
-        end: 'top 50%',
-        scrub: true,
-      },
-    }
-  );
+// Enhanced fade-in and slide-in animation for the second section
+// Enhanced fade-in, slide-in, and 3D animation for the second section
+gsap.fromTo(
+  '.second-section',
+  { opacity: 0, x: '100%', rotationY: 45, transformPerspective: 1000 }, // Start off-screen with 3D rotation
+  {
+    opacity: 1,
+    x: '0%', // Slide into view horizontally
+    rotationY: 0, // Reset 3D rotation
+    duration: 2,
+    ease: 'power3.out', // Smooth easing curve
+    scrollTrigger: {
+      trigger: '.second-section',
+      start: 'top 50%', // Start animation when the top of the section reaches 50% of the viewport
+      end: 'top 20%', // End animation when the top of the section is 20% into the viewport
+      scrub: true, // Tie animation to scroll
+    },
+  }
+);
+
 }
 
 /**
