@@ -1,29 +1,162 @@
-body {
-  font-family: "Roboto", sans-serif;
-  background-color: #000000;
+/* General styling for the container */
+.who-am-i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; /* Makes it responsive */
+  min-height: 100%; /* Full viewport height */
+  padding: 20px;
+  background-color: #f9f9f9; /* Subtle background */
+  gap: 40px; /* Space between content and avatar */
+}
+
+/* Left Content */
+.content {
+  max-width: 500px;
+  text-align: center; /* Center text for smaller screens */
+}
+
+.title {
+  font-size: 3.5rem; /* Larger title size */
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.8;
+}
+
+/* Avatar Container */
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px; /* Larger size */
+  height: 350px; /* Larger size */
+  border-radius: 20px; /* Slightly rounded corners */
+  overflow: hidden; /* Ensures image doesn't overflow */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+/* Avatar Image */
+.rounded-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures proper scaling */
+}
+
+.second-section {
+  background-color: #1f2937; /* Dark background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Forces full viewport height */
+  width: 100%; /* Ensures full width */
+}
+
+
+/* General reset to ensure parent elements don't constrain height */
+html, body {
   margin: 0;
   padding: 0;
+  height: 100%; /* Ensure full height for the root elements */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
-@keyframes glowing {
-  0% {
-    text-shadow: 0 0 5px #dc2626, 0 0 10px #dc2626, 0 0 15px #dc2626,
-      0 0 20px #dc2626;
-  }
-  100% {
-    text-shadow: 0 0 10px #dc2626, 0 0 20px #dc2626, 0 0 30px #dc2626,
-      0 0 40px #dc2626;
-  }
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
 }
 
-.glowing-text {
-  animation: glowing 1.5s infinite alternate;
+/* First Section */
+.who-am-i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full height of the viewport */
+  gap: 40px;
 }
 
-#map {
-  width: 50%;
-  height: 100%;
-  border-radius: 120px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 15px 60px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
+/* Second Section */
+.second-section {
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensures root elements take full height */
+  overflow: hidden; /* Prevents extra content from showing */
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Left and right sections */
+.left, .right {
+  flex: 1; /* Split equally between left and right parts */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Left section */
+.left {
+  background-color: #f3f4f6; /* Lighter color */
+}
+
+/* Right section */
+.right {
+  background-color: #d1d1d1; /* Darker color */
+  color: white;
+  text-align: center;
+}
+
+/* Left and right sections */
+.left, .right {
+  flex: 1; /* Split equally between left and right parts */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Left Content */
+.left {
+  background-color: #f3f4f6;
+  padding: 40px;
+}
+
+.text-content {
+  text-align: center;
+  max-width: 600px;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.8;
+}
+
+/* Right Content */
+.right {
+  background-color: #c7c7c7;
+  color: white;
+  padding: 40px;
+  text-align: center;
 }

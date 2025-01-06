@@ -3,6 +3,12 @@
   <div class="bg-white shadow-lg rounded-3xl w-full max-w-md p-8 transform transition duration-500 hover:scale-110 ease-in-out"
        data-aos="fade-up" data-aos-duration="1200">
 
+    <!-- Decorative Spheres -->
+    <div class="absolute top-[-80px] right-[-80px] bg-blue-500 rounded-full w-24 h-20 animate-bounce opacity-40 shadow-lg"></div>
+    <div class="absolute top-[-40px] right-[-40px] bg-green-500 rounded-full w-10 h-10 animate-pulse opacity-30 shadow-md"></div>
+    <div class="absolute bottom-[-80px] left-[-80px] bg-purple-500 rounded-full w-24 h-16 animate-spin opacity-25 shadow-xl"></div>
+    <div class="absolute bottom-[-40px] left-[-40px] bg-orange-500 rounded-full w-12 h-4 animate-ping opacity-20 shadow-lg"></div>
+
     <!-- Login Form Title -->
     <h3 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"
         class="text-3xl font-extrabold text-center text-gray-900 mb-6" data-aos="fade-down" data-aos-duration="1200" data-aos-delay="100">
@@ -64,7 +70,7 @@
       </div>
 
       <!-- Message (Error or Success) -->
-      <div class="text-sm mt-4 p-2 rounded-md" [ngClass]="{ 'bg-green-100 text-green-700': isSuccess, 'bg-red-100 text-red-700': !isSuccess }" *ngIf="message" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="600">
+      <div class="text-sm mt-4 p-2 rounded-md" [ngClass]="{ 'bg-green-100 text-green-700': isSuccess, 'bg-red-100 text-red-700': !isSuccess }" *ngIf="message">
         {{ message }}
       </div>
 
@@ -72,17 +78,15 @@
       <button
         type="submit"
         [disabled]="loginForm.invalid"
-        class="w-full p-3 rounded-full bg-{{themeColor}}-600 hover:bg-{{themeColor}}-800 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-{{themeColor}}-300"
-        data-aos="fade-up" data-aos-duration="1200" data-aos-delay="700"
-      >
-        Sign In <i class="fa-solid fa-sign-in-alt"></i>
+        class="w-full p-3 rounded-full bg-{{themeColor}}-600 hover:bg-{{themeColor}}-800 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-{{themeColor}}-300">
+        Sign in <i class="fa-solid fa-sign-in-alt"></i>
       </button>
     </form>
 
     <!-- Sign Up Link -->
     <div class="mt-6 text-center">
       <p class="text-sm text-gray-500">
-        Don't have an account? <a routerLink="/auth/signup" class="text-gray-800 hover:underline">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+        Don't have an account? <a routerLink="/auth/signup" class="text-gray-800 hover:underline">Sign up <i class="fa-solid fa-user-plus"></i></a>
       </p>
     </div>
   </div>
