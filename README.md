@@ -5,9 +5,7 @@
 ![Angular Version](https://img.shields.io/badge/Angular-19.0.5-red?style=flat&logo=angular)
 ![MySQL](https://img.shields.io/badge/MySQL-9.1.0-blue?style=flat&logo=mysql)
 ![Version](https://img.shields.io/badge/Version-0.8.5-blue?style=flat)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat)
-![Repo Size](https://img.shields.io/github/repo-size/krishnapilato/kodek?style=flat)
-![Custom Workflow](https://img.shields.io/badge/Workflow-CI/CD-yellow?style=flat&logo=githubactions)
+[![GitHub Actions](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
 
 Explore a curated collection of my **technical expertise**, **professional accomplishments**, and **innovative projects**—all designed to highlight my skills and commitment to excellence.
 
