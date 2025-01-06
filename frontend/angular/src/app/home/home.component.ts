@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import anime from 'animejs/lib/anime.es.js';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Typed from 'typed.js';
 import { environment } from '../../environment/environment';
 import { AboutMeComponent } from '../about-me/about-me.component';
+
+gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-home',
@@ -13,20 +16,11 @@ import { AboutMeComponent } from '../about-me/about-me.component';
 })
 export class HomeComponent {
   public home = environment.home;
-  public typed: Typed;
+  private typed: Typed;
 
-  public scrollToAbout(): void {
-    const aboutElement = document.getElementById('about');
-    if (aboutElement) {
-      aboutElement.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      console.error('Unable to find the About-Me section!');
-    }
-  }
-
+  // Lifecycle Hooks
   ngOnInit(): void {
     this.initializeTyped();
-    this.applyRandomGradientColorsTyped();
   }
 
   ngAfterViewInit(): void {
@@ -35,10 +29,21 @@ export class HomeComponent {
     this.generateRandomShapes();
   }
 
-  // Initialize the Typed.js animation with dynamic gradient change for each string
+  /** Scroll smoothly to the "About Me" section */
+  public scrollToAbout(): void {
+    const aboutElement = document.querySelector('#about');
+    if (aboutElement) {
+      aboutElement.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      console.warn('The "About Me" section could not be found.');
+    }
+  }
+
+  // Typed.js Logic
+  /** Initialize the Typed.js animation for dynamic skills display */
   private initializeTyped(): void {
     this.typed = new Typed('#element', {
-      strings: this.home.skills,  // Skills are dynamic and come from the environment file
+      strings: this.home.skills,
       typeSpeed: 60,
       backSpeed: 40,
       backDelay: 1000,
@@ -46,129 +51,132 @@ export class HomeComponent {
       loop: true,
       showCursor: true,
       cursorChar: '|',
-      preStringTyped: (arrayPos, self) => this.applyRandomGradientColorsTyped(),
+      preStringTyped: this.applyRandomGradientColorsTyped.bind(this),
     });
   }
 
-  // Generate a random RGB color for text gradient
-  private generateRandomColorsTyped(): string {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return `rgb(${r}, ${g}, ${b})`;
-  }
-
-  // Apply random gradient colors to the text using background clip
+  /** Apply gradient colors and text shadow to the typed text */
   private applyRandomGradientColorsTyped(): void {
     const element = document.getElementById('element') as HTMLElement;
-    if (element) {
-      const color1 = this.generateRandomColorsTyped();
-      const color2 = this.generateRandomColorsTyped();
-      element.style.backgroundImage = `linear-gradient(to right, ${color1}, ${color2})`;
-      element.style.webkitBackgroundClip = 'text';
-      element.style.color = 'transparent';
-    }
+    if (!element) return;
+
+    const [color1, color2] = [this.generateRandomColor(), this.generateRandomColor()];
+    Object.assign(element.style, {
+      backgroundImage: `linear-gradient(to right, ${color1}, ${color2})`,
+      webkitBackgroundClip: 'text',
+      webkitTextFillColor: 'transparent',
+      textShadow: `
+        1px 1px 2px rgba(0, 0, 0, 0.2),
+        2px 2px 4px rgba(0, 0, 0, 0.15),
+        3px 3px 6px rgba(0, 0, 0, 0.1)
+      `,
+    });
+
+    // Add subtle shadow animation
+    gsap.to(element, {
+      textShadow: `
+        2px 2px 4px rgba(0, 0, 0, 0.3),
+        3px 3px 8px rgba(0, 0, 0, 0.2),
+        4px 4px 12px rgba(0, 0, 0, 0.1)
+      `,
+      duration: 3,
+      repeat: -1,
+      yoyo: true,
+      ease: 'power1.inOut',
+    });
   }
 
-  // Animate the wave's color dynamically using random colors
+  // Wave Animation
+  /** Animate the wave colors dynamically */
   private animateWaveColors(): void {
-    anime({
-      targets: '#wave path',
-      fill: this.generateRandomColors(),  // Apply randomly generated colors to the wave
-      easing: 'easeInOutSine',
-      duration: 20000,
-      loop: true,
-      direction: 'alternate',
+    gsap.to('#wave path', {
+      fill: () => this.generateRandomColor(),
+      duration: 15,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
     });
   }
 
-  // Generate an array of random RGB colors for the wave
-  private generateRandomColors(): string[] {
-    return Array.from({ length: 4 }, () => this.generateRandomColorsTyped());
-  }
-
-  // Add 3D effect to the wave using Anime.js
+  /** Add 3D effect and smooth motion to the wave */
   private addWave3DEffect(): void {
-    anime({
-      targets: '#wave',
-      translateY: ['0px', '10px'], // Simulate wave movement up and down
-      scaleX: [1, 1.05], // Slight scaling to mimic wave stretching
-      scaleY: [1, 1.05], // Vertical scaling for wave expansion and contraction
-      translateZ: ['0px', '30px'], // Increased depth translation for a more pronounced 3D effect
-      duration: 8000, // Slow down the animation for a smoother wave motion
-      easing: 'easeInOutQuad', // Smooth ease for natural wave-like motion
-      loop: true,
-      direction: 'alternate', // Alternate between keyframes for continuous wave motion
-      delay: anime.stagger(100), // Stagger the animation to make it feel like a flowing wave
-      elasticity: 300, // Adds some bounce and smooth elasticity for the wave motion
-      keyframes: [
-        { translateY: '0px', scaleX: 1, scaleY: 1, translateZ: '0px' }, // Starting point (flat wave)
-        { translateY: '5px', scaleX: 1.02, scaleY: 1.02, translateZ: '10px' }, // Mid-wave
-        { translateY: '10px', scaleX: 1.05, scaleY: 1.05, translateZ: '20px' }, // Peak of the wave
-        { translateY: '5px', scaleX: 1.02, scaleY: 1.02, translateZ: '10px' }, // Coming back down
-      ]
+    gsap.to('#wave', {
+      y: '20px',
+      scaleX: 1.1,
+      scaleY: 1.12,
+      duration: 12,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
     });
   }
 
-
-  // Generate and animate random 3D spheres on the page
+  // Random Shapes Logic
+  /** Generate and animate random shapes dynamically */
   private generateRandomShapes(): void {
-    const shapesContainer = document.getElementById('shapes-container')!;
-    const numShapes = Math.floor(Math.random() * 6) + 10;
-    for (let i = 0; i < numShapes; i++) {
+    const shapesContainer = document.getElementById('shapes-container');
+    if (!shapesContainer) return;
+
+    Array.from({ length: Math.floor(Math.random() * 6) + 10 }).forEach(() => {
       const shape = this.createRandomShape();
       shapesContainer.appendChild(shape);
       this.animateShape(shape);
-    }
+    });
   }
 
-  // Create a random sphere with random size, color, and rotation
+  /** Create a random shape with random size and position */
   private createRandomShape(): HTMLElement {
     const shape = document.createElement('div');
     const size = Math.floor(Math.random() * 50) + 30;
-    shape.classList.add('shape', 'sphere');
-    shape.style.width = `${size}px`;
-    shape.style.height = `${size}px`;
-    shape.style.borderRadius = '50%'; // Make the shape a sphere
-    shape.style.position = 'absolute';
-    shape.style.top = '80%';
-    shape.style.left = '75%';
-    shape.style.backgroundColor = this.generateRandomColor();
-    shape.style.transform = `rotate(${Math.floor(Math.random() * 360)}deg)`;
+    const top = Math.random() * 90;
+    const left = Math.random() * 90;
+
+    Object.assign(shape.style, {
+      width: `${size}px`,
+      height: `${size}px`,
+      position: 'absolute',
+      top: `${top}%`,
+      left: `${left}%`,
+      backgroundColor: this.generateRandomColor(),
+      borderRadius: Math.random() > 0.5 ? '50%' : '0',
+      backdropFilter: 'blur(10px)',
+      boxShadow: '0 6px 20px rgba(0, 0, 0, 0.3)',
+    });
+
     return shape;
   }
 
-  // Generate a random color for each shape
-  private generateRandomColor(): string {
-    return `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+  /** Animate a shape with dynamic movement and rotation */
+  private animateShape(shape: HTMLElement): void {
+    const maxShapeTop = window.innerHeight * 0.6;
+    const shapeHeight = shape.getBoundingClientRect().height || 0;
+    const initialTop = Math.min(Math.random() * maxShapeTop, maxShapeTop - shapeHeight);
+
+    shape.style.top = `${initialTop}px`;
+    shape.style.zIndex = '-1';
+
+    gsap.to(shape, {
+      y: '+=40px',
+      x: '+=40px',
+      rotation: 360,
+      scale: 1.1 + Math.random() * 0.2,
+      duration: 3 + Math.random() * 2,
+      repeat: -1,
+      yoyo: true,
+      ease: 'power2.inOut',
+      onUpdate: () => {
+        const currentTop = parseFloat(shape.style.top || '0');
+        if (currentTop + shapeHeight > maxShapeTop) {
+          gsap.set(shape, { top: `${maxShapeTop - shapeHeight}px` });
+        }
+      },
+    });
   }
 
-  // Animate the shape with random vertical, horizontal movement, rotation, and scaling
-  private animateShape(shape: HTMLElement): void {
-    // Generate random rotation, scaling, and movement values
-    const rotation = Math.floor(Math.random() * 360);
-    const scale = 1 + Math.random() * 0.5; // Random scale between 1 and 1.5
-    const translateX = `${Math.random() * 100 - 50}%`; // Random horizontal movement
-    const translateY = `${Math.random() * 200 + 100}px`; // Random vertical movement
-
-    anime({
-      targets: shape,
-      translateY: ['30%', translateY], // Vertical movement with random offset
-      translateX: ['0%', translateX], // Horizontal movement with random offset
-      rotate: [rotation, rotation + (Math.random() * 360)], // Random rotation
-      scale: [1, scale], // Random scaling effect
-      translateZ: ['0px', `${Math.random() * 100}px`], // Adding a random depth translation for 3D effect
-      duration: 3000 + Math.random() * 1000, // Random duration between 3000ms and 4000ms
-      easing: 'easeInOutCubic', // Smoother easing for organic motion
-      loop: true,
-      delay: Math.random() * 1000, // Random delay for each animation
-      elasticity: 300, // Adding some elasticity for bounce effect
-      direction: 'alternate', // Alternate between animation steps
-      keyframes: [
-        { translateY: '30%', translateX: '0%', rotate: rotation, scale: 1 }, // Starting position
-        { translateY, translateX, rotate: rotation + 180, scale }, // Mid-animation state
-        { translateY: '30%', translateX: '0%', rotate: rotation + 360, scale: 1 }, // End position
-      ]
-    });
+  // Utility
+  /** Generate a random RGB color */
+  private generateRandomColor(): string {
+    const randomChannel = () => Math.floor(Math.random() * 256);
+    return `rgb(${randomChannel()}, ${randomChannel()}, ${randomChannel()})`;
   }
 }
