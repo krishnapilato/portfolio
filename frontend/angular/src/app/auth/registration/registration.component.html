@@ -5,10 +5,18 @@
        data-aos="fade-up" data-aos-duration="1200" data-aos-delay="100">
 
     <!-- Decorative Shapes -->
-    <div class="absolute top-[-60px] left-[20px] bg-yellow-400 w-16 h-24 animate-wiggle opacity-50 shadow-lg skew-x-12"></div>
-    <div class="absolute top-[40px] right-[-60px] bg-teal-500 w-20 h-20 animate-ping opacity-40 shadow-xl rounded-tl-full"></div>
-    <div class="absolute bottom-[-50px] right-[10px] bg-red-400 w-24 h-16 animate-bounce opacity-35 shadow-md transform rotate-[30deg]"></div>
-    <div class="absolute bottom-[-70px] left-[-30px] bg-indigo-600 w-14 h-14 animate-spin opacity-45 shadow-lg rounded-br-full"></div>
+<!-- First Shape: Wiggling Yellow Rectangle with Soft Shadow -->
+<div class="absolute top-[-60px] left-[20px] bg-gradient-to-r from-yellow-400 to-yellow-500 w-20 h-28 animate-bounce opacity-60 shadow-2xl rounded-lg"></div>
+
+<!-- Second Shape: Teal Circle with Ping Effect -->
+<div class="absolute top-[40px] right-[-60px] bg-gradient-to-r from-teal-500 to-teal-400 w-24 h-24 animate-ping opacity-40 shadow-xl rounded-full"></div>
+
+<!-- Third Shape: Rotating Red Rectangle with Bounce Animation -->
+<div class="absolute bottom-[-50px] right-[10px] bg-gradient-to-r from-red-400 to-red-600 w-28 h-20 animate-bounce opacity-50 shadow-md transform rotate-[30deg] rounded-xl"></div>
+
+<!-- Fourth Shape: Spinning Indigo Circle with Soft Shadow -->
+<div class="absolute bottom-[-70px] left-[-30px] bg-gradient-to-tl from-indigo-600 to-indigo-700 w-20 h-20 animate-spin opacity-45 shadow-lg rounded-full"></div>
+
 
     <!-- Registration Form Header -->
     <h3 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"
@@ -33,8 +41,9 @@
         <div class="relative">
           <i class="fa-regular fa-user text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
           <input
+            #fullNameInput
             type="text"
-            id="fullName"
+            id="full-name-input"
             placeholder="Insert full name"
             [(ngModel)]="registrationRequest.fullName"
             name="registrationRequest.fullName"
@@ -57,8 +66,9 @@
         <div class="relative">
           <i class="fa-solid fa-at text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
           <input
+            #emailInput
             type="email"
-            id="email"
+            id="email-input"
             placeholder="Insert email"
             [(ngModel)]="registrationRequest.email"
             name="registrationRequest.email"
@@ -81,8 +91,9 @@
         <div class="relative">
           <i class="fa-solid fa-key text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
           <input
+            #passwordInput
             [type]="hide ? 'password' : 'text'"
-            id="password"
+            id="password-input"
             placeholder="Insert password"
             [(ngModel)]="registrationRequest.password"
             name="registrationRequest.password"

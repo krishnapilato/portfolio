@@ -4,10 +4,17 @@
        data-aos="fade-up" data-aos-duration="1200">
 
     <!-- Decorative Shapes -->
-    <div class="absolute top-[-80px] right-[-80px] bg-blue-500 w-28 h-28 animate-pulse opacity-40 shadow-lg transform rotate-45"></div>
-    <div class="absolute top-[-40px] right-[-40px] bg-green-500 w-12 h-20 animate-bounce opacity-30 shadow-md rounded-tr-full"></div>
-    <div class="absolute bottom-[-80px] left-[-80px] bg-purple-500 w-20 h-20 animate-ping opacity-25 shadow-xl transform scale-90"></div>
-    <div class="absolute bottom-[-40px] left-[-40px] bg-orange-500 w-16 h-12 animate-spin opacity-20 shadow-lg rounded-bl-full"></div>
+<!-- First Shape: Floating Gradient Circle with Pulse Effect -->
+<div class="absolute top-[-100px] right-[-100px] bg-gradient-to-tl from-blue-500 to-indigo-500 w-36 h-36 animate-pulse opacity-60 shadow-2xl rounded-full"></div>
+
+<!-- Second Shape: Rounded Square with Bounce Effect -->
+<div class="absolute top-[-60px] right-[-60px] bg-gradient-to-br from-green-400 to-teal-500 w-24 h-24 animate-bounce opacity-50 shadow-xl rounded-xl"></div>
+
+<!-- Third Shape: Soft Ellipse with Pulse Animation -->
+<div class="absolute bottom-[-60px] left-[-80px] bg-gradient-to-r from-purple-500 to-pink-500 w-48 h-24 animate-pulse opacity-40 shadow-lg rounded-full"></div>
+
+<!-- Fourth Shape: Gradient Circle with Ping Animation -->
+<div class="absolute bottom-[-100px] left-[-100px] bg-gradient-to-tl from-orange-400 to-yellow-600 w-20 h-20 animate-ping opacity-50 shadow-lg rounded-full"></div>
 
     <!-- Login Form Title -->
     <h3 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"
@@ -28,9 +35,10 @@
         <div class="relative">
           <i class="fa-solid fa-at text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
           <input
+            #emailInput
             type="email"
-            id="email"
-            placeholder="Insert email"
+            id="email-input"
+            placeholder="Insert your email"
             [(ngModel)]="loginRequest.email"
             name="loginRequest.email"
             required
@@ -50,9 +58,10 @@
         <div class="relative">
           <i class="fa-solid fa-key text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
           <input
+            #passwordInput
             [type]="hide ? 'password' : 'text'"
-            id="password"
-            placeholder="Insert password"
+            id="password-input"
+            placeholder="Insert your password"
             [(ngModel)]="loginRequest.password"
             name="loginRequest.password"
             required
