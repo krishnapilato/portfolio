@@ -54,7 +54,7 @@ private initializeGlobe(): void {
       lng: 9.1900, // Milan longitude
       size: 25, // Marker size
       color: 'blue', // Marker color
-      label: 'Lived in Milan, Italy',
+      label: 'Lived in Italy',
     },
   ];
 
