@@ -4,30 +4,83 @@
     <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PrismNexus</title>
+    <title>PrismNexus - Explore the Future of Design and Development</title>
     <link rel="icon" type="image/svg+xml" href="icon.svg">
+
+    <!-- Meta Tags -->
+    <meta name="description" content="PrismNexus offers innovative web design and cutting-edge development techniques. Discover top-notch UI/UX ideas and explore the future of web experiences.">
+    <meta name="keywords" content="PrismNexus, web design, UI/UX, Angular, Tailwind CSS, web development, innovation">
+    <meta name="author" content="Khova Krishna Pilato">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="PrismNexus - Explore the Future of Design and Development">
+    <meta property="og:description" content="Discover innovative web design and cutting-edge development techniques at PrismNexus. Explore the future of web experiences.">
+    <meta property="og:image" content="https://krishnapilato.github.io/kodek/icon.svg">
+    <meta property="og:url" content="https://krishnapilato.github.io/kodek">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PrismNexus - Explore the Future of Design and Development">
+    <meta name="twitter:description" content="Discover innovative web design and cutting-edge development techniques at PrismNexus.">
+    <meta name="twitter:image" content="https://krishnapilato.github.io/kodek/icon.svg">
+
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
     <!-- Load Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
+    <!-- Load Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "PrismNexus",
+      "url": "https://krishnapilato.github.io/kodek",
+      "description": "PrismNexus offers innovative web design and cutting-edge development techniques. Discover top-notch UI/UX ideas.",
+      "publisher": {
+        "@type": "Person",
+        "name": "Khova Krishna Pilato"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://krishnapilato.github.io/kodek/icon.svg",
+        "height": 512,
+        "width": 512
+      }
+    }
+    </script>
+
     <!-- Load AOS script asynchronously -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" async></script>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <!-- AOS Initialization -->
     <script>
       window.addEventListener('load', () => {
         AOS.init({
           duration: 800,
           offset: 200,
-          once: false,
-          mirror: true
+          once: true,
+          mirror: false
         });
       });
     </script>
   </head>
   <body class="select-none" style="overflow-x: hidden;">
-
-    <app-root class="z-0"></app-root>
-
+    <header role="banner">
+      <h1 class="visually-hidden">PrismNexus - Explore the Future of Design and Development</h1>
+    </header>
+    <main role="main">
+      <app-root class="z-0"></app-root>
+    </main>
+    <footer role="contentinfo" class="visually-hidden">
+      © 2025 PrismNexus by Khova Krishna Pilato
+    </footer>
   </body>
 </html>
