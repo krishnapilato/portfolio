@@ -110,14 +110,14 @@ export class AboutMeComponent implements AfterViewInit {
           gsap.fromTo(
             target,
             { y: yOffset, opacity: 0, rotate: rotateStart, scale: scaleStart }, // Start state
-            { y: 0, opacity: 1, rotate: 0, scale: 1, duration, ease: 'power3.out' } // End state
+            { y: 0, opacity: 1, rotate: 0, scale: 1, duration, ease: 'power3.inOut' } // End state
           );
         },
         onLeaveBack: () => {
           gsap.fromTo(
             target,
             { y: 0, opacity: 1, rotate: 0, scale: 1 }, // Current state
-            { y: -yOffset, opacity: 0, rotate: -rotateStart, scale: scaleStart, duration, ease: 'power3.out' } // Reverse state
+            { y: -yOffset, opacity: 0, rotate: -rotateStart, scale: scaleStart, duration, ease: 'power3.inOut' } // Reverse state
           );
         },
       });
@@ -150,7 +150,7 @@ export class AboutMeComponent implements AfterViewInit {
         opacity: 1, // Fade in
         rotationY: 0, // Reset 3D rotation
         duration: 1.5,
-        ease: 'power3.out', // Smooth easing for entry
+        ease: 'power3.inOut', // Smooth easing for entry
         scrollTrigger: {
           trigger: '.who-am-i',
           start: 'top 100%', // Start animation when the section is just outside the viewport
@@ -199,7 +199,7 @@ export class AboutMeComponent implements AfterViewInit {
         x: '0%', // Slide into view horizontally
         rotationY: 0, // Reset 3D rotation
         duration: 2,
-        ease: 'power3.out', // Smooth easing curve
+        ease: 'power3.inOut', // Smooth easing curve
         scrollTrigger: {
           trigger: '.second-section',
           start: 'top 50%', // Start animation when the top of the section reaches 50% of the viewport

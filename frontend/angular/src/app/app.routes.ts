@@ -6,11 +6,13 @@ import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './shared/error/error.component';
 
 export const routes: Routes = [
+  // Home route
   {
     path: '',
     component: HomeComponent,
     pathMatch: 'full',
   },
+  // Authentication routes
   {
     path: 'auth',
     children: [
@@ -18,6 +20,14 @@ export const routes: Routes = [
       { path: 'signup', component: RegistrationComponent },
     ],
   },
-  { path: 'contact', component: ContactComponent },
-  { path: '**', component: ErrorComponent }
+  // Contact route
+  {
+    path: 'contact',
+    component: ContactComponent,
+  },
+  // Wildcard route for 404
+  {
+    path: '**',
+    component: ErrorComponent,
+  },
 ];

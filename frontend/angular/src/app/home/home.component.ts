@@ -21,6 +21,7 @@ export class HomeComponent {
   // Lifecycle Hooks
   ngOnInit(): void {
     this.initializeTyped();
+    this.addDocumentClickHandler();
   }
 
   ngAfterViewInit(): void {
@@ -31,9 +32,9 @@ export class HomeComponent {
 
   /** Scroll smoothly to the "About Me" section */
   public scrollToAbout(): void {
-    const aboutElement = document.querySelector('#about');
+    const aboutElement = document.getElementById('about');
     if (aboutElement) {
-      aboutElement.scrollIntoView({ behavior: 'smooth' });
+      aboutElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
       console.warn('The "About Me" section could not be found.');
     }
@@ -55,7 +56,7 @@ export class HomeComponent {
     });
   }
 
-  /** Apply gradient colors and text shadow to the typed text */
+  /** Apply gradient colors to the typed text */
   private applyRandomGradientColorsTyped(): void {
     const element = document.getElementById('element') as HTMLElement;
     if (!element) return;
@@ -65,24 +66,6 @@ export class HomeComponent {
       backgroundImage: `linear-gradient(to right, ${color1}, ${color2})`,
       webkitBackgroundClip: 'text',
       webkitTextFillColor: 'transparent',
-      textShadow: `
-        1px 1px 2px rgba(0, 0, 0, 0.2),
-        2px 2px 4px rgba(0, 0, 0, 0.15),
-        3px 3px 6px rgba(0, 0, 0, 0.1)
-      `,
-    });
-
-    // Add subtle shadow animation
-    gsap.to(element, {
-      textShadow: `
-        2px 2px 4px rgba(0, 0, 0, 0.3),
-        3px 3px 8px rgba(0, 0, 0, 0.2),
-        4px 4px 12px rgba(0, 0, 0, 0.1)
-      `,
-      duration: 3,
-      repeat: -1,
-      yoyo: true,
-      ease: 'power1.inOut',
     });
   }
 
@@ -98,10 +81,12 @@ export class HomeComponent {
     });
   }
 
-  /** Add 3D effect and smooth motion to the wave */
+  /** Add dynamic 3D effect and smooth motion to the wave */
   private addWave3DEffect(): void {
     gsap.to('#wave', {
       y: '20px',
+      rotateX: 10,
+      rotateY: 5,
       scaleX: 1.1,
       scaleY: 1.12,
       duration: 12,
@@ -111,25 +96,31 @@ export class HomeComponent {
     });
   }
 
-  // Random Shapes Logic
   /** Generate and animate random shapes dynamically */
   private generateRandomShapes(): void {
     const shapesContainer = document.getElementById('shapes-container');
     if (!shapesContainer) return;
 
-    Array.from({ length: Math.floor(Math.random() * 6) + 10 }).forEach(() => {
+    // Clear existing shapes
+    shapesContainer.innerHTML = '';
+
+    // Generate at least 8 new shapes
+    const shapeCount = Math.floor(Math.random() * 5) + 12;
+
+    for (let i = 0; i < shapeCount; i++) {
       const shape = this.createRandomShape();
       shapesContainer.appendChild(shape);
       this.animateShape(shape);
-    });
+    }
   }
 
-  /** Create a random shape with random size and position */
+  /** Create a random shape with dynamic size, position, and styles */
   private createRandomShape(): HTMLElement {
     const shape = document.createElement('div');
-    const size = Math.floor(Math.random() * 50) + 30;
-    const top = Math.random() * 90;
-    const left = Math.random() * 90;
+    const size = Math.random() * 50 + 30;
+    const top = Math.random() * 100;
+    const left = Math.random() * 100;
+    const isCircle = Math.random() > 0.5;
 
     Object.assign(shape.style, {
       width: `${size}px`,
@@ -138,9 +129,11 @@ export class HomeComponent {
       top: `${top}%`,
       left: `${left}%`,
       backgroundColor: this.generateRandomColor(),
-      borderRadius: Math.random() > 0.5 ? '50%' : '0',
-      backdropFilter: 'blur(10px)',
+      borderRadius: isCircle ? '50%' : '0',
+      backdropFilter: 'blur(40px)',
       boxShadow: '0 6px 20px rgba(0, 0, 0, 0.3)',
+      transform: `rotate(${Math.random() * 360}deg)`,
+      opacity: Math.random() * 0.7 + 0.3,
     });
 
     return shape;
@@ -150,26 +143,34 @@ export class HomeComponent {
   private animateShape(shape: HTMLElement): void {
     const maxShapeTop = window.innerHeight * 0.6;
     const shapeHeight = shape.getBoundingClientRect().height || 0;
-    const initialTop = Math.min(Math.random() * maxShapeTop, maxShapeTop - shapeHeight);
+    const initialTop = Math.random() * (maxShapeTop - shapeHeight);
 
-    shape.style.top = `${initialTop}px`;
-    shape.style.zIndex = '-1';
+    Object.assign(shape.style, {
+      top: `${initialTop}px`,
+      left: `${Math.random() * 100}%`,
+    });
 
     gsap.to(shape, {
       y: '+=40px',
       x: '+=40px',
-      rotation: 360,
+      rotation: Math.random() * 360,
       scale: 1.1 + Math.random() * 0.2,
       duration: 3 + Math.random() * 2,
       repeat: -1,
       yoyo: true,
       ease: 'power2.inOut',
-      onUpdate: () => {
-        const currentTop = parseFloat(shape.style.top || '0');
-        if (currentTop + shapeHeight > maxShapeTop) {
-          gsap.set(shape, { top: `${maxShapeTop - shapeHeight}px` });
-        }
-      },
+    });
+  }
+
+  /** Add a click handler to clear and regenerate shapes and change wave color */
+  private addDocumentClickHandler(): void {
+    document.addEventListener('dblclick', () => {
+      this.generateRandomShapes();
+      gsap.to('#wave path', {
+        fill: this.generateRandomColor(),
+        duration: 10,
+        ease: 'power1.inOut',
+      });
     });
   }
 

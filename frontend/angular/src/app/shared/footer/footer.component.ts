@@ -13,5 +13,7 @@ export class FooterComponent {
   /**
    * Current year for dynamic display in the footer.
    */
-  currentYear: number = new Date().getFullYear();
+  get currentYear(): number {
+    return new Date().getFullYear();
+  }
 }

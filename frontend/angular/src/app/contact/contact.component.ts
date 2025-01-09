@@ -120,8 +120,14 @@ export class ContactComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Send email using EmailJS
-  private sendEmail(formData: any): void {
+  /** Send email using EmailJS */
+  private sendEmail(formData: { name: string; email: string; message: string }): void {
+    if (!formData.name || !formData.email || !formData.message) {
+      this.errorMessage = 'Please fill out all fields before sending.';
+      this.clearMessagesAfterDelay();
+      return;
+    }
+
     const templateParams = {
       from_name: formData.name,
       to_name: 'Krishna',
@@ -129,15 +135,22 @@ export class ContactComponent implements OnInit, AfterViewInit {
       message: formData.message,
     };
 
-    emailjs.send('service_xg0zung', 'template_6yjljvi', templateParams, 'Snh_1YI8Oz07iuS5R')
+    emailjs
+      .send('service_xg0zung', 'template_6yjljvi', templateParams, 'Snh_1YI8Oz07iuS5R')
       .then(() => {
         this.successMessage = 'Your message has been sent successfully!';
-        this.contactForm.reset();
+        this.contactForm?.reset(); // Ensure contactForm is initialized
+        this.clearMessagesAfterDelay();
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('EmailJS error:', error);
         this.errorMessage = 'Failed to send the email. Please try again later.';
+        this.clearMessagesAfterDelay();
       });
+  }
 
+  /** Clear success and error messages after a delay */
+  private clearMessagesAfterDelay(): void {
     setTimeout(() => {
       this.successMessage = null;
       this.errorMessage = null;

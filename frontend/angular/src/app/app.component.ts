@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { timer } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 
@@ -25,31 +24,25 @@ export class AppComponent implements OnInit {
   }
 
   /**
-   * Starts the loading animation using `rxjs` timer for the delay
-   * and handles the display of the loading screen and visibility of content.
+   * Starts the loading animation, showing the loading screen and then hiding it.
    */
   private startLoadingAnimation(): void {
-    // Show loading screen for 2 seconds (optimized for fast feedback)
-    timer(2000)  // Reduced loading screen duration to 2 seconds
-      .pipe(take(1))
-      .subscribe(() => {
-        this.isLoading = false;
-        this.fadeOutLoadingScreen();
-      });
+    timer(3000).subscribe({
+      complete: () => {
+        this.isLoading = false; // Hide the loading screen
+        this.fadeOutLoadingScreen(); // Trigger the fade-out animation
+      },
+    });
   }
 
   /**
-   * Fades out the loading screen after a 600ms delay using `rxjs` timer.
-   * Then it reveals the main content.
+   * Fades out the loading screen and reveals the main content.
    */
   private fadeOutLoadingScreen(): void {
-    // Use a quicker fade-out (400ms) for a snappier experience
-    timer(400)  // Faster fade-out
-      .pipe(take(1))
-      .subscribe(() => {
-        this.loadingOpacity = 0; // Fade out the loading screen
-        this.showMainContent();
-      });
+    timer(400).subscribe({
+      next: () => (this.loadingOpacity = 0), // Fade out the loading screen
+      complete: () => this.showMainContent(), // Reveal the main content
+    });
   }
 
   /**
@@ -65,6 +58,8 @@ export class AppComponent implements OnInit {
    */
   @HostListener('document:contextmenu', ['$event'])
   private onRightClick(event: MouseEvent): void {
-    event.preventDefault(); // Disable right-click context menu
+    if (event) {
+      event.preventDefault();
+    }
   }
 }
