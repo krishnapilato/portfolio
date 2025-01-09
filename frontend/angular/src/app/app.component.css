@@ -2,27 +2,32 @@
 @keyframes dotAnimation {
   0% {
     transform: translateY(0) scale(1) rotate(0deg);
-    background-color: #a9b4bb; /* Original color */
+    background-color: #a9b4bb; /* Original neutral color */
   }
-  40% {
-    transform: translateY(-12px) scale(1.3) rotate(10deg);
-    background-color: #f39c12; /* Change to yellow at peak */
+  25% {
+    transform: translateY(-14px) scale(1.3) rotate(10deg);
+    background-color: #f39c12; /* Highlight at peak */
   }
-  60% {
-    transform: translateY(8px) scale(1.2) rotate(-10deg);
-    background-color: #f39c12; /* Maintain yellow during downward movement */
+  50% {
+    transform: translateY(4px) scale(1.1) rotate(-10deg);
+    background-color: #f39c12; /* Maintain highlight */
+  }
+  75% {
+    transform: translateY(-6px) scale(1.2) rotate(5deg);
+    background-color: #f1c40f; /* Subtle color variation */
   }
   100% {
     transform: translateY(0) scale(1) rotate(0deg);
-    background-color: #3498db; /* Return to original color */
+    background-color: #3498db; /* Back to neutral color */
   }
 }
 
 /* Apply custom animation to each dot */
 .animate-dot {
-  animation: dotAnimation 1.5s infinite ease-in-out;
+  animation: dotAnimation 1.8s infinite cubic-bezier(0.25, 1, 0.5, 1); /* Smooth ease-out curve */
 }
 
+/* Delays for staggered animation */
 .delay-200 {
   animation-delay: 0.2s;
 }
