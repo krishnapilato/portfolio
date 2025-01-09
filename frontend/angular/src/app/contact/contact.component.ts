@@ -1,22 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import emailjs from 'emailjs-com'; // Import EmailJS
-import Typed from 'typed.js'; // Import Typed.js
+import emailjs from 'emailjs-com';
+import Typed from 'typed.js';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css'],
 })
@@ -54,7 +45,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
   @ViewChild('emailInput') emailInputRef!: ElementRef;
   @ViewChild('messageInput') messageInputRef!: ElementRef;
 
-  constructor(private readonly fb: FormBuilder) {}
+  constructor(private readonly fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initializeForm();

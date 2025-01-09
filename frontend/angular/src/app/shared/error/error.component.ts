@@ -44,22 +44,21 @@ import { Router } from '@angular/router';
   `,
 })
 export class ErrorComponent implements OnInit {
-  countdown: number = 5; // Start countdown from 5 seconds
+  protected countdown: number = 5;
 
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router) { }
 
   ngOnInit(): void {
-    // Countdown logic for redirecting
     const interval = setInterval(() => {
       this.countdown -= 1;
       if (this.countdown <= 0) {
-        clearInterval(interval); // Stop the countdown when it reaches 0
-        this.router.navigate(['/']); // Redirect to home
+        clearInterval(interval);
+        this.router.navigate(['/']);
       }
-    }, 1000); // Decrease the countdown every second
+    }, 1000);
   }
 
-  goHome(): void {
-    this.router.navigate(['/']); // Allow manual redirection
+  protected goHome(): void {
+    this.router.navigate(['/']);
   }
 }

@@ -1,141 +1,88 @@
 <!-- Scroll Progress Bar -->
-<div
-  #progressBar
-  class="fixed top-0 left-0 h-1 bg-gradient-to-r from-red-600 to-red-400 transition-all z-50">
-</div>
+<div #progressBar class="fixed top-0 left-0 h-1 bg-gradient-to-r from-red-600 to-red-400 transition-all z-50"></div>
 
 <!-- Navbar -->
-<nav
-  #navbar
+<nav #navbar
   class="fixed top-0 left-0 w-full h-16 bg-white bg-opacity-80 backdrop-blur-lg shadow-lg flex items-center justify-center px-4 z-40 transition-all duration-300"
-  data-aos="fade-down"
-  data-aos-duration="1200"
->
+  data-aos="fade-down" data-aos-duration="1200">
   <!-- Navbar Content Wrapper -->
   <div class="w-full max-w-6xl flex items-center justify-between">
     <!-- Brand -->
-    <div
-      routerLink="/"
-      class="flex items-center space-x-3 cursor-pointer"
-      aria-label="Navigate to Home"
-    >
+    <div routerLink="/" class="flex items-center space-x-3 cursor-pointer" aria-label="Navigate to Home">
       <!-- Logo -->
-      <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 40 40"
-      width="40"
-      height="40"
-      class="svg-animate"
-    >
-      <defs>
-        <linearGradient id="navbar-gradient" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#b71c1c" />
-          <stop offset="100%" stop-color="#f44336" />
-        </linearGradient>
-      </defs>
-      <g fill="url(#navbar-gradient)" stroke="url(#navbar-gradient)" stroke-width="2">
-        <!-- Animated Line -->
-        <line x1="5" y1="30" x2="35" y2="30" class="line-animate" />
-        <!-- Animated Path -->
-        <path
-          d="M 10 18 Q 15 12, 20 18 Q 25 22, 30 18"
-          class="path-animate"
-        />
-        <!-- Animated Circle -->
-        <circle cx="20" cy="12" r="5" class="circle-animate" />
-        <!-- Animated Text -->
-        <text
-          x="20"
-          y="28"
-          font-size="6"
-          text-anchor="middle"
-          font-family="Arial"
-          fill="url(#navbar-gradient)"
-          class="text-animate"
-        >
-          KK
-        </text>
-      </g>
-    </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" class="svg-animate">
+        <defs>
+          <linearGradient id="navbar-gradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#b71c1c" />
+            <stop offset="100%" stop-color="#f44336" />
+          </linearGradient>
+        </defs>
+        <g fill="url(#navbar-gradient)" stroke="url(#navbar-gradient)" stroke-width="2">
+          <!-- Animated Line -->
+          <line x1="5" y1="30" x2="35" y2="30" class="line-animate" />
+          <!-- Animated Path -->
+          <path d="M 10 18 Q 15 12, 20 18 Q 25 22, 30 18" class="path-animate" />
+          <!-- Animated Circle -->
+          <circle cx="20" cy="12" r="5" class="circle-animate" />
+          <!-- Animated Text -->
+          <text x="20" y="28" font-size="6" text-anchor="middle" font-family="Arial" fill="url(#navbar-gradient)"
+            class="text-animate">
+            KK
+          </text>
+        </g>
+      </svg>
 
       <!-- Brand Name -->
-      <span
-      class="text-2xl font-bold text-gray-800 font-trebuchet transition-transform duration-300 hover:scale-105"
-    >
-      PrismNexus
-    </span>
+      <span class="text-2xl font-bold text-gray-800 font-trebuchet transition-transform duration-300 hover:scale-105">
+        PrismNexus
+      </span>
     </div>
 
     <!-- Desktop Menu -->
     <div class="hidden md:flex items-center space-x-12">
-      <a
-        routerLink="/dashboard"
-        class="flex items-center space-x-2 text-gray-700 text-base hover:text-red-600 transition-transform hover:scale-110"
-      >
+      <a routerLink="/dashboard"
+        class="flex items-center space-x-2 text-gray-700 text-base hover:text-red-600 transition-transform hover:scale-110">
         <i class="fa-solid fa-tools text-xl"></i>
         <span>Tech Stack</span>
       </a>
-      <a
-        routerLink="/contact"
-        class="flex items-center space-x-2 text-gray-700 text-base hover:text-red-600 transition-transform hover:scale-110"
-      >
+      <a routerLink="/contact"
+        class="flex items-center space-x-2 text-gray-700 text-base hover:text-red-600 transition-transform hover:scale-110">
         <i class="fas fa-users text-lg"></i>
         <span>Connect</span>
       </a>
-      <a
-        routerLink="/auth/login"
-        class="flex items-center space-x-3 border-2 border-red-600 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 hover:border-red-800 transition-transform hover:scale-105"
-      >
+      <a routerLink="/auth/login"
+        class="flex items-center space-x-3 border-2 border-red-600 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 hover:border-red-800 transition-transform hover:scale-105">
         <i class="fas fa-sign-in-alt text-lg"></i>
         <span>Login</span>
       </a>
     </div>
 
     <!-- Mobile Menu Toggle -->
-    <button
-      class="text-2xl text-gray-800 md:hidden"
-      (click)="toggleMobileMenu()"
-      aria-label="Toggle mobile menu"
-    >
+    <button class="text-2xl text-gray-800 md:hidden" (click)="toggleMobileMenu()" aria-label="Toggle mobile menu">
       <i [ngClass]="isMobileMenuOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars-staggered'"></i>
     </button>
   </div>
 
   <!-- Mobile Menu Overlay -->
-  <div
-    *ngIf="isMobileMenuOpen"
-    class="fixed inset-0 bg-black bg-opacity-50 z-40"
-    (click)="toggleMobileMenu()"
-  ></div>
+  <div *ngIf="isMobileMenuOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40" (click)="toggleMobileMenu()"></div>
 
   <!-- Mobile Menu -->
-  <div
-    *ngIf="isMobileMenuOpen"
-    class="absolute top-16 left-0 w-full bg-white bg-opacity-95 flex flex-col items-center space-y-6 py-6 px-4 shadow-2xl z-50"
-  >
-    <a
-      routerLink="/dashboard"
-      (click)="closeMobileMenu()"
-      class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-transform hover:scale-110"
-    >
+  <div *ngIf="isMobileMenuOpen"
+    class="absolute top-16 left-0 w-full bg-white bg-opacity-95 flex flex-col items-center space-y-6 py-6 px-4 shadow-2xl z-50">
+    <a routerLink="/dashboard" (click)="closeMobileMenu()"
+      class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-transform hover:scale-110">
       <i class="fa-solid fa-tools text-xl"></i>
       <span>Tech Stack</span>
     </a>
     <div class="border-b border-gray-300 w-full"></div>
-    <a
-      routerLink="/contact"
-      (click)="closeMobileMenu()"
-      class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-transform hover:scale-110"
-    >
+    <a routerLink="/contact" (click)="closeMobileMenu()"
+      class="flex items-center space-x-3 text-xl text-gray-700 hover:text-red-600 transition-transform hover:scale-110">
       <i class="fas fa-users text-xl"></i>
       <span>Connect</span>
     </a>
     <div class="border-b border-gray-300 w-full"></div>
-    <a
-      routerLink="/auth/login"
-      (click)="closeMobileMenu()"
-      class="flex items-center space-x-3 border-2 border-red-600 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 hover:border-red-800 transition-transform hover:scale-105"
-    >
+    <a routerLink="/auth/login" (click)="closeMobileMenu()"
+      class="flex items-center space-x-3 border-2 border-red-600 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 hover:border-red-800 transition-transform hover:scale-105">
       <i class="fas fa-sign-in-alt text-lg"></i>
       <span>Login</span>
     </a>

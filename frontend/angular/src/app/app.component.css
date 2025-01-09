@@ -1,33 +1,34 @@
-/* Custom animation for dot loader */
 @keyframes dotAnimation {
   0% {
     transform: translateY(0) scale(1) rotate(0deg);
-    background-color: #a9b4bb; /* Original neutral color */
+    background-color: #a9b4bb;
   }
+
   25% {
     transform: translateY(-14px) scale(1.3) rotate(10deg);
-    background-color: #f39c12; /* Highlight at peak */
+    background-color: #f39c12;
   }
+
   50% {
     transform: translateY(4px) scale(1.1) rotate(-10deg);
-    background-color: #f39c12; /* Maintain highlight */
+    background-color: #f39c12;
   }
+
   75% {
     transform: translateY(-6px) scale(1.2) rotate(5deg);
-    background-color: #f1c40f; /* Subtle color variation */
+    background-color: #f1c40f;
   }
+
   100% {
     transform: translateY(0) scale(1) rotate(0deg);
-    background-color: #3498db; /* Back to neutral color */
+    background-color: #3498db;
   }
 }
 
-/* Apply custom animation to each dot */
 .animate-dot {
-  animation: dotAnimation 1.8s infinite cubic-bezier(0.25, 1, 0.5, 1); /* Smooth ease-out curve */
+  animation: dotAnimation 1.8s infinite cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Delays for staggered animation */
 .delay-200 {
   animation-delay: 0.2s;
 }
