@@ -9,7 +9,9 @@
 
 Explore a curated collection of my **technical expertise**, **professional accomplishments**, and **innovative projects**—all designed to highlight my skills and commitment to excellence.
 
-**Experience it live:** [visit portfolio](https://krishnapilato.github.io/portfolio)
+## Live Demo
+- **Experience it live:** [Visit Portfolio](https://krishnapilato.github.io/portfolio)
+- **Performance Analysis:** [PageSpeed Insights Report](https://pagespeed.web.dev/analysis/https-krishnapilato-github-io-kodek/6wj1y1uzcg?form_factor=desktop)
 
 ---
 
