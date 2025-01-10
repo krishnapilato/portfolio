@@ -40,6 +40,7 @@ export class HomeComponent {
       strings: this.home.skills,
       typeSpeed: 60,
       backSpeed: 40,
+      loop: true,
       preStringTyped: this.applyRandomGradientColorsTyped.bind(this),
     });
   }

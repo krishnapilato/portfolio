@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { timer } from 'rxjs';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 
@@ -20,7 +19,9 @@ export class AppComponent implements OnInit {
   protected loadingOpacity: number = 1;
 
   ngOnInit() {
-    this.startLoadingAnimation();
+    window.addEventListener('load', () => {
+      this.startLoadingAnimation();
+    });
   }
 
   /**
@@ -28,22 +29,28 @@ export class AppComponent implements OnInit {
    */
   private startLoadingAnimation(): void {
     setTimeout(() => {
-      this.isLoading = false; // Hide the loading screen
-      this.fadeOutLoadingScreen(); // Trigger the fade-out animation
-    }, 3000);
+      this.fadeOutLoadingScreen();
+    }, 500); // Ensure the delay matches your loading needs
   }
 
   /**
    * Fades out the loading screen and reveals the main content.
    */
   private fadeOutLoadingScreen(): void {
-    timer(400).subscribe({
-      next: () => (this.loadingOpacity = 0), // Fade out the loading screen
-      complete: () => this.showMainContent(), // Reveal the main content
-    });
+    const fadeInterval = setInterval(() => {
+      this.loadingOpacity -= 0.05; // Gradually decrease opacity
+
+      if (this.loadingOpacity <= 0) {
+        clearInterval(fadeInterval);
+        this.isLoading = false; // Hide the loading screen
+        this.showMainContent();
+      }
+    }, 50); // Adjust interval speed for smoother animation
   }
 
-  /** Marks the main content as visible. */
+  /**
+   * Marks the main content as visible.
+   */
   private showMainContent(): void {
     this.isContentVisible = true;
   }
