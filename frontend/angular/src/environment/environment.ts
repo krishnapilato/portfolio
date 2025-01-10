@@ -3,7 +3,6 @@ export const environment = {
   version: '0.8.5d',
   appName: 'PrismNexus',
   apiUrl: 'https://prismnexus-v1-411a08a68df2.herokuapp.com',
-  themeColor: 'red',
 
   home: {
     skills: [

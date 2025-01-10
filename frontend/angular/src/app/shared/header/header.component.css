@@ -2,15 +2,13 @@
 nav {
   transition: transform 0.3s ease-in-out;
 }
-
-/* Hidden class to hide navbar */
 nav.hidden {
   transform: translateY(-100%); /* Hide navbar */
 }
 
 /* Progress bar transition */
 #progressBar {
-  transition: width 0.1s ease-in-out; /* Smooth progress bar update */
+  transition: width 0.1s ease-in-out;
 }
 
 /* SVG Wrapper Animation */
@@ -19,110 +17,78 @@ nav.hidden {
   transform-origin: center;
 }
 
-/* Line Animation: Rotates around its center */
+/* Line Animation */
 .line-animate {
   stroke-dasharray: 30;
   stroke-dashoffset: 30;
-  animation: draw-line 2s ease-in-out forwards, rotate-line 4s linear infinite;
+  animation: draw-line 2s ease-in-out forwards, rotate 4s linear infinite;
 }
 
-/* Path Animation: Draws and bounces */
+/* Path Animation */
 .path-animate {
   stroke-dasharray: 60;
   stroke-dashoffset: 60;
   fill: none;
   stroke: url(#navbar-gradient);
-  animation: draw-path 2s ease-in-out forwards, bounce-path 2s infinite ease-in-out;
+  animation: draw-path 2s ease-in-out forwards, bounce 2s infinite ease-in-out;
 }
 
-/* Circle Animation: Scales and moves up/down */
+/* Circle Animation */
 .circle-animate {
-  animation: pulse-circle 2s infinite ease-in-out, move-circle 4s infinite alternate ease-in-out;
+  animation: pulse 2s infinite ease-in-out, move 4s infinite alternate ease-in-out;
 }
 
-/* Text Animation: Pulses and rotates */
+/* Text Animation */
 .text-animate {
   opacity: 0;
-  animation: fade-in 1s ease-in-out forwards 1s, pulse-text 2s infinite ease-in-out;
+  animation: fade-in 1s ease-in-out forwards 1s, pulse 2s infinite ease-in-out;
 }
 
 /* Rotate the entire SVG */
 @keyframes rotate-svg {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
+  100% {
     transform: rotate(360deg);
   }
 }
 
-/* Keyframes for line drawing */
+/* Line Drawing */
 @keyframes draw-line {
-  to {
+  100% {
     stroke-dashoffset: 0;
   }
 }
 
-/* Keyframes for line rotation */
-@keyframes rotate-line {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Keyframes for path drawing */
+/* Path Drawing */
 @keyframes draw-path {
-  to {
+  100% {
     stroke-dashoffset: 0;
   }
 }
 
-/* Keyframes for path bouncing */
-@keyframes bounce-path {
-  0%, 100% {
-    transform: translateY(0);
-  }
+/* Bounce Effect */
+@keyframes bounce {
   50% {
     transform: translateY(-5px);
   }
 }
 
-/* Keyframes for circle pulsing */
-@keyframes pulse-circle {
-  0%, 100% {
-    transform: scale(1);
-  }
+/* Pulse Effect */
+@keyframes pulse {
   50% {
     transform: scale(1.5);
   }
 }
 
-/* Keyframes for circle vertical movement */
-@keyframes move-circle {
-  0% {
-    transform: translateY(0);
-  }
+/* Move Effect */
+@keyframes move {
   100% {
     transform: translateY(-10px);
   }
 }
 
-/* Keyframes for text fade-in */
+/* Fade-in Effect */
 @keyframes fade-in {
-  to {
+  100% {
     opacity: 1;
-  }
-}
-
-/* Keyframes for text pulsing */
-@keyframes pulse-text {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
   }
 }

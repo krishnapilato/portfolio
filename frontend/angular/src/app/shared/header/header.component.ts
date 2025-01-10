@@ -13,8 +13,8 @@ export class HeaderComponent implements AfterViewInit {
   @ViewChild('progressBar', { static: true }) private progressBar!: ElementRef;
   @ViewChild('navbar', { static: true }) private navbar!: ElementRef;
 
-  protected isMobileMenuOpen = false;
-  private lastScrollTop = 0;
+  protected isMobileMenuOpen: boolean = false;
+  private lastScrollTop: number = 0;
 
   /**
    * Called after the component's view is initialized.

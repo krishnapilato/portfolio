@@ -15,9 +15,9 @@ import { HeaderComponent } from './shared/header/header.component';
 export class AppComponent implements OnInit {
   private readonly title: string = 'PrismNexus';
 
-  isLoading = true;
-  isContentVisible = false;
-  loadingOpacity = 1;  // Start with full opacity
+  protected isLoading: boolean = true;
+  protected isContentVisible: boolean = false;
+  protected loadingOpacity: number = 1;
 
   ngOnInit() {
     this.startLoadingAnimation();
@@ -27,12 +27,10 @@ export class AppComponent implements OnInit {
    * Starts the loading animation, showing the loading screen and then hiding it.
    */
   private startLoadingAnimation(): void {
-    timer(3000).subscribe({
-      complete: () => {
-        this.isLoading = false; // Hide the loading screen
-        this.fadeOutLoadingScreen(); // Trigger the fade-out animation
-      },
-    });
+    setTimeout(() => {
+      this.isLoading = false; // Hide the loading screen
+      this.fadeOutLoadingScreen(); // Trigger the fade-out animation
+    }, 3000);
   }
 
   /**
@@ -45,21 +43,17 @@ export class AppComponent implements OnInit {
     });
   }
 
-  /**
-   * Reveals the main content.
-   */
+  /** Marks the main content as visible. */
   private showMainContent(): void {
     this.isContentVisible = true;
   }
 
   /**
-   * Prevents the default context menu from appearing on right-click.
-   * @param event - The MouseEvent triggered by the right-click.
+   * Disables the context menu globally on right-click.
+   * @param event - The triggered MouseEvent.
    */
   @HostListener('document:contextmenu', ['$event'])
   private onRightClick(event: MouseEvent): void {
-    if (event) {
-      event.preventDefault();
-    }
+    event?.preventDefault();
   }
 }

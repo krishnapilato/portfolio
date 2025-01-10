@@ -22,33 +22,22 @@ export class AboutMeComponent implements AfterViewInit {
   }
 
   /**
-   * Initialize the globe with default settings, auto-rotation, and specific markers.
+   * Initialize the globe with default settings and markers.
    */
   private initializeGlobe(): void {
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
 
-    const markerSvg = `<svg viewBox="-4 0 36 36">
-    <path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
-    <circle fill="black" cx="14" cy="14" r="7"></circle>
-  </svg>`;
+    const markerSvg = `
+      <svg viewBox="-4 0 36 36">
+        <path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
+        <circle fill="black" cx="14" cy="14" r="7"></circle>
+      </svg>
+    `;
 
-    // Define marker data
     const gData = [
-      {
-        lat: 12.9716,
-        lng: 77.5946,
-        size: 30,
-        color: 'red',
-        label: 'Born in Bangalore, India',
-      },
-      {
-        lat: 45.4642,
-        lng: 9.1900,
-        size: 25,
-        color: 'blue',
-        label: 'Lived in Italy',
-      },
+      { lat: 12.9716, lng: 77.5946, size: 30, color: 'red', label: 'Born in Bangalore, India' },
+      { lat: 45.4642, lng: 9.1900, size: 25, color: 'blue', label: 'Lived in Italy' },
     ];
 
     this.globe = new Globe(mapElement)
@@ -59,24 +48,28 @@ export class AboutMeComponent implements AfterViewInit {
       .htmlElement((d: any) => {
         const el = document.createElement('div');
         el.innerHTML = markerSvg;
-        el.style.color = d.color;
-        el.style.width = `${d.size}px`;
-        el.style.cursor = 'pointer';
+        Object.assign(el.style, {
+          color: d.color,
+          width: `${d.size}px`,
+          cursor: 'pointer',
+        });
         el.onclick = () => console.info(`Marker clicked: ${d.label}`);
         return el;
       });
 
-    this.globe.controls().autoRotate = true;
-    this.globe.controls().autoRotateSpeed = 1;
+    // Configure controls
+    const controls = this.globe.controls();
+    controls.autoRotate = true;
+    controls.enableZoom = false;
+    controls.enableRotate = false;
+    controls.enablePan = false;
 
-    this.globe.controls().enableZoom = false;
-    this.globe.controls().enableRotate = false;
-    this.globe.controls().enablePan = false;
-
+    // Set the initial point of view
     this.globe.pointOfView({ lat: 12.9716, lng: 77.5946, altitude: 3 }, 0);
   }
 
-  initializeAnimations(): void {
+  //?TODO split in multiple functions
+  private initializeAnimations(): void {
     const animations = [
       {
         target: '.title',
@@ -208,19 +201,19 @@ export class AboutMeComponent implements AfterViewInit {
         },
       }
     );
-
   }
 
   /**
-   * Smoothly update the globe's position and altitude based on scroll progress.
-   * @param lat - Latitude to focus on
-   * @param lng - Longitude to focus on
-   * @param altitude - Zoom level
+   * Updates the globe's position and altitude smoothly.
+   * @param lat - Latitude to focus on.
+   * @param lng - Longitude to focus on.
+   * @param altitude - Zoom level.
    */
   private zoomGlobe(lat: number, lng: number, altitude: number): void {
+    if (!this.globe) return;
+
+    // Disable auto-rotation and smoothly update the globe's viewpoint
     this.globe.controls().autoRotate = false;
-    if (this.globe) {
-      this.globe.pointOfView({ lat, lng, altitude }, 300); // Smoothly update position and altitude
-    }
+    this.globe.pointOfView({ lat, lng, altitude }, 300);
   }
 }

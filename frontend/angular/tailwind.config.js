@@ -2,8 +2,8 @@
 module.exports = {
   content: ["./src/**/*.{html,ts}"],
 
-  // Enable dark mode using the "class" strategy
-  darkMode: "class",
+  // Use 'media' for automatic dark mode support based on user preference
+  darkMode: "media",
 
   theme: {
     extend: {
