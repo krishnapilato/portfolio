@@ -1,39 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>Backend Dashboard</title>
+    <title>PrismNexus - Backend</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
-<body class="flex flex-col h-screen bg-gradient-to-r from-green-200 via-purple-100 to-yellow-100 text-gray-800">
+<body class="flex flex-col h-screen bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300">
 <div id="loading-screen" class="fixed inset-0 flex flex-col justify-center items-center bg-black z-50 text-white">
     <div class="w-12 h-12 border-4 border-gray-500 border-t-white rounded-full animate-spin"></div>
     <p class="mt-4 text-lg font-semibold">Loading...</p>
 </div>
-<header class="text-center py-6 bg-gray-900 text-white rounded-b-lg">
-    <h1 class="text-4xl font-bold uppercase tracking-wide">Backend Dashboard</h1>
-    <p class="text-lg mt-2 font-light">Manage and Monitor Your Backend Services</p>
-</header>
-<main class="flex flex-col items-center justify-center flex-grow px-4">
+
+<main class="flex flex-col items-center justify-center flex-grow px-6 py-8 sm:py-12 bg-gray-90">
     <div class="message text-center">
-        <p class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-500 via-purple-500 to-yellow-500">All backend services are running smoothly!</p>
-        <p class="text-2xl mt-4 font-medium text-gray-700">Access detailed documentation or visit the frontend application below.</p>
+        <p class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-500 via-teal-500 to-blue-500">
+            All backend services are running smoothly!
+        </p>
+        <p class="text-2xl sm:text-3xl mt-4 font-medium text-gray-700">Access documentation or visit the frontend
+            application below.</p>
     </div>
-    <div class="buttons flex justify-center mt-8 space-x-8">
-        <a  th:href="'/swagger-ui/index.html'" target="_blank" class="bg-green-600 text-white py-4 px-12 rounded-full shadow-xl hover:shadow-2xl hover:bg-green-700 font-bold text-xl transition duration-300">View Documentation</a>
-        <a th:href="'https://krishnapilato.github.io/portfolio'" target="_blank" class="bg-red-500 text-white py-4 px-12 rounded-full shadow-xl hover:shadow-2xl hover:bg-orange-600 font-bold text-xl transition duration-300">Visit Frontend</a>
+
+    <div class="buttons flex flex-wrap justify-center mt-8 space-x-8 sm:space-x-12">
+        <a href="/swagger-ui/index.html"
+           class="bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-10 sm:px-12 rounded-full shadow-md hover:shadow-lg hover:bg-green-700 font-semibold text-xl transition-all duration-300 ease-in-out transform hover:scale-105">
+            View Documentation
+        </a>
+        <a href="https://krishnapilato.github.io/kodek" target="_blank"
+           class="bg-gradient-to-r from-red-500 to-red-600 text-white py-4 px-10 sm:px-12 rounded-full shadow-md hover:shadow-lg hover:bg-orange-600 font-semibold text-xl transition-all duration-300 ease-in-out transform hover:scale-105">
+            Visit Frontend
+        </a>
     </div>
 </main>
-<footer class="text-center py-4 bg-gray-900 text-gray-300 text-lg rounded-t-lg">
-    <p>&copy; 2024 Backend Dashboard</p>
-</footer>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Simulate loading time
-        setTimeout(function () {
-            document.getElementById('loading-screen').style.display = 'none';
-            document.body.style.visibility = 'visible';
-        }, 3000); // 3 seconds
-    });
+    $(document).ready(() => setTimeout(() => { $('body').css('visibility', 'visible'); $('#loading-screen').hide(); }, 3000));
 </script>
 </body>
 </html>

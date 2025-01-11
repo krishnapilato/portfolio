@@ -1,192 +1,100 @@
 <div
   class="flex items-center justify-center min-h-screen px-6 sm:px-8 lg:px-10 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 pt-20"
-  role="region"
-  aria-labelledby="login-heading"
->
+  role="region" aria-labelledby="login-heading">
   <div
     class="bg-white shadow-lg rounded-3xl w-full max-w-md p-8 transform transition duration-500 hover:scale-110 ease-in-out relative"
-    data-aos="fade-up"
-    data-aos-duration="1200"
-  >
+    data-aos="fade-up" data-aos-duration="1200">
     <!-- Decorative Shapes -->
     <div
       class="absolute top-[-100px] right-[-100px] bg-gradient-to-tl from-blue-500 to-indigo-500 w-36 h-36 animate-pulse opacity-60 shadow-2xl rounded-full"
-      aria-hidden="true"
-    ></div>
+      aria-hidden="true"></div>
     <div
       class="absolute top-[-60px] right-[-60px] bg-gradient-to-br from-green-400 to-teal-500 w-24 h-24 animate-bounce opacity-50 shadow-xl rounded-xl"
-      aria-hidden="true"
-    ></div>
+      aria-hidden="true"></div>
     <div
       class="absolute bottom-[-60px] left-[-80px] bg-gradient-to-r from-purple-500 to-pink-500 w-48 h-24 animate-pulse opacity-40 shadow-lg rounded-full"
-      aria-hidden="true"
-    ></div>
+      aria-hidden="true"></div>
     <div
       class="absolute bottom-[-100px] left-[-100px] bg-gradient-to-tl from-orange-400 to-yellow-600 w-20 h-20 animate-ping opacity-50 shadow-lg rounded-full"
-      aria-hidden="true"
-    ></div>
+      aria-hidden="true"></div>
 
     <!-- Login Form Title -->
-    <h3
-      id="login-heading"
-      class="text-3xl font-extrabold text-center text-gray-900 mb-6"
+    <h3 id="login-heading" class="text-3xl font-extrabold text-center text-gray-900 mb-6"
       style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"
-      data-aos="fade-down"
-      data-aos-duration="1200"
-      data-aos-delay="100"
-    >
+      data-aos="fade-down" data-aos-duration="1200" data-aos-delay="100">
       Welcome to PrismNexus
     </h3>
 
-    <p
-      class="text-center text-gray-500 mb-8"
-      data-aos="fade-up"
-      data-aos-duration="1200"
-      data-aos-delay="200"
-    >
-      <i class="fa-solid fa-circle-info" aria-hidden="true"></i> Please log in
-      to continue exploring.
+    <p class="text-center text-gray-500 mb-8" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="200">
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i> Please log in to continue exploring.
     </p>
 
     <!-- Login Form -->
-    <form
-      (ngSubmit)="login(loginForm)"
-      #loginForm="ngForm"
-      novalidate
-      class="space-y-6"
-      data-aos="fade-up"
-      data-aos-duration="1200"
-      data-aos-delay="300"
-      aria-labelledby="login-heading"
-    >
+    <form (ngSubmit)="login(loginForm)" #loginForm="ngForm" novalidate class="space-y-6" data-aos="fade-up"
+      data-aos-duration="1200" data-aos-delay="300" aria-labelledby="login-heading">
       <!-- Email Input -->
-      <div
-        class="relative"
-        data-aos="fade-up"
-        data-aos-duration="1200"
-        data-aos-delay="400"
-      >
-        <label
-          for="email-input"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
+      <div class="relative" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="400">
+        <label for="email-input" class="block text-sm font-semibold text-gray-700 mb-2">
           Email
         </label>
         <div class="relative">
-          <i
-            class="fa-solid fa-at text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
-            aria-hidden="true"
-          ></i>
-          <input
-            #emailInput
-            type="email"
-            id="email-input"
-            placeholder="Insert email"
-            [(ngModel)]="loginRequest.email"
-            name="loginRequest.email"
-            required
-            email
-            aria-required="true"
-            class="w-full p-3 pl-12 rounded-lg bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          />
+          <i class="fa-solid fa-at text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
+            aria-hidden="true"></i>
+          <input #emailInput type="email" id="email-input" placeholder="Insert email" [(ngModel)]="loginRequest.email"
+            name="loginRequest.email" required email aria-required="true"
+            class="w-full p-3 pl-12 rounded-lg bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
         </div>
         <div
           *ngIf="loginForm.controls['loginRequest.email']?.invalid && loginForm.controls['loginRequest.email']?.touched"
-          class="text-red-500 text-sm mt-1"
-          role="alert"
-        >
-          <ng-container
-            *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')"
-          >
+          class="text-red-500 text-sm mt-1" role="alert">
+          <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('required')">
             Email is required.
           </ng-container>
-          <ng-container
-            *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')"
-          >
+          <ng-container *ngIf="loginForm.controls['loginRequest.email']?.hasError('email')">
             Please enter a valid email.
           </ng-container>
         </div>
       </div>
 
       <!-- Password Input -->
-      <div
-        class="relative"
-        data-aos="fade-up"
-        data-aos-duration="1200"
-        data-aos-delay="500"
-      >
-        <label
-          for="password-input"
-          class="block text-sm font-semibold text-gray-700 mb-2"
-        >
+      <div class="relative" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="500">
+        <label for="password-input" class="block text-sm font-semibold text-gray-700 mb-2">
           Password
         </label>
         <div class="relative">
-          <i
-            class="fa-solid fa-key text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
-            aria-hidden="true"
-          ></i>
-          <input
-            #passwordInput
-            [type]="hide ? 'password' : 'text'"
-            id="password-input"
-            placeholder="Insert password"
-            [(ngModel)]="loginRequest.password"
-            name="loginRequest.password"
-            required
-            minlength="8"
-            aria-required="true"
-            class="w-full p-3 pl-12 rounded-lg bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          />
-          <button
-            *ngIf="loginRequest.password.length > 0"
-            type="button"
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            (click)="hide = !hide"
-            aria-label="Toggle password visibility"
-          >
-            <i
-              class="fa-solid"
-              [ngClass]="hide ? 'fa-eye' : 'fa-eye-slash'"
-              aria-hidden="true"
-            ></i>
+          <i class="fa-solid fa-key text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
+            aria-hidden="true"></i>
+          <input #passwordInput [type]="hide ? 'password' : 'text'" id="password-input" placeholder="Insert password"
+            [(ngModel)]="loginRequest.password" name="loginRequest.password" required minlength="8" aria-required="true"
+            class="w-full p-3 pl-12 rounded-lg bg-gray-50 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          <button *ngIf="loginRequest.password.length > 0" type="button"
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" (click)="hide = !hide"
+            aria-label="Toggle password visibility">
+            <i class="fa-solid" [ngClass]="hide ? 'fa-eye' : 'fa-eye-slash'" aria-hidden="true"></i>
           </button>
         </div>
         <div
           *ngIf="loginForm.controls['loginRequest.password']?.invalid && loginForm.controls['loginRequest.password']?.touched"
-          class="text-red-500 text-sm mt-1"
-          role="alert"
-        >
-          <ng-container
-            *ngIf="loginForm.controls['loginRequest.password']?.hasError('required')"
-          >
+          class="text-red-500 text-sm mt-1" role="alert">
+          <ng-container *ngIf="loginForm.controls['loginRequest.password']?.hasError('required')">
             Password is required.
           </ng-container>
-          <ng-container
-            *ngIf="loginForm.controls['loginRequest.password']?.hasError('minlength')"
-          >
+          <ng-container *ngIf="loginForm.controls['loginRequest.password']?.hasError('minlength')">
             Password must be at least 8 characters long.
           </ng-container>
         </div>
       </div>
 
       <!-- Message (Error or Success) -->
-      <div
-        class="text-sm mt-4 p-2 rounded-md"
-        [ngClass]="{ 'bg-green-100 text-green-700': isSuccess, 'bg-red-100 text-red-700': !isSuccess }"
-        *ngIf="message"
-        role="alert"
-        aria-live="polite"
-      >
+      <div class="text-sm mt-4 p-2 rounded-md"
+        [ngClass]="{ 'bg-green-100 text-green-700': isSuccess, 'bg-red-100 text-red-700': !isSuccess }" *ngIf="message"
+        role="alert" aria-live="polite">
         {{ message }}
       </div>
 
       <!-- Submit Button -->
-      <button
-        type="submit"
-        [disabled]="loginForm.invalid"
-        class="w-full p-3 rounded-full bg-red-600 hover:bg-red-800 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-red-300"
-      >
+      <button type="submit" [disabled]="loginForm.invalid"
+        class="w-full p-3 rounded-full bg-red-600 hover:bg-red-800 text-white font-bold transition focus:outline-none focus:ring-2 focus:ring-red-300">
         Sign in <i class="fa-solid fa-sign-in-alt" aria-hidden="true"></i>
       </button>
     </form>
@@ -195,11 +103,7 @@
     <div class="mt-6 text-center">
       <p class="text-sm text-gray-500">
         Don't have an account?
-        <a
-          routerLink="/auth/signup"
-          class="text-gray-800 hover:underline"
-          aria-label="Sign up for an account"
-        >
+        <a routerLink="/auth/signup" class="text-gray-800 hover:underline" aria-label="Sign up for an account">
           Sign up <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
         </a>
       </p>

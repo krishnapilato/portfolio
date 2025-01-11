@@ -10,11 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class PortfolioApplicationTests {
 
-	/**
-	 * Verifies that the application context loads without issues.
-	 */
-	@Test
-	void contextLoads() {
-		// This test will pass if the application context is loaded successfully.
-	}
+    /**
+     * Verifies that the application context loads without issues.
+     */
+    @Test
+    void contextLoads() {
+        // This test will pass if the application context is loaded successfully.
+    }
 }

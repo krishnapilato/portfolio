@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- Define the pattern for log messages -->
-    <property name="FILE_LOG_PATTERN" value="%highlight(%-5level) [%cyan(%d{yyyy-MM-dd HH:mm:ss})] [%yellow(%thread)] %green(%logger{36}) - %msg%n" />
-    <property name="LOG_FILE_PATH" value="logs/application.log" />
+    <property name="FILE_LOG_PATTERN"
+              value="%highlight(%-5level) [%cyan(%d{yyyy-MM-dd HH:mm:ss})] [%yellow(%thread)] %green(%logger{36}) - %msg%n"/>
+    <property name="LOG_FILE_PATH" value="logs/application.log"/>
 
     <!-- Rolling File Appender Configuration -->
     <!--
@@ -38,7 +39,7 @@
     <!-- Root Logger Configuration -->
     <root level="debug">
         <!-- Attach both the console and rolling file appenders -->
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="ROLLING" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ROLLING"/>
     </root>
 </configuration>

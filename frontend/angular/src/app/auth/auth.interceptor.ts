@@ -20,12 +20,36 @@ export class AuthInterceptor implements HttpInterceptor {
    * @returns An observable of the HTTP event.
    */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(
-      this.authService.currentUserValue?.token &&
-      !['login', 'signup'].some((endpoint) => request.url.includes(endpoint))
-        ? request.clone({ setHeaders: { Authorization: `Bearer ${this.authService.currentUserValue.token}` } })
-        : request
-    );
+    const token = this.authService.currentUserValue?.token;
+    const isAuthRequest = this.isAuthRequest(request.url);
+
+    if (this.shouldAddAuthHeader(token, isAuthRequest)) {
+      if (token) {
+        request = this.addAuthHeader(request, token);
+      }
+    }
+
+    return next.handle(request);
+  }
+
+  /**
+   * Checks if the request URL is one of the authentication-related URLs (like 'login' or 'signup').
+   * @param url - The URL of the HTTP request.
+   * @returns True if the URL is an authentication-related URL.
+   */
+  private isAuthRequest(url: string): boolean {
+    const authEndpoints = ['login', 'signup'];
+    return authEndpoints.some((endpoint) => url.includes(endpoint));
+  }
+
+  /**
+   * Determines if the authorization header should be added to the request.
+   * @param token - The JWT token to be added.
+   * @param isAuthRequest - Whether the request is an authentication request.
+   * @returns True if the token should be added.
+   */
+  private shouldAddAuthHeader(token: string | undefined, isAuthRequest: boolean): boolean {
+    return !!token && !isAuthRequest;
   }
 
   /**

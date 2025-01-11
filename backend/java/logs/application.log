@@ -1,0 +1,13 @@
+[34mINFO [0;39m [[36m2025-01-11 21:49:27[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-11 21:49:27[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-11 21:49:27[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 0 ms
+[34mINFO [0;39m [[36m2025-01-11 21:49:27[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 394 ms
+[34mINFO [0;39m [[36m2025-01-11 21:49:30[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 79 ms
+[34mINFO [0;39m [[36m2025-01-11 21:49:34[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mc.p.portfolio.service.UserService[0;39m - Attempting to load user by email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-11 21:49:34[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mc.p.portfolio.service.UserService[0;39m - User found with email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-11 21:49:36[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-11 21:50:41[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-11 21:50:41[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-11 21:50:41[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-11 21:50:41[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-11 21:50:41[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
