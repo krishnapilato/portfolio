@@ -49,32 +49,31 @@ export class HomeComponent {
       'background-image',
       `linear-gradient(to right, ${this.generateRandomColor()}, ${this.generateRandomColor()})`
     );
-  }
+  }  
 
+  /** Scroll down animation */
   setupScrollAnimation(): void {
     const section = document.querySelector('section');
-    if (section) {
-      gsap.to(section, {
-        scale: 0.5, // Shrinks the section to 50% of its original size (zoom out effect)
-        opacity: 0, // Optionally fades out during the zoom out
-        transformOrigin: 'center center', // Ensures the zoom originates from the center
-        scrollTrigger: {
-          trigger: section,
-          start: 'top+=500 center', // Start the zoom-out effect when the section is slightly scrolled into view
-          end: 'bottom top', // Complete the animation when the section leaves the viewport
-          scrub: true, // Tie the animation progress to the scroll
-        },
-        duration: 1.5, // Adjusts the speed of the zoom out
-        ease: 'power2.inOut', // Smooth transition for zooming
-      });
-    }
-    
-  }
+    if (!section) return;
+  
+    gsap.to(section, {
+      scale: 0.5,
+      opacity: 0,
+      transformOrigin: 'center center',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top+=500 center',
+        end: 'bottom top',
+        scrub: true,
+      },
+      ease: 'power2.inOut',
+    });
+  }  
 
   /** Animate the wave colors dynamically */
   private animateWaveColors(): void {
     gsap.to('#wave path', {
-      fill: this.generateRandomColor(),
+      fill: () => this.generateRandomColor(),
       duration: 15,
       repeat: -1,
       yoyo: true,
@@ -88,8 +87,7 @@ export class HomeComponent {
       y: 20,
       rotateX: 10,
       rotateY: 5,
-      scaleX: 1.1,
-      scaleY: 1.12,
+      scale: 1.1,
       duration: 12,
       repeat: -1,
       yoyo: true,
@@ -97,78 +95,80 @@ export class HomeComponent {
     });
   }
 
-  // Generates and animates random shapes dynamically
+  // Generates and animates random shapes dynamically with high performance
   private generateRandomShapes(): void {
     const shapesContainer = document.getElementById('shapes-container');
     if (!shapesContainer) return;
 
-    shapesContainer.innerHTML = '';
+    shapesContainer.textContent = '';
 
-    const shapeCount = 12 + Math.floor(Math.random() * 5);
+    const shapeCount = 12 + (Math.random() * 5 | 0);
+    const fragment = document.createDocumentFragment();
 
-    Array.from({ length: shapeCount }).forEach(() => {
+    const shapes: HTMLElement[] = [];
+
+    for (let i = 0; i < shapeCount; i++) {
       const shape = this.createRandomShape();
-      shapesContainer.appendChild(shape);
-      this.animateShape(shape);
-    });
+      shapes.push(shape);
+      fragment.appendChild(shape);
+    }
+
+    shapesContainer.appendChild(fragment);
+    requestAnimationFrame(() => shapes.forEach((shape) => this.animateShape(shape)));
   }
 
   /** Create a random shape with dynamic size, position, and styles */
   private createRandomShape(): HTMLElement {
     const shape = document.createElement('div');
-    const size = Math.random() * 50 + 30;
-    const top = Math.random() * 100;
-    const left = Math.random() * 100;
-    const isCircle = Math.random() > 0.5;
+    const random = Math.random;
+    const size = random() * 50 + 30;
 
-    Object.assign(shape.style, {
-      width: `${size}px`,
-      height: `${size}px`,
-      position: 'absolute',
-      top: `${top}%`,
-      left: `${left}%`,
-      backgroundColor: this.generateRandomColor(),
-      borderRadius: isCircle ? '50%' : '0',
-      backdropFilter: 'blur(40px)',
-      boxShadow: '0 6px 20px rgba(118, 115, 115, 0.3)',
-      transform: `rotate(${Math.random() * 360}deg)`,
-      opacity: Math.random() * 0.7 + 0.3,
-    });
+    const styles = `
+      width: ${size}px;
+      height: ${size}px;
+      position: absolute;
+      top: ${random() * 100}%;
+      left: ${random() * 100}%;
+      background-color: ${this.generateRandomColor()};
+      border-radius: ${random() > 0.5 ? '50%' : '0'};
+      backdrop-filter: blur(40px);
+      box-shadow: 0 6px 20px rgba(118, 115, 115, 0.3);
+      transform: rotate(${random() * 360}deg);
+      opacity: ${random() * 0.7 + 0.3};
+    `;
 
+    shape.setAttribute('style', styles);
     return shape;
   }
 
-  /** Animates a shape with dynamic movement, rotation, and scaling */
+  /** Animates a shape with unique movement, rotation, and scaling */
   private animateShape(shape: HTMLElement): void {
-    const maxShapeTop = window.innerHeight * 0.6;
-    const shapeHeight = shape.getBoundingClientRect().height || 0;
+    const random = (min: number, max: number) => Math.random() * (max - min) + min;
 
-    const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+    const top = `${random(0, Math.max(window.innerHeight * 0.6 - shape.offsetHeight, 0))}px`;
+    const left = `${random(0, 100)}%`;
 
-    Object.assign(shape.style, {
-      top: `${randomInRange(0, Math.max(maxShapeTop - shapeHeight, 0))}px`,
-      left: `${randomInRange(0, 100)}%`,
-    });
+    Object.assign(shape.style, { top, left });
 
     gsap.to(shape, {
-      y: `+=${randomInRange(30, 50)}`,
-      x: `+=${randomInRange(30, 50)}`,
-      rotation: randomInRange(0, 360),
-      scale: randomInRange(1.1, 1.3),
-      duration: randomInRange(3, 5),
+      y: `+=${random(20, 60)}`,
+      x: `+=${random(20, 60)}`,
+      rotation: random(0, 360),
+      scale: random(1, 1.5),
+      duration: random(2, 5),
       repeat: -1,
       yoyo: true,
-      ease: 'power2.inOut',
+      ease: 'power1.inOut',
     });
   }
 
   // Adds a double-click handler to clear and regenerate shapes
   private addDocumentClickHandler(): void {
-    document.addEventListener('dblclick', () => this.generateRandomShapes());
+    document.addEventListener('dblclick', this.generateRandomShapes.bind(this), { passive: true });
   }
 
   // Generates a random RGB color as a string
   private generateRandomColor(): string {
-    return `rgb(${Array.from({ length: 3 }, () => Math.floor(Math.random() * 256)).join(',')})`;
+    return `rgb(${(Math.random() * 256) | 0}, ${(Math.random() * 256) | 0}, ${(Math.random() * 256) | 0})`;
   }
 }

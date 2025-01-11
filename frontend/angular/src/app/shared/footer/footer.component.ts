@@ -5,15 +5,17 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css',
+  styleUrls: ['./footer.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule]
 })
 export class FooterComponent {
+  private readonly currentYearValue: string = new Date().getFullYear().toString();
+
   /**
-   * Current year for dynamic display in the footer.
+   * Current year for dynamic display
    */
-  public get currentYear(): number {
-    return new Date().getFullYear();
+  public get currentYear(): string {
+    return this.currentYearValue;
   }
 }

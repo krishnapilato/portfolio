@@ -65,7 +65,6 @@ export class AuthService {
   public logout(): void {
     this.clearStoredUser();
     this.router.navigate(['auth/login']);
-    console.info('User logged out successfully.');
   }
 
   /**
@@ -139,19 +138,6 @@ export class AuthService {
   private clearStoredUser(): void {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
-  }
-
-  /**
-   * Refreshes the current user's token by calling the refresh endpoint.
-   * @returns Observable of the new LoginResponse.
-   */
-  public refreshToken(): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>(`${environment.apiUrl}/auth/refresh-token`, {})
-      .pipe(
-        tap((response: LoginResponse) => this.storeUser(response)),
-        catchError(this.handleHttpError)
-      );
   }
 
   /**

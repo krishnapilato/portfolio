@@ -10,7 +10,6 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private readonly excludedEndpoints = ['login', 'signup'];
 
   constructor(private readonly authService: AuthService) { }
 
@@ -21,11 +20,10 @@ export class AuthInterceptor implements HttpInterceptor {
    * @returns An observable of the HTTP event.
    */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.currentUserValue?.token;
-
     return next.handle(
-      token && !this.excludedEndpoints.some((endpoint) => request.url.includes(endpoint))
-        ? this.addAuthHeader(request, token)
+      this.authService.currentUserValue?.token &&
+      !['login', 'signup'].some((endpoint) => request.url.includes(endpoint))
+        ? request.clone({ setHeaders: { Authorization: `Bearer ${this.authService.currentUserValue.token}` } })
         : request
     );
   }

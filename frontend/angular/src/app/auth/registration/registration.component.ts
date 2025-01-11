@@ -37,8 +37,8 @@ export class RegistrationComponent {
         registrationForm.resetForm();
       },
       error: ({ error }) => {
-        this.showMessage(error?.message || 'Registration failed. Please try again.', false);
         this.registrationRequest.password = '';
+        this.showMessage(error?.message || 'Registration failed. Please try again.', false);
       },
     });
   }

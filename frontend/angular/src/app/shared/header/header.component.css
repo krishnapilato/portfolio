@@ -1,14 +1,22 @@
-/* Navbar transition */
+/* Navbar Transition */
 nav {
   transition: transform 0.3s ease-in-out;
 }
+
 nav.hidden {
-  transform: translateY(-100%); /* Hide navbar */
+  transform: translateY(-100%);
 }
 
-/* Progress bar transition */
 #progressBar {
-  transition: width 0.1s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(to right, #DC2626, #F87171);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  transition: width 0.15s ease-in-out;
+  z-index: 9999;
 }
 
 /* SVG Wrapper Animation */
@@ -21,7 +29,7 @@ nav.hidden {
 .line-animate {
   stroke-dasharray: 30;
   stroke-dashoffset: 30;
-  animation: draw-line 2s ease-in-out forwards, rotate 4s linear infinite;
+  animation: draw-line 2s ease-in-out forwards;
 }
 
 /* Path Animation */
@@ -30,19 +38,21 @@ nav.hidden {
   stroke-dashoffset: 60;
   fill: none;
   stroke: url(#navbar-gradient);
-  animation: draw-path 2s ease-in-out forwards, bounce 2s infinite ease-in-out;
+  animation: draw-path 2s ease-in-out forwards;
 }
 
 /* Circle Animation */
 .circle-animate {
-  animation: pulse 2s infinite ease-in-out, move 4s infinite alternate ease-in-out;
+  animation: pulse 2s infinite ease-in-out;
 }
 
 /* Text Animation */
 .text-animate {
   opacity: 0;
-  animation: fade-in 1s ease-in-out forwards 1s, pulse 2s infinite ease-in-out;
+  animation: fade-in 1s ease-in-out forwards 1s;
 }
+
+/* Keyframes */
 
 /* Rotate the entire SVG */
 @keyframes rotate-svg {
@@ -65,24 +75,10 @@ nav.hidden {
   }
 }
 
-/* Bounce Effect */
-@keyframes bounce {
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
 /* Pulse Effect */
 @keyframes pulse {
   50% {
     transform: scale(1.5);
-  }
-}
-
-/* Move Effect */
-@keyframes move {
-  100% {
-    transform: translateY(-10px);
   }
 }
 

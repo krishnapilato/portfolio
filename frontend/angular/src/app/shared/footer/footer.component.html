@@ -1,13 +1,13 @@
-<footer class="w-full bg-white bg-opacity-10 rounded-xl backdrop-blur-3xl shadow-lg py-8 px-6">
+<footer class="w-full bg-white bg-opacity-10 backdrop-blur-xl shadow-2xl py-8 px-6">
   <!-- Footer Content Wrapper -->
   <div class="max-w-5xl mx-auto flex flex-col items-center space-y-6">
 
     <!-- Branding Section -->
-    <div class="flex flex-col items-center space-y-2">
-      <!-- Logo and Branding Name -->
-      <div class="flex items-center space-x-2">
+    <div class="flex flex-col items-center space-y-3">
+      <!-- Logo and Branding -->
+      <div class="flex items-center space-x-3">
         <!-- Custom Logo -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="50" height="50">
           <defs>
             <linearGradient id="footer-gradient" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stop-color="#b71c1c" />
@@ -15,25 +15,23 @@
             </linearGradient>
           </defs>
           <g fill="url(#footer-gradient)" stroke="url(#footer-gradient)" stroke-width="2">
-            <line x1="5" y1="30" x2="35" y2="30" /> <!-- Horizontal line -->
-            <path d="M 10 18 Q 15 12, 20 18 Q 25 22, 30 18" /> <!-- Decorative path -->
-            <circle cx="20" cy="12" r="5" /> <!-- Center circle -->
-            <text x="20" y="28" font-size="6" text-anchor="middle" font-family="Arial" fill="url(#footer-gradient)">
+            <line x1="5" y1="30" x2="35" y2="30" />
+            <path d="M 10 18 Q 15 12, 20 18 Q 25 22, 30 18" />
+            <circle cx="20" cy="12" r="5" />
+            <text x="20" y="28" font-size="8" text-anchor="middle" font-family="Arial" fill="url(#footer-gradient)">
               KK
-            </text> <!-- Initials in the logo -->
+            </text>
           </g>
         </svg>
 
         <!-- Branding Name -->
-        <span
-          style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"
-          class="text-xl font-bold text-gray-800">
+        <span class="text-2xl font-bold text-gray-800 hover:scale-110 transition-transform">
           PrismNexus
         </span>
       </div>
 
       <!-- Tagline -->
-      <p class="text-sm text-gray-600 text-center">
+      <p class="text-base text-gray-600 text-center max-w-md px-4 sm:px-0">
         Fusing creativity with technology to build a brighter tomorrow.
       </p>
     </div>
@@ -41,15 +39,11 @@
 
   <!-- Footer Bottom Section -->
   <div class="mt-6 border-t border-gray-200 pt-4">
-    <div class="flex justify-center items-center space-x-4">
-      <p class="text-center text-sm text-gray-600">
-        <i class="fa-regular fa-copyright"></i> {{ currentYear }} <a routerLink="" class="text-red-500">PrismNexus</a>.
-        All Rights Reserved.
-        &#124; Visuals provided by
-        <a href="https://tailwindcss.com" target="_blank" class="text-red-500 underline">TailwindCSS</a> and
-        <a href="https://globe.gl" target="_blank" class="text-red-500 underline">globe.gl</a>.
-        &#124; <span class="text-gray-600">v0.8.5d</span>
-      </p>
-    </div>
+    <p class="text-center text-sm text-gray-600">
+      <i class="fa-regular fa-copyright"></i> {{ currentYear }} 
+      <a routerLink="/" class="text-red-500 hover:underline">PrismNexus</a>. All Rights Reserved.
+      Built with <a href="https://tailwindcss.com" target="_blank" class="text-red-500 hover:underline">TailwindCSS</a>.
+      <span class="ml-2">v0.8.5d</span>
+    </p>
   </div>
 </footer>

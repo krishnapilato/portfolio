@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit {
   }  
 
   private handleLoginError({ error }: any): void {
-    this.showMessage(error?.message ?? 'An unexpected error occurred.', false);
     this.loginRequest.password = '';
+    this.showMessage(error?.message ?? 'An unexpected error occurred.', false);
   }  
 
   /**

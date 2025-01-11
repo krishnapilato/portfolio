@@ -6,10 +6,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly router: Router
-  ) { }
+  constructor(private readonly authService: AuthService, private readonly router: Router) { }
 
   /**
    * Determines if a route can be activated based on authentication status.
@@ -18,18 +15,10 @@ export class AuthGuard implements CanActivate {
    * @returns True, a UrlTree for redirection, or false.
    */
   canActivate(_: any, state: RouterStateSnapshot): boolean | UrlTree {
-    const isAuth = this.authService.isAuthenticated();
-    const authRoutes = ['/auth/signup', '/auth/login'];
-
-    if (isAuth && authRoutes.includes(state.url)) {
-      return this.router.parseUrl('');
-    }
-
-    if (!isAuth) {
-      this.authService.redirectUrl = state.url;
-      return this.router.parseUrl('/auth/login');
-    }
-
-    return true;
+    return this.authService.isAuthenticated()
+      ? state.url.startsWith('/auth')
+        ? this.router.parseUrl('')
+        : true
+      : (this.authService.redirectUrl = state.url, this.router.parseUrl('/auth/login'));
   }
 }
