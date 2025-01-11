@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 import tkinter as tk
 from tkinter import messagebox, ttk
+from tkinter.ttk import Progressbar
 
 # Paths for JSON and log files
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -35,7 +36,7 @@ def check_package_manager(package_manager):
     command = {
         "windows": "choco -v",
         "macos": "brew --version",
-        "linux": "apt --version"
+        "linux": "apt --version",
     }.get(package_manager, "")
     success, _, _ = run_command(command)
     return success
@@ -82,18 +83,16 @@ class AppManagerGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Application Setup Manager")
-        self.root.geometry("800x600")
-        
-        # Set background color and title font style
+        self.root.geometry("900x700")
         self.root.configure(bg="#F0F0F0")
-        
+
         # Title
         ttk.Label(root, text="Application Setup Manager", font=("Helvetica", 18, "bold"), foreground="#4A90E2", background="#F0F0F0").pack(pady=20)
-        
+
         # Operating System Info
         self.os_name = platform.system().lower()
         ttk.Label(root, text=f"Detected Operating System: {self.os_name.capitalize()}", font=("Helvetica", 12), background="#F0F0F0").pack(pady=10)
-        
+
         # Check for package manager
         if self.os_name == "windows" and not check_package_manager("windows"):
             if messagebox.askyesno("Package Manager Missing", "Chocolatey is not installed. Install it now?"):
@@ -107,65 +106,68 @@ class AppManagerGUI:
             else:
                 messagebox.showerror("Error", "Homebrew is required to proceed.")
                 self.root.quit()
-        
+
         # Frame for the application list
         self.app_frame = ttk.Frame(root, padding=10)
         self.app_frame.pack(fill="both", expand=True, padx=10, pady=10)
-        
+
         # Scrollable Treeview for Applications
-        self.tree = ttk.Treeview(self.app_frame, columns=("Name", "Status", "Description"), show="headings", height=10)
+        self.tree = ttk.Treeview(self.app_frame, columns=("Name", "Status", "Description"), show="headings", height=15)
         self.tree.heading("Name", text="Application")
         self.tree.heading("Status", text="Status")
         self.tree.heading("Description", text="Description")
         self.tree.column("Name", width=200)
         self.tree.column("Status", width=120)
-        self.tree.column("Description", width=350)
+        self.tree.column("Description", width=400)
         self.tree.pack(fill="both", expand=True, side="left")
-        
+
         # Scrollbar
         scrollbar = ttk.Scrollbar(self.app_frame, orient="vertical", command=self.tree.yview)
         scrollbar.pack(side="right", fill="y")
         self.tree.configure(yscrollcommand=scrollbar.set)
-        
+
         # Load JSON and check applications
         self.load_applications()
-        
+
         # Buttons
         button_frame = ttk.Frame(root, padding=10, background="#F0F0F0")
         button_frame.pack(pady=20)
-        
+
         ttk.Button(button_frame, text="Install Selected", command=self.install_selected, width=20, style="Accent.TButton").pack(side="left", padx=10)
         ttk.Button(button_frame, text="Exit", command=root.quit, width=20, style="TButton").pack(side="left", padx=10)
-    
+
+        # Status bar
+        self.status_label = ttk.Label(root, text="Ready", font=("Helvetica", 10), background="#F0F0F0", relief="sunken", anchor="w")
+        self.status_label.pack(fill="x", side="bottom")
+
     def load_applications(self):
         if not os.path.exists(json_path):
             messagebox.showerror("Error", f"JSON file not found at {json_path}")
             log_message(f"Error: JSON file not found at {json_path}")
             return
-        
+
         with open(json_path, "r", encoding="utf-8") as json_file:
             self.applications = json.load(json_file)["tools"]
-        
+
         for app in self.applications:
             status = "Installed" if check_application_installed(app["checkCommand"]) else "Not Installed"
-            status_color = "#28A745" if status == "Installed" else "#DC3545"
             self.tree.insert("", "end", values=(app["name"], status, app["description"]))
-            self.tree.item(self.tree.get_children()[-1], tags=(status,))
-            self.tree.tag_configure(status, background=status_color)
             log_message(f"Checked application: {app['name']} - Status: {status}")
-    
+
     def install_selected(self):
         selected_items = self.tree.selection()
         if not selected_items:
             messagebox.showinfo("No Selection", "Please select applications to install.")
             return
-        
+
         for item in selected_items:
             app_name = self.tree.item(item, "values")[0]
             for app in self.applications:
                 if app["name"] == app_name:
                     install_command = app["installCommand"].get(self.os_name)
                     if install_command:
+                        self.status_label.config(text=f"Installing {app_name}...")
+                        self.root.update_idletasks()
                         message = install_application(app_name, install_command)
                         messagebox.showinfo("Installation Status", message)
                     else:
@@ -174,11 +176,12 @@ class AppManagerGUI:
                     break
         self.tree.delete(*self.tree.get_children())
         self.load_applications()
+        self.status_label.config(text="Ready")
 
 # Run the GUI application
 if __name__ == "__main__":
     root = tk.Tk()
-    
+
     # Custom styling
     style = ttk.Style(root)
     style.configure("TButton", font=("Helvetica", 12), padding=10)

@@ -15,9 +15,6 @@ gsap.registerPlugin(ScrollTrigger);
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  public home = environment.home;
-
-  // Lifecycle Hooks
   ngOnInit(): void {
     this.initializeTyped();
     this.addDocumentClickHandler();
@@ -27,6 +24,7 @@ export class HomeComponent {
     this.animateWaveColors();
     this.addWave3DEffect();
     this.generateRandomShapes();
+    this.setupScrollAnimation();
   }
 
   /** Smoothly scrolls to the "About Me" section. */
@@ -37,7 +35,7 @@ export class HomeComponent {
   /** Initializes the Typed.js animation for displaying dynamic skills. */
   private initializeTyped(): void {
     new Typed('#element', {
-      strings: this.home.skills,
+      strings: environment.home.skills,
       typeSpeed: 60,
       backSpeed: 40,
       loop: true,
@@ -51,6 +49,26 @@ export class HomeComponent {
       'background-image',
       `linear-gradient(to right, ${this.generateRandomColor()}, ${this.generateRandomColor()})`
     );
+  }
+
+  setupScrollAnimation(): void {
+    const section = document.querySelector('section');
+    if (section) {
+      gsap.to(section, {
+        scale: 0.5, // Shrinks the section to 50% of its original size (zoom out effect)
+        opacity: 0, // Optionally fades out during the zoom out
+        transformOrigin: 'center center', // Ensures the zoom originates from the center
+        scrollTrigger: {
+          trigger: section,
+          start: 'top+=500 center', // Start the zoom-out effect when the section is slightly scrolled into view
+          end: 'bottom top', // Complete the animation when the section leaves the viewport
+          scrub: true, // Tie the animation progress to the scroll
+        },
+        duration: 1.5, // Adjusts the speed of the zoom out
+        ease: 'power2.inOut', // Smooth transition for zooming
+      });
+    }
+    
   }
 
   /** Animate the wave colors dynamically */
