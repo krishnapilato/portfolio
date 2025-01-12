@@ -4,6 +4,7 @@ import com.personal.portfolio.model.JwtKeys;
 import com.personal.portfolio.repository.JwtKeysRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,7 +56,7 @@ public class JwtService {
         }
 
         // Generate a new key if none exists or the active key is expired
-        Optional<JwtKeys> activeKeyOptional = keyRepository.findTopByOrderByCreatedDateDesc();
+        Optional<JwtKeys> activeKeyOptional = keyRepository.findFirstByOrderByCreatedDateDesc();
         if (activeKeyOptional.isEmpty() || activeKeyOptional.get().isExpired()) {
             SecretKey newKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
             String newKeyId = UUID.randomUUID().toString();
@@ -94,26 +95,26 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    /**
-     * Validates a JWT token for a given user's details.
-     *
-     * @param token       The JWT token
-     * @param userDetails The user's details
-     * @return True if the token is valid, false otherwise
-     */
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        if (token == null || token.isBlank()) {
+        if (StringUtils.isBlank(token)) {
+            logger.warn("JWT token is null or empty.");
             return false;
         }
 
         try {
             final String username = extractUsername(token);
-            return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+            boolean isValid = StringUtils.equals(username, userDetails.getUsername()) && !isTokenExpired(token);
+
+            if (!isValid) {
+                logger.warn("Invalid token for user: {}", username);
+            }
+
+            return isValid;
         } catch (ExpiredJwtException e) {
-            logger.warn(JWT_TOKEN_EXPIRED, e.getMessage());
+            logger.warn("JWT token expired: {}", e.getMessage());
             return false;
         } catch (JwtException e) {
-            logger.error(INVALID_JWT_TOKEN, e.getMessage(), e);
+            logger.error("Invalid JWT token: {}", e.getMessage(), e);
             return false;
         }
     }
@@ -197,14 +198,13 @@ public class JwtService {
         }
     }
 
-    /**
-     * Retrieves the active signing key from the database.
-     *
-     * @return The active signing key
-     * @throws IllegalStateException If no active key is found
-     */
     private SecretKey getSignInKey() {
-        JwtKeys activeKey = keyRepository.findTopByOrderByCreatedDateDesc().orElseThrow(() -> new IllegalStateException("No active key found!"));
-        return Keys.hmacShaKeyFor(Base64.getDecoder().decode(activeKey.getSecretKey()));
+        // Try to retrieve the most recent active JWT key from the database.
+        Optional<JwtKeys> activeKeyOptional = keyRepository.findFirstByOrderByCreatedDateDesc();
+
+        // Check if the key is found, otherwise throw a clear exception.
+        return activeKeyOptional
+                .map(activeKey -> Keys.hmacShaKeyFor(Base64.getDecoder().decode(activeKey.getSecretKey())))
+                .orElseThrow(() -> new IllegalStateException("No active signing key found in the database!"));
     }
 }

@@ -37,15 +37,19 @@ export class AppComponent implements OnInit {
    * Fades out the loading screen and reveals the main content.
    */
   private fadeOutLoadingScreen(): void {
-    const fadeInterval = setInterval(() => {
-      this.loadingOpacity -= 0.05; // Gradually decrease opacity
-
-      if (this.loadingOpacity <= 0) {
-        clearInterval(fadeInterval);
-        this.isLoading = false; // Hide the loading screen
+    const fadeOutEffect = () => {
+      if (this.loadingOpacity > 0) {
+        this.loadingOpacity -= 0.05;
+    
+        requestAnimationFrame(fadeOutEffect);
+      } else {
+        this.isLoading = false;
         this.showMainContent();
       }
-    }, 50); // Adjust interval speed for smoother animation
+    };
+    
+    // Start the fade-out effect
+    fadeOutEffect();
   }
 
   /**

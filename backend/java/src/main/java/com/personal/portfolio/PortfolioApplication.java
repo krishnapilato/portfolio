@@ -6,6 +6,7 @@ import com.personal.portfolio.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,7 +32,9 @@ public class PortfolioApplication {
     private String adminPassword; // Admin password from application properties
 
     public static void main(String[] args) {
-        SpringApplication.run(PortfolioApplication.class, args);
+        SpringApplication app = new SpringApplication(PortfolioApplication.class);
+        app.setBannerMode(Banner.Mode.OFF);
+        app.run(args);
     }
 
     /**
@@ -46,11 +49,9 @@ public class PortfolioApplication {
     @Profile("dev")  // Only create the admin user in the development environment
     public CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if (!userRepository.existsByEmail("admin.email@gmail.com")) {
-                createAdminUser(userRepository, passwordEncoder);
-            } else {
-                logger.info("Admin user already exists. Skipping creation.");
-            }
+            userRepository.findByEmail("admin.email@gmail.com")
+                    .ifPresentOrElse(user -> logger.info("Admin user already exists. Skipping creation."),
+                            () -> createAdminUser(userRepository, passwordEncoder));
         };
     }
 

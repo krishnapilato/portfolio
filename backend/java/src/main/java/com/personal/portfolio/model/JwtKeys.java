@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
-import java.util.Optional;
 
 /**
  * Entity representing JWT keys.
@@ -53,7 +52,9 @@ public class JwtKeys {
      * @throws IllegalStateException if the expiration date is not set.
      */
     public boolean isExpired() {
-        return Optional.ofNullable(expirationDate).map(date -> date.isBefore(Instant.now())) // Compare expiration date with the current time.
-                .orElseThrow(() -> new IllegalStateException("Expiration date is not set.")); // Handle missing expiration date.
+        if (expirationDate == null) {
+            throw new IllegalStateException("Expiration date is not set.");
+        }
+        return expirationDate.isBefore(Instant.now()); // Compare expiration date with the current time.
     }
 }

@@ -41,9 +41,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // Skip JWT authentication for login and signup endpoints
+        // Skip JWT authentication for login, signup, and email endpoints
         String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/auth/login") || requestURI.startsWith("/auth/signup")) {
+        if (requestURI.startsWith("/auth/") || requestURI.startsWith("/api/email/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -58,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Extract the JWT token from the Authorization header
         String jwtToken = authHeader.substring(7);
 
-        // Check if the user is already authenticated
+        // Skip if the user is already authenticated
         Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
         if (existingAuth != null && existingAuth.isAuthenticated()) {
             filterChain.doFilter(request, response);
@@ -72,21 +72,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // Load user details from the database
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
-            // Validate the JWT token and user status
+            // Validate the JWT token and the user's status
             if (jwtService.isTokenValid(jwtToken, userDetails) && userDetails.isEnabled()) {
-                // Authenticate the user and set it in the SecurityContext
+                // Set authentication in the SecurityContext
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         } catch (Exception e) {
-            // Handle token errors (e.g., expired or invalid token)
+            // Log and clear context if authentication fails
             SecurityContextHolder.clearContext();
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage().contains("expired") ? "Token expired" : "Invalid token");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
             return;
         }
 
-        // Proceed with the filter chain if no issues occur
+        // Proceed with the filter chain
         filterChain.doFilter(request, response);
     }
 }

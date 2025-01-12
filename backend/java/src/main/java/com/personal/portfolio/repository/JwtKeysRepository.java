@@ -16,7 +16,7 @@ import java.util.Optional;
  * Provides methods for accessing and manipulating JWT key data.
  */
 @Repository
-@Transactional
+@Transactional(readOnly = true) // Since it's just reading data, we can make the repository read-only for performance.
 public interface JwtKeysRepository extends JpaRepository<JwtKeys, Long> {
 
     /**
@@ -25,10 +25,10 @@ public interface JwtKeysRepository extends JpaRepository<JwtKeys, Long> {
      * @return An {@link Optional} containing the most recent {@link JwtKeys},
      * or empty if no keys exist.
      */
-    Optional<JwtKeys> findTopByOrderByCreatedDateDesc();
+    Optional<JwtKeys> findFirstByOrderByCreatedDateDesc();
 
     /**
-     * Retrieves a list of JWT keys that have expired.
+     * Retrieves a list of expired JWT keys based on the provided expiration date.
      *
      * @param expirationDate The date to compare expiration dates against.
      * @return A list of expired {@link JwtKeys}.

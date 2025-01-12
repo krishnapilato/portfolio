@@ -1,32 +1,32 @@
----
 #-------------------------------------------------------------------------------#
 #               Qodana analysis is configured by qodana.yaml file               #
 #             https://www.jetbrains.com/help/qodana/qodana-yaml.html            #
 #-------------------------------------------------------------------------------#
 version: "1.0"
 
-#Specify inspection profile for code analysis
+# Specify inspection profile for code analysis
 profile:
   name: qodana.starter
 
-#Enable inspections
+# Enable inspections (You can include specific inspections by uncommenting below)
 #include:
 #  - name: <SomeEnabledInspectionId>
 
-#Disable inspections
-#exclude:
-#  - name: <SomeDisabledInspectionId>
-#    paths:
-#      - <path/where/not/run/inspection>
+# Disable inspections (Add custom inspections to exclude here)
+exclude:
+  - name: "SuspiciousMethodCalls" # Example inspection ID to disable
+    paths:
+      - src/main/java/com/personal/portfolio/dto # Specify paths where this inspection is not required
 
-projectJDK: 21 #(Applied in CI/CD pipeline)
+# Set the correct project JDK
+projectJDK: 23  # (Ensure the project's JDK version is compatible with this setting)
 
-#Execute shell command before Qodana execution (Applied in CI/CD pipeline)
-#bootstrap: sh ./prepare-qodana.sh
+# Execute shell command before Qodana execution (Uncomment if CI/CD step needed)
+# bootstrap: sh ./prepare-qodana.sh
 
-#Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
-#plugins:
-#  - id: <plugin.id> #(plugin id can be found at https://plugins.jetbrains.com)
+# Install IDE plugins before Qodana execution (Only if you have plugin dependencies)
+# plugins:
+#   - id: <plugin.id> #(Example plugin, refer to JetBrains plugin repository)
 
-#Specify Qodana linter for analysis (Applied in CI/CD pipeline)
+# Specify Qodana linter for analysis (can use a more specific image if needed)
 linter: jetbrains/qodana-jvm-community:latest

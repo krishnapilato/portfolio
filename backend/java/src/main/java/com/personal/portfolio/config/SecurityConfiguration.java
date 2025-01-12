@@ -32,7 +32,7 @@ public class SecurityConfiguration {
             "/v3/api-docs/**",            // OpenAPI documentation
             "/swagger-ui/**",             // Swagger UI
             "/auth/**",                   // Authentication endpoints
-            "/api/email/send"             // Public email sending endpoint
+            "/api/email/**"               // Public email sending endpoint
     };
 
     // Dependencies for authentication and JWT filtering
@@ -60,7 +60,7 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()               // Require authentication for all other requests
                 )
 
-                // Set session management to stateless
+                // Set session management to stateless for JWT-based authentication
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 // Set custom authentication provider
@@ -81,14 +81,26 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Allowed origins for cross-origin requests
-        configuration.setAllowedOrigins(List.of("http://localhost:4200", "https://backend.prismnexus.com"));
+        // Dynamic origin settings for development and production
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:4200",            // Local development URL
+                "https://backend.prismnexus.com"    // Production URL
+        ));
 
-        // Allowed HTTP methods
-        configuration.setAllowedMethods(List.of(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(), HttpMethod.DELETE.name(), HttpMethod.OPTIONS.name()));
+        // Allowed HTTP methods (GET, POST, PUT, DELETE, OPTIONS)
+        configuration.setAllowedMethods(List.of(
+                HttpMethod.GET.name(),
+                HttpMethod.POST.name(),
+                HttpMethod.PUT.name(),
+                HttpMethod.DELETE.name(),
+                HttpMethod.OPTIONS.name()
+        ));
 
-        // Allowed headers for requests
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        // Allowed headers for requests (Authorization and Content-Type)
+        configuration.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type"
+        ));
 
         // Allow credentials such as cookies or Authorization headers
         configuration.setAllowCredentials(true);

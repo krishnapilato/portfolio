@@ -1,6 +1,7 @@
 package com.personal.portfolio.controller;
 
 import com.personal.portfolio.service.EmailService;
+import com.personal.portfolio.service.UserService;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -30,13 +31,18 @@ public class EmailController {
     // Service for handling email operations
     private final EmailService emailService;
 
+    // Service for handling user-related operations
+    private final UserService userService;
+
     /**
-     * Constructor to inject the EmailService dependency.
+     * Constructor to inject the EmailService and UserService dependencies.
      *
      * @param emailService the service for sending emails
+     * @param userService  the service for user operations
      */
-    public EmailController(EmailService emailService) {
+    public EmailController(EmailService emailService, UserService userService) {
         this.emailService = emailService;
+        this.userService = userService;
     }
 
     /**
@@ -73,5 +79,30 @@ public class EmailController {
             logger.error("Failed to send email to: {}. Error: {}", recipient, e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to send email. Please try again later.");
         }
+    }
+
+    /**
+     * Endpoint to handle password reset requests.
+     * Generates a reset token and sends it to the user's email.
+     *
+     * @param email the email address of the user requesting the reset
+     * @return ResponseEntity with a status message
+     */
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestParam @Email(message = "Invalid email address") String email) {
+        logger.info("Received request to reset password for email: {}", email);
+
+        // Check if the user exists
+        if (!userService.existsByEmail(email)) {
+            logger.warn("No user found with email: {}", email);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No user found with that email address.");
+        }
+
+        // Generate the password reset token
+        String resetToken = emailService.generatePasswordResetToken();
+        emailService.sendPasswordResetEmail(email, resetToken);
+
+        logger.info("Password reset token sent successfully to: {}", email);
+        return ResponseEntity.status(HttpStatus.OK).body("Password reset email sent successfully.");
     }
 }

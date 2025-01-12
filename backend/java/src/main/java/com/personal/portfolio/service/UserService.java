@@ -85,9 +85,10 @@ public class UserService implements UserDetailsService {
     /**
      * Retrieve a user by their ID.
      *
-     * @param id The ID of the user
-     * @return An Optional containing the user if found, or empty if not found
+     * @param id The ID of the user.
+     * @return An Optional containing the user if found, or empty if not found.
      */
+    @Cacheable(value = "users", key = "#id")
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
@@ -112,11 +113,11 @@ public class UserService implements UserDetailsService {
     /**
      * Checks if a user with the given email already exists.
      *
-     * @param email The email to check
-     * @return True if a user with the email exists, otherwise false
+     * @param email The email to check.
+     * @return True if a user with the email exists, otherwise false.
      */
+    @Cacheable(value = "emailExistenceCache", key = "#email")
     public boolean existsByEmail(String email) {
-        // Return the result directly from the repository check
         return userRepository.existsByEmail(email);
     }
 

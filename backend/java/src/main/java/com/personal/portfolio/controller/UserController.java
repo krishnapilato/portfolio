@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,16 +53,13 @@ public class UserController {
         }
     }
 
-    /**
-     * Retrieve a user by their ID.
-     *
-     * @param id User ID
-     * @return ResponseEntity containing the user if found, or 404 if not found
-     */
     @GetMapping("/{id}")
     @Operation(summary = "Get user by ID", description = "Retrieve a user by ID.")
+    @Cacheable(value = "users", key = "#id")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return userService.getUserById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**

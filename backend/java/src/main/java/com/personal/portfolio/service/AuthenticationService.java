@@ -64,15 +64,20 @@ public class AuthenticationService {
      * @throws UsernameNotFoundException if the user is not found.
      */
     public void authenticate(LoginUserRequest input) {
+        logger.info("Attempting authentication for email: {}", input.email());
+
         try {
             // Attempt authentication
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(input.email(), input.password()));
+        } catch (BadCredentialsException e) {
+            logger.error("Invalid credentials provided for email: {}", input.email(), e);
+            throw e; // Rethrow the exception to keep the original stack trace intact
+        } catch (UsernameNotFoundException e) {
+            logger.error("User not found for email: {}", input.email(), e);
+            throw e; // Rethrow the exception to keep the original stack trace intact
         } catch (AuthenticationException e) {
             logger.error("Authentication failed for email: {}", input.email(), e);
             throw new BadCredentialsException("Invalid credentials provided");
         }
-
-        // Return the authenticated user
-        userRepository.findByEmail(input.email()).orElseThrow(() -> new UsernameNotFoundException("User not found: " + input.email()));
     }
 }

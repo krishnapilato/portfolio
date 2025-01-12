@@ -42,20 +42,20 @@ public class AuthenticationController {
             User user = (User) userService.loadUserByUsername(loginUserDto.email());
             if (user.isLocked()) {
                 logger.warn("Authentication failed: user {} is locked.", loginUserDto.email());
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new LoginResponse("ACCOUNT_LOCKED", "This account is locked. Please contact support."));
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(LoginResponse.error("ACCOUNT_LOCKED", "This account is locked. Please contact support."));
             }
 
             authenticationService.authenticate(loginUserDto);
             String jwtToken = jwtService.generateToken(user);
             long expirationMillis = jwtService.extractExpiration(jwtToken).toInstant().toEpochMilli();
 
-            return ResponseEntity.ok(new LoginResponse(jwtToken, expirationMillis, user.getRole()));
+            return ResponseEntity.ok(LoginResponse.success(jwtToken, expirationMillis, user.getRole()));
         } catch (BadCredentialsException e) {
             logger.warn("Authentication failed for email: {}. Invalid credentials.", loginUserDto.email());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("INVALID_CREDENTIALS", "Invalid credentials provided."));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(LoginResponse.error("INVALID_CREDENTIALS", "Invalid credentials provided."));
         } catch (Exception e) {
             logger.error("Unexpected error during authentication", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new LoginResponse("SERVER_ERROR", "An unexpected error occurred."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(LoginResponse.error("SERVER_ERROR", "An unexpected error occurred."));
         }
     }
 
@@ -64,13 +64,13 @@ public class AuthenticationController {
     public ResponseEntity<RegistrationResponse> signup(@Valid @RequestBody RegisterUserRequest registerUserDto) {
         try {
             User registeredUser = authenticationService.signup(registerUserDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new RegistrationResponse(registeredUser.getId(), Role.USER));
+            return ResponseEntity.status(HttpStatus.CREATED).body(RegistrationResponse.success(registeredUser.getId(), Role.USER));
         } catch (DataIntegrityViolationException ex) {
             logger.warn("Registration failed due to duplicate email: {}", ex);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new RegistrationResponse("DUPLICATE_EMAIL", "Email address already in use."));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(RegistrationResponse.error("DUPLICATE_EMAIL"));
         } catch (Exception ex) {
             logger.error("An error occurred during user registration", ex);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RegistrationResponse("SERVER_ERROR", "An error occurred during registration."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(RegistrationResponse.error("SERVER_ERROR"));
         }
     }
 }

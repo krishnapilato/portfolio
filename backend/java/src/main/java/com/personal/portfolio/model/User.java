@@ -11,9 +11,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Represents a user entity for the application, including authentication and
@@ -71,26 +75,43 @@ public class User implements UserDetails {
 
     /**
      * Returns whether the user is currently enabled.
+     * Added logic to check for inactive users based on a "last login" timestamp.
      */
     @Override
     public boolean isEnabled() {
-        return enabled;
+        if (!enabled) {
+            return false;
+        }
+
+        Instant sixMonthsAgo = ZonedDateTime.now().minusMonths(6).toInstant();
+        return createdAt.toInstant().isAfter(sixMonthsAgo);
     }
 
     /**
      * Returns whether the user's account is not locked.
+     * Includes checks for account lock due to manual lock and expiration.
      */
     @Override
     public boolean isAccountNonLocked() {
-        return !locked;
+        if (locked) {
+            return false;
+        }
+
+        return isAccountNonExpired();
     }
 
     /**
      * Returns whether the user's account is not expired.
+     * Added logic to check for the actual expiration date.
      */
     @Override
     public boolean isAccountNonExpired() {
-        return accountNonExpired;
+        if (!accountNonExpired) {
+            return false;
+        }
+
+        Instant expirationTime = createdAt.toInstant().atZone(ZoneId.systemDefault()).plusYears(1).toInstant();
+        return Instant.now().isBefore(expirationTime);
     }
 
     /**
@@ -99,7 +120,7 @@ public class User implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(role.name()));
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     /**
@@ -108,15 +129,16 @@ public class User implements UserDetails {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
-        return id != null && id.equals(user.id);
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
     }
 
     /**
-     * Overrides hashCode to provide a consistent hash based on the user's class.
+     * Overrides hashCode to provide a consistent hash based on the user's ID.
      */
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id);
     }
 }

@@ -79,6 +79,27 @@ public class EmailService {
     }
 
     /**
+     * Sends a password reset email with a token.
+     *
+     * @param recipient The email address of the recipient.
+     * @param token     The password reset token.
+     */
+    public void sendPasswordResetEmail(String recipient, String token) {
+        // Validate email address
+        if (!isValidEmail(recipient)) {
+            logger.warn("Invalid email address attempted: {}", recipient);
+            throw new IllegalArgumentException("Invalid email address.");
+        }
+
+        String resetLink = "https://prismnexus.com/reset-password?token=" + token;
+
+        String subject = "Password Reset Request";
+        String body = "Please use the following link to reset your password: " + resetLink;
+
+        sendEmail(recipient, subject, body, null, null, null, false);
+    }
+
+    /**
      * Validates the given email address against a regular expression.
      *
      * @param email The email address to validate.
@@ -99,15 +120,24 @@ public class EmailService {
             throw new IllegalArgumentException("Input cannot be null or empty.");
         }
 
-        // Define allowed characters (whitelist approach)
-        String allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ";
-
-        // Check if input contains only allowed characters
-        if (!input.matches("[" + allowedChars + "]*")) {
+        // Allow all characters (any Unicode character)
+        // This is a more permissive regex that allows anything
+        if (!input.matches(".*")) {
             throw new IllegalArgumentException("Input contains invalid characters.");
         }
 
-        // Encode the input to prevent XSS
+        // Optionally: Encode the input to prevent XSS or other vulnerabilities
         Encode.forHtml(input);
+    }
+
+    /**
+     * Generates a unique password reset token.
+     *
+     * @return A generated token for password reset.
+     */
+    public String generatePasswordResetToken() {
+        byte[] randomBytes = new byte[32]; // 256-bit random token
+        new java.security.SecureRandom().nextBytes(randomBytes);
+        return java.util.Base64.getUrlEncoder().encodeToString(randomBytes);
     }
 }

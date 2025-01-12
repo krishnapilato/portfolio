@@ -15,7 +15,7 @@ import java.util.Optional;
  * Provides methods to perform CRUD operations and custom queries for user management.
  */
 @Repository
-@Transactional
+@Transactional(readOnly = true) // Apply read-only transaction for read operations.
 public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
@@ -40,6 +40,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param id The ID of the user whose lock status will be updated.
      */
     @Modifying
+    @Transactional // Add transactional annotation for modifying queries.
     @Query("UPDATE User u SET u.locked = CASE WHEN u.locked = true THEN false ELSE true END WHERE u.id = :id")
     void updateLockStatusById(@Param("id") Long id);
 }

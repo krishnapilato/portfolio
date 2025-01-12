@@ -2,7 +2,9 @@ package com.personal.portfolio.model;
 
 import lombok.Getter;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 /**
  * Enum representing user roles in the application.
@@ -40,24 +42,20 @@ public enum Role {
      *
      * @param displayName The display name of the role.
      * @return The Role corresponding to the display name.
-     * @throws IllegalArgumentException if the display name is null.
+     * @throws IllegalArgumentException if the display name is null or blank.
      * @throws NoSuchElementException   if no matching Role is found.
      */
     public static Role fromDisplayName(String displayName) {
-        // Validate the input to prevent null values
         if (displayName == null || displayName.isBlank()) {
             throw new IllegalArgumentException("Display name cannot be null or blank.");
         }
 
-        // Search for a matching role by display name
-        for (Role role : values()) {
-            if (role.displayName.equalsIgnoreCase(displayName)) {
-                return role;
-            }
-        }
-
-        // If no role matches, throw an exception with a detailed message
-        throw new NoSuchElementException(String.format("No matching role found for display name: '%s'. Available roles: %s", displayName, getAllDisplayNames()));
+        return Arrays.stream(values())
+                .filter(role -> role.displayName.equalsIgnoreCase(displayName))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException(
+                        String.format("No matching role found for display name: '%s'. Available roles: %s",
+                                displayName, getAllDisplayNames())));
     }
 
     /**
@@ -66,13 +64,8 @@ public enum Role {
      * @return A string containing all role display names.
      */
     public static String getAllDisplayNames() {
-        StringBuilder displayNames = new StringBuilder();
-        for (Role role : values()) {
-            if (!displayNames.isEmpty()) {
-                displayNames.append(", ");
-            }
-            displayNames.append(role.displayName);
-        }
-        return displayNames.toString();
+        return Arrays.stream(values())
+                .map(role -> role.displayName)
+                .collect(Collectors.joining(", "));
     }
 }

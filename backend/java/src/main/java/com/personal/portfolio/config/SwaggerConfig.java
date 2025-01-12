@@ -1,9 +1,12 @@
 package com.personal.portfolio.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,16 +26,21 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI().info(new Info().title("PrismNexus Backend API").version("v0.8.5d").description("""
-                This API powers the frontend application, offering a comprehensive
-                set of endpoints for user management, authentication, and more.
-                
-                Key Highlights:
-                - Secure and robust authentication mechanisms
-                - User and role management features
-                - Email notification support
-                
-                Explore the documentation to understand available endpoints and their usage.
-                """).contact(new Contact().name("Krishna").url("https://krishnapilato.github.io/kodek").email("krishnak.pilato@gmail.com")).license(new License().name("MIT License").url("https://opensource.org/licenses/MIT"))).addServersItem(new io.swagger.v3.oas.models.servers.Server().url("http://localhost:8080").description("Local Development Server")).addServersItem(new io.swagger.v3.oas.models.servers.Server().url("https://backend.prismnexus.com").description("Production Server"));
+                        The PrismNexus Backend API is the core service powering the PrismNexus platform. It provides robust and secure endpoints for:
+                        
+                        - User management: Create, update, and delete user accounts.
+                        - Authentication: Secure login, JWT token generation, and password management.
+                        - Role-based access control: Assign and manage roles for users.
+                        - Email notifications: Easily send email notifications for various events.
+                        
+                        **Key Features**:
+                        - RESTful APIs with full CRUD functionality for user data.
+                        - Authentication with JWT tokens for secure communication.
+                        - Admin dashboard for managing user roles and privileges.
+                        
+                        The API supports both local and production environments, ensuring seamless integration with the frontend application.
+                        """).contact(new Contact().name("Krishna Pilato").url("https://krishnapilato.github.io/kodek").email("krishnak.pilato@gmail.com")).license(new License().name("MIT License").url("https://opensource.org/licenses/MIT"))).addServersItem(new io.swagger.v3.oas.models.servers.Server().url("http://localhost:8080").description("Local Development Server")).addServersItem(new io.swagger.v3.oas.models.servers.Server().url("https://backend.prismnexus.com").description("Production Server"))
+                .components(new Components().addSecuritySchemes("bearerAuth", new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"))).addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 
     /**

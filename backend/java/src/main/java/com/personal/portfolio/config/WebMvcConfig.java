@@ -13,7 +13,6 @@ public class WebMvcConfig {
 
     /**
      * Handles the root URL ("/") request.
-     * The model is populated with any necessary attributes for rendering the portfolio landing page.
      *
      * @param model the Model object to pass attributes to the view
      * @return the name of the Thymeleaf template to render
