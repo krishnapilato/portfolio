@@ -5780,3 +5780,925 @@ java.lang.IllegalArgumentException: Input contains invalid characters.
 [31mWARN [0;39m [[36m2025-01-12 10:23:28[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mo.s.w.s.m.s.DefaultHandlerExceptionResolver[0;39m - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.personal.portfolio.dto.login.LoginResponse> com.personal.portfolio.controller.AuthenticationController.authenticate(com.personal.portfolio.dto.login.LoginUserRequest) with 2 errors: [Field error in object 'loginUserRequest' on field 'password': rejected value [4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc]; codes [Pattern.loginUserRequest.password,Pattern.password,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginUserRequest.password,password]; arguments []; default message [password],[Ljakarta.validation.constraints.Pattern$Flag;@2505cc20,^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,50}$]; default message [Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character]] [Field error in object 'loginUserRequest' on field 'password': rejected value [4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc]; codes [Size.loginUserRequest.password,Size.password,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginUserRequest.password,password]; arguments []; default message [password],50,8]; default message [Password must be between 8 and 50 characters]] ]
 [34mINFO [0;39m [[36m2025-01-12 10:23:31[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 184 ms
 [31mWARN [0;39m [[36m2025-01-12 10:23:38[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mo.s.w.s.m.s.DefaultHandlerExceptionResolver[0;39m - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.personal.portfolio.dto.login.LoginResponse> com.personal.portfolio.controller.AuthenticationController.authenticate(com.personal.portfolio.dto.login.LoginUserRequest) with 2 errors: [Field error in object 'loginUserRequest' on field 'password': rejected value [4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc]; codes [Size.loginUserRequest.password,Size.password,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginUserRequest.password,password]; arguments []; default message [password],50,8]; default message [Password must be between 8 and 50 characters]] [Field error in object 'loginUserRequest' on field 'password': rejected value [4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc]; codes [Pattern.loginUserRequest.password,Pattern.password,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginUserRequest.password,password]; arguments []; default message [password],[Ljakarta.validation.constraints.Pattern$Flag;@2505cc20,^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,50}$]; default message [Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character]] ]
+[34mINFO [0;39m [[36m2025-01-12 14:23:35[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 14:23:35[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 39640 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 14:23:35[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 14:23:35[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 14:23:35[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 14:23:36[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 14:23:36[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 60 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 1876 ms
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 14:23:37[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 14:23:38[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@11137eaf
+[34mINFO [0;39m [[36m2025-01-12 14:23:38[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 14:23:38[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 14:23:38[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 14:23:39[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 14:23:39[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 14:23:39[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 14:23:40[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 14:23:40[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 14:23:40[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 14:23:41[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 14:23:41[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 14:23:41[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 14:23:41[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 7.017 seconds (process running for 7.562)
+[34mINFO [0;39m [[36m2025-01-12 14:23:42[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 14:23:42[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 14:23:42[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 1 ms
+[31mWARN [0;39m [[36m2025-01-12 14:23:43[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.w.s.m.s.DefaultHandlerExceptionResolver[0;39m - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.personal.portfolio.dto.login.LoginResponse> com.personal.portfolio.controller.AuthenticationController.authenticate(com.personal.portfolio.dto.login.LoginUserRequest) with 2 errors: [Field error in object 'loginUserRequest' on field 'password': rejected value [4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc]; codes [Pattern.loginUserRequest.password,Pattern.password,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginUserRequest.password,password]; arguments []; default message [password],[Ljakarta.validation.constraints.Pattern$Flag;@4de6158f,^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,50}$]; default message [Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character]] [Field error in object 'loginUserRequest' on field 'password': rejected value [4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc]; codes [Size.loginUserRequest.password,Size.password,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginUserRequest.password,password]; arguments []; default message [password],50,8]; default message [Password must be between 8 and 50 characters]] ]
+[31mWARN [0;39m [[36m2025-01-12 14:23:45[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mo.s.w.s.m.s.DefaultHandlerExceptionResolver[0;39m - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.personal.portfolio.dto.login.LoginResponse> com.personal.portfolio.controller.AuthenticationController.authenticate(com.personal.portfolio.dto.login.LoginUserRequest) with 2 errors: [Field error in object 'loginUserRequest' on field 'password': rejected value [4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc]; codes [Pattern.loginUserRequest.password,Pattern.password,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginUserRequest.password,password]; arguments []; default message [password],[Ljakarta.validation.constraints.Pattern$Flag;@4de6158f,^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,50}$]; default message [Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character]] [Field error in object 'loginUserRequest' on field 'password': rejected value [4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc]; codes [Size.loginUserRequest.password,Size.password,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginUserRequest.password,password]; arguments []; default message [password],50,8]; default message [Password must be between 8 and 50 characters]] ]
+[31mWARN [0;39m [[36m2025-01-12 14:54:24[0;39m] [[33mhttp-nio-8080-exec-5[0;39m] [32mo.s.w.s.m.s.DefaultHandlerExceptionResolver[0;39m - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.personal.portfolio.dto.login.LoginResponse> com.personal.portfolio.controller.AuthenticationController.authenticate(com.personal.portfolio.dto.login.LoginUserRequest) with 2 errors: [Field error in object 'loginUserRequest' on field 'password': rejected value [4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc]; codes [Pattern.loginUserRequest.password,Pattern.password,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginUserRequest.password,password]; arguments []; default message [password],[Ljakarta.validation.constraints.Pattern$Flag;@4de6158f,^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,50}$]; default message [Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character]] [Field error in object 'loginUserRequest' on field 'password': rejected value [4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc]; codes [Size.loginUserRequest.password,Size.password,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loginUserRequest.password,password]; arguments []; default message [password],50,8]; default message [Password must be between 8 and 50 characters]] ]
+[34mINFO [0;39m [[36m2025-01-12 14:54:37[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mc.p.portfolio.service.UserService[0;39m - Attempting to load user by email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:54:37[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mc.p.portfolio.service.UserService[0;39m - User found with email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:54:37[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:54:40[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[1;31mERROR[0;39m [[36m2025-01-12 14:54:42[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Invalid credentials provided for email: admin.email@gmail.com
+org.springframework.security.authentication.BadCredentialsException: Bad credentials
+	at org.springframework.security.authentication.dao.DaoAuthenticationProvider.additionalAuthenticationChecks(DaoAuthenticationProvider.java:93)
+	at org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider.authenticate(AbstractUserDetailsAuthenticationProvider.java:147)
+	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182)
+	at com.personal.portfolio.service.AuthenticationService.authenticate(AuthenticationService.java:71)
+	at com.personal.portfolio.controller.AuthenticationController.authenticate(AuthenticationController.java:48)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:257)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:190)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1088)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:978)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.servlet.resource.ResourceUrlEncodingFilter.doFilter(ResourceUrlEncodingFilter.java:66)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.personal.portfolio.config.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:47)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:238)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+[31mWARN [0;39m [[36m2025-01-12 14:54:42[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mc.p.p.c.AuthenticationController[0;39m - Authentication failed for email: admin.email@gmail.com. Invalid credentials.
+[34mINFO [0;39m [[36m2025-01-12 14:55:18[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 14:55:18[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 14:55:18[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 14:55:18[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 14:55:18[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 14:55:23[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 14:55:23[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 21040 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 14:55:23[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 14:55:23[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 14:55:23[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 14:55:24[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 14:55:25[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 76 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 14:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 14:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 14:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 14:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 14:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 14:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2360 ms
+[34mINFO [0;39m [[36m2025-01-12 14:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 14:55:26[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 14:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 14:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 14:55:27[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 14:55:27[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@a18fc74
+[34mINFO [0;39m [[36m2025-01-12 14:55:27[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 14:55:27[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 14:55:27[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 14:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 14:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 14:55:29[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 14:55:29[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 14:55:30[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 14:55:30[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 14:55:32[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 14:55:32[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 14:55:32[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 14:55:32[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 9.16 seconds (process running for 9.813)
+[34mINFO [0;39m [[36m2025-01-12 14:55:35[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 14:55:35[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 14:55:35[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 1 ms
+[34mINFO [0;39m [[36m2025-01-12 14:55:35[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.portfolio.service.UserService[0;39m - Attempting to load user by email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:55:35[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.portfolio.service.UserService[0;39m - User found with email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:55:35[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:55:38[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:56:12[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 14:56:12[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 14:56:12[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 14:56:12[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 14:56:12[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 14:56:16[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 14:56:16[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 23092 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 14:56:16[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 14:56:16[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 14:56:16[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 14:56:18[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 14:56:18[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 84 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 14:56:19[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 14:56:19[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 14:56:19[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 14:56:19[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 14:56:19[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 14:56:19[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2805 ms
+[34mINFO [0;39m [[36m2025-01-12 14:56:19[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 14:56:19[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 14:56:19[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 14:56:20[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 14:56:20[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 14:56:20[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3bdcf8fa
+[34mINFO [0;39m [[36m2025-01-12 14:56:20[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 14:56:20[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 14:56:20[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 14:56:21[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 14:56:21[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 14:56:22[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 14:56:23[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 14:56:23[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 14:56:23[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 14:56:25[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 14:56:25[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 14:56:25[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 14:56:25[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 9.093 seconds (process running for 9.845)
+[34mINFO [0;39m [[36m2025-01-12 14:56:25[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 14:56:25[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 14:56:25[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 1 ms
+[34mINFO [0;39m [[36m2025-01-12 14:56:25[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.portfolio.service.UserService[0;39m - Attempting to load user by email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:56:25[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.portfolio.service.UserService[0;39m - User found with email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:56:25[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:56:27[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:56:47[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 387 ms
+[34mINFO [0;39m [[36m2025-01-12 14:57:00[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:57:06[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 14:57:06[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 14:57:06[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 14:57:06[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 14:57:06[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 14:57:08[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 14:57:08[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 38648 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 14:57:08[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 14:57:08[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 14:57:08[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 14:57:09[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 14:57:09[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 73 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 14:57:11[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 14:57:11[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 14:57:11[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 14:57:11[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 14:57:11[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 14:57:11[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2590 ms
+[34mINFO [0;39m [[36m2025-01-12 14:57:11[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 14:57:11[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 14:57:11[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 14:57:12[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 14:57:12[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 14:57:12[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3bdcf8fa
+[34mINFO [0;39m [[36m2025-01-12 14:57:12[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 14:57:12[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 14:57:12[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 14:57:13[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 14:57:13[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 14:57:14[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 14:57:15[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 14:57:15[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 14:57:15[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 14:57:17[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 14:57:17[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 14:57:17[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 14:57:17[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 9.388 seconds (process running for 10.144)
+[34mINFO [0;39m [[36m2025-01-12 14:57:22[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 14:57:22[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 14:57:22[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 2 ms
+[34mINFO [0;39m [[36m2025-01-12 14:57:22[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:57:32[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:57:38[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 14:57:45[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:04:50[0;39m] [[33mFile Watcher[0;39m] [32mo.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener[0;39m - Restarting due to 27 class path changes (0 additions, 27 deletions, 0 modifications)
+[34mINFO [0;39m [[36m2025-01-12 15:04:50[0;39m] [[33mThread-5[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:04:50[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Pausing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:04:50[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:04:50[0;39m] [[33mThread-5[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Stopping ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:04:50[0;39m] [[33mThread-5[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:04:50[0;39m] [[33mThread-5[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:04:50[0;39m] [[33mThread-5[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:05:02[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:05:02[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 37492 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:05:02[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:05:02[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:05:02[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:05:04[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:05:04[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 73 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:05:05[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:05:05[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:05:05[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:05:05[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:05:05[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:05:05[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2535 ms
+[34mINFO [0;39m [[36m2025-01-12 15:05:05[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:05:05[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:05:05[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:05:06[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:05:06[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:05:06[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5baaeeb1
+[34mINFO [0;39m [[36m2025-01-12 15:05:06[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:05:06[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:05:06[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:05:07[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:05:08[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:05:08[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:05:09[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:05:09[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:05:09[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:05:11[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:05:11[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:05:11[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:05:11[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 9.371 seconds (process running for 10.292)
+[34mINFO [0;39m [[36m2025-01-12 15:05:11[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:05:11[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:05:11[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 1 ms
+[34mINFO [0;39m [[36m2025-01-12 15:18:52[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:18:52[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:18:52[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:18:52[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:18:52[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:18:57[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:18:57[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 34624 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:18:57[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:18:57[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:18:57[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:18:58[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:18:58[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 112 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:18:59[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:18:59[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:18:59[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:18:59[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:18:59[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:18:59[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2650 ms
+[34mINFO [0;39m [[36m2025-01-12 15:19:00[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:19:00[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:19:00[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:19:00[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:19:00[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:19:01[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@a18fc74
+[34mINFO [0;39m [[36m2025-01-12 15:19:01[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:19:01[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:19:01[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:19:02[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:19:02[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:19:02[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:19:03[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:19:04[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:19:04[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:19:05[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:19:05[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:19:05[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:19:05[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 8.838 seconds (process running for 9.5)
+[34mINFO [0;39m [[36m2025-01-12 15:20:34[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:20:34[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:20:34[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 1 ms
+[34mINFO [0;39m [[36m2025-01-12 15:20:35[0;39m] [[33mhttp-nio-8080-exec-8[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 373 ms
+[34mINFO [0;39m [[36m2025-01-12 15:24:31[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:24:31[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:24:31[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:24:31[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:24:31[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:24:33[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:24:33[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 28968 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:24:33[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:24:33[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:24:33[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:24:35[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:24:35[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 75 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:24:36[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:24:36[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:24:36[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:24:36[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:24:36[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:24:36[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2417 ms
+[34mINFO [0;39m [[36m2025-01-12 15:24:36[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:24:36[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:24:36[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:24:37[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:24:37[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:24:37[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7c472b55
+[34mINFO [0;39m [[36m2025-01-12 15:24:37[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:24:37[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:24:37[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:24:38[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:24:38[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:24:39[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:24:40[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:24:40[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:24:40[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:24:42[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:24:42[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:24:42[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:24:42[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 9.168 seconds (process running for 9.872)
+[34mINFO [0;39m [[36m2025-01-12 15:24:56[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:24:56[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:24:56[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 2 ms
+[34mINFO [0;39m [[36m2025-01-12 15:26:57[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:26:57[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:26:57[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:26:57[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:26:57[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:26:59[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:26:59[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 38900 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:26:59[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:26:59[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:26:59[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:27:00[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:27:00[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 121 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:27:01[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:27:01[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:27:01[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:27:01[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:27:01[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:27:01[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2581 ms
+[34mINFO [0;39m [[36m2025-01-12 15:27:02[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:27:02[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:27:02[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:27:02[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:27:02[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:27:03[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@78cf9188
+[34mINFO [0;39m [[36m2025-01-12 15:27:03[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:27:03[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:27:03[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:27:04[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:27:04[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:27:04[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:27:05[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:27:06[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:27:06[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:27:08[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:27:08[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:27:08[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:27:08[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 9.946 seconds (process running for 10.676)
+[34mINFO [0;39m [[36m2025-01-12 15:27:09[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:27:09[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:27:09[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:27:09[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:27:09[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:27:13[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:27:13[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 38532 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:27:13[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:27:13[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:27:13[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:27:14[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:27:14[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 75 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:27:15[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:27:15[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:27:15[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:27:15[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:27:15[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:27:15[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2533 ms
+[34mINFO [0;39m [[36m2025-01-12 15:27:16[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:27:16[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:27:16[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:27:16[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:27:16[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:27:17[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@36407d1f
+[34mINFO [0;39m [[36m2025-01-12 15:27:17[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:27:17[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:27:17[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:27:18[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:27:18[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:27:18[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:27:19[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:27:19[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:27:19[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:27:21[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:27:21[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:27:21[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:27:21[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 8.703 seconds (process running for 9.331)
+[34mINFO [0;39m [[36m2025-01-12 15:27:21[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:27:21[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:27:21[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 1 ms
+[34mINFO [0;39m [[36m2025-01-12 15:27:29[0;39m] [[33mhttp-nio-8080-exec-10[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 317 ms
+[34mINFO [0;39m [[36m2025-01-12 15:34:12[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:34:12[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:34:12[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:34:12[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:34:12[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:34:17[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:34:17[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 20156 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:34:17[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:34:17[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:34:17[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:34:18[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:34:18[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 73 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:34:20[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:34:20[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:34:20[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:34:20[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:34:20[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:34:20[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2819 ms
+[34mINFO [0;39m [[36m2025-01-12 15:34:20[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:34:20[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:34:20[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:34:21[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:34:21[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:34:21[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@63b4168
+[34mINFO [0;39m [[36m2025-01-12 15:34:21[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:34:21[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:34:21[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:34:22[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:34:22[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:34:23[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:34:24[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:34:24[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:34:24[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[31mWARN [0;39m [[36m2025-01-12 15:34:25[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext[0;39m - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'groupApi' defined in class path resource [com/personal/portfolio/config/SwaggerConfig.class]: Unsatisfied dependency expressed through method 'groupApi' parameter 0: No qualifying bean of type 'java.lang.String' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+[34mINFO [0;39m [[36m2025-01-12 15:34:25[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:34:25[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:34:25[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:34:25[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Stopping service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:34:25[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.a.l.ConditionEvaluationReportLogger[0;39m - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+[1;31mERROR[0;39m [[36m2025-01-12 15:34:25[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.LoggingFailureAnalysisReporter[0;39m - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of method groupApi in com.personal.portfolio.config.SwaggerConfig required a bean of type 'java.lang.String' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'java.lang.String' in your configuration.
+
+[34mINFO [0;39m [[36m2025-01-12 15:35:10[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:35:10[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 4336 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:35:10[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:35:10[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:35:10[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:35:12[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:35:12[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 89 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:35:13[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:35:13[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:35:13[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:35:13[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:35:13[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:35:13[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2657 ms
+[34mINFO [0;39m [[36m2025-01-12 15:35:13[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:35:14[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:35:14[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:35:14[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:35:14[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:35:15[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@11137eaf
+[34mINFO [0;39m [[36m2025-01-12 15:35:15[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:35:15[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:35:15[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:35:16[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:35:16[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:35:16[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:35:17[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:35:18[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:35:18[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:35:20[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:35:20[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:35:20[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:35:20[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 10.046 seconds (process running for 10.739)
+[34mINFO [0;39m [[36m2025-01-12 15:39:21[0;39m] [[33mhttp-nio-8080-exec-8[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:39:21[0;39m] [[33mhttp-nio-8080-exec-8[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:39:21[0;39m] [[33mhttp-nio-8080-exec-8[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 1 ms
+[34mINFO [0;39m [[36m2025-01-12 15:39:22[0;39m] [[33mhttp-nio-8080-exec-5[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 343 ms
+[34mINFO [0;39m [[36m2025-01-12 15:39:48[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:39:48[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:39:48[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:39:48[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:39:48[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:39:53[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:39:53[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 39944 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:39:53[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:39:53[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:39:53[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:39:54[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:39:54[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 69 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:39:55[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:39:55[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:39:55[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:39:55[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:39:55[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:39:55[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2463 ms
+[34mINFO [0;39m [[36m2025-01-12 15:39:56[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:39:56[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:39:56[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:39:56[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:39:56[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:39:57[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@44ea74ec
+[34mINFO [0;39m [[36m2025-01-12 15:39:57[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:39:57[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:39:57[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:39:58[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:39:58[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:39:58[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:39:59[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:40:00[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:40:00[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:40:01[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:40:01[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:40:01[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:40:01[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 9.025 seconds (process running for 9.674)
+[34mINFO [0;39m [[36m2025-01-12 15:40:01[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:40:01[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:40:01[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 2 ms
+[34mINFO [0;39m [[36m2025-01-12 15:40:02[0;39m] [[33mhttp-nio-8080-exec-9[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 273 ms
+[34mINFO [0;39m [[36m2025-01-12 15:41:28[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:41:28[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:41:28[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:41:28[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:41:28[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:41:32[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:41:32[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 32116 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:41:32[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:41:32[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:41:32[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:41:33[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:41:34[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 71 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:41:35[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:41:35[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:41:35[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:41:35[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:41:35[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:41:35[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2378 ms
+[34mINFO [0;39m [[36m2025-01-12 15:41:35[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:41:35[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:41:35[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:41:36[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:41:36[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:41:36[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@165e57e8
+[34mINFO [0;39m [[36m2025-01-12 15:41:36[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:41:36[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:41:36[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:41:37[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:41:37[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:41:38[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:41:39[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:41:39[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:41:39[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:41:41[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:41:41[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:41:41[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:41:41[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 9.229 seconds (process running for 9.859)
+[34mINFO [0;39m [[36m2025-01-12 15:41:41[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:41:41[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:41:41[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 1 ms
+[34mINFO [0;39m [[36m2025-01-12 15:41:42[0;39m] [[33mhttp-nio-8080-exec-10[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 299 ms
+[34mINFO [0;39m [[36m2025-01-12 15:41:59[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:41:59[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:41:59[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:41:59[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:41:59[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:42:03[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:42:03[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 33636 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:42:03[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:42:03[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:42:03[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:42:04[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:42:04[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 79 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:42:05[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:42:05[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:42:05[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:42:05[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:42:05[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:42:05[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2599 ms
+[34mINFO [0;39m [[36m2025-01-12 15:42:06[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:42:06[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:42:06[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:42:06[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:42:06[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:42:07[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@47fc2a77
+[34mINFO [0;39m [[36m2025-01-12 15:42:07[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:42:07[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:42:07[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:42:08[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:42:08[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:42:08[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:42:09[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:42:10[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:42:10[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:42:11[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:42:11[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:42:11[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:42:11[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 9.383 seconds (process running for 10.035)
+[34mINFO [0;39m [[36m2025-01-12 15:42:11[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:42:11[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:42:11[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 1 ms
+[34mINFO [0;39m [[36m2025-01-12 15:42:12[0;39m] [[33mhttp-nio-8080-exec-9[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 278 ms
+[34mINFO [0;39m [[36m2025-01-12 15:42:34[0;39m] [[33mhttp-nio-8080-exec-10[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 130 ms
+[34mINFO [0;39m [[36m2025-01-12 15:42:37[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 211 ms
+[34mINFO [0;39m [[36m2025-01-12 15:45:14[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:45:14[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:45:14[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:45:14[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:45:14[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:45:19[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:45:19[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 39544 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:45:19[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:45:19[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:45:19[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:45:20[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:45:20[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 92 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:45:21[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:45:21[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:45:21[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:45:21[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:45:21[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:45:21[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2510 ms
+[34mINFO [0;39m [[36m2025-01-12 15:45:22[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:45:22[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:45:22[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:45:22[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:45:22[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:45:23[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@a18fc74
+[34mINFO [0;39m [[36m2025-01-12 15:45:23[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:45:23[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:45:23[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:45:24[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:45:24[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:45:24[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:45:25[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:45:26[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:45:26[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:45:27[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:45:28[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:45:28[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:45:28[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 9.605 seconds (process running for 10.337)
+[34mINFO [0;39m [[36m2025-01-12 15:45:28[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:45:28[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:45:28[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 2 ms
+[34mINFO [0;39m [[36m2025-01-12 15:45:28[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 399 ms
+[34mINFO [0;39m [[36m2025-01-12 15:45:39[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mc.p.portfolio.service.UserService[0;39m - Attempting to load user by email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:45:39[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mc.p.portfolio.service.UserService[0;39m - User found with email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:45:39[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:45:41[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:45:52[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.portfolio.service.UserService[0;39m - Attempting to load user by email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:45:52[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.portfolio.service.UserService[0;39m - User found with email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:45:52[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:45:52[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:55:20[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Commencing graceful shutdown. Waiting for active requests to complete
+[34mINFO [0;39m [[36m2025-01-12 15:55:20[0;39m] [[33mtomcat-shutdown[0;39m] [32mo.s.b.w.e.tomcat.GracefulShutdown[0;39m - Graceful shutdown complete
+[34mINFO [0;39m [[36m2025-01-12 15:55:20[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Closing JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:55:20[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown initiated...
+[34mINFO [0;39m [[36m2025-01-12 15:55:20[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Shutdown completed.
+[34mINFO [0;39m [[36m2025-01-12 15:55:25[0;39m] [[33mbackground-preinit[0;39m] [32mo.h.validator.internal.util.Version[0;39m - HV000001: Hibernate Validator 8.0.2.Final
+[34mINFO [0;39m [[36m2025-01-12 15:55:25[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.1 with PID 24480 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-01-12 15:55:25[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - No active profile set, falling back to 1 default profile: "default"
+[34mINFO [0;39m [[36m2025-01-12 15:55:25[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[34mINFO [0;39m [[36m2025-01-12 15:55:25[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.e.DevToolsPropertyDefaultsPostProcessor[0;39m - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[34mINFO [0;39m [[36m2025-01-12 15:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34mINFO [0;39m [[36m2025-01-12 15:55:26[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.r.c.RepositoryConfigurationDelegate[0;39m - Finished Spring Data repository scanning in 73 ms. Found 2 JPA repository interfaces.
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat initialized with port 8080 (http)
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardService[0;39m - Starting service [Tomcat]
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.a.catalina.core.StandardEngine[0;39m - Starting Servlet engine: [Apache Tomcat/10.1.34]
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring embedded WebApplicationContext
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.s.c.ServletWebServerApplicationContext[0;39m - Root WebApplicationContext: initialization completed in 2439 ms
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.h.jpa.internal.util.LogHelper[0;39m - HHH000204: Processing PersistenceUnitInfo [name: default]
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.Version[0;39m - HHH000412: Hibernate ORM core version 6.6.4.Final
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.h.c.i.RegionFactoryInitiator[0;39m - HHH000026: Second-level cache disabled
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.p.SpringPersistenceUnitInfo[0;39m - No LoadTimeWeaver setup: ignoring JPA class transformer
+[34mINFO [0;39m [[36m2025-01-12 15:55:28[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Starting...
+[34mINFO [0;39m [[36m2025-01-12 15:55:29[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.pool.HikariPool[0;39m - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7bce67f8
+[34mINFO [0;39m [[36m2025-01-12 15:55:29[0;39m] [[33mrestartedMain[0;39m] [32mcom.zaxxer.hikari.HikariDataSource[0;39m - HikariPool-1 - Start completed.
+[31mWARN [0;39m [[36m2025-01-12 15:55:29[0;39m] [[33mrestartedMain[0;39m] [32morg.hibernate.orm.deprecation[0;39m - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34mINFO [0;39m [[36m2025-01-12 15:55:29[0;39m] [[33mrestartedMain[0;39m] [32mo.hibernate.orm.connections.pooling[0;39m - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34mINFO [0;39m [[36m2025-01-12 15:55:30[0;39m] [[33mrestartedMain[0;39m] [32mo.h.e.t.j.p.i.JtaPlatformInitiator[0;39m - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34mINFO [0;39m [[36m2025-01-12 15:55:30[0;39m] [[33mrestartedMain[0;39m] [32mo.s.o.j.LocalContainerEntityManagerFactoryBean[0;39m - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34mINFO [0;39m [[36m2025-01-12 15:55:30[0;39m] [[33mrestartedMain[0;39m] [32mo.s.d.j.r.query.QueryEnhancerFactory[0;39m - Hibernate is in classpath; If applicable, HQL parser will be used.
+[34mINFO [0;39m [[36m2025-01-12 15:55:31[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Skipping key rotation. Active key is not expired.
+[34mINFO [0;39m [[36m2025-01-12 15:55:31[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer[0;39m - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+[31mWARN [0;39m [[36m2025-01-12 15:55:31[0;39m] [[33mrestartedMain[0;39m] [32mo.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer[0;39m - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+[34mINFO [0;39m [[36m2025-01-12 15:55:33[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.d.a.OptionalLiveReloadServer[0;39m - LiveReload server is running on port 35729
+[34mINFO [0;39m [[36m2025-01-12 15:55:33[0;39m] [[33mrestartedMain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-01-12 15:55:33[0;39m] [[33mrestartedMain[0;39m] [32mo.s.b.w.e.tomcat.TomcatWebServer[0;39m - Tomcat started on port 8080 (http) with context path '/'
+[34mINFO [0;39m [[36m2025-01-12 15:55:33[0;39m] [[33mrestartedMain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 8.43 seconds (process running for 9.073)
+[34mINFO [0;39m [[36m2025-01-12 15:55:40[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.a.c.c.C.[Tomcat].[localhost].[/][0;39m - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:55:40[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Initializing Servlet 'dispatcherServlet'
+[34mINFO [0;39m [[36m2025-01-12 15:55:40[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.web.servlet.DispatcherServlet[0;39m - Completed initialization in 1 ms
+[34mINFO [0;39m [[36m2025-01-12 15:55:41[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.portfolio.service.UserService[0;39m - Attempting to load user by email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:55:41[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.portfolio.service.UserService[0;39m - User found with email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:55:41[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:55:43[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:55:58[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 405 ms
+[34mINFO [0;39m [[36m2025-01-12 15:56:15[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:56:15[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mc.p.p.controller.UserController[0;39m - User lock status toggled successfully for ID: 1
+[34mINFO [0;39m [[36m2025-01-12 15:56:24[0;39m] [[33mhttp-nio-8080-exec-7[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:56:24[0;39m] [[33mhttp-nio-8080-exec-7[0;39m] [32mc.p.p.controller.UserController[0;39m - User lock status toggled successfully for ID: 1
+[34mINFO [0;39m [[36m2025-01-12 15:56:43[0;39m] [[33mhttp-nio-8080-exec-8[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 121 ms
+[34mINFO [0;39m [[36m2025-01-12 15:56:52[0;39m] [[33mhttp-nio-8080-exec-9[0;39m] [32mc.p.portfolio.service.UserService[0;39m - Attempting to load user by email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:56:52[0;39m] [[33mhttp-nio-8080-exec-9[0;39m] [32mc.p.portfolio.service.UserService[0;39m - User found with email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:56:52[0;39m] [[33mhttp-nio-8080-exec-9[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-01-12 15:56:52[0;39m] [[33mhttp-nio-8080-exec-9[0;39m] [32mc.p.p.c.ApplicationConfiguration[0;39m - User found: admin.email@gmail.com

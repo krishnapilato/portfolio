@@ -49,9 +49,7 @@ public class PortfolioApplication {
     @Profile("dev")  // Only create the admin user in the development environment
     public CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            userRepository.findByEmail("admin.email@gmail.com")
-                    .ifPresentOrElse(user -> logger.info("Admin user already exists. Skipping creation."),
-                            () -> createAdminUser(userRepository, passwordEncoder));
+            userRepository.findByEmail("admin.email@gmail.com").ifPresentOrElse(user -> logger.info("Admin user already exists. Skipping creation."), () -> createAdminUser(userRepository, passwordEncoder));
         };
     }
 
@@ -67,7 +65,6 @@ public class PortfolioApplication {
         adminUser.setEmail("admin.email@gmail.com");
         adminUser.setPassword(passwordEncoder.encode(adminPassword));
         adminUser.setRole(Role.ADMIN);
-        adminUser.setEnabled(true);
 
         userRepository.save(adminUser);
         logger.info("Created default admin user with email: admin.email@gmail.com");

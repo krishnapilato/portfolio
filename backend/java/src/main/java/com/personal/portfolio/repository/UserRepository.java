@@ -41,6 +41,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     @Modifying
     @Transactional // Add transactional annotation for modifying queries.
-    @Query("UPDATE User u SET u.locked = CASE WHEN u.locked = true THEN false ELSE true END WHERE u.id = :id")
+    @Query("UPDATE User u SET u.locked = NOT u.locked WHERE u.id = :id")
     void updateLockStatusById(@Param("id") Long id);
 }
