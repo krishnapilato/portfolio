@@ -38,7 +38,7 @@ export class RegistrationComponent {
       },
       error: ({ error }) => {
         this.registrationRequest.password = '';
-        this.showMessage(error?.message || 'Registration failed. Please try again.', false);
+        this.showMessage(error?.message || 'Registration failed. Please try again.');
       },
     });
   }
@@ -48,8 +48,8 @@ export class RegistrationComponent {
    * @param message - The feedback message to display.
    * @param success - Indicates if the operation was successful.
    */
-  private showMessage(message: string, success: boolean): void {
+  private showMessage(message: string, success: boolean = false, delay: number = 3000): void {
     [this.message, this.isSuccess] = [message, success];
-    setTimeout(() => (this.message = null), 3000);
+    setTimeout(() => (this.message = null), delay);
   }
 }

@@ -27,10 +27,10 @@ export class AppComponent implements OnInit {
   /**
    * Starts the loading animation, showing the loading screen and then hiding it.
    */
-  private startLoadingAnimation(): void {
+  private startLoadingAnimation(delay: number = 500): void {
     setTimeout(() => {
       this.fadeOutLoadingScreen();
-    }, 500); // Ensure the delay matches your loading needs
+    }, delay); // Ensure the delay matches your loading needs
   }
 
   /**

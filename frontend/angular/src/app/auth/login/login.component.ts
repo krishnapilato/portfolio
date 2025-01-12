@@ -42,16 +42,16 @@ export class LoginComponent implements OnInit {
 
   private handleLoginError({ error }: any): void {
     this.loginRequest.password = '';
-    this.showMessage(error?.message ?? 'An unexpected error occurred.', false);
-  }  
+    this.showMessage(error?.message ?? 'An unexpected error occurred.');
+  }
 
   /**
    * Displays a feedback message to the user and clears it after a delay.
    * @param message - The feedback message to display.
    * @param success - Indicates if the operation was successful.
    */
-  private showMessage(message: string, success: boolean): void {
+  private showMessage(message: string, success: boolean = false, delay: number = 3000): void {
     [this.message, this.isSuccess] = [message, success];
-    setTimeout(() => (this.message = null), 3000);
+    setTimeout(() => (this.message = null), delay);
   }
 }

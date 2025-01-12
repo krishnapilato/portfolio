@@ -36,9 +36,9 @@ export class HomeComponent {
   private initializeTyped(): void {
     new Typed('#element', {
       strings: environment.home.skills,
-      typeSpeed: 60,
-      backSpeed: 40,
       loop: true,
+      backSpeed: 40,
+      typeSpeed: 60,
       preStringTyped: this.applyRandomGradientColorsTyped.bind(this),
     });
   }
@@ -84,6 +84,7 @@ export class HomeComponent {
   /** Add dynamic 3D effect and smooth motion to the wave */
   private addWave3DEffect(): void {
     gsap.to('#wave', {
+      x: 30,
       y: 20,
       rotateX: 10,
       rotateY: 5,
@@ -163,12 +164,12 @@ export class HomeComponent {
   }
 
   // Adds a double-click handler to clear and regenerate shapes
-  private addDocumentClickHandler(): void {
-    document.addEventListener('dblclick', this.generateRandomShapes.bind(this), { passive: true });
+  private addDocumentClickHandler(eventType: string = 'dblclick'): void {
+    document.addEventListener(eventType, this.generateRandomShapes.bind(this), { passive: true });
   }
 
   // Generates a random RGB color as a string
-  private generateRandomColor(): string {
+  private generateRandomColor(type: 'rgb' | 'hex' = 'rgb'): string {
     return `rgb(${(Math.random() * 256) | 0}, ${(Math.random() * 256) | 0}, ${(Math.random() * 256) | 0})`;
   }
 }

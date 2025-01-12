@@ -58,12 +58,12 @@ export class ContactComponent implements OnInit {
       })
       .catch((error) => {
         console.error('EmailJS error:', error);
-        this.displayMessage('Failed to send the email. Please try again later.', false);
+        this.displayMessage('Failed to send the email. Please try again later.');
       });
   }
 
   /** Display success or error message */
-  private displayMessage(message: string, isSuccess: boolean): void {
+  private displayMessage(message: string, isSuccess: boolean = false): void {
     this.successMessage = isSuccess ? message : null;
     this.errorMessage = isSuccess ? null : message;
     this.clearMessagesAfterDelay();
