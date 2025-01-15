@@ -2,20 +2,13 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "types": ["jasmine", "node"],
-    "strict": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node"
+    "types": ["jasmine", "node"]
   },
   "include": [
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
   ],
   "exclude": [
-    "node_modules",
-    "**/*.js"
+    "node_modules"
   ]
 }

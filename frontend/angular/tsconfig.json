@@ -1,30 +1,18 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "types": [],
     "outDir": "./dist/out-tsc",
     "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "sourceMap": true,
-    "declaration": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "importHelpers": true,
     "target": "ESNext",
     "module": "ESNext",
-    "strictPropertyInitialization": false,
-    "useDefineForClassFields": true,
     "lib": ["ESNext", "dom"]
   },
   "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
     "strictTemplates": true
   }
 }

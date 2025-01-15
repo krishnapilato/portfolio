@@ -1,25 +1,18 @@
-# Compiled output
+# Build artifacts and temporary files
 /dist
 /tmp
 /out-tsc
 /bazel-out
+.sass-cache/
+*.tmp
+*.temp
+*.log
+*.lock
+*.bak
+*.swp
 
-# Dependencies
+# Dependency directories
 /node_modules
-
-# Logs
-npm-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
 
 # Visual Studio Code
 .vscode/*
@@ -28,48 +21,26 @@ pnpm-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# History files
-.history/
-
-# Angular
+# Angular-specific
 /.angular/cache
 .angular-cli.json
 
-# Sass/SCSS cache
-.sass-cache/
-
-# Coverage reports
+# Coverage and test logs
 /coverage
-
-# Test logs
 testem.log
 /libpeerconnection.log
 
-# Typings
-/typings
-
-# Miscellaneous
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
+# Environment files
 .env
 *.env.local
 *.env.development
 *.env.production
 *.env.test
 
+# History files
+.history/
+
 # System files
 .DS_Store
 Thumbs.db
 desktop.ini
-
-# Build artifacts
-*.log
-*.lock
-*.bak
-*.swp
-
-# Temporary files
-*.tmp
-*.temp

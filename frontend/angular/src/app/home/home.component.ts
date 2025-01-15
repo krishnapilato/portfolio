@@ -35,7 +35,7 @@ export class HomeComponent {
   /** Initializes the Typed.js animation for displaying dynamic skills. */
   private initializeTyped(): void {
     new Typed('#element', {
-      strings: environment.home.skills,
+      strings: environment.skills,
       loop: true,
       backSpeed: 40,
       typeSpeed: 60,
