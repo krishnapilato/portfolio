@@ -4,13 +4,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Typed from 'typed.js';
 import { environment } from '../../environment/environment';
 import { AboutMeComponent } from '../about-me/about-me.component';
+import { SkillsGalaxyComponent } from '../skills-galaxy/skills-galaxy.component';
 
 gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [AboutMeComponent],
+  imports: [AboutMeComponent, SkillsGalaxyComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
