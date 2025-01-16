@@ -8,12 +8,13 @@ import { RouterModule } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent  {
+export class HeaderComponent {
   @ViewChild('progressBar', { static: true }) private progressBar!: ElementRef;
   @ViewChild('navbar', { static: true }) private navbar!: ElementRef;
 
   protected isMobileMenuOpen: boolean = false;
   private lastScrollTop: number = 0;
+  private scrollTimeout: any = null;
 
   /**
    * Toggles or closes the mobile menu and manages body scrolling.
@@ -26,11 +27,25 @@ export class HeaderComponent  {
 
   /**
    * Updates the progress bar and manages navbar visibility on scroll.
+   * Optimized to trigger updates less frequently.
    */
   @HostListener('window:scroll', [])
   private updateScrollProgress(): void {
-    const scrollRatio = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-    this.progressBar.nativeElement.style.width = `${Math.max(0, Math.min(scrollRatio, 100))}%`;
-    this.navbar?.nativeElement.classList.toggle('hidden', window.scrollY > this.lastScrollTop), (this.lastScrollTop = window.scrollY);
-  }  
+    if (this.scrollTimeout) return;
+
+    this.scrollTimeout = setTimeout(() => {
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollRatio = (window.scrollY / scrollHeight) * 100;
+
+      // Update progress bar width
+      this.progressBar.nativeElement.style.width = `${Math.min(100, Math.max(0, scrollRatio))}%`;
+
+      // Toggle navbar visibility based on scroll direction
+      const isScrollingDown = window.scrollY > this.lastScrollTop;
+      this.navbar?.nativeElement.classList.toggle('hidden', isScrollingDown);
+
+      this.lastScrollTop = window.scrollY;
+      this.scrollTimeout = null; // Reset the timeout
+    }, 50); // Update every 50ms
+  }
 }

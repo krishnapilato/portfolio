@@ -1,14 +1,15 @@
 <!-- Scroll Progress Bar -->
-<div #progressBar class="fixed top-0 left-0 h-1 bg-gradient-to-r from-red-600 to-red-400 transition-all z-50"></div>
+<div #progressBar class="fixed top-0 left-0 h-1 bg-gradient-to-r from-red-600 to-red-400 transition-all z-50">
+</div>
 
 <!-- Navbar -->
 <nav #navbar
-  class="fixed top-0 left-0 w-full h-16 bg-white bg-opacity-80 backdrop-blur-lg shadow-lg flex items-center justify-center px-4 z-40 transition-all duration-300"
+  class="fixed top-0 left-0 w-full h-20 bg-white bg-opacity-80 backdrop-blur-lg shadow-lg flex items-center justify-center px-8 z-40 transition-all duration-300"
   data-aos="fade-down" data-aos-duration="1200">
   <!-- Navbar Content Wrapper -->
-  <div class="w-full max-w-6xl flex items-center justify-between">
+  <div class="w-full max-w-7xl flex items-center justify-between">
     <!-- Brand -->
-    <div routerLink="/" class="flex items-center space-x-3 cursor-pointer" aria-label="Navigate to Home">
+    <div routerLink="/" class="flex items-center space-x-4 cursor-pointer" aria-label="Navigate to Home">
       <!-- Logo -->
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" class="svg-animate">
         <defs>
@@ -33,13 +34,13 @@
       </svg>
 
       <!-- Brand Name -->
-      <span class="text-2xl font-bold text-gray-800 font-trebuchet transition-transform duration-300 hover:scale-105">
+      <span class="text-3xl font-bold text-gray-800 font-trebuchet transition-transform duration-300 hover:scale-105">
         PrismNexus
       </span>
     </div>
 
     <!-- Desktop Menu -->
-    <div class="hidden md:flex items-center space-x-12">
+    <div class="hidden lg:flex items-center space-x-14">
       <a routerLink="/dashboard"
         class="flex items-center space-x-2 text-gray-700 text-base hover:text-red-600 transition-transform hover:scale-110">
         <i class="fa-solid fa-tools text-xl text-gray-200"></i>
@@ -58,19 +59,13 @@
     </div>
 
     <!-- Mobile Menu Toggle -->
-    <button
-      class="text-3xl text-red-600 md:hidden transition-all duration-300 ease-in-out transform"
-      (click)="handleMobileMenu()"
-      aria-label="Toggle mobile menu"
-      [ngClass]="{
+    <button class="text-3xl text-red-600 lg:hidden transition-all duration-300 ease-in-out transform"
+      (click)="handleMobileMenu()" aria-label="Toggle mobile menu" [ngClass]="{
         'rotate-180 scale-110': isMobileMenuOpen,
         'rotate-0 scale-100': !isMobileMenuOpen
-      }"
-    >
-      <i
-        [ngClass]="isMobileMenuOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars-staggered'"
-        class="transition-all duration-300 ease-in-out"
-      ></i>
+      }">
+      <i [ngClass]="isMobileMenuOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars-staggered'"
+        class="transition-all duration-300 ease-in-out"></i>
     </button>
   </div>
 
@@ -78,11 +73,14 @@
   <div *ngIf="isMobileMenuOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40" (click)="handleMobileMenu()"></div>
 
   <!-- Mobile Menu -->
-  <div *ngIf="isMobileMenuOpen"
-    data-aos="fade-down"
-    data-aos-duration="1000"
-    data-aos-easing="ease-in-out"
-    class="fixed mt-20 top-0 left-0 w-full h-screen bg-white flex flex-col items-center justify-center space-y-6 py-6 px-4 shadow-2xl z-50">
+  <div *ngIf="isMobileMenuOpen" data-aos="fade-down" data-aos-duration="1000" data-aos-easing="ease-in-out"
+    class="fixed top-0 left-0 w-full h-screen bg-white flex flex-col items-center justify-center space-y-8 py-12 px-6 shadow-2xl z-50">
+
+    <!-- Close Button -->
+    <button (click)="handleMobileMenu(false)" aria-label="Close menu"
+      class="absolute top-12 right-12 text-gray-700 text-3xl hover:text-red-600 transition-transform hover:scale-110">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
 
     <a routerLink="/dashboard" (click)="handleMobileMenu(false)"
       class="flex items-center space-x-3 text-2xl text-gray-700 hover:text-red-600 transition-transform hover:scale-110">
@@ -99,7 +97,7 @@
     <div class="border-b border-gray-300 w-3/4"></div>
 
     <a routerLink="/auth/login" (click)="handleMobileMenu(false)"
-      class="flex items-center space-x-3 border-2 border-red-600 text-red-600 px-6 py-3 rounded-lg hover:bg-red-100 hover:border-red-800 transition-transform hover:scale-105">
+      class="flex items-center space-x-3 border-2 border-red-600 text-red-600 px-8 py-4 rounded-lg hover:bg-red-100 hover:border-red-800 transition-transform hover:scale-105">
       <i class="fas fa-sign-in-alt text-2xl"></i>
       <span>Login</span>
     </a>

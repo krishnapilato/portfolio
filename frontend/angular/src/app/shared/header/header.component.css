@@ -21,35 +21,35 @@ nav.hidden {
 
 /* SVG Wrapper Animation */
 .svg-animate {
-  animation: rotate-svg 8s linear infinite;
+  animation: rotate-svg 10s cubic-bezier(0.42, 0, 0.58, 1) infinite;
   transform-origin: center;
 }
 
 /* Line Animation */
 .line-animate {
-  stroke-dasharray: 30;
-  stroke-dashoffset: 30;
-  animation: draw-line 2s ease-in-out forwards;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: draw-line 2.5s ease-in-out forwards, glow 2s infinite alternate;
 }
 
 /* Path Animation */
 .path-animate {
-  stroke-dasharray: 60;
-  stroke-dashoffset: 60;
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
   fill: none;
   stroke: url(#navbar-gradient);
-  animation: draw-path 2s ease-in-out forwards;
+  animation: draw-path 2.5s ease-in-out forwards, pulse-color 4s infinite;
 }
 
 /* Circle Animation */
 .circle-animate {
-  animation: pulse 2s infinite ease-in-out;
+  animation: pulse 3s infinite ease-in-out, rotate-circle 6s linear infinite;
 }
 
 /* Text Animation */
 .text-animate {
   opacity: 0;
-  animation: fade-in 1s ease-in-out forwards 1s;
+  animation: fade-in 1.5s ease-in-out forwards 1.5s, text-glow 3s infinite alternate;
 }
 
 /* Keyframes */
@@ -75,10 +75,27 @@ nav.hidden {
   }
 }
 
+/* Glow Effect */
+@keyframes glow {
+  0% {
+    filter: drop-shadow(0 0 5px #ff4d4d);
+  }
+  100% {
+    filter: drop-shadow(0 0 15px #ff1a1a);
+  }
+}
+
 /* Pulse Effect */
 @keyframes pulse {
   50% {
-    transform: scale(1.5);
+    transform: scale(1.3);
+  }
+}
+
+/* Rotate Circle */
+@keyframes rotate-circle {
+  100% {
+    transform: rotate(-360deg);
   }
 }
 
@@ -86,5 +103,28 @@ nav.hidden {
 @keyframes fade-in {
   100% {
     opacity: 1;
+  }
+}
+
+/* Text Glow */
+@keyframes text-glow {
+  0% {
+    text-shadow: 0 0 5px #ff4d4d, 0 0 10px #ff1a1a;
+  }
+  100% {
+    text-shadow: 0 0 15px #ff4d4d, 0 0 25px #ff1a1a;
+  }
+}
+
+/* Pulse Color Effect */
+@keyframes pulse-color {
+  0% {
+    stroke: #ff4d4d;
+  }
+  50% {
+    stroke: #ff1a1a;
+  }
+  100% {
+    stroke: #ff4d4d;
   }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
@@ -11,52 +11,47 @@ import { HeaderComponent } from './shared/header/header.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   private readonly title: string = 'PrismNexus';
+  private loadListener!: () => void;
 
   protected isLoading: boolean = true;
   protected isContentVisible: boolean = false;
-  protected loadingOpacity: number = 1;
 
   ngOnInit() {
-    window.addEventListener('load', () => {
-      this.startLoadingAnimation();
-    });
+    this.loadListener = this.startLoadingAnimation.bind(this);
+    window.addEventListener('load', this.loadListener);
+  }
+
+  ngOnDestroy() {
+    // Clean up event listeners to prevent memory leaks
+    window.removeEventListener('load', this.loadListener);
   }
 
   /**
    * Starts the loading animation, showing the loading screen and then hiding it.
    */
-  private startLoadingAnimation(delay: number = 500): void {
+  private startLoadingAnimation(): void {
     setTimeout(() => {
       this.fadeOutLoadingScreen();
-    }, delay); // Ensure the delay matches your loading needs
+    }, 500); // Matches the desired delay
   }
 
   /**
    * Fades out the loading screen and reveals the main content.
    */
   private fadeOutLoadingScreen(): void {
-    const fadeOutEffect = () => {
-      if (this.loadingOpacity > 0) {
-        this.loadingOpacity -= 0.05;
-    
-        requestAnimationFrame(fadeOutEffect);
-      } else {
-        this.isLoading = false;
-        this.showMainContent();
-      }
-    };
-    
-    // Start the fade-out effect
-    fadeOutEffect();
-  }
+    const step = 0.05; // Adjust step size for smoothness vs. performance
+    const duration = 1000; // Total fade-out duration in ms
+    const interval = duration / (1 / step); // Calculate interval between steps
 
-  /**
-   * Marks the main content as visible.
-   */
-  private showMainContent(): void {
-    this.isContentVisible = true;
+    const fadeEffect = setInterval(() => {
+      if (this.isLoading) {
+        this.isLoading = false;
+        this.isContentVisible = true;
+        clearInterval(fadeEffect);
+      }
+    }, interval);
   }
 
   /**

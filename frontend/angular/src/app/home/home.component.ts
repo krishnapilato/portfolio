@@ -15,6 +15,8 @@ gsap.registerPlugin(ScrollTrigger);
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
+  private shapes: HTMLElement[] = [];
+
   ngOnInit(): void {
     this.initializeTyped();
     this.addDocumentClickHandler();
@@ -45,17 +47,18 @@ export class HomeComponent {
 
   /** Applies a random gradient background to the text element. */
   private applyRandomGradientColorsTyped(): void {
-    document.getElementById('element')?.style.setProperty(
-      'background-image',
-      `linear-gradient(to right, ${this.generateRandomColor()}, ${this.generateRandomColor()})`
-    );
-  }  
+    const element = document.getElementById('element');
+    if (element) {
+      const gradient = `linear-gradient(to right, ${this.generateRandomColor()}, ${this.generateRandomColor()})`;
+      element.style.backgroundImage = gradient;
+    }
+  }
 
   /** Scroll down animation */
   setupScrollAnimation(): void {
     const section = document.querySelector('section');
     if (!section) return;
-  
+
     gsap.to(section, {
       scale: 0.5,
       opacity: 0,
@@ -68,7 +71,7 @@ export class HomeComponent {
       },
       ease: 'power2.inOut',
     });
-  }  
+  }
 
   /** Animate the wave colors dynamically */
   private animateWaveColors(): void {
@@ -96,26 +99,25 @@ export class HomeComponent {
     });
   }
 
-  // Generates and animates random shapes dynamically with high performance
+  /** Generates and animates random shapes dynamically with high performance */
   private generateRandomShapes(): void {
     const shapesContainer = document.getElementById('shapes-container');
     if (!shapesContainer) return;
 
     shapesContainer.textContent = '';
+    this.shapes = []; // Clear previous shapes
 
-    const shapeCount = 12 + (Math.random() * 5 | 0);
+    const shapeCount = Math.floor(12 + Math.random() * 5);
     const fragment = document.createDocumentFragment();
-
-    const shapes: HTMLElement[] = [];
 
     for (let i = 0; i < shapeCount; i++) {
       const shape = this.createRandomShape();
-      shapes.push(shape);
+      this.shapes.push(shape);
       fragment.appendChild(shape);
     }
 
     shapesContainer.appendChild(fragment);
-    requestAnimationFrame(() => shapes.forEach((shape) => this.animateShape(shape)));
+    requestAnimationFrame(() => this.shapes.forEach((shape) => this.animateShape(shape)));
   }
 
   /** Create a random shape with dynamic size, position, and styles */
@@ -128,7 +130,7 @@ export class HomeComponent {
       width: ${size}px;
       height: ${size}px;
       position: absolute;
-      top: ${random() * 100}%;
+      bottom: 0;
       left: ${random() * 100}%;
       background-color: ${this.generateRandomColor()};
       border-radius: ${random() > 0.5 ? '50%' : '0'};
@@ -136,6 +138,7 @@ export class HomeComponent {
       box-shadow: 0 6px 20px rgba(118, 115, 115, 0.3);
       transform: rotate(${random() * 360}deg);
       opacity: ${random() * 0.7 + 0.3};
+      z-index: -1;
     `;
 
     shape.setAttribute('style', styles);
@@ -146,13 +149,8 @@ export class HomeComponent {
   private animateShape(shape: HTMLElement): void {
     const random = (min: number, max: number) => Math.random() * (max - min) + min;
 
-    const top = `${random(0, Math.max(window.innerHeight * 0.6 - shape.offsetHeight, 0))}px`;
-    const left = `${random(0, 100)}%`;
-
-    Object.assign(shape.style, { top, left });
-
     gsap.to(shape, {
-      y: `+=${random(20, 60)}`,
+      y: `-=${random(20, 60)}`,
       x: `+=${random(20, 60)}`,
       rotation: random(0, 360),
       scale: random(1, 1.5),
@@ -163,12 +161,14 @@ export class HomeComponent {
     });
   }
 
-  // Adds a double-click handler to clear and regenerate shapes
+  /** Adds a double-click handler to clear and regenerate shapes */
   private addDocumentClickHandler(eventType: string = 'dblclick'): void {
-    document.addEventListener(eventType, this.generateRandomShapes.bind(this), { passive: true });
+    document.getElementById('nameClick')?.addEventListener(eventType, () => {
+      this.generateRandomShapes();
+    }, { passive: true });
   }
 
-  // Generates a random RGB color as a string
+  /** Generates a random RGB color as a string */
   private generateRandomColor(type: 'rgb' | 'hex' = 'rgb'): string {
     return `rgb(${(Math.random() * 256) | 0}, ${(Math.random() * 256) | 0}, ${(Math.random() * 256) | 0})`;
   }
