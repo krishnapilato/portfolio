@@ -3,6 +3,7 @@ export const environment = {
   version: '0.8.5',
   appName: 'PrismNexus',
   apiUrl: 'https://backend.prismnexus.com',
+  themeColor: 'lime', // https://tailwindcss.com/docs/customizing-colors
   skills: [
     'Java',
     'Python',

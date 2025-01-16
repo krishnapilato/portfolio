@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Typed from 'typed.js';
@@ -14,8 +14,9 @@ gsap.registerPlugin(ScrollTrigger);
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy {
   private shapes: HTMLElement[] = [];
+  private typedInstance: Typed | null = null; // To track the Typed.js instance
 
   ngOnInit(): void {
     this.initializeTyped();
@@ -29,6 +30,26 @@ export class HomeComponent {
     this.setupScrollAnimation();
   }
 
+  ngOnDestroy(): void {
+    // Destroy all ScrollTriggers
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+    // Kill all GSAP animations
+    gsap.globalTimeline.clear();
+
+    // Destroy Typed.js instance
+    if (this.typedInstance) {
+      this.typedInstance.destroy();
+    }
+
+    // Remove all dynamically created shapes
+    this.shapes.forEach((shape) => shape.remove());
+    this.shapes = [];
+
+    // Remove event listeners
+    document.getElementById('nameClick')?.removeEventListener('dblclick', this.generateRandomShapes);
+  }
+
   /** Smoothly scrolls to the "About Me" section. */
   public scrollToAbout(): void {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -36,7 +57,7 @@ export class HomeComponent {
 
   /** Initializes the Typed.js animation for displaying dynamic skills. */
   private initializeTyped(): void {
-    new Typed('#element', {
+    this.typedInstance = new Typed('#element', {
       strings: environment.skills,
       loop: true,
       backSpeed: 40,
@@ -163,9 +184,7 @@ export class HomeComponent {
 
   /** Adds a double-click handler to clear and regenerate shapes */
   private addDocumentClickHandler(eventType: string = 'dblclick'): void {
-    document.getElementById('nameClick')?.addEventListener(eventType, () => {
-      this.generateRandomShapes();
-    }, { passive: true });
+    document.getElementById('nameClick')?.addEventListener(eventType, this.generateRandomShapes.bind(this), { passive: true });
   }
 
   /** Generates a random RGB color as a string */
