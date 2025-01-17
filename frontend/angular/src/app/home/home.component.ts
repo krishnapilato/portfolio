@@ -156,10 +156,10 @@ export class HomeComponent implements OnDestroy {
       left: ${random() * 100}%;
       background-color: ${this.generateRandomColor()};
       border-radius: ${random() > 0.5 ? '50%' : '0'};
-      backdrop-filter: blur(40px);
-      box-shadow: 0 6px 20px rgba(118, 115, 115, 0.3);
+      backdrop-filter: blur(180px);
+      box-shadow: 0 3px 10px rgba(118, 115, 115, 0.3);
       transform: rotate(${random() * 360}deg);
-      opacity: ${random() * 0.7 + 0.3};
+      opacity: ${random() * 0.98};
       z-index: -1;
     `;
 

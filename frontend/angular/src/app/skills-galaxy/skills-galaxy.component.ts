@@ -9,7 +9,6 @@ gsap.registerPlugin(ScrollTrigger);
 @Component({
   selector: 'app-skills-galaxy',
   standalone: true,
-  imports: [NgFor],
   templateUrl: './skills-galaxy.component.html',
   styleUrls: ['./skills-galaxy.component.css'],
 })

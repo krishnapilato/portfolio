@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { interval, take } from 'rxjs';
 
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 @Component({
   selector: 'app-error',
   template: `
@@ -48,7 +52,7 @@ import { interval, take } from 'rxjs';
           The page you’re looking for might have been removed, renamed, or is temporarily unavailable. But don’t worry, we’ve got you covered.
         </p>
         <p class="text-lg font-medium text-gray-200 sm:text-base lg:text-lg">
-          Redirecting in <span class="font-bold text-white">{{ countdown }}</span> seconds...
+          Redirecting in <span class="font-bold text-white countdown">{{ countdown }}</span> seconds...
         </p>
 
         <!-- Home Button -->
@@ -66,9 +70,25 @@ import { interval, take } from 'rxjs';
 export class ErrorComponent implements OnInit {
   protected countdown: number = 10;
 
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router) { }
 
   ngOnInit(): void {
-    interval(1000).pipe(take(this.countdown)).subscribe(() => this.countdown--, null, () => this.router.navigate(['/']));
+    gsap.fromTo(
+      '.countdown',
+      { scale: 1, opacity: 1, rotate: 0, color: '#FFFFFF' },
+      {
+        scale: 1.2,
+        opacity: 0.8,
+        rotate: 360,
+        color: '#F87171', // Transition to a vibrant red
+        duration: 1,
+        repeat: -1,
+        ease: 'power2.inOut',
+        yoyo: true,
+      }
+    );
+    interval(1000)
+      .pipe(take(this.countdown))
+      .subscribe(() => this.countdown--, null, () => this.router.navigate(['/']));
   }
 }

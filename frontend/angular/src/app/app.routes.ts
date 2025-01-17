@@ -1,17 +1,21 @@
 import { Routes } from '@angular/router';
+import { AboutMeComponent } from './about-me/about-me.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegistrationComponent } from './auth/registration/registration.component';
 import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './shared/error/error.component';
+import { SkillsGalaxyComponent } from './skills-galaxy/skills-galaxy.component';
 
 export const routes: Routes = [
-  // Home route
-  {
-    path: '',
-    component: HomeComponent,
-    pathMatch: 'full',
-  },
+  // Root and primary routes
+  { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'about-me', component: AboutMeComponent },
+  { path: 'skills', component: SkillsGalaxyComponent },
+  { path: 'contact', component: ContactComponent },
+
+  // { path: 'admin/dashboard', component: NewComponent, canActivate: [AuthGuard] },
+
   // Authentication routes
   {
     path: 'auth',
@@ -20,14 +24,7 @@ export const routes: Routes = [
       { path: 'signup', component: RegistrationComponent },
     ],
   },
-  // Contact route
-  {
-    path: 'contact',
-    component: ContactComponent,
-  },
-  // Wildcard route for 404
-  {
-    path: '**',
-    component: ErrorComponent,
-  },
+
+  // Wildcard route for 404 errors
+  { path: '**', component: ErrorComponent },
 ];

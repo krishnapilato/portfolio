@@ -19,6 +19,12 @@ nav.hidden {
   z-index: 9999;
 }
 
+#mobile-menu {
+  transition: opacity 0.3s ease-in-out; /* Smooth fade effect */
+  opacity: 0; /* Hidden by default */
+  display: none; /* Ensures it doesn't take up space when hidden */
+}
+
 /* SVG Wrapper Animation */
 .svg-animate {
   animation: rotate-svg 10s cubic-bezier(0.42, 0, 0.58, 1) infinite;
