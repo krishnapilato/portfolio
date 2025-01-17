@@ -1,9 +1,12 @@
 package com.personal.portfolio.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -16,6 +19,9 @@ public enum Role {
     USER("User"), ADMIN("Admin"), DEVELOPER("Developer");
 
     private final String displayName;
+
+    // Cache for quick lookup of roles by display name
+    private static final Map<String, Role> DISPLAY_NAME_TO_ROLE = Arrays.stream(values()).collect(Collectors.toMap(role -> role.displayName.toLowerCase(), role -> role));
 
     /**
      * Constructor to associate a user-friendly display name with each role.
@@ -49,13 +55,18 @@ public enum Role {
         if (displayName == null || displayName.isBlank()) {
             throw new IllegalArgumentException("Display name cannot be null or blank.");
         }
+        return Optional.ofNullable(DISPLAY_NAME_TO_ROLE.get(displayName.toLowerCase())).orElseThrow(() -> new NoSuchElementException(String.format("No matching role found for display name: '%s'. Available roles: %s", displayName, getAllDisplayNames())));
+    }
 
-        return Arrays.stream(values())
-                .filter(role -> role.displayName.equalsIgnoreCase(displayName))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException(
-                        String.format("No matching role found for display name: '%s'. Available roles: %s",
-                                displayName, getAllDisplayNames())));
+    /**
+     * Retrieves a Role enum for JSON deserialization based on the provided display name.
+     *
+     * @param displayName The display name of the role.
+     * @return The Role corresponding to the display name.
+     */
+    @JsonCreator
+    public static Role fromDisplayNameForJson(String displayName) {
+        return fromDisplayName(displayName);
     }
 
     /**
@@ -64,8 +75,6 @@ public enum Role {
      * @return A string containing all role display names.
      */
     public static String getAllDisplayNames() {
-        return Arrays.stream(values())
-                .map(role -> role.displayName)
-                .collect(Collectors.joining(", "));
+        return Arrays.stream(values()).map(role -> role.displayName).collect(Collectors.joining(", "));
     }
 }

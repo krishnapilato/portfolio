@@ -12,13 +12,6 @@ services:
       - .:/app # Mount the current directory to the /app directory in the container
     environment:
       - NODE_ENV=production # Set the Node.js environment to production
-    healthcheck: # Define a health check for the container
-      test: ["CMD", "curl", "--silent", "--fail", "http://localhost:4200"]
-      interval: 30s # Time between health checks
-      retries: 3 # Number of retries before marking as unhealthy
-      start_period: 10s # Grace period before starting health checks
-      timeout: 5s # Maximum duration for each health check
-
 networks:
   app-network:
     driver: bridge # Use the default bridge network driver

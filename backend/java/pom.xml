@@ -15,13 +15,13 @@
     <!-- Project Metadata -->
     <groupId>com.personal</groupId>
     <artifactId>portfolio</artifactId>
-    <version>0.8.5d</version>
+    <version>0.8.5</version>
     <name>PrismNexus</name>
     <description>Portfolio Backend API</description>
 
     <!-- Project Dependencies -->
     <dependencies>
-        <!-- Core Spring Boot Dependencies -->
+        <!-- Spring Boot Core Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -36,18 +36,22 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+
+        <!-- Thymeleaf (Optional, for server-side rendering) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+
+        <!-- Email Support -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
-        <!-- Dev Tools (for development purposes) -->
+        <!-- Development Tools -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -55,7 +59,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Database Driver (MySQL) -->
+        <!-- Database Driver -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -86,14 +90,14 @@
             <version>1.3.1</version>
         </dependency>
 
-        <!-- Lombok (for reducing boilerplate code) -->
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
 
-        <!-- API Documentation (Swagger) -->
+        <!-- API Documentation -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>

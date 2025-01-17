@@ -3,6 +3,9 @@ package com.personal.portfolio.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,6 +13,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -25,72 +30,93 @@ import java.util.Objects;
  * Spring Security.
  */
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = {@Index(name = "idx_user_email", columnList = "email"), @Index(name = "idx_user_enabled", columnList = "enabled")})
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 
+    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
-    // The full name of the user.
+    @NotNull
+    @Size(min = 2, max = 100, message = "Full name must be between 2 and 100 characters.")
     private String fullName;
 
-    // Unique email address for the user (used as the username in authentication).
+    @NotNull
+    @Email(message = "Please provide a valid email address.")
     @Column(unique = true, nullable = false)
-    @Email
     private String email;
 
-    // Encrypted password (excluded from serialization for security).
+    @NotNull
+    @Size(min = 8, message = "Password must be at least 8 characters long.")
     @JsonIgnore
     private String password;
 
-    // Role of the user for authorization (e.g., ADMIN, USER).
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role = Role.USER;
 
-    // Flags to control account status and credentials validity.
+    @Column(unique = true)
+    private String phoneNumber;
+
+    @Column(nullable = false)
     private boolean enabled = true;
+
+    @Column(nullable = false)
     private boolean locked = false;
+
+    @Column(nullable = false)
     private boolean accountNonExpired = true;
+
+    @Column(nullable = false)
     private boolean credentialsNonExpired = true;
 
-    // Automatically managed timestamps for record creation and updates.
+    @JsonIgnore
+    private Instant lastLogin;
+
+    private String profilePictureUrl;
+
+    @Size(max = 500, message = "Bio cannot exceed 500 characters.")
+    private String bio;
+
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(updatable = false, nullable = false)
     private Date createdAt;
 
     @UpdateTimestamp
+    @Column(nullable = false)
     private Date updatedAt;
 
     /**
-     * Returns the email address of the user as the username for authentication.
+     * Hash the password before saving to the database.
      */
+    @PrePersist
+    @PreUpdate
+    private void hashPassword() {
+        if (password != null && !password.startsWith("$2a$")) { // Check if already hashed
+            this.password = PASSWORD_ENCODER.encode(password);
+        }
+    }
+
     @Override
     public String getUsername() {
         return email;
     }
 
-    /**
-     * Returns whether the user is currently enabled.
-     * Added logic to check for inactive users based on a "last login" timestamp.
-     */
     @Override
     public boolean isEnabled() {
         if (!enabled) {
             return false;
         }
-
         Instant sixMonthsAgo = ZonedDateTime.now().minusMonths(6).toInstant();
-        return createdAt.toInstant().isAfter(sixMonthsAgo);
+        return lastLogin != null && lastLogin.isAfter(sixMonthsAgo);
     }
 
-    /**
-     * Returns whether the user's account is not locked.
-     * Includes checks for account lock due to manual lock and expiration.
-     */
     @Override
     public boolean isAccountNonLocked() {
         if (locked) {
@@ -100,10 +126,6 @@ public class User implements UserDetails {
         return isAccountNonExpired();
     }
 
-    /**
-     * Returns whether the user's account is not expired.
-     * Added logic to check for the actual expiration date.
-     */
     @Override
     public boolean isAccountNonExpired() {
         if (!accountNonExpired) {
@@ -114,18 +136,11 @@ public class User implements UserDetails {
         return Instant.now().isBefore(expirationTime);
     }
 
-    /**
-     * Returns the authorities granted to the user.
-     * This is based on the user's role.
-     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
-    /**
-     * Overrides equals to compare users by their unique ID.
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -134,9 +149,6 @@ public class User implements UserDetails {
         return Objects.equals(id, user.id);
     }
 
-    /**
-     * Overrides hashCode to provide a consistent hash based on the user's ID.
-     */
     @Override
     public int hashCode() {
         return Objects.hash(id);

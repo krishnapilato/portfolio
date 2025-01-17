@@ -52,6 +52,7 @@ public class AuthenticationService {
         user.setRole(Role.USER);
         user.setCreatedAt(Date.from(Instant.now()));
         user.setUpdatedAt(Date.from(Instant.now()));
+        user.setLastLogin(Instant.now());
 
         return userRepository.save(user);
     }

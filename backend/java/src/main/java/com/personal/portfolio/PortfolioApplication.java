@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.Instant;
+import java.util.Date;
+
 /**
  * Entry point for the Portfolio Application.
  * Initializes the application, sets up caching, and ensures an admin user exists.
@@ -25,11 +28,14 @@ public class PortfolioApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(PortfolioApplication.class);
 
-    @Value("${spring.security.user.name}")
+    @Value("${spring.security.user.name:admin}")
     private String adminUsername; // Admin username from application properties
 
-    @Value("${spring.security.user.password}")
+    @Value("${spring.security.user.password:password}")
     private String adminPassword; // Admin password from application properties
+
+    @Value("${spring.security.user.email:admin.email@gmail.com}")
+    private String adminEmail; // Admin email from application properties
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(PortfolioApplication.class);
@@ -39,17 +45,22 @@ public class PortfolioApplication {
 
     /**
      * Ensures the default admin user is created in the database if it doesn't already exist.
-     * This bean runs only in the 'dev' profile to avoid unnecessary checks in production.
+     * This bean runs only in non-production profiles to avoid unnecessary checks in production.
      *
      * @param userRepository  Repository for user-related operations.
      * @param passwordEncoder Encoder for securing user passwords.
      * @return CommandLineRunner to execute database initialization logic.
      */
     @Bean
-    @Profile("dev")  // Only create the admin user in the development environment
+    @Profile("!prod")  // Avoid running in production environments
     public CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            userRepository.findByEmail("admin.email@gmail.com").ifPresentOrElse(user -> logger.info("Admin user already exists. Skipping creation."), () -> createAdminUser(userRepository, passwordEncoder));
+            if (adminUsername == null || adminPassword == null || adminEmail == null) {
+                logger.error("Admin credentials are not properly configured. Ensure properties are set.");
+                return;
+            }
+
+            userRepository.findByEmail(adminEmail).ifPresentOrElse(user -> logger.info("Admin user already exists. Skipping creation."), () -> createAdminUser(userRepository, passwordEncoder));
         };
     }
 
@@ -62,11 +73,14 @@ public class PortfolioApplication {
     private void createAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         User adminUser = new User();
         adminUser.setFullName(adminUsername);
-        adminUser.setEmail("admin.email@gmail.com");
+        adminUser.setEmail(adminEmail);
         adminUser.setPassword(passwordEncoder.encode(adminPassword));
         adminUser.setRole(Role.ADMIN);
+        adminUser.setCreatedAt(Date.from(Instant.now()));
+        adminUser.setUpdatedAt(Date.from(Instant.now()));
+        adminUser.setLastLogin(Instant.now());
 
         userRepository.save(adminUser);
-        logger.info("Created default admin user with email: admin.email@gmail.com");
+        logger.info("Created default admin user with email: {}", adminEmail);
     }
 }
