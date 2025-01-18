@@ -1,136 +1,27 @@
-/* Navbar Transition */
+/* Navbar Styles */
 nav {
-  transition: transform 0.3s ease-in-out;
-}
-
-nav.hidden {
-  transform: translateY(-100%);
-}
-
-#progressBar {
   position: fixed;
-  top: 0;
-  left: 0;
-  height: 4px;
-  background: linear-gradient(to right, #DC2626, #F87171);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 2px;
-  transition: width 0.15s ease-in-out;
-  z-index: 9999;
+  bottom: 1rem; /* Distance from the bottom */
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  z-index: 50;
+
+  /* Smooth animation for both opacity and position */
+  transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
+              opacity 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
-#mobile-menu {
-  transition: opacity 0.3s ease-in-out; /* Smooth fade effect */
-  opacity: 0; /* Hidden by default */
-  display: none; /* Ensures it doesn't take up space when hidden */
-}
-
-/* SVG Wrapper Animation */
-.svg-animate {
-  animation: rotate-svg 10s cubic-bezier(0.42, 0, 0.58, 1) infinite;
-  transform-origin: center;
-}
-
-/* Line Animation */
-.line-animate {
-  stroke-dasharray: 50;
-  stroke-dashoffset: 50;
-  animation: draw-line 2.5s ease-in-out forwards, glow 2s infinite alternate;
-}
-
-/* Path Animation */
-.path-animate {
-  stroke-dasharray: 80;
-  stroke-dashoffset: 80;
-  fill: none;
-  stroke: url(#navbar-gradient);
-  animation: draw-path 2.5s ease-in-out forwards, pulse-color 4s infinite;
-}
-
-/* Circle Animation */
-.circle-animate {
-  animation: pulse 3s infinite ease-in-out, rotate-circle 6s linear infinite;
-}
-
-/* Text Animation */
-.text-animate {
+/* Hidden Navbar (scrolling down) */
+nav.hide {
   opacity: 0;
-  animation: fade-in 1.5s ease-in-out forwards 1.5s, text-glow 3s infinite alternate;
+  transform: translateX(-50%) translateY(100%);
+  pointer-events: none; /* Prevent interactions when hidden */
 }
 
-/* Keyframes */
-
-/* Rotate the entire SVG */
-@keyframes rotate-svg {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Line Drawing */
-@keyframes draw-line {
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-/* Path Drawing */
-@keyframes draw-path {
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-/* Glow Effect */
-@keyframes glow {
-  0% {
-    filter: drop-shadow(0 0 5px #ff4d4d);
-  }
-  100% {
-    filter: drop-shadow(0 0 15px #ff1a1a);
-  }
-}
-
-/* Pulse Effect */
-@keyframes pulse {
-  50% {
-    transform: scale(1.3);
-  }
-}
-
-/* Rotate Circle */
-@keyframes rotate-circle {
-  100% {
-    transform: rotate(-360deg);
-  }
-}
-
-/* Fade-in Effect */
-@keyframes fade-in {
-  100% {
-    opacity: 1;
-  }
-}
-
-/* Text Glow */
-@keyframes text-glow {
-  0% {
-    text-shadow: 0 0 5px #ff4d4d, 0 0 10px #ff1a1a;
-  }
-  100% {
-    text-shadow: 0 0 15px #ff4d4d, 0 0 25px #ff1a1a;
-  }
-}
-
-/* Pulse Color Effect */
-@keyframes pulse-color {
-  0% {
-    stroke: #ff4d4d;
-  }
-  50% {
-    stroke: #ff1a1a;
-  }
-  100% {
-    stroke: #ff4d4d;
-  }
+/* Visible Navbar (scrolling up) */
+nav.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto; /* Ensure interactivity when visible */
 }

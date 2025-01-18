@@ -1,28 +1,5 @@
-<!-- Loading screen -->
-<div *ngIf="isLoading"
-  class="loading-screen fixed inset-0 bg-gray-200 backdrop-blur flex justify-center items-center z-50"
-  [style.opacity]="isLoading ? '1' : '0'" [ngClass]="{'transition-opacity duration-500 ease-out': !isLoading}">
-  <div class="flex flex-col items-center space-y-4">
-    <!-- Dot Loading Animation -->
-    <div class="dot-loader flex justify-center items-center space-x-4">
-      <span class="dot w-10 h-10 rounded-full animate-krishna-dot"></span>
-      <span class="dot w-10 h-10 rounded-full animate-krishna-dot krishna-delay-200"></span>
-      <span class="dot w-10 h-10 rounded-full animate-krishna-dot krishna-delay-400"></span>
-    </div>
-
-    <!-- Loading Text -->
-    <p class="text-3xl text-gray-800 font-bold animate-fade-in-out">
-      Loading... Hang tight!
-    </p>
-    <p class="text-xl text-gray-600 font-medium animate-slide-up">
-      We're preparing something amazing for you!
-    </p>
-  </div>
-</div>
-
-<!-- Main content -->
-<div *ngIf="!isLoading && isContentVisible" class="main-content transition-opacity duration-500 ease-out opacity-0"
-  [ngClass]="{'opacity-100': isContentVisible}">
+<!-- Main Content -->
+<div class="main-content">
   <div class="flex flex-col min-h-screen">
     <!-- Header -->
     <app-header></app-header>

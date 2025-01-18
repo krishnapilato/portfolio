@@ -1,105 +1,92 @@
-<!-- Scroll Progress Bar -->
-<div #progressBar class="fixed top-0 left-0 h-1 bg-gradient-to-r from-red-600 to-red-400 transition-all z-50">
-</div>
+<!-- Progress Bar -->
+<div
+  #progressBar
+  id="progressBar"
+  class="fixed top-0 left-0 h-1 bg-gradient-to-r from-lime-600 to-lime-400 transition-all z-50"
+></div>
 
 <!-- Navbar -->
-<nav #navbar
-  class="fixed top-0 left-0 w-full h-20 bg-white bg-opacity-80 backdrop-blur-lg shadow-lg flex items-center justify-center px-8 z-40 transition-all duration-300"
-  data-aos="fade-down" data-aos-duration="1200">
-  <!-- Navbar Content Wrapper -->
-  <div class="w-full max-w-7xl flex items-center justify-between">
-    <!-- Brand -->
-    <div routerLink="/" class="flex items-center space-x-4 cursor-pointer" aria-label="Navigate to Home">
-      <!-- Logo -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" class="svg-animate">
-        <defs>
-          <linearGradient id="navbar-gradient" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#b71c1c" />
-            <stop offset="100%" stop-color="#f44336" />
-          </linearGradient>
-        </defs>
-        <g fill="url(#navbar-gradient)" stroke="url(#navbar-gradient)" stroke-width="2">
-          <!-- Animated Line -->
-          <line x1="5" y1="30" x2="35" y2="30" class="line-animate" />
-          <!-- Animated Path -->
-          <path d="M 10 18 Q 15 12, 20 18 Q 25 22, 30 18" class="path-animate" />
-          <!-- Animated Circle -->
-          <circle cx="20" cy="12" r="5" class="circle-animate" />
-          <!-- Animated Text -->
-          <text x="20" y="28" font-size="6" text-anchor="middle" font-family="Arial" fill="url(#navbar-gradient)"
-            class="text-animate">
-            KK
-          </text>
-        </g>
-      </svg>
-
-      <!-- Brand Name -->
-      <span class="text-3xl font-bold text-gray-800 font-trebuchet transition-transform duration-300 hover:scale-105">
-        PrismNexus
+<nav
+  #navbar
+  id="navbar"
+  class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 transition-transform duration-300 ease-in-out"
+>
+  <div
+    class="flex bg-gray-900 bg-opacity-80 backdrop-blur-xl px-6 py-3 sm:px-8 sm:py-4 rounded-full shadow-3xl space-x-4 sm:space-x-8"
+  >
+    <!-- Menu Item: Cockpit -->
+    <a
+      href="#cockpit"
+      class="relative group flex items-center justify-center px-4 py-2 sm:px-6 text-gray-100 hover:text-white transition duration-300"
+      aria-label="Cockpit"
+    >
+      <i class="fas fa-plane text-lg"></i>
+      <!-- Tooltip -->
+      <span
+        class="absolute top-[-2rem] left-1/2 transform -translate-x-1/2 text-xs bg-gray-800 text-gray-100 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      >
+        Cockpit
       </span>
-    </div>
-
-    <!-- Desktop Menu -->
-    <div class="hidden lg:flex items-center space-x-14">
-      <a routerLink="/dashboard"
-        class="flex items-center space-x-2 text-gray-700 text-base hover:text-red-600 transition-transform hover:scale-110">
-        <i class="fa-solid fa-tools text-xl text-gray-200"></i>
-        <span>Tech Stack</span>
-      </a>
-      <a routerLink="/contact"
-        class="flex items-center space-x-2 text-gray-700 text-base hover:text-red-600 transition-transform hover:scale-110">
-        <i class="fas fa-users text-lg"></i>
-        <span>Connect</span>
-      </a>
-      <a routerLink="/auth/login"
-        class="flex items-center space-x-3 border-2 border-red-600 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 hover:border-red-800 transition-transform hover:scale-105">
-        <i class="fas fa-sign-in-alt text-lg"></i>
-        <span>Login</span>
-      </a>
-    </div>
-
-    <!-- Mobile Menu Toggle -->
-    <button class="text-3xl text-red-600 lg:hidden transition-all duration-300 ease-in-out transform"
-      (click)="handleMobileMenu()" aria-label="Toggle mobile menu" [ngClass]="{
-        'rotate-180 scale-110': isMobileMenuOpen,
-        'rotate-0 scale-100': !isMobileMenuOpen
-      }">
-      <i [ngClass]="isMobileMenuOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars-staggered'"
-        class="transition-all duration-300 ease-in-out"></i>
-    </button>
-  </div>
-
-  <!-- Mobile Menu Overlay -->
-  <div *ngIf="isMobileMenuOpen" class="fixed inset-0 bg-black bg-opacity-50 z-40" (click)="handleMobileMenu()"></div>
-
-  <!-- Mobile Menu -->
-  <div *ngIf="isMobileMenuOpen" data-aos="fade-down" data-aos-duration="1000" data-aos-easing="ease-in-out"
-    class="fixed top-0 left-0 w-full h-screen bg-white flex flex-col items-center justify-center space-y-8 py-12 px-6 shadow-2xl z-50">
-
-    <!-- Close Button -->
-    <button (click)="handleMobileMenu(false)" aria-label="Close menu"
-      class="absolute top-12 right-12 text-gray-700 text-3xl hover:text-red-600 transition-transform hover:scale-110">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-
-    <a routerLink="/dashboard" (click)="handleMobileMenu(false)"
-      class="flex items-center space-x-3 text-2xl text-gray-700 hover:text-red-600 transition-transform hover:scale-110">
-      <i class="fa-solid fa-tools text-2xl text-gray-200"></i>
-      <span>Tech Stack</span>
     </a>
-    <div class="border-b border-gray-300 w-3/4"></div>
 
-    <a routerLink="/contact" (click)="handleMobileMenu(false)"
-      class="flex items-center space-x-3 text-2xl text-gray-700 hover:text-red-600 transition-transform hover:scale-110">
-      <i class="fas fa-users text-2xl"></i>
-      <span>Connect</span>
+    <!-- Menu Item: Path -->
+    <a
+      href="#flightpath"
+      class="relative group flex items-center justify-center px-4 py-2 sm:px-6 text-gray-900 bg-lime-500 rounded-full hover:bg-lime-600 transition duration-300"
+      aria-label="Path"
+    >
+      <i class="fas fa-route text-lg"></i>
+      <!-- Tooltip -->
+      <span
+        class="absolute top-[-2rem] left-1/2 transform -translate-x-1/2 text-xs bg-gray-800 text-gray-100 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      >
+        Path
+      </span>
     </a>
-    <div class="border-b border-gray-300 w-3/4"></div>
 
-    <a routerLink="/auth/login" (click)="handleMobileMenu(false)"
-      class="flex items-center space-x-3 border-2 border-red-600 text-red-600 px-8 py-4 rounded-lg hover:bg-red-100 hover:border-red-800 transition-transform hover:scale-105">
-      <i class="fas fa-sign-in-alt text-2xl"></i>
-      <span>Login</span>
+    <!-- Menu Item: Tech -->
+    <a
+      href="#techstack"
+      class="relative group flex items-center justify-center px-4 py-2 sm:px-6 text-gray-100 hover:text-white transition duration-300"
+      aria-label="Tech"
+    >
+      <i class="fas fa-code text-lg"></i>
+      <!-- Tooltip -->
+      <span
+        class="absolute top-[-2rem] left-1/2 transform -translate-x-1/2 text-xs bg-gray-800 text-gray-100 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      >
+        Tech
+      </span>
+    </a>
+
+    <!-- Menu Item: Clearance -->
+    <a
+      href="#airtraffic"
+      class="relative group flex items-center justify-center px-4 py-2 sm:px-6 text-gray-100 hover:text-white transition duration-300"
+      aria-label="Clearance"
+    >
+      <i class="fas fa-headset text-lg"></i>
+      <!-- Tooltip -->
+      <span
+        class="absolute top-[-2rem] left-1/2 transform -translate-x-1/2 text-xs bg-gray-800 text-gray-100 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      >
+        Clearance
+      </span>
+    </a>
+
+    <!-- Menu Item: Hangar -->
+    <a
+      href="#hangar"
+      class="relative group flex items-center justify-center px-4 py-2 sm:px-6 text-gray-100 hover:text-white transition duration-300"
+      aria-label="Hangar"
+    >
+      <i class="fas fa-warehouse text-lg"></i>
+      <!-- Tooltip -->
+      <span
+        class="absolute top-[-2rem] left-1/2 transform -translate-x-1/2 text-xs bg-gray-800 text-gray-100 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      >
+        Hangar
+      </span>
     </a>
   </div>
 </nav>

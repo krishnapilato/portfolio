@@ -1,58 +1,86 @@
-<section id="section" 
-  class="overflow-hidden relative flex min-h-screen items-center justify-center px-4 sm:px-8 lg:px-12 bg-gradient-to-r from-gray-300 via-gray-100 to-purple-50 font-sans overflow-hidden"
-  aria-labelledby="landing-heading" role="region">
-
-  <!-- Content Wrapper -->
-  <div class="flex flex-col items-center text-center max-w-5xl mx-auto z-20 space-y-10 sm:space-y-12" role="main">
-
-    <!-- Main Heading -->
-    <h1 id="landing-heading"
-      class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 bg-clip-text bg-gradient-to-r from-red-600 to-red-700">
-      Hi, I am <span class="text-red-600" id="nameClick">Krishna</span>
-    </h1>
-
-    <!-- Brief Description -->
-    <p class="text-lg sm:text-xl lg:text-2xl text-gray-800 leading-relaxed max-w-4xl"
-      aria-label="Brief description about Krishna">
-      I am a passionate full-stack developer with over 3 years of experience building scalable, high-performance applications using modern technologies.
-    </p>
-
-    <!-- Skills Section -->
-    <span class="text-md sm:text-lg lg:text-xl text-gray-800" role="text">
-      My expertise includes 
-      <span id="element"  class="text-transparent font-bold bg-clip-text text-lg sm:text-xl lg:text-2xl" aria-live="polite" aria-atomic="true"></span>
-    </span>
-
-    <!-- Buttons -->
-    <div class="flex flex-wrap gap-4 sm:gap-6 justify-center" role="navigation" aria-label="Social links">
-      <a href="https://www.linkedin.com/in/khovakrishnapilato" target="_blank"
-        class="inline-flex items-center px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-5 bg-red-600 hover:bg-red-700 rounded-full text-base sm:text-lg lg:text-xl font-semibold text-white transition-all duration-500 shadow-md hover:shadow-2xl transform hover:scale-105 hover:rotate-3 hover:translate-y-[-5px]">
-        <i class="fab fa-linkedin-in mr-2 sm:mr-3" aria-hidden="true"></i> LinkedIn
-      </a>
-      <a href="resume.pdf" target="_blank"
-        class="inline-flex items-center px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-5 bg-white hover:bg-gray-100 rounded-full text-base sm:text-lg lg:text-xl font-semibold text-gray-800 transition-all duration-500 shadow-md hover:shadow-2xl transform hover:scale-105 hover:rotate-3 hover:translate-y-[-5px]">
-        <i class="fas fa-file-alt mr-2 sm:mr-3" aria-hidden="true"></i> Resume
+<div class="min-h-screen bg-gray-100 text-gray-800">
+  <!-- Hero Section -->
+  <section id="hero" class="relative flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-700 to-indigo-900 text-white">
+    <div class="text-center space-y-6 px-6 sm:px-12">
+      <h1 class="text-4xl sm:text-6xl font-bold animate-fade-in">
+        Hi, I'm <span class="text-lime-400">Krishna</span>
+      </h1>
+      <p class="text-lg sm:text-2xl max-w-2xl mx-auto leading-relaxed">
+        Full-Stack Developer | Aviation Enthusiast | Innovator
+      </p>
+      <a href="#flightpath"
+        class="mt-6 inline-block px-6 py-3 bg-lime-400 text-gray-900 font-bold rounded-full hover:bg-lime-500 transition-all duration-300">
+        Start exploring
       </a>
     </div>
-  </div>
+    <!-- Floating Airplane Animation -->
+    <div class="absolute bottom-16 right-16 hidden lg:block">
+      <i class="fas fa-plane text-6xl text-lime-400 animate-fly"></i>
+    </div>
+  </section>
 
-  <!-- Decorative Wave https://haikei.app -->
-  <div class="absolute bottom-0 left-0 w-full z-10" aria-hidden="true">
-    <svg id="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-      <path fill="#DC2626" fill-opacity="1"
-        d="M0,224L17.1,229.3C34.3,235,69,245,103,208C137.1,171,171,85,206,69.3C240,53,274,107,309,144C342.9,181,377,203,411,186.7C445.7,171,480,117,514,128C548.6,139,583,213,617,250.7C651.4,288,686,288,720,288C754.3,288,789,288,823,277.3C857.1,267,891,245,926,245.3C960,245,994,267,1029,272C1062.9,277,1097,267,1131,250.7C1165.7,235,1200,213,1234,208C1268.6,203,1303,213,1337,197.3C1371.4,181,1406,139,1423,117.3L1440,96L1440,320L1422.9,320C1405.7,320,1371,320,1337,320C1302.9,320,1269,320,1234,320C1200,320,1166,320,1131,320C1097.1,320,1063,320,1029,320C994.3,320,960,320,926,320C891.4,320,857,320,823,320C788.6,320,754,320,720,320C685.7,320,651,320,617,320C582.9,320,549,320,514,320C480,320,446,320,411,320C377.1,320,343,320,309,320C274.3,320,240,320,206,320C171.4,320,137,320,103,320C68.6,320,34,320,17,320L0,320Z">
-      </path>
-    </svg>
-  </div>
+  <!-- Flight Path (About Me) -->
+  <section id="flightpath" class="py-20 bg-white text-gray-800">
+    <div class="max-w-6xl mx-auto text-center px-6 sm:px-12">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-8">My Flight Path</h2>
+      <p class="text-lg max-w-3xl mx-auto mb-12">
+        From crafting code to flying the skies, I bring a unique blend of
+        technical expertise and a passion for exploration. Based in Italy, I
+        thrive on solving complex problems and creating innovative solutions.
+      </p>
+      <a href="#techstack"
+        class="inline-block px-6 py-3 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-all duration-300">
+        Learn More
+      </a>
+    </div>
+  </section>
 
-  <!-- Random Shapes Container -->
-  <div id="shapes-container" class="absolute w-full z-20" aria-hidden="true"></div>
-</section>
+  <!-- Tech Stack -->
+  <section id="techstack" class="py-20 bg-gray-100">
+    <div class="max-w-6xl mx-auto text-center px-6 sm:px-12">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-8">My Tech Stack</h2>
+      <!-- Skills Radar Chart Placeholder -->
+      <p class="text-lg mt-8">Expertise in Java, Spring Boot, Angular, PostgreSQL, and more.</p>
+      <p class="text-lg mt-8">Add more</p>
+    </div>
+  </section>
 
-<!-- About Section -->
- 
-<app-about-me id="about" role="region" aria-labelledby="about-heading">
-  <h2 id="about-heading" class="sr-only">About Me</h2>
-</app-about-me>
+  <!-- Projects (Hangar) -->
+  <section id="hangar" class="py-20 bg-white text-gray-800">
+    <div class="max-w-6xl mx-auto px-6 sm:px-12">
+      <h2 class="text-3xl sm:text-4xl font-bold text-center mb-8">Hangar</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Project Card -->
+        <div class="bg-gray-200 p-6 rounded-lg shadow-md hover:shadow-lg transition">
+          <h3 class="text-xl font-bold">Project 1</h3>
+          <p class="text-sm text-gray-700">Description of your amazing project.</p>
+          <a href="#" class="text-lime-400 font-bold mt-4 block">View Project</a>
+        </div>
+        <div class="bg-gray-200 p-6 rounded-lg shadow-md hover:shadow-lg transition">
+          <h3 class="text-xl font-bold">Project 1</h3>
+          <p class="text-sm text-gray-700">Description of your amazing project.</p>
+          <a href="#" class="text-lime-400 font-bold mt-4 block">View Project</a>
+        </div>
+        <div class="bg-gray-200 p-6 rounded-lg shadow-md hover:shadow-lg transition">
+          <h3 class="text-xl font-bold">Project 1</h3>
+          <p class="text-sm text-gray-700">Description of your amazing project.</p>
+          <a href="#" class="text-lime-400 font-bold mt-4 block">View Project</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<app-skills-galaxy></app-skills-galaxy>
+  <!-- Contact (Clearance) -->
+  <section id="airtraffic" class="py-20 bg-gray-100">
+    <div class="max-w-6xl mx-auto text-center px-6 sm:px-12">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-8">Clearance</h2>
+      <p class="text-lg mb-12">
+        Ready to collaborate? Let’s connect and create something amazing!
+      </p>
+      <a href="mailto:youremail@example.com"
+        class="inline-block px-6 py-3 bg-lime-400 text-gray-900 font-bold rounded-full hover:bg-lime-500 transition-all duration-300">
+        Get in Touch (need improvement yet)
+      </a>
+    </div>
+  </section>
+</div>

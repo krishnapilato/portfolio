@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [AboutMeComponent, SkillsGalaxyComponent],
+  imports: [],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })

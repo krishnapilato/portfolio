@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
   version: '0.8.5',
-  appName: 'PrismNexus',
-  apiUrl: 'https://backend.prismnexus.com',
+  appName: 'krishnapilato.dev',
+  apiUrl: 'https://backend.khovakrishnapilato.com',
   themeColor: 'lime', // https://tailwindcss.com/docs/customizing-colors
   skills: [
     'Java',

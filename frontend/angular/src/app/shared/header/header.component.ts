@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
@@ -12,40 +13,52 @@ export class HeaderComponent {
   @ViewChild('progressBar', { static: true }) private progressBar!: ElementRef;
   @ViewChild('navbar', { static: true }) private navbar!: ElementRef;
 
-  protected isMobileMenuOpen: boolean = false;
   private lastScrollTop: number = 0;
-  private scrollTimeout: any = null;
+  private isNavbarHidden: boolean = false;
 
   /**
-   * Toggles or closes the mobile menu and manages body scrolling.
-   * @param forceState - Optional boolean to explicitly set the menu state.
+   * Listens to the window scroll event to handle navbar visibility and progress bar updates.
    */
-  protected handleMobileMenu(forceState?: boolean): void {
-    this.isMobileMenuOpen = forceState !== undefined ? forceState : !this.isMobileMenuOpen;
-    document.body.style.overflow = this.isMobileMenuOpen ? 'hidden' : '';
+  @HostListener('window:scroll', [])
+  private handleScroll(): void {
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollRatio = (window.scrollY / scrollHeight) * 100;
+
+    // Update progress bar width
+    this.updateProgressBar(scrollRatio);
+
+    // Handle navbar visibility based on scroll direction
+    this.toggleNavbarVisibility(window.scrollY);
   }
 
   /**
-   * Updates the progress bar and manages navbar visibility on scroll.
-   * Optimized to trigger updates less frequently.
+   * Updates the progress bar based on the scroll position.
+   * @param scrollRatio - The percentage of the page scrolled.
    */
-  @HostListener('window:scroll', [])
-  private updateScrollProgress(): void {
-    if (this.scrollTimeout) return;
+  private updateProgressBar(scrollRatio: number): void {
+    const progressWidth = `${Math.min(100, Math.max(0, scrollRatio))}%`;
+    this.progressBar.nativeElement.style.width = progressWidth;
+  }
 
-    this.scrollTimeout = setTimeout(() => {
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollRatio = (window.scrollY / scrollHeight) * 100;
+  /**
+   * Toggles the visibility of the navbar based on the scroll direction.
+   * @param currentScrollTop - The current vertical scroll position.
+   */
+  private toggleNavbarVisibility(currentScrollTop: number): void {
+    const navbarElement = this.navbar.nativeElement;
 
-      // Update progress bar width
-      this.progressBar.nativeElement.style.width = `${Math.min(100, Math.max(0, scrollRatio))}%`;
+    if (currentScrollTop > this.lastScrollTop && !this.isNavbarHidden) {
+      // Scrolling down - hide the navbar
+      navbarElement.classList.add('hide');
+      navbarElement.classList.remove('show');
+      this.isNavbarHidden = true;
+    } else if (currentScrollTop < this.lastScrollTop && this.isNavbarHidden) {
+      // Scrolling up - show the navbar
+      navbarElement.classList.add('show');
+      navbarElement.classList.remove('hide');
+      this.isNavbarHidden = false;
+    }
 
-      // Toggle navbar visibility based on scroll direction
-      const isScrollingDown = window.scrollY > this.lastScrollTop;
-      this.navbar?.nativeElement.classList.toggle('hidden', isScrollingDown);
-
-      this.lastScrollTop = window.scrollY;
-      this.scrollTimeout = null; // Reset the timeout
-    }, 50); // Update every 50ms
+    this.lastScrollTop = currentScrollTop;
   }
 }
