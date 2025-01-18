@@ -1,17 +1,12 @@
-version: "3.8"
-
 services:
   frontend:
-    build: . # Build the Docker image from the current directory
+    build: .
     ports:
-      - "4200:4200" # Map port 4200 on the host to port 4200 in the container
+      - "4200:80"
+    restart: unless-stopped
     networks:
-      - app-network # Connect to the custom network
-    restart: unless-stopped # Restart the container unless manually stopped
-    volumes:
-      - .:/app # Mount the current directory to the /app directory in the container
-    environment:
-      - NODE_ENV=production # Set the Node.js environment to production
+      - app-network
+
 networks:
   app-network:
-    driver: bridge # Use the default bridge network driver
+    driver: bridge

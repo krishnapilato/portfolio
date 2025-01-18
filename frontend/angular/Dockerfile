@@ -1,35 +1,29 @@
-# Use the Node.js LTS image as the base for the build stage
-FROM node:lts AS builder
+# Stage 1: Build the Angular application
+FROM node:23-alpine as build
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy package files to install dependencies
-COPY package.json package-lock.json ./
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# Install dependencies with clean install (forcing for compatibility)
-RUN npm ci --force
+# Install dependencies
+RUN npm install
 
-# Copy the remaining application files
+# Copy the Angular application files
 COPY . .
 
-# Build the application for production
-RUN npm run build -- --configuration production
+# Build the Angular application for production
+RUN npm run build --prod
 
-# Use the Node.js LTS image as the base for the production stage
-FROM node:lts AS production
+# Stage 2: Serve the application using Nginx
+FROM nginx:alpine
 
-# Set the working directory for the production environment
-WORKDIR /app
+# Copy the Angular build output to Nginx's static file directory
+COPY --from=build /app/dist/frontend/browser/browser /usr/share/nginx/html
 
-# Copy the built application from the builder stage
-COPY --from=builder /app/dist/frontend/browser ./dist
+# Expose port 80
+EXPOSE 80
 
-# Install a lightweight static server globally to serve the built application
-RUN npm install -g serve --force
-
-# Expose the default port for the application
-EXPOSE 4200
-
-# Start the application using serve
-CMD ["serve", "-s", "dist", "-l", "4200"]
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
