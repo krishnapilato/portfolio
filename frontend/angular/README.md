@@ -1,24 +1,59 @@
-# Angular Portfolio Project
+# Angular
 
-## Get Started
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.3.
 
-1. **Fire up the development server:**
-   - Open your terminal and run `ng serve -o`. This will open your project in your browser at `http://localhost:4200/`. 
-   - Any changes you make to your code will automatically update the page – it's like magic!
+## Development server
 
-2. **Build Your Dream Portfolio:**
-   - Need a new page? A cool feature? Angular CLI has got you covered:
-      - Run `ng generate component my-new-page` to whip up a new page component.
-      - Want something else? Try `ng generate directive`, `ng generate pipe`, `ng generate service`, and more. The Angular CLI is your trusty sidekick!
+To start a local development server, run:
 
-3. **Ready to Share Your Work?**
-   - When your portfolio is polished and ready to impress, run `ng build`. This will create a production-ready version of your project in the `dist/` folder, ready for the world to see.
+```bash
+ng serve
+```
 
-## Testing Time
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-- **Unit Testing:**  Make sure everything is working smoothly under the hood by running `ng test`. This runs unit tests to check the individual parts of your code.
-- **End-to-End Testing:** Test the entire user experience with `ng e2e`. You'll need to add a testing library like Cypress or Protractor first, though.
+## Code scaffolding
 
-## Need Help?
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-- **Angular CLI is Your Friend:** The Angular CLI is packed with features.  Run `ng help` or check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) to unlock its full potential.
+```bash
+ng generate component component-name
+```
+
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+
+```bash
+ng generate --help
+```
+
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

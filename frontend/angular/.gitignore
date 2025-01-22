@@ -1,18 +1,24 @@
-# Build artifacts and temporary files
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
 /dist
 /tmp
 /out-tsc
 /bazel-out
-.sass-cache/
-*.tmp
-*.temp
-*.log
-*.lock
-*.bak
-*.swp
 
-# Dependency directories
+# Node
 /node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
 # Visual Studio Code
 .vscode/*
@@ -20,27 +26,17 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.history/*
 
-# Angular-specific
+# Miscellaneous
 /.angular/cache
-.angular-cli.json
-
-# Coverage and test logs
+.sass-cache/
+/connect.lock
 /coverage
-testem.log
 /libpeerconnection.log
-
-# Environment files
-.env
-*.env.local
-*.env.development
-*.env.production
-*.env.test
-
-# History files
-.history/
+testem.log
+/typings
 
 # System files
 .DS_Store
 Thumbs.db
-desktop.ini
