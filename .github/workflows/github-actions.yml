@@ -82,11 +82,11 @@ jobs:
       - name: Build Angular App
         run: |
           cd frontend/angular
-          ng build --output-path dist
+          ng build --base-href "/kodek/" --output-path dist/kodek
 
       # Deploy the built Angular application to GitHub Pages.
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: frontend/angular/dist/browser
+          publish_dir: frontend/angular/dist/kodek/browser
