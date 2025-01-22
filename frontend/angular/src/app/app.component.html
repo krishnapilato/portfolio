@@ -1,28 +1,48 @@
-<div
-  id="scrollContainer"
-  class="flex w-screen h-screen overflow-hidden snap-x snap-mandatory scroll-smooth"
->
-  <!-- Section 1 -->
-  <div class="w-screen h-screen flex-shrink-0 snap-center flex flex-col items-center justify-center bg-blue-500 text-white p-8">
-    <h1 class="text-4xl font-bold mb-4">🌟 Early Life</h1>
-    <p class="text-lg max-w-xl text-center">
-      Growing up in Bangalore, India, I learned resilience and adaptability. These early experiences shaped my perspective on life and dreams.
-    </p>
+<div class="relative w-screen h-screen overflow-hidden">
+  <!-- Progress Bar -->
+  <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-2/3">
+    <div class="h-2 bg-gray-300 rounded-full">
+      <div
+        id="progressBar"
+        class="h-2 bg-yellow-500 rounded-full transition-all duration-300"
+        style="width: 0%"
+      ></div>
+    </div>
   </div>
 
-  <!-- Section 2 -->
-  <div class="w-screen h-screen flex-shrink-0 snap-center flex flex-col items-center justify-center bg-green-500 text-white p-8">
-    <h1 class="text-4xl font-bold mb-4">🌍 A New Chapter</h1>
-    <p class="text-lg max-w-xl text-center">
-      Being adopted by an Italian family opened doors to a new world in Italy. It was a journey of discovering a new culture and finding a sense of belonging.
-    </p>
-  </div>
+  <!-- Scrollable Sections -->
+  <div
+    id="scrollContainer"
+    class="flex w-screen h-screen overflow-hidden snap-x snap-mandatory scroll-smooth"
+  >
+    <!-- Section 1 -->
+    <div class="w-screen h-screen flex-shrink-0 snap-center flex flex-col items-center justify-center bg-blue-500 text-white p-8">
+      <h1 class="text-4xl font-bold mb-4">🌟 Early Life</h1>
+      <p class="text-lg max-w-xl text-center">
+        Growing up in Bangalore, India, I learned resilience and adaptability. These early experiences shaped my perspective on life and dreams.
+      </p>
+    </div>
 
-  <!-- Section 3 -->
-  <div class="w-screen h-screen flex-shrink-0 snap-center flex flex-col items-center justify-center bg-red-500 text-white p-8">
-    <h1 class="text-4xl font-bold mb-4">✈️ Passion for Aviation</h1>
-    <p class="text-lg max-w-xl text-center">
-      My love for aviation grew over the years. The sky became my dream, and my path as a Java developer enabled me to pursue that dream while building innovative solutions.
-    </p>
+    <!-- Section 2 -->
+    <div class="w-screen h-screen flex-shrink-0 snap-center flex flex-col items-center justify-center bg-green-500 text-white p-8">
+      <h1 class="text-4xl font-bold mb-4">🌍 A New Chapter</h1>
+      <p class="text-lg max-w-xl text-center">
+        Being adopted by an Italian family opened doors to a new world in Italy. It was a journey of discovering a new culture and finding a sense of belonging.
+      </p>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="w-screen h-screen flex-shrink-0 snap-center flex flex-col items-center justify-center bg-red-500 text-white p-8">
+      <h1 class="text-4xl font-bold mb-4">✈️ Passion for Aviation</h1>
+      <p class="text-lg max-w-xl text-center">
+        My love for aviation grew over the years. The sky became my dream, and my path as a Java developer enabled me to pursue that dream while building innovative solutions.
+      </p>
+      <button
+        class="mt-4 px-4 py-2 bg-yellow-500 text-black rounded-full hover:bg-yellow-600 transition-colors"
+        (click)="completeGame()"
+      >
+        Complete!
+      </button>
+    </div>
   </div>
 </div>

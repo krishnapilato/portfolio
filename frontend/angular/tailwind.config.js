@@ -7,8 +7,4 @@ module.exports = {
   theme: {
     extend: {}, // Customize your theme here if needed
   },
-  plugins: [require("daisyui")], // Add DaisyUI plugin
-  daisyui: {
-
-  },
 };

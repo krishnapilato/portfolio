@@ -12,6 +12,11 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     // Reference to the scroll container
     this.scrollContainer = document.getElementById('scrollContainer');
+
+    // Track scrolling to update progress bar
+    this.scrollContainer?.addEventListener('scroll', () => {
+      this.updateProgressBar();
+    });
   }
 
   @HostListener('wheel', ['$event'])
@@ -36,5 +41,28 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       this.isScrolling = false;
     }, 800); // Adjust this delay to match the scroll speed
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.updateProgressBar();
+  }
+
+  updateProgressBar(): void {
+    if (this.scrollContainer) {
+      const totalScrollWidth = this.scrollContainer.scrollWidth - window.innerWidth;
+      const currentScrollLeft = this.scrollContainer.scrollLeft;
+
+      const progress = (currentScrollLeft / totalScrollWidth) * 100;
+      const progressBar = document.getElementById('progressBar');
+
+      if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+      }
+    }
+  }
+
+  completeGame(): void {
+    alert('🎉 Congratulations! You completed the journey!');
   }
 }

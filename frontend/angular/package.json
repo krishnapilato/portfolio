@@ -18,7 +18,6 @@
     "@angular/platform-browser": "^19.1.0",
     "@angular/platform-browser-dynamic": "^19.1.0",
     "@angular/router": "^19.1.0",
-    "daisyui": "^4.12.23",
     "gsap": "^3.12.7",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
