@@ -1,0 +1,19 @@
+<div #welcomeContainer
+    class="relative w-screen h-screen overflow-hidden flex items-center justify-center bg-black text-white">
+    <audio #myAudio src="welcome_music.wav" autoplay preload="auto"></audio>
+    <!-- The Starfield Canvas -->
+    <canvas #starsCanvas></canvas>
+
+    <!-- Glitch Text + Press Enter -->
+    <div class="absolute flex flex-col items-center gap-5">
+        <!-- Glitch Text -->
+        <h1 class="glitch-text text-5xl md:text-7xl font-extrabold glitch" data-text="WELCOME">
+            WELCOME
+        </h1>
+
+        <!-- Press Enter Button (or text) using DaisyUI -->
+        <button class="btn btn-primary btn-wide press-enter">
+            Systems Check Complete — Press <span class="font-bold">ENTER</span>
+        </button>
+    </div>
+</div>
