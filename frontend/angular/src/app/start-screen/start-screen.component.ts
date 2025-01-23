@@ -171,7 +171,10 @@ export class StartScreenComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   @HostListener('document:keydown.enter', ['$event'])
+  @HostListener('document:touchstart', ['$event'])
   onEnterPressed(_: KeyboardEvent): void {
+    _.preventDefault();
+
     // Animate fade-out
     gsap.to(this.welcomeContainer.nativeElement, {
       scale: 1.5,
