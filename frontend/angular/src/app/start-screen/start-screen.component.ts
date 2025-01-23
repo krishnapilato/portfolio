@@ -33,16 +33,25 @@ export class StartScreenComponent implements OnInit, AfterViewInit, OnDestroy {
   private width = 0;
   private height = 0;
 
+  isMusicPlaying = false; // Tracks if the music is currently playing
+
   ngOnInit(): void {
     // Initialize background music
     this.sound = new Howl({
       src: ['welcome_music.wav'],
       loop: true,
-      autoplay: true,
+      autoplay: false,
       volume: 0.6,
     });
+  }
 
-    this.sound.play();
+  toggleMusic(): void {
+    if (this.isMusicPlaying) {
+      this.sound.pause(); // Pause the music
+    } else {
+      this.sound.play(); // Resume the music
+    }
+    this.isMusicPlaying = !this.isMusicPlaying; // Toggle the music state
   }
 
   ngAfterViewInit(): void {
@@ -165,15 +174,18 @@ export class StartScreenComponent implements OnInit, AfterViewInit, OnDestroy {
   onEnterPressed(_: KeyboardEvent): void {
     // Animate fade-out
     gsap.to(this.welcomeContainer.nativeElement, {
+      scale: 1.5,
       opacity: 0,
-      duration: 1,
+      z: 200,
+      duration: 3,
       ease: 'power2.inOut',
+      boxShadow: "0px 20px 50px rgba(0, 0, 0, 0.8)", // Animate shadow
       onComplete: () => {
-        // Next step in your app, e.g. navigate to another component
         cancelAnimationFrame(this.animationFrameId);
         Howler.stop();
         console.log('Welcome screen dismissed!');
       },
     });
+    
   }
 }

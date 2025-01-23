@@ -1,19 +1,30 @@
 <div #welcomeContainer
     class="relative w-screen h-screen overflow-hidden flex items-center justify-center bg-black text-white">
-    <audio #myAudio src="welcome_music.wav" autoplay preload="auto"></audio>
-    <!-- The Starfield Canvas -->
-    <canvas #starsCanvas></canvas>
+    <!-- Audio Element -->
+    <audio #myAudio src="welcome_music.wav" autoplay preload="auto"
+        aria-label="Background music for the welcome screen"></audio>
 
-    <!-- Glitch Text + Press Enter -->
-    <div class="absolute flex flex-col items-center gap-5">
-        <!-- Glitch Text -->
+    <!-- Starfield Canvas -->
+    <canvas #starsCanvas class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
+
+    <!-- Glitch Text + Call to Action -->
+    <main class="absolute flex flex-col items-center gap-5 text-center">
+        <!-- Glitch Text (Main Heading for SEO) -->
         <h1 class="glitch-text text-5xl md:text-7xl font-extrabold glitch" data-text="WELCOME">
             WELCOME
         </h1>
 
-        <!-- Press Enter Button (or text) using DaisyUI -->
-        <button class="btn btn-primary btn-wide press-enter">
-            Systems Check Complete — Press <span class="font-bold">ENTER</span>
-        </button>
-    </div>
+        <!-- Call to Action Button -->
+        <p class="text-lg">
+            <button class="btn btn-primary btn-wide press-enter" aria-label="Press Enter to Continue">
+                Systems Check Complete — Press <span class="font-bold">ENTER</span>
+            </button>
+        </p>
+    </main>
+
+    <!-- Music Toggle Button -->
+    <button id="musicToggle" class="absolute bottom-5 right-5 p-3 text-white bg-transparent" (click)="toggleMusic()"
+        aria-label="Toggle music playback">
+        <i class="fa-solid" [class.fa-play]="!isMusicPlaying" [class.fa-stop]="isMusicPlaying"></i>
+    </button>
 </div>
