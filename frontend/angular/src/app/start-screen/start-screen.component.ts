@@ -80,7 +80,7 @@ export class StartScreenComponent implements OnInit, AfterViewInit, OnDestroy {
     this.camera.position.z = 5;
 
     // Renderer
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(window.devicePixelRatio);
   }
