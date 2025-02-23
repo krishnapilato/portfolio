@@ -6,6 +6,7 @@ import com.personal.portfolio.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +21,6 @@ import java.util.Optional;
 
 /**
  * Service layer for managing users.
- * Provides functionality for user operations such as CRUD, lock toggling, and password encoding.
  */
 @Service
 @RequiredArgsConstructor
@@ -30,105 +30,53 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    private static final String USER_NOT_FOUND = "User not found with id: ";
+    private static final String USER_NOT_FOUND = "User not found with ID: ";
 
-    /**
-     * Load a user by their email for authentication.
-     *
-     * @param email The email of the user
-     * @return The UserDetails object for Spring Security
-     * @throws UsernameNotFoundException If no user is found with the given email
-     */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        logger.info("Attempting to load user by email: {}", email);
-
-        return userRepository.findByEmail(email).map(user -> {
-            logger.info("User found with email: {}", email);
-            return user;
-        }).orElseThrow(() -> {
-            logger.warn("User not found with email: {}", email);
-            return new UsernameNotFoundException("User not found with email: " + email);
-        });
+    public UserDetails loadUserByUsername(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    logger.warn("User not found with email: {}", email);
+                    return new UsernameNotFoundException("User not found with email: " + email);
+                });
     }
 
-    /**
-     * Retrieve all users from the database. Results are cached to improve performance.
-     *
-     * @return A list of all users
-     */
-    @Cacheable(value = "users", unless = "#result.size() == 0", key = "'all_users'")
+    @Cacheable(value = "users", unless = "#result.isEmpty()", key = "'all_users'")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    /**
-     * Toggle the lock status of a user account (lock or unlock).
-     *
-     * @param id The ID of the user
-     * @return The updated user object
-     * @throws UsernameNotFoundException If no user is found with the given ID
-     */
     public User toggleLock(Long id) {
-        // Retrieve the user or throw an exception if not found
-        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id));
-
-        // Toggle the lock status
-        boolean newLockStatus = !user.isLocked();
-        user.setLocked(newLockStatus);
-
-        // Save the updated user entity back to the database
-        return userRepository.save(user);
+        return userRepository.findById(id).map(user -> {
+            user.setLocked(!user.isLocked());
+            return userRepository.save(user);
+        }).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id));
     }
 
-    /**
-     * Retrieve a user by their ID.
-     *
-     * @param id The ID of the user.
-     * @return An Optional containing the user if found, or empty if not found.
-     */
     @Cacheable(value = "users", key = "#id")
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
-    /**
-     * Creates a new user. The password is encoded and a default role is set if not provided.
-     *
-     * @param user The user object to be created
-     * @return The created user
-     */
     public User createUser(User user) {
-        // Encode the user's password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        // Set the default role if not provided
+        user.setEnabled(false);
         user.setRole(user.getRole() == null ? Role.USER : user.getRole());
+        user.setCreatedAt(Date.from(Instant.now()));
+        user.setUpdatedAt(Date.from(Instant.now()));
+        User savedUser = userRepository.save(user);
 
-        // Save and return the newly created user
-        return userRepository.save(user);
+        return savedUser;
     }
 
-    /**
-     * Checks if a user with the given email already exists.
-     *
-     * @param email The email to check.
-     * @return True if a user with the email exists, otherwise false.
-     */
     @Cacheable(value = "emailExistenceCache", key = "#email")
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 
-    /**
-     * Update an existing user's details.
-     *
-     * @param id          The ID of the user to update
-     * @param updatedUser The updated user object
-     * @return The updated user
-     * @throws UsernameNotFoundException If no user is found with the given ID
-     */
+    @CacheEvict(value = "users", key = "#id")
     public User updateUser(Long id, User updatedUser) {
         return userRepository.findById(id).map(user -> {
             updateUserDetails(user, updatedUser);
@@ -136,12 +84,6 @@ public class UserService implements UserDetailsService {
         }).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id));
     }
 
-    /**
-     * Helper method to update user details.
-     *
-     * @param user        The user to be updated
-     * @param updatedUser The new details to update
-     */
     private void updateUserDetails(User user, User updatedUser) {
         user.setFullName(updatedUser.getFullName());
         user.setEmail(updatedUser.getEmail());
@@ -151,12 +93,7 @@ public class UserService implements UserDetailsService {
         user.setUpdatedAt(Date.from(Instant.now()));
     }
 
-    /**
-     * Delete a user by their ID.
-     *
-     * @param id The ID of the user to delete
-     * @throws UsernameNotFoundException If no user is found with the given ID
-     */
+    @CacheEvict(value = "users", key = "#id")
     public void deleteUser(Long id) {
         userRepository.findById(id).ifPresentOrElse(user -> {
             userRepository.delete(user);
@@ -164,5 +101,32 @@ public class UserService implements UserDetailsService {
         }, () -> {
             throw new UsernameNotFoundException(USER_NOT_FOUND + id);
         });
+    }
+
+    public User resetPassword(String email, String newPassword) {
+        return userRepository.findByEmail(email).map(user -> {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setUpdatedAt(Date.from(Instant.now()));
+            logger.info("Password reset successfully for email: {}", email);
+            return userRepository.save(user);
+        }).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+    }
+
+    public User changeUserRole(Long id, Role role) {
+        return userRepository.findById(id).map(user -> {
+            user.setRole(role);
+            user.setUpdatedAt(Date.from(Instant.now()));
+            logger.info("User role updated to {} for ID: {}", role, id);
+            return userRepository.save(user);
+        }).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id));
+    }
+
+    public User activateUserAccount(Long id) {
+        return userRepository.findById(id).map(user -> {
+            user.setEnabled(true);
+            user.setUpdatedAt(Date.from(Instant.now()));
+            logger.info("User account activated with ID: {}", id);
+            return userRepository.save(user);
+        }).orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + id));
     }
 }

@@ -18,7 +18,7 @@ RUN mvn clean package -DskipTests && ls -l target
 FROM mysql:latest AS mysql-setup
 
 # Environment variables for MySQL setup
-ENV MYSQL_ROOT_PASSWORD=95Z-5GaYjeCZU%4nV+DdR^2zUqDspg?+kVZbeZQ-ZcYte4^6&Nc*Buzx_8CEHkBV
+ENV MYSQL_ROOT_PASSWORD=MYSQL_ROOT_PASSWORD
 ENV MYSQL_DATABASE=database
 
 # Preload the database schema or data if needed

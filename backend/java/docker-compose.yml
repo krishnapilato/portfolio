@@ -9,33 +9,6 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-    environment:
-      - JAVA_OPTS=-Xms512m -Xmx1024m
-      - SPRING_APPLICATION_NAME=portfolio
-      - SPRING_PROFILES_ACTIVE=dev
-      - SPRINGDOC_SWAGGER_UI_PATH=/swagger-ui.html
-      - SPRINGDOC_SWAGGER_UI_ENABLED=true
-      - SERVER_PORT=8080
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/database?createDatabaseIfNotExist=true
-      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=95Z-5GaYjeCZU%4nV+DdR^2zUqDspg?+kVZbeZQ-ZcYte4^6&Nc*Buzx_8CEHkBV
-      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_JPA_SHOW_SQL=true
-      - SPRING_JPA_OPEN_IN_VIEW=false
-      - SPRING_SECURITY_USER_NAME=admin
-      - SPRING_SECURITY_USER_PASSWORD=4X#@Ke$E&SDzmBA5IG%Qp7WPHvx3Y)qCJRU9(bsFN*ygdfh8t!6VjTuwan2MZ+rc
-      - SPRING_SECURITY_USER_EMAIL=admin.email@gmail.com
-      - JWT_TOKEN_EXPIRATION=7200000
-      - LOGGING_LEVEL_ROOT=INFO
-      - LOGGING_FILE_NAME=logs/application.log
-      - SPRING_MAIL_HOST=sandbox.smtp.mailtrap.io
-      - SPRING_MAIL_PORT=2525
-      - SPRING_MAIL_USERNAME=9a4f765dbe185a
-      - SPRING_MAIL_PASSWORD=929d826701bafa
-      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
-      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
     volumes:
       - maven_cache:/root/.m2
 
@@ -45,7 +18,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 95Z-5GaYjeCZU%4nV+DdR^2zUqDspg?+kVZbeZQ-ZcYte4^6&Nc*Buzx_8CEHkBV
+      MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
       MYSQL_DATABASE: database
     volumes:
       - mysql_data:/var/lib/mysql

@@ -28,11 +28,11 @@ public class SecurityConfiguration {
 
     // Whitelisted endpoints accessible without authentication
     private static final String[] API_WHITELIST = {
-            "/",                          // Root path
-            "/v3/api-docs/**",            // OpenAPI documentation
-            "/swagger-ui/**",             // Swagger UI
-            "/auth/**",                   // Authentication endpoints
-            "/api/email/**"               // Public email sending endpoint
+            "/",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/auth/**",
+            "/api/email/**"
     };
 
     // Dependencies for authentication and JWT filtering
@@ -83,8 +83,8 @@ public class SecurityConfiguration {
 
         // Dynamic origin settings for development and production
         configuration.setAllowedOrigins(List.of(
-                "http://localhost:4200",            // Local development URL
-                "https://backend.prismnexus.com"    // Production URL
+                "http://localhost:4200",
+                "https://prismnexus-backend.eu-south-1.elasticbeanstalk.com"
         ));
 
         // Allowed HTTP methods (GET, POST, PUT, DELETE, OPTIONS)

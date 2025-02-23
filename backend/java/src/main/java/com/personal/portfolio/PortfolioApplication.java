@@ -17,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 /**
  * Entry point for the Portfolio Application.
@@ -29,38 +32,47 @@ public class PortfolioApplication {
     private static final Logger logger = LoggerFactory.getLogger(PortfolioApplication.class);
 
     @Value("${spring.security.user.name:admin}")
-    private String adminUsername; // Admin username from application properties
+    private String adminUsername;
 
     @Value("${spring.security.user.password:password}")
-    private String adminPassword; // Admin password from application properties
+    private String adminPassword;
 
     @Value("${spring.security.user.email:admin.email@gmail.com}")
-    private String adminEmail; // Admin email from application properties
+    private String adminEmail;
 
     public static void main(String[] args) {
+        long start = System.nanoTime();
+
         SpringApplication app = new SpringApplication(PortfolioApplication.class);
-        app.setBannerMode(Banner.Mode.OFF);
         app.run(args);
+
+        logger.info("Backend is running! Open: http://localhost:8080 (Started in {} ms)", (System.nanoTime() - start) / 1_000_000);
     }
 
     /**
      * Ensures the default admin user is created in the database if it doesn't already exist.
-     * This bean runs only in non-production profiles to avoid unnecessary checks in production.
      *
      * @param userRepository  Repository for user-related operations.
      * @param passwordEncoder Encoder for securing user passwords.
      * @return CommandLineRunner to execute database initialization logic.
      */
     @Bean
-    @Profile("!prod")  // Avoid running in production environments
+    @Profile("!prod")
     public CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if (adminUsername == null || adminPassword == null || adminEmail == null) {
-                logger.error("Admin credentials are not properly configured. Ensure properties are set.");
+            if (Stream.of(adminUsername, adminPassword, adminEmail).anyMatch(Objects::isNull)) {
+                logger.error("Missing admin credentials! Ensure 'adminUsername', 'adminPassword', and 'adminEmail' are properly configured.");
                 return;
             }
 
-            userRepository.findByEmail(adminEmail).ifPresentOrElse(user -> logger.info("Admin user already exists. Skipping creation."), () -> createAdminUser(userRepository, passwordEncoder));
+            CompletableFuture.runAsync(() -> {
+                if (!userRepository.existsByEmail(adminEmail)) {
+                    createAdminUser(userRepository, passwordEncoder);
+                    logger.info("Default admin user created successfully.");
+                } else {
+                    logger.info("Admin user already exists. Skipping creation.");
+                }
+            });
         };
     }
 
@@ -81,6 +93,5 @@ public class PortfolioApplication {
         adminUser.setLastLogin(Instant.now());
 
         userRepository.save(adminUser);
-        logger.info("Created default admin user with email: {}", adminEmail);
     }
 }

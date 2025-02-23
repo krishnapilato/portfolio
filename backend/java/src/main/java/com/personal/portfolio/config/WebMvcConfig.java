@@ -19,6 +19,6 @@ public class WebMvcConfig {
      */
     @GetMapping("/")
     public String landingPage(Model model) {
-        return "portfolioLanding"; // Render the 'portfolioLanding' template
+        return "portfolioLanding";
     }
 }

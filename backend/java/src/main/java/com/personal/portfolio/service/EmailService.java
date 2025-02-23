@@ -8,9 +8,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class EmailService {
@@ -20,124 +20,100 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
-    // Dependency injection of the mail sender
+    // Thread-safe storage for email statuses
+    private final Map<String, String> emailStatusMap = new ConcurrentHashMap<>();
+
     public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
-    /**
-     * Sends an email to the specified recipient with the given subject and body.
-     *
-     * @param recipient Email address of the recipient.
-     * @param subject   Subject of the email.
-     * @param body      Body content of the email.
-     * @param cc        Optional list of CC addresses.
-     * @param bcc       Optional list of BCC addresses.
-     * @param replyTo   Optional reply-to address.
-     * @param isHtml    If true, the body will be interpreted as HTML content.
-     * @throws IllegalArgumentException if email validation fails.
-     */
     public void sendEmail(String recipient, String subject, String body, List<String> cc, List<String> bcc, String replyTo, boolean isHtml) {
-
-        // Validate email address
-        if (!isValidEmail(recipient)) {
-            logger.warn("Invalid email address attempted: {}", recipient);
-            throw new IllegalArgumentException("Invalid email address.");
-        }
-
-        // Sanitize inputs
+        validateEmail(recipient);
         sanitizeInput(subject);
         sanitizeInput(body);
 
+        String emailId = UUID.randomUUID().toString();
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(recipient);
         message.setSubject(subject);
         message.setText(body);
 
-        // Add CC and BCC if available
         if (cc != null && !cc.isEmpty()) {
             message.setCc(cc.toArray(new String[0]));
         }
-
         if (bcc != null && !bcc.isEmpty()) {
             message.setBcc(bcc.toArray(new String[0]));
         }
-
-        // Set reply-to address if available
         if (replyTo != null && isValidEmail(replyTo)) {
             message.setReplyTo(replyTo);
         }
 
         try {
-            // Send the email
             javaMailSender.send(message);
+            emailStatusMap.put(emailId, "SENT");
             logger.info("Email successfully sent to {} with subject: {}", recipient, subject);
         } catch (Exception e) {
-            logger.error("Failed to send email to {} with subject {}: {}", recipient, subject, e.getMessage());
+            emailStatusMap.put(emailId, "FAILED");
+            logger.error("Failed to send email to {}: {}", recipient, e.getMessage());
             throw new IllegalStateException("Email sending failed.", e);
         }
     }
 
-    /**
-     * Sends a password reset email with a token.
-     *
-     * @param recipient The email address of the recipient.
-     * @param token     The password reset token.
-     */
     public void sendPasswordResetEmail(String recipient, String token) {
-        // Validate email address
-        if (!isValidEmail(recipient)) {
-            logger.warn("Invalid email address attempted: {}", recipient);
-            throw new IllegalArgumentException("Invalid email address.");
-        }
-
+        validateEmail(recipient);
         String resetLink = "https://prismnexus.com/reset-password?token=" + token;
-
-        String subject = "Password Reset Request";
-        String body = "Please use the following link to reset your password: " + resetLink;
-
-        sendEmail(recipient, subject, body, null, null, null, false);
+        sendEmail(recipient, "Password Reset Request", "Reset your password: " + resetLink, null, null, null, false);
     }
 
-    /**
-     * Validates the given email address against a regular expression.
-     *
-     * @param email The email address to validate.
-     * @return True if the email is valid, otherwise false.
-     */
+    public void resendConfirmationEmail(String recipient) {
+        validateEmail(recipient);
+        String confirmationLink = "https://prismnexus.com/confirm-email?email=" + recipient;
+        sendEmail(recipient, "Email Confirmation", "Confirm your email: " + confirmationLink, null, null, null, false);
+        logger.info("Resent confirmation email to: {}", recipient);
+    }
+
+    public void sendBulkEmail(List<String> recipients, String subject, String body) {
+        if (recipients == null || recipients.isEmpty()) {
+            throw new IllegalArgumentException("Recipient list cannot be empty.");
+        }
+
+        recipients.parallelStream()
+                .filter(this::isValidEmail)
+                .forEach(recipient -> sendEmail(recipient, subject, body, null, null, null, false));
+
+        logger.info("Bulk email sent to {} recipients.", recipients.size());
+    }
+
+    public String getEmailStatus(String emailId) {
+        return emailStatusMap.getOrDefault(emailId, "UNKNOWN");
+    }
+
     public boolean isValidEmail(String email) {
         return Objects.nonNull(email) && EMAIL_REGEX.matcher(email).matches();
     }
 
-    /**
-     * Sanitizes the input to prevent injection attacks.
-     *
-     * @param input The input to sanitize.
-     * @throws IllegalArgumentException if the input contains invalid characters.
-     */
     public void sanitizeInput(String input) {
         if (StringUtils.isBlank(input)) {
             throw new IllegalArgumentException("Input cannot be null or empty.");
         }
 
-        // Allow all characters (any Unicode character)
-        // This is a more permissive regex that allows anything
-        if (!input.matches(".*")) {
-            throw new IllegalArgumentException("Input contains invalid characters.");
-        }
+        // Remove any dangerous characters (such as script tags, special characters)
+        String sanitizedInput = input.replaceAll("[<>\"'%;()&+]", "").trim();
 
-        // Optionally: Encode the input to prevent XSS or other vulnerabilities
-        Encode.forHtml(input);
+        // Encode the input to prevent XSS attacks
+        Encode.forHtml(sanitizedInput);
     }
 
-    /**
-     * Generates a unique password reset token.
-     *
-     * @return A generated token for password reset.
-     */
     public String generatePasswordResetToken() {
-        byte[] randomBytes = new byte[32]; // 256-bit random token
+        byte[] randomBytes = new byte[32];
         new java.security.SecureRandom().nextBytes(randomBytes);
-        return java.util.Base64.getUrlEncoder().encodeToString(randomBytes);
+        return Base64.getUrlEncoder().encodeToString(randomBytes);
+    }
+
+    private void validateEmail(String email) {
+        if (!isValidEmail(email)) {
+            logger.warn("Invalid email address attempted: {}", email);
+            throw new IllegalArgumentException("Invalid email address.");
+        }
     }
 }

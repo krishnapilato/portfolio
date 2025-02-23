@@ -1,5 +1,6 @@
 package com.personal.portfolio.controller;
 
+import com.personal.portfolio.model.Role;
 import com.personal.portfolio.model.User;
 import com.personal.portfolio.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -168,6 +169,54 @@ public class UserController {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             logger.error("Unexpected error occurred while deleting user with ID: {} - {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/reset-password")
+    @Operation(summary = "Reset user password", description = "Resets the password for a user using their email address.")
+    public ResponseEntity<String> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
+        try {
+            userService.resetPassword(email, newPassword);
+            logger.info("Password reset successfully for email: {}", email);
+            return ResponseEntity.ok("Password reset successfully.");
+        } catch (UsernameNotFoundException e) {
+            logger.warn("Password reset failed: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with this email.");
+        } catch (Exception e) {
+            logger.error("Unexpected error during password reset: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while resetting the password.");
+        }
+    }
+
+    @PutMapping("/{id}/role")
+    @Operation(summary = "Change user role", description = "Changes the role of an existing user.")
+    public ResponseEntity<User> changeUserRole(@PathVariable Long id, @RequestParam Role role) {
+        try {
+            User updatedUser = userService.changeUserRole(id, role);
+            logger.info("User role updated successfully for ID: {}", id);
+            return ResponseEntity.ok(updatedUser);
+        } catch (UsernameNotFoundException e) {
+            logger.warn("Role change failed for user ID {}: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            logger.error("Unexpected error while changing role for user ID {}: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/{id}/activate")
+    @Operation(summary = "Activate user account", description = "Activates a user's account upon confirmation.")
+    public ResponseEntity<User> activateUserAccount(@PathVariable Long id) {
+        try {
+            User activatedUser = userService.activateUserAccount(id);
+            logger.info("User account activated successfully for ID: {}", id);
+            return ResponseEntity.ok(activatedUser);
+        } catch (UsernameNotFoundException e) {
+            logger.warn("Account activation failed for user ID {}: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            logger.error("Unexpected error while activating account for user ID {}: {}", id, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
