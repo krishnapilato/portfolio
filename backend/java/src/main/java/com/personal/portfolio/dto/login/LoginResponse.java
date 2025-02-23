@@ -8,41 +8,64 @@ import lombok.NonNull;
 import java.time.Instant;
 
 /**
- * DTO for the response of a user login request.
- * Handles both successful and error scenarios using a single constructor.
+ * DTO for handling user login responses.
+ * Supports both successful and error responses using static factory methods.
  *
- * @param status    Indicates the status of the login attempt (e.g., "success" or "error").
- * @param message   A descriptive message for the response.
- * @param token     A JWT token for successful login attempts.
- * @param expiresIn Token expiration time in seconds.
- * @param errorCode An error code for failed login attempts (if applicable).
- * @param role      The role of the authenticated user (if applicable).
- * @param timestamp Timestamp indicating when the response was generated.
+ * @param status    Status of the login attempt ("success" or "error").
+ * @param message   Descriptive message regarding the login result.
+ * @param token     JWT token (present only in successful login responses).
+ * @param expiresIn Expiration duration of the JWT token in seconds.
+ * @param errorCode Unique error code for failed login attempts.
+ * @param role      Assigned role of the authenticated user (if applicable).
+ * @param timestamp Timestamp of when the response was generated.
  */
 @Builder
-public record LoginResponse(@NotNull String status, @NotNull String message, String token, long expiresIn,
-                            String errorCode, Role role, @NonNull Instant timestamp) {
+public record LoginResponse(
+        @NotNull String status,
+        @NotNull String message,
+        String token,
+        long expiresIn,
+        String errorCode,
+        Role role,
+        @NonNull Instant timestamp
+) {
 
     /**
-     * Factory method for successful login responses.
+     * Generates a response for a successful login attempt.
      *
-     * @param token     The JWT token generated after successful authentication.
-     * @param expiresIn The duration (in seconds) before the token expires.
-     * @param role      The role of the authenticated user.
-     * @return A LoginResponse object with success status.
+     * @param token     The JWT token issued after authentication.
+     * @param expiresIn The expiration time (in seconds) of the token.
+     * @param role      The assigned role of the authenticated user.
+     * @return A successful {@link LoginResponse} object.
      */
     public static LoginResponse success(String token, long expiresIn, Role role) {
-        return LoginResponse.builder().status("success").message("Authentication successful.").token(token).expiresIn(expiresIn).role(role).timestamp(Instant.now()).build();
+        Instant now = Instant.now();
+        return LoginResponse.builder()
+                .status("success")
+                .message("Authentication successful.")
+                .token(token)
+                .expiresIn(expiresIn)
+                .role(role)
+                .timestamp(now)
+                .build();
     }
 
     /**
-     * Factory method for error responses during login.
+     * Generates a response for a failed login attempt.
      *
-     * @param errorCode A unique code identifying the error type.
-     * @param message   A descriptive error message.
-     * @return A LoginResponse object with error status.
+     * @param errorCode A predefined error code representing the failure reason.
+     * @param message   A human-readable description of the error.
+     * @return An error {@link LoginResponse} object.
      */
     public static LoginResponse error(String errorCode, String message) {
-        return LoginResponse.builder().status("error").message(message).errorCode(errorCode).expiresIn(0).role(null).timestamp(Instant.now()).build();
+        Instant now = Instant.now();
+        return LoginResponse.builder()
+                .status("error")
+                .message(message)
+                .errorCode(errorCode)
+                .expiresIn(0)
+                .role(null)
+                .timestamp(now)
+                .build();
     }
 }

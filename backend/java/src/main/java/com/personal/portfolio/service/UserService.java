@@ -66,9 +66,7 @@ public class UserService implements UserDetailsService {
         user.setRole(user.getRole() == null ? Role.USER : user.getRole());
         user.setCreatedAt(Date.from(Instant.now()));
         user.setUpdatedAt(Date.from(Instant.now()));
-        User savedUser = userRepository.save(user);
-
-        return savedUser;
+        return userRepository.save(user);
     }
 
     @Cacheable(value = "emailExistenceCache", key = "#email")
@@ -103,8 +101,8 @@ public class UserService implements UserDetailsService {
         });
     }
 
-    public User resetPassword(String email, String newPassword) {
-        return userRepository.findByEmail(email).map(user -> {
+    public void resetPassword(String email, String newPassword) {
+        userRepository.findByEmail(email).map(user -> {
             user.setPassword(passwordEncoder.encode(newPassword));
             user.setUpdatedAt(Date.from(Instant.now()));
             logger.info("Password reset successfully for email: {}", email);

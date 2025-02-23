@@ -8,37 +8,56 @@ import lombok.NonNull;
 import java.time.Instant;
 
 /**
- * DTO for the response of a user registration request.
- * Handles both successful and error scenarios using a single constructor.
+ * DTO representing the response for user registration.
+ * Handles both successful and error scenarios using static factory methods.
  *
- * @param status    Indicates the status of the registration attempt (e.g., "success" or "error").
- * @param message   A descriptive message for the response.
- * @param userId    Unique identifier of the registered user (populated in case of success).
- * @param role      The role assigned to the user (if applicable).
- * @param timestamp Timestamp indicating when the response was generated.
+ * @param status    Indicates the status of the registration attempt ("success" or "error").
+ * @param message   A descriptive message providing context for the response.
+ * @param userId    The unique identifier assigned to the newly registered user (only for success responses).
+ * @param role      The assigned role of the registered user (if applicable).
+ * @param timestamp The exact time when the response was generated.
  */
 @Builder
-public record RegistrationResponse(@NotNull String status, @NotNull String message, Long userId, Role role,
-                                   @NonNull Instant timestamp) {
+public record RegistrationResponse(
+        @NotNull String status,
+        @NotNull String message,
+        Long userId,
+        Role role,
+        @NonNull Instant timestamp
+) {
 
     /**
-     * Factory method for successful registration responses.
+     * Generates a response for a successful user registration.
      *
-     * @param userId Unique identifier for the registered user.
+     * @param userId Unique identifier assigned to the registered user.
      * @param role   The role assigned to the user upon successful registration.
-     * @return A RegistrationResponse object with success status.
+     * @return A {@link RegistrationResponse} object with a success status.
      */
     public static RegistrationResponse success(Long userId, Role role) {
-        return RegistrationResponse.builder().status("success").message("Registration successful.").userId(userId).role(role).timestamp(Instant.now()).build();
+        Instant now = Instant.now();
+        return RegistrationResponse.builder()
+                .status("success")
+                .message("Registration successful.")
+                .userId(userId)
+                .role(role)
+                .timestamp(now)
+                .build();
     }
 
     /**
-     * Factory method for error registration responses.
+     * Generates a response for a failed registration attempt.
      *
-     * @param message Describes the reason for the error or failure.
-     * @return A RegistrationResponse object with error status.
+     * @param message Descriptive message explaining the reason for failure.
+     * @return A {@link RegistrationResponse} object with an error status.
      */
     public static RegistrationResponse error(String message) {
-        return RegistrationResponse.builder().status("error").message(message).userId(null).role(null).timestamp(Instant.now()).build();
+        Instant now = Instant.now();
+        return RegistrationResponse.builder()
+                .status("error")
+                .message(message)
+                .userId(null)
+                .role(null)
+                .timestamp(now)
+                .build();
     }
 }

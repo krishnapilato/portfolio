@@ -6,7 +6,6 @@ import com.personal.portfolio.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,6 +23,9 @@ import java.util.stream.Stream;
 /**
  * Entry point for the Portfolio Application.
  * Initializes the application, sets up caching, and ensures an admin user exists.
+ *
+ *  @author    Krishna
+ *  @version   0.8.5
  */
 @SpringBootApplication
 @EnableCaching
@@ -41,12 +43,10 @@ public class PortfolioApplication {
     private String adminEmail;
 
     public static void main(String[] args) {
-        long start = System.nanoTime();
-
         SpringApplication app = new SpringApplication(PortfolioApplication.class);
         app.run(args);
 
-        logger.info("Backend is running! Open: http://localhost:8080 (Started in {} ms)", (System.nanoTime() - start) / 1_000_000);
+        logger.info("Backend is running! Open: http://localhost:8080");
     }
 
     /**

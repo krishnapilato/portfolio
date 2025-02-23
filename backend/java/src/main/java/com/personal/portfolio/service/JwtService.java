@@ -29,17 +29,15 @@ public class JwtService {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
-    private static final String JWT_TOKEN_EXPIRED = "JWT Token expired: {}";
-    private static final String INVALID_JWT_TOKEN = "Invalid JWT token: {}";
-
     @Value("${jwt.token.expiration:7200000}")
     private long tokenExpiration;
 
     private final JwtKeysRepository keyRepository;
+    private volatile SecretKey cachedSigningKey;
 
     public JwtService(JwtKeysRepository keyRepository) {
         this.keyRepository = keyRepository;
-        rotateKey();
+        rotateKey(); // Initialize key on startup
     }
 
     /**
@@ -47,36 +45,48 @@ public class JwtService {
      * Deletes expired keys and generates a new one if necessary.
      */
     @Scheduled(cron = "0 0 0 * * ?")
-    public void rotateKey() {
+    public synchronized void rotateKey() {
+        Instant now = Instant.now();
+
         // Delete expired keys
-        List<JwtKeys> expiredKeys = keyRepository.findExpiredKeys(Instant.now());
+        List<JwtKeys> expiredKeys = keyRepository.findExpiredKeys(now);
         if (!expiredKeys.isEmpty()) {
             keyRepository.deleteAllInBatch(expiredKeys);
-            logger.info("Deleted {} expired keys.", expiredKeys.size());
+            logger.info("Deleted {} expired JWT keys.", expiredKeys.size());
         }
 
-        // Generate a new key if none exists or the active key is expired
-        Optional<JwtKeys> activeKeyOptional = keyRepository.findFirstByOrderByCreatedDateDesc();
-        if (activeKeyOptional.isEmpty() || activeKeyOptional.get().isExpired()) {
-            SecretKey newKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-            String newKeyId = UUID.randomUUID().toString();
-            JwtKeys newKeyEntity = new JwtKeys();
-            newKeyEntity.setKeyId(newKeyId);
-            newKeyEntity.setSecretKey(Base64.getEncoder().encodeToString(newKey.getEncoded()));
-            newKeyEntity.setCreatedDate(Instant.now());
-            newKeyEntity.setExpirationDate(Instant.now().plus(Duration.ofDays(28)));
-            keyRepository.save(newKeyEntity);
-            logger.info("JWT Secret key rotated. New key ID: {}", newKeyId);
-        } else {
-            logger.info("Skipping key rotation. Active key is not expired.");
-        }
+        // Generate a new key if none exists or if the active key is expired
+        keyRepository.findFirstByOrderByCreatedDateDesc().ifPresentOrElse(activeKey -> {
+            if (activeKey.isExpired()) {
+                createAndStoreNewKey(now);
+            } else {
+                cachedSigningKey = decodeKey(activeKey.getSecretKey());
+                logger.info("Using existing JWT signing key (ID: {}).", activeKey.getKeyId());
+            }
+        }, () -> createAndStoreNewKey(now));
+    }
+
+    /**
+     * Creates and stores a new signing key in the database.
+     */
+    private void createAndStoreNewKey(Instant now) {
+        SecretKey newKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        String encodedKey = Base64.getEncoder().encodeToString(newKey.getEncoded());
+
+        JwtKeys newKeyEntity = new JwtKeys();
+        newKeyEntity.setKeyId(UUID.randomUUID().toString());
+        newKeyEntity.setSecretKey(encodedKey);
+        newKeyEntity.setCreatedDate(now);
+        newKeyEntity.setExpirationDate(now.plus(Duration.ofDays(28)));
+
+        keyRepository.save(newKeyEntity);
+        cachedSigningKey = newKey;
+
+        logger.info("New JWT signing key created (ID: {}).", newKeyEntity.getKeyId());
     }
 
     /**
      * Extracts the username (subject) from a JWT token.
-     *
-     * @param token The JWT token
-     * @return The username contained in the token
      */
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -84,127 +94,113 @@ public class JwtService {
 
     /**
      * Extracts a specific claim from a JWT token.
-     *
-     * @param token          The JWT token
-     * @param claimsResolver Function to resolve the desired claim
-     * @param <T>            Type of the claim
-     * @return The extracted claim
      */
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+        return claimsResolver.apply(parseClaims(token));
     }
 
+    /**
+     * Checks if a JWT token is valid.
+     */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         if (StringUtils.isBlank(token)) {
-            logger.warn("JWT token is null or empty.");
+            logger.warn("JWT token is empty.");
             return false;
         }
 
         try {
-            final String username = extractUsername(token);
-            boolean isValid = StringUtils.equals(username, userDetails.getUsername()) && !isTokenExpired(token);
-
-            if (!isValid) {
-                logger.warn("Invalid token for user: {}", username);
-            }
-
-            return isValid;
+            String username = extractUsername(token);
+            return StringUtils.equals(username, userDetails.getUsername()) && !isTokenExpired(token);
         } catch (ExpiredJwtException e) {
             logger.warn("JWT token expired: {}", e.getMessage());
             return false;
         } catch (JwtException e) {
-            logger.error("Invalid JWT token: {}", e.getMessage(), e);
+            logger.error("Invalid JWT token: {}", e.getMessage());
             return false;
         }
     }
 
     /**
      * Generates a JWT token for a user.
-     *
-     * @param userDetails The user's details
-     * @return The generated JWT token
      */
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        Map<String, Object> claims = Map.of(
+                "roles", userDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList())
+        );
         return generateToken(claims, userDetails);
     }
 
     /**
-     * Generates a JWT token with extra claims.
-     *
-     * @param extraClaims Additional claims to include in the token
-     * @param userDetails The user's details
-     * @return The generated JWT token
+     * Generates a JWT token with additional claims.
      */
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        try {
-            Instant now = Instant.now();
-            return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername()).setIssuer("Khova Krishna Pilato").setAudience("com.personal.portfolio").setIssuedAt(Date.from(now)).setExpiration(Date.from(now.plusMillis(tokenExpiration))).signWith(getSignInKey(), SignatureAlgorithm.HS512).compact();
-        } catch (JwtException e) {
-            logger.warn("Error generating JWT token", e);
-            throw new RuntimeException("Error generating JWT token", e);
-        }
+        Instant now = Instant.now();
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuer("Khova Krishna Pilato")
+                .setAudience("com.personal.portfolio")
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(now.plusMillis(tokenExpiration)))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS512)
+                .compact();
     }
 
     /**
      * Retrieves the expiration date from a JWT token.
-     *
-     * @param token The JWT token
-     * @return The expiration date
      */
     public Date extractExpiration(String token) {
         return parseClaims(token).getExpiration();
     }
 
     /**
-     * Parses and extracts all claims from a JWT token.
-     *
-     * @param token The JWT token
-     * @return The extracted claims
-     */
-    private Claims extractAllClaims(String token) {
-        return parseClaims(token);
-    }
-
-    /**
      * Checks if a JWT token is expired.
-     *
-     * @param token The JWT token
-     * @return True if the token is expired, false otherwise
      */
     private boolean isTokenExpired(String token) {
         try {
             return extractExpiration(token).before(new Date());
         } catch (ExpiredJwtException e) {
-            logger.warn(JWT_TOKEN_EXPIRED, e.getMessage());
+            logger.warn("JWT token expired: {}", e.getMessage());
             return true;
         }
     }
 
     /**
-     * Parses claims from a JWT token.
-     *
-     * @param token The JWT token
-     * @return The claims contained in the token
+     * Parses and extracts claims from a JWT token.
      */
     private Claims parseClaims(String token) {
         try {
-            return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
-        } catch (JwtException e) {
-            logger.error(INVALID_JWT_TOKEN, e.getMessage());
+            return Jwts.parser()
+                    .setSigningKey(getSignInKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
             throw e;
+        } catch (JwtException e) {
+            logger.error("Invalid JWT token: {}", e.getMessage());
+            throw new RuntimeException("Invalid JWT token", e);
         }
     }
 
+    /**
+     * Retrieves the active signing key.
+     */
     private SecretKey getSignInKey() {
-        // Try to retrieve the most recent active JWT key from the database.
-        Optional<JwtKeys> activeKeyOptional = keyRepository.findFirstByOrderByCreatedDateDesc();
+        if (cachedSigningKey == null) {
+            cachedSigningKey = keyRepository.findFirstByOrderByCreatedDateDesc()
+                    .map(activeKey -> decodeKey(activeKey.getSecretKey()))
+                    .orElseThrow(() -> new IllegalStateException("No active signing key found in the database!"));
+        }
+        return cachedSigningKey;
+    }
 
-        // Check if the key is found, otherwise throw a clear exception.
-        return activeKeyOptional
-                .map(activeKey -> Keys.hmacShaKeyFor(Base64.getDecoder().decode(activeKey.getSecretKey())))
-                .orElseThrow(() -> new IllegalStateException("No active signing key found in the database!"));
+    /**
+     * Decodes a base64-encoded JWT key.
+     */
+    private SecretKey decodeKey(String encodedKey) {
+        return Keys.hmacShaKeyFor(Base64.getDecoder().decode(encodedKey));
     }
 }

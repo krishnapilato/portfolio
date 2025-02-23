@@ -1,40 +1,50 @@
-# Use the latest Maven image with the latest JDK version
-FROM maven:latest AS builder
+# ---------------------------------------
+# 1. Build Stage (Maven Compilation)
+# ---------------------------------------
+FROM maven:3.9.9-eclipse-temurin-23 AS builder
 
-# Set the working directory for the build
 WORKDIR /app
 
-# Copy the Maven POM file and download dependencies to leverage caching for faster builds
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
+# Copy only pom.xml first (leveraging caching for dependencies)
+COPY pom.xml ./
+RUN mvn dependency:go-offline -B --no-transfer-progress
 
-# Copy the source code to the container
+# Copy the actual source code
 COPY src ./src
 
-# Compile the application and package it, skipping tests to optimize the build process
-RUN mvn clean package -DskipTests && ls -l target
+# Compile the application and package it (skipping tests)
+RUN mvn clean package -DskipTests && ls -lh target/
 
-# MySQL Setup Stage
-FROM mysql:latest AS mysql-setup
+# ---------------------------------------
+# 2. MySQL Setup Stage (Optional)
+# ---------------------------------------
+FROM mysql:9.1.0 AS mysql-setup
 
-# Environment variables for MySQL setup
 ENV MYSQL_ROOT_PASSWORD=MYSQL_ROOT_PASSWORD
 ENV MYSQL_DATABASE=database
 
-# Preload the database schema or data if needed
+# Copy database schema or data if needed
 COPY init.sql /docker-entrypoint-initdb.d/
 
-# Use the latest Eclipse Temurin JRE image to run the application
-FROM eclipse-temurin:latest
+# ---------------------------------------
+# 3. Runtime Stage (Final Image)
+# ---------------------------------------
+FROM eclipse-temurin:23-jre AS runtime
 
-# Set the working directory for the runtime environment
 WORKDIR /app
 
-# Copy the packaged JAR file from the builder image
+# Use a non-root user for better security
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser
+
+# Copy the JAR from the build stage
 COPY --from=builder /app/target/portfolio-0.8.5.jar app.jar
 
-# Expose the port the application will listen on
+# Set proper permissions
+RUN chown -R appuser:appgroup /app
+USER appuser
+
+# Expose application port
 EXPOSE 8080
 
-# Command to run the application
+# Run the application
 CMD ["java", "-jar", "app.jar"]

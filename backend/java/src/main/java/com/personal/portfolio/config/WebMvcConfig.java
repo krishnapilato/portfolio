@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Web MVC configuration for handling root URL requests and rendering the landing page view.
- * The controller manages the mapping for root URL and passes necessary data to the Thymeleaf template.
  */
 @Controller
 public class WebMvcConfig {
@@ -19,6 +18,7 @@ public class WebMvcConfig {
      */
     @GetMapping("/")
     public String landingPage(Model model) {
+        model.addAttribute("message", "Work in Progress!");
         return "portfolioLanding";
     }
 }

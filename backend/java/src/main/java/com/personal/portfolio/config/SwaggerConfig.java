@@ -31,49 +31,53 @@ public class SwaggerConfig {
                 .title("PrismNexus Backend API")
                 .version("v0.8.5")
                 .description("""
-                The PrismNexus Backend provides secure authentication,
-                user management, and email functionalities. It supports both local and production environments.
-                """)
-                .contact(new Contact()
-                        .name("Krishna Pilato")
-                        .url("https://krishnapilato.github.io/kodek")
-                        .email("krishnak.pilato@gmail.com"))
-                .license(new License()
-                        .name("MIT License")
-                        .url("https://opensource.org/licenses/MIT"));
+                        The PrismNexus Backend provides secure authentication,
+                        user management, and email functionalities. It supports both local and production environments.
+                        """)
+                .contact(apiContact())
+                .license(apiLicense());
+    }
+
+    private Contact apiContact() {
+        return new Contact()
+                .name("Krishna Pilato")
+                .url("https://krishnapilato.github.io/kodek")
+                .email("krishnak.pilato@gmail.com");
+    }
+
+    private License apiLicense() {
+        return new License()
+                .name("MIT License")
+                .url("https://opensource.org/licenses/MIT");
     }
 
     private List<Server> apiServers() {
         return List.of(
-                new Server().url("http://localhost:8080").description("Local Development Server"),
-                new Server()
-                        .url("https://prismnexus-backend.eu-south-1.elasticbeanstalk.com")
-                        .description("Production Server (Accessible only via AWS Client VPN)")
+                createServer("http://localhost:8080", "Local Development Server"),
+                createServer("https://prismnexus-backend.eu-south-1.elasticbeanstalk.com",
+                        "Production Server (Accessible only via AWS Client VPN)")
         );
     }
 
+    private Server createServer(String url, String description) {
+        return new Server().url(url).description(description);
+    }
+
     private Components securityComponents() {
-        return new Components()
-                .addSecuritySchemes("bearerAuth",
-                        new SecurityScheme()
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT"));
+        return new Components().addSecuritySchemes("bearerAuth",
+                new SecurityScheme()
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT"));
     }
 
     @Bean
-    public GroupedOpenApi authApi() {
-        return createGroupedOpenApi("Authentication", "/auth/**");
-    }
-
-    @Bean
-    public GroupedOpenApi userApi() {
-        return createGroupedOpenApi("User", "/api/users/**");
-    }
-
-    @Bean
-    public GroupedOpenApi emailApi() {
-        return createGroupedOpenApi("Email", "/api/email/**");
+    public List<GroupedOpenApi> groupedApis() {
+        return List.of(
+                createGroupedOpenApi("Authentication", "/auth/**"),
+                createGroupedOpenApi("User", "/api/users/**"),
+                createGroupedOpenApi("Email", "/api/email/**")
+        );
     }
 
     private GroupedOpenApi createGroupedOpenApi(String group, String path) {

@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,21 +17,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Represents a user entity for the application, including authentication and
- * authorization details. Implements {@link UserDetails} to integrate with
- * Spring Security.
+ * authorization details. Implements {@link UserDetails} to integrate with Spring Security.
  */
 @Entity
-@Table(name = "users", indexes = {@Index(name = "idx_user_email", columnList = "email"), @Index(name = "idx_user_enabled", columnList = "enabled")})
-@Data
+@Table(
+        name = "users",
+        indexes = {
+                @Index(name = "idx_user_email", columnList = "email"),
+                @Index(name = "idx_user_enabled", columnList = "enabled")
+        }
+)
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class User implements UserDetails {
 
     private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
@@ -93,12 +95,36 @@ public class User implements UserDetails {
     private Date updatedAt;
 
     /**
+     * Constructor for a basic user without optional fields.
+     */
+    public User(String fullName, String email, String password, Role role) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+        this.lastLogin = Instant.now();
+    }
+
+    /**
+     * Constructor for a full user entity including optional fields.
+     */
+    public User(String fullName, String email, String password, Role role, String phoneNumber,
+                String profilePictureUrl, String bio) {
+        this(fullName, email, password, role);
+        this.phoneNumber = phoneNumber;
+        this.profilePictureUrl = profilePictureUrl;
+        this.bio = bio;
+    }
+
+    /**
      * Hash the password before saving to the database.
      */
     @PrePersist
     @PreUpdate
     private void hashPassword() {
-        if (password != null && !password.startsWith("$2a$")) { // Check if already hashed
+        if (password != null && !password.matches("^(\\$2[aby]\\$\\d{2}\\$).{53}$")) {
             this.password = PASSWORD_ENCODER.encode(password);
         }
     }
@@ -119,11 +145,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        if (locked) {
-            return false;
-        }
-
-        return isAccountNonExpired();
+        return !locked;
     }
 
     @Override
