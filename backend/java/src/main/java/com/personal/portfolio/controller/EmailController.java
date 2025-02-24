@@ -4,12 +4,14 @@ import com.personal.portfolio.service.EmailService;
 import com.personal.portfolio.service.UserService;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,11 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * REST controller for handling email-related operations.
- */
 @RestController
 @RequestMapping("/api/email")
+@Validated
 public class EmailController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailController.class);
@@ -38,7 +38,7 @@ public class EmailController {
 
     /**
      * Endpoint to send a single email.
-     * Validates the recipient email, then delegates sending to the email service.
+     * Validates the recipient email and delegates sending to the EmailService.
      *
      * @param recipient The recipient's email address.
      * @param subject   The subject of the email.
@@ -46,7 +46,7 @@ public class EmailController {
      * @param cc        Optional list of CC email addresses.
      * @param bcc       Optional list of BCC email addresses.
      * @param replyTo   Optional reply-to email address.
-     * @param isHtml    Flag to indicate if the email body contains HTML.
+     * @param isHtml    Flag indicating whether the email body is HTML.
      * @return ResponseEntity with a status message.
      */
     @PostMapping("/send")
@@ -54,9 +54,9 @@ public class EmailController {
             @RequestParam @Email(message = "Invalid email address") String recipient,
             @RequestParam @NotBlank @Size(max = 100, message = "Subject must not exceed 100 characters") String subject,
             @RequestParam @NotBlank @Size(max = 1000, message = "Body must not exceed 1000 characters") String body,
-            @RequestParam(required = false) List<String> cc,
-            @RequestParam(required = false) List<String> bcc,
-            @RequestParam(required = false) String replyTo,
+            @RequestParam(required = false) List<@Email(message = "Invalid email address") String> cc,
+            @RequestParam(required = false) List<@Email(message = "Invalid email address") String> bcc,
+            @RequestParam(required = false) @Email(message = "Invalid email address") String replyTo,
             @RequestParam(defaultValue = "false") boolean isHtml) {
 
         logger.info("Received request to send email to: {}", recipient);
@@ -71,7 +71,7 @@ public class EmailController {
             logger.info("Email sent successfully to: {}", recipient);
             return ResponseEntity.ok("Email sent successfully.");
         } catch (Exception e) {
-            logger.error("Failed to send email to: {}. Error: {}", recipient, e.getMessage());
+            logger.error("Failed to send email to {}: {}", recipient, e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Failed to send email. Please try again later.");
         }
@@ -92,13 +92,11 @@ public class EmailController {
 
         if (!userService.existsByEmail(email)) {
             logger.warn("No user found with email: {}", email);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "No user found with that email address.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No user found with that email address.");
         }
 
         String resetToken = emailService.generatePasswordResetToken();
         emailService.sendPasswordResetEmail(email, resetToken);
-
         logger.info("Password reset token sent successfully to: {}", email);
         return ResponseEntity.ok("Password reset email sent successfully.");
     }
@@ -118,8 +116,7 @@ public class EmailController {
 
         if (!userService.existsByEmail(email)) {
             logger.warn("No user found with email: {}", email);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "No user found with that email address.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No user found with that email address.");
         }
 
         emailService.resendConfirmationEmail(email);
@@ -138,16 +135,11 @@ public class EmailController {
      */
     @PostMapping("/send-bulk")
     public ResponseEntity<String> sendBulkEmail(
-            @RequestParam List<@Email(message = "Invalid email address") String> recipients,
+            @RequestParam @NotEmpty List<@Email(message = "Invalid email address") String> recipients,
             @RequestParam @NotBlank @Size(max = 100, message = "Subject must not exceed 100 characters") String subject,
             @RequestParam @NotBlank @Size(max = 1000, message = "Body must not exceed 1000 characters") String body) {
 
         logger.info("Received request to send bulk email to {} recipients.", recipients.size());
-
-        if (recipients.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Recipient list cannot be empty.");
-        }
-
         emailService.sendBulkEmail(recipients, subject, body);
         logger.info("Bulk email sent successfully to {} recipients.", recipients.size());
         return ResponseEntity.ok("Bulk email sent successfully.");
@@ -160,39 +152,37 @@ public class EmailController {
      * @return ResponseEntity with the email status.
      */
     @GetMapping("/status/{emailId}")
-    public ResponseEntity<String> getEmailStatus(@PathVariable String emailId) {
+    public ResponseEntity<String> getEmailStatus(@PathVariable @NotBlank String emailId) {
         logger.info("Checking email status for ID: {}", emailId);
-
         String status = emailService.getEmailStatus(emailId);
         if (status == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Email not found.");
         }
-
         logger.info("Email status for {}: {}", emailId, status);
         return ResponseEntity.ok("Email status: " + status);
     }
 
     /**
-     * Sends an email with attachments.
+     * Endpoint to send an email with attachments.
      *
      * @param recipient   Recipient email address.
      * @param subject     Email subject.
      * @param body        Email body.
-     * @param cc          List of CC addresses.
-     * @param bcc         List of BCC addresses.
-     * @param replyTo     Reply-to address.
-     * @param isHtml      Flag to indicate HTML content.
+     * @param cc          Optional list of CC addresses.
+     * @param bcc         Optional list of BCC addresses.
+     * @param replyTo     Optional reply-to address.
+     * @param isHtml      Flag indicating if content is HTML.
      * @param attachments Array of files to attach.
-     * @return ResponseEntity with status message.
+     * @return ResponseEntity with a status message.
      */
     @PostMapping("/send-with-attachment")
     public ResponseEntity<String> sendEmailWithAttachment(
             @RequestParam @Email(message = "Invalid email address") String recipient,
             @RequestParam @NotBlank @Size(max = 100, message = "Subject must not exceed 100 characters") String subject,
             @RequestParam @NotBlank @Size(max = 1000, message = "Body must not exceed 1000 characters") String body,
-            @RequestParam(required = false) List<String> cc,
-            @RequestParam(required = false) List<String> bcc,
-            @RequestParam(required = false) String replyTo,
+            @RequestParam(required = false) List<@Email(message = "Invalid email address") String> cc,
+            @RequestParam(required = false) List<@Email(message = "Invalid email address") String> bcc,
+            @RequestParam(required = false) @Email(message = "Invalid email address") String replyTo,
             @RequestParam(defaultValue = "false") boolean isHtml,
             @RequestParam(required = false) MultipartFile[] attachments) {
 
@@ -221,33 +211,33 @@ public class EmailController {
             logger.info("Email with attachments sent successfully to: {}", recipient);
             return ResponseEntity.ok("Email with attachments sent successfully.");
         } catch (Exception e) {
-            logger.error("Failed to send email with attachments to: {}. Error: {}", recipient, e.getMessage());
+            logger.error("Failed to send email with attachments to {}. Error: {}", recipient, e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Failed to send email with attachments. Please try again later.");
         }
     }
 
     /**
-     * Schedules an email to be sent at a later time.
+     * Endpoint to schedule an email to be sent at a later time.
      *
      * @param recipient   Recipient email address.
      * @param subject     Email subject.
      * @param body        Email body.
-     * @param cc          List of CC addresses.
-     * @param bcc         List of BCC addresses.
-     * @param replyTo     Reply-to address.
-     * @param isHtml      Flag to indicate HTML content.
-     * @param sendTime    Scheduled time to send the email (ISO date-time format).
-     * @return ResponseEntity with status message.
+     * @param cc          Optional list of CC addresses.
+     * @param bcc         Optional list of BCC addresses.
+     * @param replyTo     Optional reply-to address.
+     * @param isHtml      Flag indicating if content is HTML.
+     * @param sendTime    Scheduled time to send the email (ISO date-time format: 2025-02-24T09:02:00+01:00).
+     * @return ResponseEntity with a status message.
      */
     @PostMapping("/schedule")
     public ResponseEntity<String> scheduleEmail(
             @RequestParam @Email(message = "Invalid email address") String recipient,
             @RequestParam @NotBlank @Size(max = 100, message = "Subject must not exceed 100 characters") String subject,
             @RequestParam @NotBlank @Size(max = 1000, message = "Body must not exceed 1000 characters") String body,
-            @RequestParam(required = false) List<String> cc,
-            @RequestParam(required = false) List<String> bcc,
-            @RequestParam(required = false) String replyTo,
+            @RequestParam(required = false) List<@Email(message = "Invalid email address") String> cc,
+            @RequestParam(required = false) List<@Email(message = "Invalid email address") String> bcc,
+            @RequestParam(required = false) @Email(message = "Invalid email address") String replyTo,
             @RequestParam(defaultValue = "false") boolean isHtml,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date sendTime) {
 
@@ -257,7 +247,6 @@ public class EmailController {
             logger.warn("Invalid email address: {}", recipient);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid recipient email address.");
         }
-
         if (sendTime.before(new Date())) {
             logger.warn("Scheduled send time {} is in the past.", sendTime);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduled time must be in the future.");
@@ -268,7 +257,7 @@ public class EmailController {
             logger.info("Email scheduled successfully to: {} at {}", recipient, sendTime);
             return ResponseEntity.ok("Email scheduled successfully.");
         } catch (Exception e) {
-            logger.error("Failed to schedule email for: {}. Error: {}", recipient, e.getMessage());
+            logger.error("Failed to schedule email for {}. Error: {}", recipient, e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Failed to schedule email. Please try again later.");
         }

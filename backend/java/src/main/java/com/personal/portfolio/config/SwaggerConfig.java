@@ -32,7 +32,7 @@ public class SwaggerConfig {
                 .version("v0.8.5")
                 .description("""
                         The PrismNexus Backend provides secure authentication,
-                        user management, and email functionalities. It supports both local and production environments.
+                        user management, and email functionalities.
                         """)
                 .contact(apiContact())
                 .license(apiLicense());
@@ -40,7 +40,7 @@ public class SwaggerConfig {
 
     private Contact apiContact() {
         return new Contact()
-                .name("Krishna Pilato")
+                .name("Khova Krishna Pilato")
                 .url("https://krishnapilato.github.io/kodek")
                 .email("krishnak.pilato@gmail.com");
     }

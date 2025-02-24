@@ -18,7 +18,6 @@ import java.util.Optional;
  * Provides methods to perform CRUD operations and custom queries for user management.
  */
 @Repository
-@Transactional(readOnly = true) // Apply read-only transaction for read operations.
 public interface UserRepository extends JpaRepository<User, Long> {
 
     /**

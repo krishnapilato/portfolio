@@ -27,6 +27,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
+    // Define the endpoint prefixes as a constant for easy maintenance.
+    private static final String[] PUBLIC_ENDPOINT_PREFIXES = { "/auth/", "/api/email/" };
+
     /**
      * Filters incoming requests and performs JWT authentication.
      *
@@ -67,13 +70,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Checks if the request is for a public endpoint that does not require authentication.
+     * Checks if the request URI belongs to a public endpoint that does not require authentication.
      *
-     * @param requestURI The request URI
-     * @return true if the request is for a public endpoint, false otherwise
+     * @param requestURI the request URI
+     * @return true if the URI is for a public endpoint, false otherwise
      */
     private boolean isPublicEndpoint(String requestURI) {
-        return requestURI.startsWith("/auth/") || requestURI.startsWith("/api/email/");
+        if (requestURI == null) {
+            return false;
+        }
+        for (String prefix : PUBLIC_ENDPOINT_PREFIXES) {
+            if (requestURI.startsWith(prefix)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -44,15 +44,24 @@ public class SecurityConfiguration {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // Convert the list of public endpoints to an array for use in requestMatchers.
+        String[] publicEndpoints = PUBLIC_ENDPOINTS.toArray(String[]::new);
+
         return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS
-                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF (JWT is stateless)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless sessions
+                // Enable CORS using a custom configuration source.
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                // Disable CSRF protection as JWT-based authentication is stateless.
+                .csrf(AbstractHttpConfigurer::disable)
+                // Set session management to stateless.
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Configure authorization rules:
+                // - Permit all requests to public endpoints.
+                // - Require authentication for all other endpoints.
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PUBLIC_ENDPOINTS.toArray(String[]::new)).permitAll() // Allow public access
-                        .anyRequest().authenticated() // Secure all other endpoints
-                )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Add JWT filter
+                        .requestMatchers(publicEndpoints).permitAll()
+                        .anyRequest().authenticated())
+                // Add the JWT authentication filter before the UsernamePasswordAuthenticationFilter.
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
