@@ -76,7 +76,7 @@ jobs:
       - name: Install Dependencies
         run: |
           cd frontend/angular
-          npm ci --force
+          npm install --force
 
       # Build the Angular application and output the compiled files to the "dist" directory.
       - name: Build Angular App
