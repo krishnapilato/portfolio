@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Parent POM for Spring Boot dependencies and plugin management -->
+    <!-- Parent POM for Spring Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -16,12 +16,11 @@
     <groupId>com.personal</groupId>
     <artifactId>portfolio</artifactId>
     <version>0.8.5</version>
-    <name>portfolio</name>
+    <name>Portfolio Backend API</name>
     <description>Portfolio Backend API</description>
 
-    <!-- Project Dependencies -->
     <dependencies>
-        <!-- Core Spring Boot Dependencies -->
+        <!-- Spring Boot Core -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -46,7 +45,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Authentication & Security -->
+        <!-- Security & Authentication -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
@@ -98,7 +97,6 @@
         </dependency>
     </dependencies>
 
-    <!-- Build Configuration -->
     <build>
         <plugins>
             <!-- Spring Boot Maven Plugin -->

@@ -24,8 +24,8 @@ import java.util.stream.Stream;
  * Entry point for the Portfolio Application.
  * Initializes the application, sets up caching, and ensures an admin user exists.
  *
- *  @author    Krishna
- *  @version   0.8.5
+ * @author Krishna
+ * @version 0.8.5
  */
 @SpringBootApplication
 @EnableCaching
@@ -45,7 +45,6 @@ public class PortfolioApplication {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(PortfolioApplication.class);
         app.run(args);
-
         logger.info("Backend is running! Open: http://localhost:8080");
     }
 
@@ -57,7 +56,7 @@ public class PortfolioApplication {
      * @return CommandLineRunner to execute database initialization logic.
      */
     @Bean
-    @Profile("!prod")
+    @Profile("!prod") // This bean will only run in non-prod environments.
     public CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             if (Stream.of(adminUsername, adminPassword, adminEmail).anyMatch(Objects::isNull)) {
@@ -65,6 +64,7 @@ public class PortfolioApplication {
                 return;
             }
 
+            // Check if the admin user already exists asynchronously.
             CompletableFuture.runAsync(() -> {
                 if (!userRepository.existsByEmail(adminEmail)) {
                     createAdminUser(userRepository, passwordEncoder);
@@ -92,6 +92,7 @@ public class PortfolioApplication {
         adminUser.setUpdatedAt(Date.from(Instant.now()));
         adminUser.setLastLogin(Instant.now());
 
+        // Save the admin user to the repository.
         userRepository.save(adminUser);
     }
 }

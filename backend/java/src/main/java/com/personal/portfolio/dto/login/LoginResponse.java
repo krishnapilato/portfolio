@@ -24,7 +24,7 @@ public record LoginResponse(
         @NotNull String status,
         @NotNull String message,
         String token,
-        long expiresIn,
+        long expiresIn, // Defaults to 0 for error responses
         String errorCode,
         Role role,
         @NonNull Instant timestamp
@@ -63,7 +63,7 @@ public record LoginResponse(
                 .status("error")
                 .message(message)
                 .errorCode(errorCode)
-                .expiresIn(0)
+                .expiresIn(0) // Default to 0 for error responses
                 .role(null)
                 .timestamp(now)
                 .build();

@@ -59,7 +59,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param lastLoginThreshold The cutoff date for checking inactivity.
      * @return A list of inactive users.
      */
-    @Query("SELECT u FROM User u WHERE u.lastLogin < :lastLoginThreshold")
+    @Query("SELECT u FROM User u WHERE u.lastLogin IS NULL OR u.lastLogin < :lastLoginThreshold")
     List<User> findInactiveUsers(@Param("lastLoginThreshold") Instant lastLoginThreshold);
 
     /**
@@ -71,14 +71,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findLockedUsers();
 
     /**
-     * Toggles the lock status of a user (locked/unlocked) based on their ID.
+     * Locks or unlocks a user based on their ID.
      *
-     * @param id The ID of the user whose lock status will be updated.
+     * @param id The ID of the user.
+     * @param locked The new lock status.
      */
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
-    @Query("UPDATE User u SET u.locked = NOT u.locked WHERE u.id = :id")
-    void toggleLockStatusById(@Param("id") Long id);
+    @Query("UPDATE User u SET u.locked = :locked WHERE u.id = :id")
+    void updateLockStatus(@Param("id") Long id, @Param("locked") boolean locked);
 
     /**
      * Updates the last login timestamp for a specific user.
@@ -86,19 +87,19 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param userId The ID of the user.
      * @param lastLogin The timestamp of the last login.
      */
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query("UPDATE User u SET u.lastLogin = :lastLogin WHERE u.id = :userId")
     void updateLastLogin(@Param("userId") Long userId, @Param("lastLogin") Instant lastLogin);
 
     /**
-     * Bulk update to lock all inactive users who haven't logged in since a given date.
+     * Locks all inactive users who haven't logged in since a given date.
      *
      * @param lastLoginThreshold The cutoff date for inactivity.
      */
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
-    @Query("UPDATE User u SET u.locked = true WHERE u.lastLogin < :lastLoginThreshold")
+    @Query("UPDATE User u SET u.locked = true WHERE u.lastLogin IS NULL OR u.lastLogin < :lastLoginThreshold")
     void lockInactiveUsers(@Param("lastLoginThreshold") Instant lastLoginThreshold);
 
     /**
@@ -106,9 +107,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
      *
      * @param lastLoginThreshold The cutoff date for deletion.
      */
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
-    @Query("DELETE FROM User u WHERE u.lastLogin < :lastLoginThreshold")
+    @Query("DELETE FROM User u WHERE u.lastLogin IS NULL OR u.lastLogin < :lastLoginThreshold")
     void deleteInactiveUsers(@Param("lastLoginThreshold") Instant lastLoginThreshold);
 
     /**
@@ -117,7 +118,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param userId The ID of the user.
      * @param newRole The new role to be assigned.
      */
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query("UPDATE User u SET u.role = :newRole WHERE u.id = :userId")
     void updateUserRole(@Param("userId") Long userId, @Param("newRole") Role newRole);

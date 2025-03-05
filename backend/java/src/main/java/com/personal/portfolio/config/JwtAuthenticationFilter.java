@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * JWT Authentication Filter to validate and authenticate users based on JWT tokens.
@@ -26,84 +28,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-
-    // Define the endpoint prefixes as a constant for easy maintenance.
     private static final String[] PUBLIC_ENDPOINT_PREFIXES = { "/auth/", "/api/email/" };
 
-    /**
-     * Filters incoming requests and performs JWT authentication.
-     *
-     * @param request     Incoming HTTP request
-     * @param response    Outgoing HTTP response
-     * @param filterChain Filter chain to continue request processing
-     * @throws ServletException If an error occurs during the filtering process
-     * @throws IOException      If an I/O error occurs
-     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         String requestURI = request.getRequestURI();
 
-        // Skip JWT authentication for public endpoints
-        if (isPublicEndpoint(requestURI)) {
+        // Skip authentication for public endpoints
+        if (isPublicEndpoint(requestURI) || SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Extract and validate JWT token from Authorization header
-        String jwtToken = extractJwtToken(request);
-        if (jwtToken == null || SecurityContextHolder.getContext().getAuthentication() != null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        try {
-            authenticateUser(jwtToken, request);
-        } catch (Exception e) {
-            SecurityContextHolder.clearContext();
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
-            return;
-        }
+        // Extract and validate JWT token
+        extractJwtToken(request).ifPresent(jwtToken -> authenticateUser(jwtToken, request));
 
         filterChain.doFilter(request, response);
     }
 
-    /**
-     * Checks if the request URI belongs to a public endpoint that does not require authentication.
-     *
-     * @param requestURI the request URI
-     * @return true if the URI is for a public endpoint, false otherwise
-     */
     private boolean isPublicEndpoint(String requestURI) {
-        if (requestURI == null) {
-            return false;
-        }
-        for (String prefix : PUBLIC_ENDPOINT_PREFIXES) {
-            if (requestURI.startsWith(prefix)) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(PUBLIC_ENDPOINT_PREFIXES).anyMatch(requestURI::startsWith);
     }
 
-    /**
-     * Extracts the JWT token from the Authorization header.
-     *
-     * @param request The incoming HTTP request
-     * @return The extracted JWT token, or null if not found
-     */
-    private String extractJwtToken(HttpServletRequest request) {
-        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        return (authHeader != null && authHeader.startsWith("Bearer ")) ? authHeader.substring(7) : null;
+    private Optional<String> extractJwtToken(HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
+                .filter(header -> header.startsWith("Bearer "))
+                .map(header -> header.substring(7));
     }
 
-    /**
-     * Authenticates the user based on the provided JWT token.
-     *
-     * @param jwtToken The JWT token extracted from the request
-     * @param request  The incoming HTTP request
-     */
     private void authenticateUser(String jwtToken, HttpServletRequest request) {
         String userEmail = jwtService.extractUsername(jwtToken);
         UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);

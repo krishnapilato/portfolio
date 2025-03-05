@@ -55,8 +55,8 @@ public record RegistrationResponse(
         return RegistrationResponse.builder()
                 .status("error")
                 .message(message)
-                .userId(null)
-                .role(null)
+                .userId(null)  // No userId for errors
+                .role(null)    // No role for errors
                 .timestamp(now)
                 .build();
     }

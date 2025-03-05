@@ -22,22 +22,21 @@ public interface JwtKeysRepository extends JpaRepository<JwtKeys, Long> {
     /**
      * Finds the most recently created JWT key.
      *
-     * @return An {@link Optional} containing the most recent {@link JwtKeys},
-     * or empty if no keys exist.
+     * @return The most recent {@link JwtKeys}, if available.
      */
     Optional<JwtKeys> findFirstByOrderByCreatedDateDesc();
 
     /**
      * Retrieves a list of expired JWT keys based on the provided expiration date.
      *
-     * @param expirationDate The date to compare expiration dates against.
+     * @param expirationDate The expiration threshold.
      * @return A list of expired {@link JwtKeys}.
      */
     @Query("SELECT k FROM JwtKeys k WHERE k.expirationDate < :expirationDate")
     List<JwtKeys> findExpiredKeys(@Param("expirationDate") Instant expirationDate);
 
     /**
-     * Checks if there is an active JWT key that is not expired.
+     * Checks if a valid (non-expired) JWT key exists.
      *
      * @param currentTime The current timestamp.
      * @return True if a valid key exists, otherwise false.
@@ -51,15 +50,15 @@ public interface JwtKeysRepository extends JpaRepository<JwtKeys, Long> {
      * @param currentTime The current timestamp.
      * @return The most recent non-expired {@link JwtKeys}, if available.
      */
-    @Query("SELECT k FROM JwtKeys k WHERE k.expirationDate > :currentTime ORDER BY k.createdDate DESC")
+    @Query("SELECT k FROM JwtKeys k WHERE k.expirationDate > :currentTime ORDER BY k.createdDate DESC LIMIT 1")
     Optional<JwtKeys> findLatestValidKey(@Param("currentTime") Instant currentTime);
 
     /**
      * Deletes all expired JWT keys to clean up the database.
      *
-     * @param expirationDate The expiration threshold date.
+     * @param expirationDate The expiration threshold.
      */
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query("DELETE FROM JwtKeys k WHERE k.expirationDate < :expirationDate")
     void deleteExpiredKeys(@Param("expirationDate") Instant expirationDate);
@@ -69,7 +68,7 @@ public interface JwtKeysRepository extends JpaRepository<JwtKeys, Long> {
      *
      * @param keyId The unique identifier of the JWT key.
      */
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query("DELETE FROM JwtKeys k WHERE k.keyId = :keyId")
     void deleteByKeyId(@Param("keyId") String keyId);
