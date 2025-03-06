@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Date;
@@ -36,21 +37,20 @@ public class AuthenticationService {
      * Authenticates a user.
      *
      * @param input The login request containing email and password.
-     * @throws BadCredentialsException   if authentication fails.
+     * @throws BadCredentialsException if authentication fails.
      */
     public void authenticate(LoginUserRequest input) {
         logger.info("Attempting authentication for email: {}", input.email());
-
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(input.email(), input.password())
             );
-        } catch (BadCredentialsException e) {
-            logger.warn("Invalid credentials for email: {}", input.email());
-            throw e;
         } catch (AuthenticationException e) {
             logger.warn("Authentication failed for email: {}", input.email());
-            throw new BadCredentialsException("Invalid credentials provided");
+            if (e instanceof BadCredentialsException) {
+                throw e;
+            }
+            throw new BadCredentialsException("Invalid credentials provided", e);
         }
     }
 
@@ -61,22 +61,26 @@ public class AuthenticationService {
      * @return The saved user entity.
      * @throws DuplicateKeyException if a user with the given email already exists.
      */
+    @Transactional
     public User signup(RegisterUserRequest input) {
         if (userRepository.existsByEmail(input.email())) {
             throw new DuplicateKeyException("User with email " + input.email() + " already exists.");
         }
 
         Instant now = Instant.now();
+        Date nowDate = Date.from(now);
 
         User user = new User();
         user.setFullName(input.fullName());
         user.setEmail(input.email());
         user.setPassword(passwordEncoder.encode(input.password()));
         user.setRole(Role.USER);
-        user.setCreatedAt(Date.from(now));
-        user.setUpdatedAt(Date.from(now));
+        user.setCreatedAt(nowDate);
+        user.setUpdatedAt(nowDate);
         user.setLastLogin(now);
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        logger.info("User registered with email: {}", input.email());
+        return savedUser;
     }
 }

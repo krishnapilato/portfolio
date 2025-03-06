@@ -1,5 +1,6 @@
 package com.personal.portfolio.service;
 
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Future;
@@ -17,6 +18,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -35,12 +37,10 @@ public class EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
     private static final Pattern EMAIL_REGEX = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom(); // Reused instance
 
     private final JavaMailSender javaMailSender;
-    // Thread-safe storage for email statuses.
     private final Map<String, String> emailStatusMap = new ConcurrentHashMap<>();
-
-    // Shared scheduler for all email scheduling tasks.
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 
     public EmailService(JavaMailSender javaMailSender) {
@@ -48,8 +48,7 @@ public class EmailService {
     }
 
     /**
-     * Sanitizes the input string by canonicalizing and encoding for HTML output.
-     * Uses OWASP ESAPI to help prevent XSS attacks by normalizing and encoding the data.
+     * Sanitizes the input string by removing dangerous characters and escaping HTML.
      *
      * @param input the raw input string.
      * @return a sanitized string safe for HTML contexts.
@@ -59,15 +58,14 @@ public class EmailService {
         if (StringUtils.isBlank(input)) {
             throw new IllegalArgumentException("Input cannot be null or empty.");
         }
-        // Remove characters that are often used in attacks.
+        // Remove potentially dangerous characters and escape HTML.
         String sanitized = input.replaceAll("[<>\"'%;()&+]", "").trim();
-        // Escape the sanitized string for HTML to mitigate XSS.
         return StringEscapeUtils.escapeHtml4(sanitized);
     }
 
     /**
-     * Sends an email with the given parameters. Supports plain text and HTML.
-     * Sanitizes subject and body before sending.
+     * Sends an email with the given parameters.
+     * Supports plain text and HTML emails.
      *
      * @param recipient recipient email address.
      * @param subject   email subject.
@@ -118,7 +116,7 @@ public class EmailService {
     }
 
     /**
-     * Helper method to set optional recipients on a MimeMessageHelper.
+     * Helper to set optional recipients on a MimeMessageHelper.
      */
     private void setOptionalRecipients(MimeMessageHelper helper, List<String> cc, List<String> bcc, String replyTo) throws Exception {
         if (cc != null && !cc.isEmpty()) {
@@ -133,7 +131,7 @@ public class EmailService {
     }
 
     /**
-     * Helper method to set optional recipients on a SimpleMailMessage.
+     * Helper to set optional recipients on a SimpleMailMessage.
      */
     private void setOptionalRecipients(SimpleMailMessage message, List<String> cc, List<String> bcc, String replyTo) {
         if (cc != null && !cc.isEmpty()) {
@@ -148,7 +146,7 @@ public class EmailService {
     }
 
     /**
-     * Sends a password reset email to the specified recipient.
+     * Sends a password reset email.
      *
      * @param recipient recipient email.
      * @param token     password reset token.
@@ -160,7 +158,7 @@ public class EmailService {
     }
 
     /**
-     * Resends the email confirmation to the specified recipient.
+     * Resends the email confirmation.
      *
      * @param recipient recipient email.
      */
@@ -172,7 +170,7 @@ public class EmailService {
     }
 
     /**
-     * Sends bulk emails in parallel. Only processes valid email addresses.
+     * Sends bulk emails in parallel.
      *
      * @param recipients list of recipient emails.
      * @param subject    email subject.
@@ -182,9 +180,6 @@ public class EmailService {
             @NotEmpty List<@NotBlank @Email String> recipients,
             @NotBlank String subject,
             @NotBlank String body) {
-        if (recipients == null || recipients.isEmpty()) {
-            throw new IllegalArgumentException("Recipient list cannot be empty.");
-        }
         String sanitizedSubject = sanitizeInput(subject);
         String sanitizedBody = sanitizeInput(body);
 
@@ -196,7 +191,7 @@ public class EmailService {
     }
 
     /**
-     * Returns the current status of an email by its unique identifier.
+     * Retrieves the status of an email by its unique identifier.
      *
      * @param emailId unique email identifier.
      * @return email status string.
@@ -222,12 +217,12 @@ public class EmailService {
      */
     public String generatePasswordResetToken() {
         byte[] randomBytes = new byte[32];
-        new java.security.SecureRandom().nextBytes(randomBytes);
+        SECURE_RANDOM.nextBytes(randomBytes);
         return Base64.getUrlEncoder().encodeToString(randomBytes);
     }
 
     /**
-     * Validates the email and throws an exception if it is invalid.
+     * Validates the email and throws an exception if invalid.
      *
      * @param email email address.
      */
@@ -247,7 +242,7 @@ public class EmailService {
      * @param cc          optional CC addresses.
      * @param bcc         optional BCC addresses.
      * @param replyTo     optional reply-to address.
-     * @param isHtml      flag to indicate HTML content.
+     * @param isHtml      flag indicating HTML content.
      * @param attachments map of filename to file byte content.
      */
     public void sendEmailWithAttachment(
@@ -266,8 +261,6 @@ public class EmailService {
 
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-
-            // Enable multipart mode for attachments.
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setTo(recipient);
             helper.setSubject(sanitizedSubject);
@@ -275,9 +268,14 @@ public class EmailService {
             setOptionalRecipients(helper, cc, bcc, replyTo);
 
             if (attachments != null && !attachments.isEmpty()) {
-                for (Map.Entry<String, byte[]> entry : attachments.entrySet()) {
-                    helper.addAttachment(entry.getKey(), new ByteArrayResource(entry.getValue()));
-                }
+                attachments.forEach((fileName, fileContent) ->
+                {
+                    try {
+                        helper.addAttachment(fileName, new ByteArrayResource(fileContent));
+                    } catch (MessagingException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
             javaMailSender.send(mimeMessage);
             emailStatusMap.put(emailId, "SENT");
@@ -291,8 +289,6 @@ public class EmailService {
 
     /**
      * Schedules an email to be sent at a specified time.
-     * The task wakes up 10 seconds before the target time to wait for any remaining delay,
-     * ensuring the email is sent as close as possible to the desired time.
      *
      * @param recipient recipient email.
      * @param subject   email subject.
@@ -313,27 +309,11 @@ public class EmailService {
             boolean isHtml,
             @NotNull @Future Date sendTime) {
 
-        long currentTime = System.currentTimeMillis();
-        long sendTimeMillis = sendTime.getTime();
-        long totalDelay = sendTimeMillis - currentTime;
-
-        // Wake up 10 seconds before send time, if possible.
-        long wakeUpDelay = Math.max(totalDelay - 10000, 0);
-
+        long delay = sendTime.getTime() - System.currentTimeMillis();
+        // Schedule the email to be sent directly after the calculated delay.
         scheduler.schedule(() -> {
-            long remainingDelay = sendTimeMillis - System.currentTimeMillis();
-            if (remainingDelay > 0) {
-                try {
-                    // Sleep for any remaining time to precisely match sendTime.
-                    Thread.sleep(remainingDelay);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    logger.error("Email scheduling interrupted for recipient: {}", recipient);
-                    return;
-                }
-            }
             sendEmail(recipient, subject, body, cc, bcc, replyTo, isHtml);
             logger.info("Scheduled email sent to {} at {}", recipient, sendTime);
-        }, wakeUpDelay, TimeUnit.MILLISECONDS);
+        }, Math.max(delay, 0), TimeUnit.MILLISECONDS);
     }
 }

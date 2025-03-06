@@ -42,53 +42,36 @@ public class AuthenticationController {
     @Operation(summary = "User Login", description = "Authenticate a user and generate a JWT token.")
     public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserRequest loginUserDto) {
         try {
-            // Load user once to avoid multiple DB queries
-            User user = (User) userService.loadUserByUsername(loginUserDto.email());
-
-            // Check if the user account is locked early
+            final User user = (User) userService.loadUserByUsername(loginUserDto.email());
             if (user.isLocked()) {
                 logger.warn("Authentication failed: Locked account for {}", loginUserDto.email());
-                return ResponseEntity
-                        .status(HttpStatus.FORBIDDEN)
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(LoginResponse.error("ACCOUNT_LOCKED", "This account is locked. Please contact support."));
             }
 
-            // Authenticate user credentials
             authenticationService.authenticate(loginUserDto);
+            final String jwtToken = jwtService.generateToken(user);
+            final long expirationMillis = jwtService.extractExpiration(jwtToken)
+                    .toInstant()
+                    .toEpochMilli();
 
-            // Generate JWT token
-            String jwtToken = jwtService.generateToken(user);
-            long expirationMillis = jwtService.extractExpiration(jwtToken).toInstant().toEpochMilli();
-
-            // Return success response
             return ResponseEntity.ok(LoginResponse.success(jwtToken, expirationMillis, user.getRole()));
 
         } catch (BadCredentialsException e) {
-            // Handle invalid credentials without logging sensitive details
             logger.warn("Login attempt failed for {} due to invalid credentials.", loginUserDto.email());
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(LoginResponse.error("INVALID_CREDENTIALS", "Invalid email or password."));
-
         } catch (DisabledException e) {
-            // Handle disabled accounts separately
             logger.warn("Login attempt failed for {} due to disabled account.", loginUserDto.email());
-            return ResponseEntity
-                    .status(HttpStatus.FORBIDDEN)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(LoginResponse.error("ACCOUNT_DISABLED", "Your account is disabled. Contact support."));
-
         } catch (LockedException e) {
-            // Handle explicitly locked accounts
             logger.warn("Login attempt failed for {} due to locked account.", loginUserDto.email());
-            return ResponseEntity
-                    .status(HttpStatus.FORBIDDEN)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(LoginResponse.error("ACCOUNT_LOCKED", "This account is locked. Please contact support."));
-
         } catch (Exception e) {
-            // Handle unexpected errors securely
             logger.error("Unexpected error during authentication for {}", loginUserDto.email(), e);
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(LoginResponse.error("SERVER_ERROR", "An unexpected error occurred. Please try again later."));
         }
     }
@@ -97,40 +80,24 @@ public class AuthenticationController {
     @Operation(summary = "User Registration", description = "Register a new user.")
     public ResponseEntity<RegistrationResponse> signup(@Valid @RequestBody RegisterUserRequest registerUserDto) {
         try {
-            // Attempt to register the user
-            User registeredUser = authenticationService.signup(registerUserDto);
-
-            // Return a success response
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
+            final User registeredUser = authenticationService.signup(registerUserDto);
+            return ResponseEntity.status(HttpStatus.CREATED)
                     .body(RegistrationResponse.success(registeredUser.getId(), Role.USER));
-
         } catch (DataIntegrityViolationException ex) {
-            // Handle duplicate email exception efficiently
             logger.warn("Registration failed: Email already in use - {}", registerUserDto.email());
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
+            return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(RegistrationResponse.error("EMAIL_ALREADY_TAKEN"));
-
         } catch (ConstraintViolationException ex) {
-            // Handle validation constraint violations (e.g., invalid password, missing fields)
             logger.warn("Invalid user registration data: {}", ex.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(RegistrationResponse.error("INVALID_INPUT"));
-
         } catch (IllegalArgumentException ex) {
-            // Handle any logical validation issues thrown manually
             logger.warn("Invalid registration attempt: {}", ex.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(RegistrationResponse.error(ex.getMessage()));
-
         } catch (Exception ex) {
-            // Log unexpected errors while hiding sensitive details from users
             logger.error("Unexpected error during user registration", ex);
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(RegistrationResponse.error("INTERNAL_SERVER_ERROR"));
         }
     }

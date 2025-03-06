@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Represents a user entity for the application, including authentication and
@@ -37,6 +38,9 @@ import java.util.*;
 @AllArgsConstructor
 @ToString
 public class User implements UserDetails {
+
+    // Precompiled pattern for BCrypt hash verification.
+    private static final Pattern BCRYPT_PATTERN = Pattern.compile("^(\\$2[aby]\\$\\d{2}\\$).{53}$");
 
     private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
@@ -124,7 +128,7 @@ public class User implements UserDetails {
     @PrePersist
     @PreUpdate
     private void hashPassword() {
-        if (password != null && !password.matches("^(\\$2[aby]\\$\\d{2}\\$).{53}$")) {
+        if (password != null && !BCRYPT_PATTERN.matcher(password).matches()) {
             this.password = PASSWORD_ENCODER.encode(password);
         }
     }

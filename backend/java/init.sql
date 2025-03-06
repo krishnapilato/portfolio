@@ -1,2 +1,2 @@
-CREATE DATABASE IF NOT EXISTS 'database';
-USE database;
+CREATE DATABASE IF NOT EXISTS `database`;
+USE `database`;

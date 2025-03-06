@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class ApplicationConfiguration {
 
-    @Value("${bcrypt.strength:15}")
+    @Value("${bcrypt.strength:12}")
     private int bcryptStrength;
 
     /**

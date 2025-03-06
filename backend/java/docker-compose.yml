@@ -13,7 +13,7 @@ services:
       - maven_cache:/root/.m2
 
   mysql:
-    image: mysql:latest
+    image: mysql:9.2.0
     container_name: mysql
     ports:
       - "3306:3306"

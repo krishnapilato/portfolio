@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Configures Swagger and OpenAPI documentation.
@@ -26,7 +25,8 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(apiInfo())
                 .servers(List.of(
-                        new Server().url("http://localhost:8080").description("Local Development Server"),
+                        new Server().url("http://localhost:8080")
+                                .description("Local Development Server"),
                         new Server().url("https://prismnexus-backend.eu-south-1.elasticbeanstalk.com")
                                 .description("Production Server (Accessible only via AWS Client VPN)")
                 ))
@@ -57,13 +57,19 @@ public class SwaggerConfig {
 
     @Bean
     public List<GroupedOpenApi> groupedApis() {
-        return Stream.of(
-                        new String[][]{
-                                {"Authentication", "/auth/**"},
-                                {"User", "/api/users/**"},
-                                {"Email", "/api/email/**"}
-                        })
-                .map(group -> GroupedOpenApi.builder().group(group[0]).pathsToMatch(group[1]).build())
-                .toList();
+        return List.of(
+                GroupedOpenApi.builder()
+                        .group("Authentication")
+                        .pathsToMatch("/auth/**")
+                        .build(),
+                GroupedOpenApi.builder()
+                        .group("User")
+                        .pathsToMatch("/api/users/**")
+                        .build(),
+                GroupedOpenApi.builder()
+                        .group("Email")
+                        .pathsToMatch("/api/email/**")
+                        .build()
+        );
     }
 }

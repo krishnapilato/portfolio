@@ -29,33 +29,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private static final String[] PUBLIC_ENDPOINT_PREFIXES = { "/auth/", "/api/email/" };
+    private static final String TOKEN_PREFIX = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String requestURI = request.getRequestURI();
+        final String requestURI = request.getRequestURI();
 
-        // Skip authentication for public endpoints
-        if (isPublicEndpoint(requestURI) || SecurityContextHolder.getContext().getAuthentication() != null) {
-            filterChain.doFilter(request, response);
-            return;
+        // Only attempt authentication if the endpoint is not public and authentication is not already set.
+        if (!isPublicEndpoint(requestURI) && SecurityContextHolder.getContext().getAuthentication() == null) {
+            extractJwtToken(request).ifPresent(token -> authenticateUser(token, request));
         }
-
-        // Extract and validate JWT token
-        extractJwtToken(request).ifPresent(jwtToken -> authenticateUser(jwtToken, request));
 
         filterChain.doFilter(request, response);
     }
 
     private boolean isPublicEndpoint(String requestURI) {
-        return Arrays.stream(PUBLIC_ENDPOINT_PREFIXES).anyMatch(requestURI::startsWith);
+        return Arrays.stream(PUBLIC_ENDPOINT_PREFIXES)
+                .anyMatch(requestURI::startsWith);
     }
 
     private Optional<String> extractJwtToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
-                .filter(header -> header.startsWith("Bearer "))
-                .map(header -> header.substring(7));
+                .filter(header -> header.startsWith(TOKEN_PREFIX))
+                .map(header -> header.substring(TOKEN_PREFIX.length()));
     }
 
     private void authenticateUser(String jwtToken, HttpServletRequest request) {
@@ -63,10 +61,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
         if (jwtService.isTokenValid(jwtToken, userDetails) && userDetails.isEnabled()) {
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
     }
