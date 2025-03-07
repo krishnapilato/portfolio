@@ -1,40 +1,50 @@
-<style>
-  :host {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol";
-    box-sizing: border-box;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f3f4f6;
-    color: #1f2937;
-  }
+<main class="relative flex flex-col items-center justify-center min-h-screen px-6 
+         bg-gray-100 dark:bg-gradient-to-br dark:from-[#1e1e2e] dark:via-[#28293d] dark:to-[#3b3d56] 
+         text-center overflow-hidden transition-all duration-500">
 
-  .wip-container {
-    max-width: 600px;
-    padding: 2rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-  }
 
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-  }
+    <div
+        data-aos="fade-down"
+        class="absolute w-40 h-40 bg-blue-400 dark:bg-blue-500 opacity-20 rounded-full blur-3xl animate-float top-20 left-10"
+    ></div>
+    <div
+        data-aos="fade-left"
+        data-aos-delay="200"
+        class="absolute w-28 h-28 bg-purple-400 dark:bg-purple-600 opacity-20 rounded-full blur-3xl animate-float-reverse top-1/2 right-10"
+    ></div>
+    <div
+        data-aos="fade-up"
+        data-aos-delay="400"
+        class="absolute w-32 h-32 bg-pink-400 dark:bg-pink-500 opacity-20 rounded-full blur-3xl animate-float bottom-20 left-1/3"
+    ></div>
 
-  p {
-    font-size: 1.2rem;
-    color: #4b5563;
-  }
-</style>
 
-<main class="wip-container">
-  <h1>🚧 Work in Progress 🚧</h1>
-  <p>I am working hard to bring you something amazing. Stay tuned!</p>
+    <div
+        data-aos="zoom-in"
+        data-aos-duration="1000"
+        class="relative max-w-lg p-8 bg-white/80 dark:bg-white/5 backdrop-blur-lg rounded-2xl shadow-2xl 
+           transition-all duration-500 border border-white/20 dark:border-white/10"
+    >
+
+
+        <h1
+            data-aos="fade-up"
+            data-aos-delay="600"
+            class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-gray-200 mb-4"
+        >
+            Coming Soon
+        </h1>
+
+
+        <p
+            data-aos="fade-up"
+            data-aos-delay="800"
+            class="text-lg md:text-xl text-gray-700 dark:text-gray-300 opacity-90"
+        >
+            A brand new experience is on the way. Stay tuned!
+        </p>
+    </div>
 </main>
+
 
 <router-outlet></router-outlet>
