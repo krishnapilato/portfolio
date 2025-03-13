@@ -34,7 +34,10 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/particles.js/particles.js"
+            ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {

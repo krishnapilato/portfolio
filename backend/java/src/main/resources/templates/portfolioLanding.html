@@ -2,24 +2,66 @@
 <html lang="en">
 
 <head>
-    <title>PrismNexus - Backend</title>
+    <title>Backend Services</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+
+    <!-- jQuery for smooth animations -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Particles.js for background animation -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+        /* Smooth fade-in effect */
+        body {
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+        }
+
+        /* Styling for particle background */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            z-index: -1;
+        }
+
+        /* Animation for hover scaling */
+        .hover-animate {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+        }
+
+        .hover-animate:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 0px 15px rgba(255, 0, 0, 0.5);
+        }
+    </style>
 </head>
 
 <body oncontextmenu="return false;" class="bg-gray-900 text-white font-sans select-none">
-<div class="min-h-screen flex flex-col items-center justify-center p-4">
-    <div class="w-full max-w-5xl p-6 md:p-10 bg-gray-800 rounded-lg shadow-lg text-center">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-red-400 mb-4">Backend is running.</h1>
-        <p class="text-lg md:text-xl text-gray-300 mb-6">Welcome to PrismNexus backend. Everything is optimized and operational.</p>
 
+<!-- Particles Background -->
+<div id="particles-js"></div>
+
+<div class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-5xl p-6 md:p-10 bg-gray-800 bg-opacity-90 rounded-lg shadow-lg text-center">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-red-400 mb-4">Backend is Running</h1>
+        <p class="text-lg md:text-xl text-gray-300 mb-6">Welcome to my backend. Everything is optimized and operational.</p>
+
+        <!-- Cards with Hover Effects -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mt-6">
-            <a href="/swagger-ui/index.html" class="flex flex-col items-center p-5 bg-red-600 hover:bg-red-700 rounded-lg shadow-md transition transform hover:scale-105 w-full">
-                <i class="fa-brands fa-java text-3xl md:text-4xl mb-2"></i>
+            <a href="/swagger-ui/index.html" class="hover-animate flex flex-col items-center p-5 bg-red-600 hover:bg-red-700 rounded-lg shadow-md transition w-full">
+                <i class="fa-solid fa-server text-3xl md:text-4xl mb-2"></i>
                 <h2 class="text-xl md:text-2xl font-semibold">Swagger UI</h2>
                 <p class="text-gray-200 text-sm md:text-base mt-1">Explore API Documentation</p>
             </a>
-            <a href="https://krishnapilato.github.io/kodek" target="_blank" class="flex flex-col items-center p-5 bg-gray-700 hover:bg-gray-600 rounded-lg shadow-md transition transform hover:scale-105 w-full">
+            <a href="https://krishnapilato.github.io/kodek" target="_blank" class="hover-animate flex flex-col items-center p-5 bg-gray-700 hover:bg-gray-600 rounded-lg shadow-md transition w-full">
                 <i class="fa-brands fa-angular text-3xl md:text-4xl mb-2"></i>
                 <h2 class="text-xl md:text-2xl font-semibold">Frontend</h2>
                 <p class="text-gray-200 text-sm md:text-base mt-1">Visit the frontend application</p>
@@ -28,9 +70,35 @@
     </div>
 
     <footer class="mt-8 md:mt-12 text-gray-500 text-center text-sm md:text-base">
-        <p>&copy; 2025 <span class="text-red-400">PrismNexus</span>. Built with <a href="https://tailwindcss.com" target="_blank" class="text-red-400 hover:underline">TailwindCSS</a>.</p>
+        <p>&copy; 2025 <span class="text-red-400">Khova Krishna Pilato</span>. Built with <a href="https://tailwindcss.com" target="_blank" class="text-red-400 hover:underline">TailwindCSS</a>.</p>
     </footer>
 </div>
-</body>
 
+<!-- Initialize Particles.js -->
+<script>
+    particlesJS("particles-js", {
+        "particles": {
+            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#ff0000" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.7, "random": false },
+            "size": { "value": 4, "random": true },
+            "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
+            "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } },
+            "modes": { "repulse": { "distance": 100 }, "push": { "particles_nb": 4 } }
+        },
+        "retina_detect": true
+    });
+
+    // Smooth fade-in effect
+    $(document).ready(function() {
+        $("body").css("opacity", "1");
+    });
+</script>
+
+</body>
 </html>
