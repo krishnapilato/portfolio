@@ -1,8 +1,8 @@
 # Welcome to my portfolio
 
 ![Java Version](https://badgen.net/badge/Java/23/blue?icon=java)
-![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.4.3-brightgreen?style=flat&logo=spring-boot)
-![Angular Version](https://img.shields.io/badge/Angular-19.1.7-red?style=flat&logo=angular)
+![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.5.0-brightgreen?style=flat&logo=spring-boot)
+![Angular Version](https://img.shields.io/badge/Angular-19.2.2-red?style=flat&logo=angular)
 ![MySQL](https://img.shields.io/badge/MySQL-9.2.0-blue?style=flat&logo=mysql)
 ![Version](https://img.shields.io/badge/Version-0.8.5-blue?style=flat)
 [![GitHub Actions](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
