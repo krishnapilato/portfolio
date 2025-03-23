@@ -1,17 +1,46 @@
-[34mINFO [0;39m [[36m2025-03-21 16:46:27[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.2 with PID 734124 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
-[34mINFO [0;39m [[36m2025-03-21 16:46:27[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
-[34mINFO [0;39m [[36m2025-03-21 16:46:29[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
-[34mINFO [0;39m [[36m2025-03-21 16:46:32[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
-[34mINFO [0;39m [[36m2025-03-21 16:46:32[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 5.136 seconds (process running for 5.435)
-[34mINFO [0;39m [[36m2025-03-21 16:46:32[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Backend is running! Open: http://localhost:8080
-[34mINFO [0;39m [[36m2025-03-21 16:46:32[0;39m] [[33mForkJoinPool.commonPool-worker-1[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user already exists. Skipping creation.
-[34mINFO [0;39m [[36m2025-03-21 16:46:44[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 186 ms
-[34mINFO [0;39m [[36m2025-03-21 16:50:05[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.2 with PID 735648 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
-[34mINFO [0;39m [[36m2025-03-21 16:50:05[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
-[34mINFO [0;39m [[36m2025-03-21 16:50:06[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
-[34mINFO [0;39m [[36m2025-03-21 16:50:10[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
-[34mINFO [0;39m [[36m2025-03-21 16:50:10[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 5.303 seconds (process running for 5.583)
-[34mINFO [0;39m [[36m2025-03-21 16:50:10[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Backend is running! Open: http://localhost:8080
-[34mINFO [0;39m [[36m2025-03-21 16:50:10[0;39m] [[33mForkJoinPool.commonPool-worker-1[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user already exists. Skipping creation.
-[34mINFO [0;39m [[36m2025-03-21 16:50:31[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 146 ms
-[34mINFO [0;39m [[36m2025-03-21 16:52:39[0;39m] [[33mhttp-nio-8080-exec-6[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-03-23 18:11:45[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.2 with PID 768712 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-03-23 18:11:45[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
+[34mINFO [0;39m [[36m2025-03-23 18:11:46[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-03-23 18:11:49[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-03-23 18:11:49[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 5.247 seconds (process running for 5.535)
+[34mINFO [0;39m [[36m2025-03-23 18:11:49[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Backend is running! Open: http://localhost:8080
+[34mINFO [0;39m [[36m2025-03-23 18:11:49[0;39m] [[33mForkJoinPool.commonPool-worker-1[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user already exists. Skipping creation.
+[34mINFO [0;39m [[36m2025-03-23 18:12:05[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 141 ms
+[34mINFO [0;39m [[36m2025-03-23 18:12:34[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-03-23 18:14:02[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.2 with PID 773008 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-03-23 18:14:02[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
+[34mINFO [0;39m [[36m2025-03-23 18:14:04[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-03-23 18:14:07[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-03-23 18:14:07[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 4.903 seconds (process running for 5.174)
+[34mINFO [0;39m [[36m2025-03-23 18:14:07[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Backend is running! Open: http://localhost:8080
+[34mINFO [0;39m [[36m2025-03-23 18:14:07[0;39m] [[33mForkJoinPool.commonPool-worker-1[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user already exists. Skipping creation.
+[34mINFO [0;39m [[36m2025-03-23 18:14:11[0;39m] [[33mhttp-nio-8080-exec-10[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 144 ms
+[34mINFO [0;39m [[36m2025-03-23 18:14:29[0;39m] [[33mhttp-nio-8080-exec-1[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-03-23 18:16:34[0;39m] [[33mhttp-nio-8080-exec-6[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-03-23 18:16:40[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.2 with PID 783016 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-03-23 18:16:40[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
+[34mINFO [0;39m [[36m2025-03-23 18:16:41[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-03-23 18:16:45[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-03-23 18:16:45[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 5.018 seconds (process running for 5.282)
+[34mINFO [0;39m [[36m2025-03-23 18:16:45[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Backend is running! Open: http://localhost:8080
+[34mINFO [0;39m [[36m2025-03-23 18:16:45[0;39m] [[33mForkJoinPool.commonPool-worker-1[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user already exists. Skipping creation.
+[34mINFO [0;39m [[36m2025-03-23 18:17:37[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 23.0.2 with PID 784264 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-03-23 18:17:37[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
+[34mINFO [0;39m [[36m2025-03-23 18:17:39[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-03-23 18:17:42[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-03-23 18:17:42[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 5.078 seconds (process running for 5.344)
+[34mINFO [0;39m [[36m2025-03-23 18:17:42[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Backend is running! Open: http://localhost:8080
+[34mINFO [0;39m [[36m2025-03-23 18:17:42[0;39m] [[33mForkJoinPool.commonPool-worker-1[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user already exists. Skipping creation.
+[34mINFO [0;39m [[36m2025-03-23 18:20:52[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 24 with PID 778272 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-03-23 18:20:52[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
+[34mINFO [0;39m [[36m2025-03-23 18:20:53[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-03-23 18:20:56[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-03-23 18:20:56[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 5.002 seconds (process running for 7.025)
+[34mINFO [0;39m [[36m2025-03-23 18:20:56[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Backend is running! Open: http://localhost:8080
+[34mINFO [0;39m [[36m2025-03-23 18:20:56[0;39m] [[33mForkJoinPool.commonPool-worker-1[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user already exists. Skipping creation.
+[34mINFO [0;39m [[36m2025-03-23 18:21:10[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-03-23 18:21:13[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-03-23 18:21:14[0;39m] [[33mhttp-nio-8080-exec-5[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-03-23 18:21:15[0;39m] [[33mhttp-nio-8080-exec-6[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-03-23 18:21:27[0;39m] [[33mhttp-nio-8080-exec-7[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 233 ms
+[34mINFO [0;39m [[36m2025-03-23 18:21:42[0;39m] [[33mhttp-nio-8080-exec-8[0;39m] [32mc.p.p.controller.UserController[0;39m - Retrieved 1 users from the database.
