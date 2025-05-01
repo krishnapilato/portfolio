@@ -40,7 +40,7 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("PrismNexus Backend API")
+                .title("Backend API")
                 .version("v0.8.5")
                 .description("""
                         The PrismNexus Backend provides secure authentication,
@@ -48,7 +48,7 @@ public class SwaggerConfig {
                         """)
                 .contact(new Contact()
                         .name("Khova Krishna Pilato")
-                        .url("https://krishnapilato.github.io/kodek")
+                        .url("https://krishnapilato.github.io/portfolio")
                         .email("krishnak.pilato@gmail.com"))
                 .license(new License()
                         .name("MIT License")

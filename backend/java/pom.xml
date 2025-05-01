@@ -43,7 +43,7 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
-            <version>9.2.0</version>
+            <version>9.3.0</version>
         </dependency>
 
         <!-- Security & Authentication -->
@@ -88,6 +88,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.38</version>
             <scope>provided</scope>
         </dependency>
 
