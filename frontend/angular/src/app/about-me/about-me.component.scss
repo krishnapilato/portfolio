@@ -1,0 +1,254 @@
+/* About Me Section */
+.about-section {
+    position: relative;
+    padding: 6rem 2rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+    overflow: hidden;
+}
+
+.tech-grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+}
+
+.floating-dots {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(255, 77, 77, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: 1;
+    animation: float 15s infinite ease-in-out;
+}
+
+.about-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 3rem;
+    z-index: 2;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Profile Card */
+.profile-card {
+    background: rgba(15, 23, 42, 0.7);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+
+    @media (max-width: 900px) {
+        position: relative;
+        top: auto;
+    }
+}
+
+.profile-image-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 1.5rem;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.image-border-effect {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #FF4D4D;
+    border-right-color: #F9CB28;
+    animation: spin 8s linear infinite;
+    z-index: -1;
+}
+
+.profile-info {
+    text-align: center;
+}
+
+.profile-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #FF4D4D, #F9CB28);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.profile-title {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    margin-bottom: 1.5rem;
+}
+
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+    margin-top: 1.5rem;
+}
+
+.tech-tag {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    color: #e2e8f0;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: rgba(255, 77, 77, 0.2);
+        border-color: rgba(255, 77, 77, 0.5);
+    }
+}
+
+/* Career Timeline */
+.career-timeline {
+    background: rgba(15, 23, 42, 0.7);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #FF4D4D, #F9CB28);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    margin-bottom: 2.5rem;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 2.5rem;
+    display: flex;
+
+    &:last-child {
+        padding-bottom: 0;
+
+        .marker-line {
+            display: none;
+        }
+    }
+}
+
+.timeline-marker {
+    position: relative;
+    width: 24px;
+    margin-right: 1.5rem;
+}
+
+.marker-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FF4D4D, #F9CB28);
+    border: 3px solid #0f172a;
+    box-shadow: 0 0 0 2px rgba(255, 77, 77, 0.5);
+    z-index: 2;
+    position: relative;
+}
+
+.marker-line {
+    position: absolute;
+    left: 7px;
+    top: 16px;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, #FF4D4D, #F9CB28);
+}
+
+.timeline-content {
+    flex: 1;
+}
+
+.timeline-year {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #FF4D4D;
+    margin-bottom: 0.3rem;
+}
+
+.timeline-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: white;
+}
+
+.timeline-description {
+    color: #94a3b8;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Animations */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}

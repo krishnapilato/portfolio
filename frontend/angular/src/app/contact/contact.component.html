@@ -1,0 +1,100 @@
+<section id="contact">
+    <div class="contact-container">
+        <!-- 3D Interactive Map -->
+        <div class="map-3d-container">
+            <div class="map-3d" id="map-3d"></div>
+            <div class="location-pin">
+                <div class="pin-pulse"></div>
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="map-overlay"></div>
+        </div>
+
+        <!-- Contact Form with Floating Elements -->
+        <div class="contact-form-container">
+            <div class="form-header">
+                <h2 class="section-title">
+                    <span class="title-word">Let's create together</span>
+                </h2>
+                <p class="section-subtitle">Drop me a message or connect via socials</p>
+            </div>
+
+            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+                <div class="form-group floating-label">
+                    <input id="name" type="text" formControlName="name" required>
+                    <label for="name">Your Name</label>
+                    <div class="underline"></div>
+                </div>
+
+                <div class="form-group floating-label">
+                    <input id="email" type="email" formControlName="email" required>
+                    <label for="email">Email Address</label>
+                    <div class="underline"></div>
+                </div>
+
+                <div class="form-group floating-label">
+                    <textarea id="message" formControlName="message" required></textarea>
+                    <label for="message">Your Message</label>
+                    <div class="underline"></div>
+                </div>
+
+                <button type="submit" class="submit-btn" [disabled]="contactForm.invalid || isSending">
+                    <ng-container *ngIf="!isSending && !submitMessage">
+                        <span class="btn-text">Send Message</span>
+                        <span class="btn-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                    </ng-container>
+
+                    <ng-container *ngIf="isSending">
+                        <span class="btn-text">Sending...</span>
+                        <span class="btn-icon">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </span>
+                    </ng-container>
+
+                    <ng-container *ngIf="!isSending && submitMessage">
+                        <span class="btn-text">
+                            {{ submitMessage }}
+                        </span>
+                    </ng-container>
+
+                    <span class="btn-hover-effect"></span>
+                </button>
+            </form>
+
+            <!-- Social Links with Hover Effects -->
+            <div class="social-links">
+                <a href="https://github.com/krishnapilato" target="_blank" class="social-icon" data-tooltip="GitHub">
+                    <i class="fab fa-github"></i>
+                    <span class="social-wave"></span>
+                </a>
+                <a href="https://www.linkedin.com/in/khovakrishnapilato" target="_blank" class="social-icon"
+                    data-tooltip="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                    <span class="social-wave"></span>
+                </a>
+                <a href="https://www.facebook.com/krishnapilato" target="_blank" class="social-icon"
+                    data-tooltip="Twitter">
+                    <i class="fab fa-facebook"></i>
+                    <span class="social-wave"></span>
+                </a>
+                <a href="https://www.instagram.com/khovakrishna.pilato" target="_blank" class="social-icon"
+                    data-tooltip="Instagram">
+                    <i class="fab fa-instagram"></i>
+                    <span class="social-wave"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="mt-12 text-center text-sm text-gray-500">
+    <p>
+        &copy; {{ currentYear }} <span class="text-primary-500 font-medium">Khova Krishna Pilato</span>.
+        Crafted with modern web technologies.
+    </p>
+    <p class="text-xs mt-1 text-gray-600">
+        Portfolio v0.8.5 – Last updated 17 May 2025, 3PM
+    </p>
+</footer>

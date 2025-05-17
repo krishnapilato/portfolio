@@ -88,20 +88,10 @@
                 linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
             background-size: 40px 40px;
         }
-
-        .blob {
-            filter: blur(60px);
-            opacity: 0.15;
-            position: absolute;
-            border-radius: 50%;
-            z-index: -1;
-        }
     </style>
 </head>
 
 <body class="grid-pattern select-none" oncontextmenu="return false;">
-<div class="blob bg-primary-500 w-64 h-64 top-20 left-20 animate-float"></div>
-<div class="blob bg-purple-500 w-80 h-80 bottom-20 right-20 animate-float" style="animation-delay: 2s;"></div>
 
 <div class="min-h-screen flex flex-col items-center justify-center p-4 relative z-10">
     <div class="glass-card w-full max-w-4xl p-8 rounded-2xl">
@@ -202,14 +192,6 @@
             opacity: 0,
             ease: "power3.out",
             stagger: 0.1
-        });
-
-        gsap.from(".blob", {
-            duration: 1.5,
-            scale: 0.5,
-            opacity: 0,
-            ease: "elastic.out(1, 0.5)",
-            stagger: 0.2
         });
     });
 </script>
