@@ -167,3 +167,10 @@
 [34mINFO [0;39m [[36m2025-05-17 13:33:02[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 4.89 seconds (process running for 5.195)
 [34mINFO [0;39m [[36m2025-05-17 13:33:02[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Backend is running! Open: http://localhost:8080
 [34mINFO [0;39m [[36m2025-05-17 13:33:02[0;39m] [[33mForkJoinPool.commonPool-worker-1[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user already exists. Skipping creation.
+[34mINFO [0;39m [[36m2025-05-17 16:46:41[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication using Java 24.0.1 with PID 63660 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-05-17 16:46:41[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
+[34mINFO [0;39m [[36m2025-05-17 16:46:42[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-05-17 16:46:45[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-05-17 16:46:45[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 4.759 seconds (process running for 5.059)
+[34mINFO [0;39m [[36m2025-05-17 16:46:45[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Backend is running! Open: http://localhost:8080
+[34mINFO [0;39m [[36m2025-05-17 16:46:45[0;39m] [[33mForkJoinPool.commonPool-worker-1[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user already exists. Skipping creation.

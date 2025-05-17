@@ -19,7 +19,7 @@ import { isPlatformBrowser } from '@angular/common';
         <li *ngFor="let item of navItems">
           <a
             (click)="scrollTo(item.id)"
-            class="block w-3 h-3 rounded-full cursor-pointer transition-colors
+            class="block w-2 h-2 rounded-full cursor-pointer transition-colors
                    hover:text-white hover:scale-125 relative group"
             [attr.aria-label]="item.name"
           >
