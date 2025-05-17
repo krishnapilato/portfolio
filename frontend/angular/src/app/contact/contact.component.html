@@ -1,7 +1,9 @@
-<section id="contact" class="mt-12">
-    <div class="contact-container">
+<section id="contact" class="mt-12" data-aos="fade-in">
+
+    <div class="contact-container" data-aos="fade-up" data-aos-delay="100">
+
         <!-- 3D Interactive Map -->
-        <div class="map-3d-container">
+        <div class="map-3d-container" data-aos="zoom-in" data-aos-delay="200">
             <div class="map-3d" id="map-3d"></div>
             <div class="location-pin">
                 <div class="pin-pulse"></div>
@@ -10,8 +12,9 @@
             <div class="map-overlay"></div>
         </div>
 
-        <!-- Contact Form with Floating Elements -->
-        <div class="contact-form-container">
+        <!-- Contact Form -->
+        <div class="contact-form-container" data-aos="fade-left" data-aos-delay="300">
+
             <div class="form-header">
                 <h2 class="section-title">
                     <span class="title-word">Let's create together</span>
@@ -20,81 +23,99 @@
             </div>
 
             <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
-                <div class="form-group floating-label">
+
+                <div class="form-group floating-label" data-aos="fade-up" data-aos-delay="400">
                     <input id="name" type="text" formControlName="name" required>
                     <label for="name">Your Name</label>
                     <div class="underline"></div>
                 </div>
 
-                <div class="form-group floating-label">
+                <div class="form-group floating-label" data-aos="fade-up" data-aos-delay="500">
                     <input id="email" type="email" formControlName="email" required>
                     <label for="email">Email Address</label>
                     <div class="underline"></div>
                 </div>
 
-                <div class="form-group floating-label">
+                <div class="form-group floating-label" data-aos="fade-up" data-aos-delay="600">
                     <textarea id="message" formControlName="message" required style="resize: none;"></textarea>
                     <label for="message">Your Message</label>
                     <div class="underline"></div>
                 </div>
 
-                <button type="submit" class="submit-btn" [disabled]="contactForm.invalid || isSending">
+                <button type="submit" class="submit-btn" [disabled]="contactForm.invalid || isSending"
+                    data-aos="fade-up" data-aos-delay="700">
                     <ng-container *ngIf="!isSending && !submitMessage">
                         <span class="btn-text">Send Message</span>
-                        <span class="btn-icon">
-                            <i class="fas fa-paper-plane"></i>
-                        </span>
+                        <span class="btn-icon"><i class="fas fa-paper-plane"></i></span>
                     </ng-container>
 
                     <ng-container *ngIf="isSending">
                         <span class="btn-text">Sending...</span>
-                        <span class="btn-icon">
-                            <i class="fas fa-spinner fa-spin"></i>
-                        </span>
+                        <span class="btn-icon"><i class="fas fa-spinner fa-spin"></i></span>
                     </ng-container>
 
                     <ng-container *ngIf="!isSending && submitMessage">
-                        <span class="btn-text">
-                            {{ submitMessage }}
-                        </span>
+                        <span class="btn-text">{{ submitMessage }}</span>
                     </ng-container>
 
                     <span class="btn-hover-effect"></span>
                 </button>
             </form>
 
-            <!-- Social Links with Hover Effects -->
-            <div class="social-links">
-                <a href="https://github.com/krishnapilato" target="_blank" class="social-icon" data-tooltip="GitHub">
+            <!-- Social Icons -->
+            <div class="social-links flex gap-4 mt-6" data-aos="fade-up" data-aos-delay="800">
+                <!-- GitHub -->
+                <a href="https://github.com/krishnapilato" target="_blank" class="social-icon relative group"
+                    aria-label="GitHub">
                     <i class="fab fa-github"></i>
                     <span class="social-wave"></span>
+                    <span
+                        class="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none z-10 whitespace-nowrap">
+                        GitHub
+                    </span>
                 </a>
-                <a href="https://www.linkedin.com/in/khovakrishnapilato" target="_blank" class="social-icon"
-                    data-tooltip="LinkedIn">
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/in/khovakrishnapilato" target="_blank"
+                    class="social-icon relative group" aria-label="LinkedIn">
                     <i class="fab fa-linkedin-in"></i>
                     <span class="social-wave"></span>
+                    <span
+                        class="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none z-10 whitespace-nowrap">
+                        LinkedIn
+                    </span>
                 </a>
-                <a href="https://www.facebook.com/krishnapilato" target="_blank" class="social-icon"
-                    data-tooltip="Twitter">
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/krishnapilato" target="_blank" class="social-icon relative group"
+                    aria-label="Facebook">
                     <i class="fab fa-facebook"></i>
                     <span class="social-wave"></span>
+                    <span
+                        class="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none z-10 whitespace-nowrap">
+                        Facebook
+                    </span>
                 </a>
-                <a href="https://www.instagram.com/khovakrishna.pilato" target="_blank" class="social-icon"
-                    data-tooltip="Instagram">
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/khovakrishna.pilato" target="_blank"
+                    class="social-icon relative group" aria-label="Instagram">
                     <i class="fab fa-instagram"></i>
                     <span class="social-wave"></span>
+                    <span
+                        class="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none z-10 whitespace-nowrap">
+                        Instagram
+                    </span>
                 </a>
             </div>
         </div>
     </div>
 </section>
 
+<!-- Footer -->
 <footer class="mt-12 text-center text-sm text-gray-500">
     <p>
         &copy; {{ currentYear }} <span class="text-primary-500 font-medium">Khova Krishna Pilato</span>.
-        Crafted with modern web technologies.
+        Crafted with Angular & TailwindCSS.
     </p>
     <p class="text-xs mt-1 text-gray-600">
-        Portfolio v0.8.5 – Last updated 17 May 2025, 3PM
+        v0.8.5 – Last updated 17 May 2025, 3PM
     </p>
 </footer>
