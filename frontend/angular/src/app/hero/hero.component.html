@@ -1,53 +1,50 @@
 <section id="home" class="hero" data-aos="fade-in">
 
-    <!-- Hero Content Container -->
     <div class="hero-content" data-aos="zoom-in" data-aos-delay="100">
 
         <!-- Introduction -->
         <p class="hero-intro" data-aos="fade-up" data-aos-delay="300">
-            Hi, I’m Krishna 👋
+            {{ greeting }}
         </p>
 
         <!-- Role Title -->
         <div class="mt-12 relative inline-block" data-aos="fade-up" data-aos-delay="400">
             <h1 class="hero-title gradient-text">
-                Full Stack Developer
+                {{ title }}
             </h1>
 
             <div data-aos="fade-down" data-aos-delay="500"
                 class="absolute -top-2 right-0 bg-emerald-600 text-white text-xs px-3 py-1 rounded-full shadow-sm">
-                Available for Freelance
+                {{ availability }}
             </div>
         </div>
 
         <!-- Tech Focus Line -->
         <p class="hero-sub" data-aos="fade-up" data-aos-delay="500">
-            I engineer <strong>modern</strong> backend systems using <strong>Java</strong>,
-            <strong>Spring Boot</strong>, and <strong>REST APIs</strong>, optimized for performance.
+            {{ techDescription }}
         </p>
 
         <!-- Bio Paragraph -->
         <p class="hero-bio" data-aos="fade-up" data-aos-delay="600">
-            Passionate about backend craftsmanship, I bring real-world projects to life through clean
-            architecture and performance-first thinking. <br>
-            I’ve worked independently and collaboratively — always focused on long-term simplicity.
+            {{ bio }}
         </p>
 
         <!-- Call to Actions -->
         <div class="hero-cta" data-aos="fade-up" data-aos-delay="700">
-            <a href="#projects" class="btn btn-primary">View Projects</a>
-            <a href="mailto:krishnak.pilato@gmail.com" class="btn btn-outline relative group">
-                Mail me
+            <a href="#projects" class="btn btn-primary">{{ cta.viewProjects }}</a>
+
+            <a [href]="'mailto:' + cta.emailAddress" class="btn btn-outline relative group">
+                {{ cta.email }}
                 <span
                     class="absolute left-1/2 -translate-x-1/2 -top-10 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white text-xs rounded px-2 py-1 pointer-events-none whitespace-nowrap z-10">
-                    Email Me
+                    {{ cta.emailTooltip }}
                 </span>
             </a>
         </div>
 
         <!-- Scroll Hint -->
         <div class="scroll-hint" data-aos="fade-up" data-aos-delay="800">
-            <span>Scroll down</span>
+            <span>{{ scrollHint }}</span>
             <i class="fas fa-angle-down"></i>
         </div>
 

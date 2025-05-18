@@ -2,90 +2,27 @@
 
   <!-- Section Heading -->
   <div class="max-w-5xl mx-auto text-center mb-12" data-aos="fade-up" data-aos-delay="100">
-    <h2 class="section-title">Featured Projects</h2>
+    <h2 class="section-title">{{ heading }}</h2>
     <p class="text-gray-400 max-w-2xl mx-auto text-lg mb-3">
-      A curated selection of the projects I've built across different stacks – from backend APIs and frontend interfaces
-      to cross-platform mobile apps.
+      {{ description }}
     </p>
     <p class="text-gray-500 max-w-2xl mx-auto text-base">
-      Each project reflects my hands-on experience, adaptability, and love for clean, scalable architecture. Whether
-      you're browsing for inspiration or hiring, here's a window into how I turn ideas into elegant solutions.
+      {{ subtext }}
     </p>
   </div>
 
   <!-- Projects Grid -->
   <div class="project-grid">
-
-    <!-- Project 1 -->
-    <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+    <div class="project-card" *ngFor="let project of projects" [attr.data-aos]="'fade-up'"
+      [attr.data-aos-delay]="project.delay">
       <div class="project-info">
-        <p class="text-sm text-red-400 font-semibold mb-1">2021</p>
-        <h3 class="project-title">Clock Application</h3>
-        <p class="project-description">
-          A clean and functional clock app with real-time timekeeping, alarm features, and a sleek UI — built entirely
-          with HTML, CSS, and JavaScript.
-        </p>
+        <p class="text-sm text-red-400 font-semibold mb-1">{{ project.year }}</p>
+        <h3 class="project-title">{{ project.title }}</h3>
+        <p class="project-description">{{ project.description }}</p>
         <div class="project-tech-tags">
-          <span class="tech-tag">HTML</span>
-          <span class="tech-tag">CSS</span>
-          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag" *ngFor="let tag of project.tags">{{ tag }}</span>
         </div>
       </div>
     </div>
-
-    <!-- Project 2 -->
-    <div class="project-card" data-aos="fade-up" data-aos-delay="300">
-      <div class="project-info">
-        <p class="text-sm text-red-400 font-semibold mb-1">2022</p>
-        <h3 class="project-title">Java EE Todo List</h3>
-        <p class="project-description">
-          A full-stack task management app using Java Servlets (backend) and Angular (frontend). Includes user
-          authentication and full CRUD task functionality.
-        </p>
-        <div class="project-tech-tags">
-          <span class="tech-tag">Java EE</span>
-          <span class="tech-tag">Servlets</span>
-          <span class="tech-tag">Angular</span>
-          <span class="tech-tag">HTML/CSS</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Project 3 -->
-    <div class="project-card" data-aos="fade-up" data-aos-delay="400">
-      <div class="project-info">
-        <p class="text-sm text-red-400 font-semibold mb-1">2023</p>
-        <h3 class="project-title">Photo Notes App</h3>
-        <p class="project-description">
-          A cross-platform Flutter app that enables users to capture, annotate, and organize photos as digital notes.
-          Works on both mobile and desktop.
-        </p>
-        <div class="project-tech-tags">
-          <span class="tech-tag">Flutter</span>
-          <span class="tech-tag">Dart</span>
-          <span class="tech-tag">Mobile</span>
-          <span class="tech-tag">Multiplatform</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Project 4 -->
-    <div class="project-card" data-aos="fade-up" data-aos-delay="500">
-      <div class="project-info">
-        <p class="text-sm text-red-400 font-semibold mb-1">2024</p>
-        <h3 class="project-title">Minimal Portfolio CMS</h3>
-        <p class="project-description">
-          A lightweight CMS for developers to manage and deploy their portfolios with ease. Includes Markdown support,
-          custom theming, and GitHub integration.
-        </p>
-        <div class="project-tech-tags">
-          <span class="tech-tag">Node.js</span>
-          <span class="tech-tag">Express</span>
-          <span class="tech-tag">MongoDB</span>
-          <span class="tech-tag">Markdown</span>
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>

@@ -1,106 +1,43 @@
 <section id="about" data-aos="fade-in">
 
-    <!-- Decorative elements -->
     <div class="about-container" data-aos="fade-up" data-aos-delay="100">
 
-        <!-- Profile card -->
+        <!-- Profile Card -->
         <div class="profile-card" data-aos="fade-up" data-aos-delay="200">
 
             <div class="profile-image-container" data-aos="zoom-in" data-aos-delay="300">
-                <img src="https://media.licdn.com/dms/image/v2/D4D03AQHz4QqGswkKQw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1663335482367?e=1752710400&v=beta&t=IlprvqLOEBHNT-n5ely_Lmi5ZDxOdvwIdQWomv51yrU"
-                    alt="Krishna Pilato" class="profile-image" draggable="false">
+                <img title="profileImage" [src]="profileImage" [alt]="profileName" class="profile-image"
+                    draggable="false" />
                 <div class="image-border-effect"></div>
             </div>
 
             <div class="mt-5 profile-info" data-aos="fade-up" data-aos-delay="400">
-                <h3 class="profile-name">Krishna Pilato</h3>
-                <p class="profile-title">Full Stack Developer</p>
+                <h3 class="profile-name">{{ profileName }}</h3>
+                <p class="profile-title">{{ profileTitle }}</p>
 
-                <p>
-                    I’m a passionate full stack developer with a strong focus on backend systems and clean architecture.
-                    I enjoy turning complex problems into elegant, maintainable solutions.
-                </p>
-                <br>
-                <p>
-                    With Java, Spring Boot, and Angular in my toolkit, I build robust APIs and modern interfaces.
-                    I'm also experienced in databases, Docker, and cloud.
-                </p>
-                <br>
-                <p>
-                    I care deeply about quality, simplicity, and continuous learning. I bring precision, curiosity,
-                    and dedication to every line of code I write.
+                <p *ngFor="let paragraph of profileDescription; let i = index" [class.mt-4]="i > 0">
+                    {{ paragraph }}
                 </p>
             </div>
         </div>
 
-        <!-- Career timeline -->
+        <!-- Timeline -->
         <div class="career-timeline" data-aos="fade-up" data-aos-delay="600">
-
-            <h2 class="section-title">Tech Journey</h2>
-            <p class="section-subtitle">From first lines of code to professional development.</p>
+            <h2 class="section-title">{{ journeyTitle }}</h2>
+            <p class="section-subtitle">{{ journeySubtitle }}</p>
 
             <div class="timeline">
-
-                <!-- Timeline items with staggered delays -->
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="700">
+                <div class="timeline-item" *ngFor="let item of timeline">
                     <div class="timeline-marker">
                         <div class="marker-dot"></div>
-                        <div class="marker-line"></div>
+                        <div class="marker-line" *ngIf="item !== timeline[timeline.length - 1]"></div>
                     </div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-year">2016</h3>
-                        <h4 class="timeline-title">First Steps in Programming</h4>
-                        <p class="timeline-description">
-                            Discovered passion for coding through school projects, focusing on Java fundamentals and
-                            algorithms.
-                        </p>
+                    <div class="timeline-content" [attr.data-aos]="'fade-up'" [attr.data-aos-delay]="item.delay">
+                        <h3 class="timeline-year">{{ item.year }}</h3>
+                        <h4 class="timeline-title">{{ item.title }}</h4>
+                        <p class="timeline-description">{{ item.description }}</p>
                     </div>
                 </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="800">
-                    <div class="timeline-marker">
-                        <div class="marker-dot"></div>
-                        <div class="marker-line"></div>
-                    </div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-year">2022</h3>
-                        <h4 class="timeline-title">Backend Specialization</h4>
-                        <p class="timeline-description">
-                            Deep dived into the Spring Boot ecosystem, building REST APIs and microservice-based
-                            architectures.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="900">
-                    <div class="timeline-marker">
-                        <div class="marker-dot"></div>
-                        <div class="marker-line"></div>
-                    </div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-year">2023</h3>
-                        <h4 class="timeline-title">Full Stack Transition</h4>
-                        <p class="timeline-description">
-                            Expanded skills to Angular frontend development, creating full-featured applications from
-                            database to user interface.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="1000">
-                    <div class="timeline-marker">
-                        <div class="marker-dot"></div>
-                    </div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-year">2025</h3>
-                        <h4 class="timeline-title">Cloud & DevOps</h4>
-                        <p class="timeline-description">
-                            Currently mastering Docker, Kubernetes and cloud deployment strategies for scalable
-                            applications.
-                        </p>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
