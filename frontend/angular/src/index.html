@@ -12,7 +12,23 @@
 </head>
 
 <body class="select-none" oncontextmenu="return false">
-  <div class="custom-cursor" id="customCursor"></div>
+  <div id="development-banner"
+    class="fixed bottom-0 left-0 w-full bg-[#1a1a24] text-gray-300 text-center p-4 z-50 shadow-xl flex items-center justify-center transition-opacity duration-500 transform translate-y-0 opacity-100"
+    style="transition: opacity 0.5s ease-out, transform 0.5s ease-out;">
+    <svg class="h-6 w-6 mr-3 text-[#f87171]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <p class="font-normal text-sm md:text-base mr-5">
+      This website is currently undergoing enhancements. Thank you for your patience.
+    </p>
+    <button onclick="dismissBanner()"
+      class="bg-[#FF4D4D] hover:bg-[#e04545] text-white font-medium py-1.5 px-4 rounded-md text-sm shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-[#FF4D4D] focus:ring-opacity-75 transition-all duration-200">
+      Dismiss
+    </button>
+  </div>
+
+
   <app-root></app-root>
 
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -23,6 +39,32 @@
       duration: 800,
       easing: 'ease-in-out'
     });
+
+    function dismissBanner() {
+      const banner = document.getElementById('development-banner');
+      if (banner) {
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          banner.style.display = 'none';
+          localStorage.setItem('developmentBannerDismissed', 'true');
+        }, 2500);
+      }
+    }
+
+    function initializeBanner() {
+      const banner = document.getElementById('development-banner');
+      const isDismissed = localStorage.getItem('developmentBannerDismissed');
+
+      if (banner && isDismissed === 'true') {
+        banner.style.display = 'none';
+      } else if (banner) {
+        banner.style.opacity = '1';
+        banner.style.transform = 'translateY(0)';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeBanner);
   </script>
 </body>
 

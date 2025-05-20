@@ -9,36 +9,7 @@ body {
   overflow-y: scroll !important;
 }
 
-body {
-  cursor: none;
-}
-
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 22px;
-  height: 22px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  background-color: rgba(255, 255, 255, 0.08);
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease-out, background-color 0.2s, border-color 0.2s;
-  z-index: 9999;
-  backdrop-filter: blur(2px);
-  mix-blend-mode: lighten;
-}
-
-
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none !important;
-}
-
-a:hover~.custom-cursor,
-button:hover~.custom-cursor {
-  transform: translate(-50%, -50%) scale(1.6);
-  border-color: rgba(255, 255, 255, 0.8);
-  background-color: rgba(255, 255, 255, 0.15);
 }
