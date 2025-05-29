@@ -1,0 +1,42 @@
+services:
+  mysql:
+    container_name: mysql-db
+    image: mysql:9.3.0
+    environment:
+      MYSQL_ROOT_PASSWORD: your-mysql-root-password
+      MYSQL_DATABASE: database
+    ports:
+      - "3307:3306"
+    networks:
+      - backend-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    container_name: portfolio-backend-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/database?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_PASSWORD=your-spring-datasource-password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - backend-net
+
+networks:
+  backend-net:
+
+volumes:
+  mysql_data:

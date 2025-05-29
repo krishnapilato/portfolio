@@ -1,0 +1,26 @@
+# Use a minimal base image with Maven 3.9.9 and JDK 24
+FROM maven:3.9.9-eclipse-temurin-24-alpine AS build
+
+# Set metadata for clarity (good for image scanning and traceability)
+LABEL maintainer="Khova Krishna Pilato <krishnak.pilato@gmail.com>" \
+      description="Development Docker image with hot reload for Portfolio Spring Boot app" \
+      version="0.1.0"
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy only pom.xml first to leverage Docker layer caching for dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy the rest of the application source code
+COPY src ./src
+
+# Expose the Spring Boot default port
+EXPOSE 8080
+
+# Configure JVM options for better dev performance (optional tuning)
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+
+# Use ENTRYPOINT to pass in JVM options and allow override at runtime
+ENTRYPOINT ["sh", "-c", "mvn spring-boot:run -Dspring-boot.run.jvmArguments='${JAVA_OPTS}'"]
