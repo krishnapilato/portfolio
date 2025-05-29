@@ -1,16 +1,17 @@
 <section id="about" data-aos="fade-in">
-
     <div class="about-container" data-aos="fade-up" data-aos-delay="100">
 
         <!-- Profile Card -->
         <div class="profile-card" data-aos="fade-up" data-aos-delay="200">
 
+            <!-- Profile Image -->
             <div class="profile-image-container" data-aos="zoom-in" data-aos-delay="300">
                 <img title="profileImage" [src]="profileImage" [alt]="profileName" class="profile-image"
                     draggable="false" />
                 <div class="image-border-effect"></div>
             </div>
-
+            
+            <!-- Profile Information -->
             <div class="mt-5 profile-info" data-aos="fade-up" data-aos-delay="400">
                 <h3 class="profile-name">{{ profileName }}</h3>
                 <p class="profile-title">{{ profileTitle }}</p>
@@ -23,9 +24,11 @@
 
         <!-- Timeline -->
         <div class="career-timeline" data-aos="fade-up" data-aos-delay="600">
+            <!-- Timeline Title and Subtitle -->
             <h2 class="section-title">{{ journeyTitle }}</h2>
             <p class="section-subtitle">{{ journeySubtitle }}</p>
 
+            <!-- Timeline Items -->
             <div class="timeline">
                 <div class="timeline-item" *ngFor="let item of timeline">
                     <div class="timeline-marker">

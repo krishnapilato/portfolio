@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional; // Import for @Transactional
 
 import java.time.Instant;
 import java.util.Date;
@@ -45,32 +46,45 @@ public class PortfolioApplication {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(PortfolioApplication.class);
         app.run(args);
-        logger.info("Backend is running! Open: http://localhost:8080");
     }
 
     /**
      * Ensures the default admin user is created in the database if it doesn't already exist.
+     * This bean is active only in non-production environments (`!prod` profile) to prevent
+     * automatic admin creation in production.
      *
      * @param userRepository  Repository for user-related operations.
      * @param passwordEncoder Encoder for securing user passwords.
      * @return CommandLineRunner to execute database initialization logic.
      */
     @Bean
-    @Profile("!prod") // This bean will only run in non-prod environments.
+    @Profile("!prod")
     public CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
+            // Validate essential admin credentials before proceeding.
             if (Stream.of(adminUsername, adminPassword, adminEmail).anyMatch(Objects::isNull)) {
-                logger.error("Missing admin credentials! Ensure 'adminUsername', 'adminPassword', and 'adminEmail' are properly configured.");
-                return;
+                logger.error("Application startup error: Missing admin credentials! " +
+                        "Ensure 'spring.security.user.name', 'spring.security.user.password', " +
+                        "and 'spring.security.user.email' are properly configured in application.properties/yml.");
+                return; // Prevent further execution if credentials are not set.
             }
 
-            // Check if the admin user already exists asynchronously.
+            // Perform the admin user check and creation asynchronously.
             CompletableFuture.runAsync(() -> {
-                if (!userRepository.existsByEmail(adminEmail)) {
-                    createAdminUser(userRepository, passwordEncoder);
-                    logger.info("Default admin user created successfully.");
-                } else {
-                    logger.info("Admin user already exists. Skipping creation.");
+                try {
+                    // Check if the admin user already exists by email.
+                    if (!userRepository.existsByEmail(adminEmail)) {
+                        createAdminUser(userRepository, passwordEncoder);
+                        logger.info("Default admin user '{}' created successfully.", adminEmail);
+                    } else {
+                        logger.info("Admin user '{}' already exists. Skipping creation.", adminEmail);
+                    }
+                } catch (Exception e) {
+                    // Log any exceptions that occur during the async operation.
+                    logger.error("Error during admin user initialization: {}", e.getMessage(), e);
+                } finally {
+                    // This message indicates the backend is ready, regardless of admin user creation status.
+                    logger.info("Backend is running! Access it at: http://localhost:8080");
                 }
             });
         };
@@ -78,21 +92,23 @@ public class PortfolioApplication {
 
     /**
      * Creates the default admin user with predefined credentials.
+     * This method is marked as @Transactional to ensure atomicity of the database operation.
      *
      * @param userRepository  Repository for user-related operations.
      * @param passwordEncoder Encoder for securing user passwords.
      */
+    @Transactional // Ensures this method runs within a transaction.
     private void createAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         User adminUser = new User();
         adminUser.setFullName(adminUsername);
         adminUser.setEmail(adminEmail);
         adminUser.setPassword(passwordEncoder.encode(adminPassword));
         adminUser.setRole(Role.ADMIN);
-        adminUser.setCreatedAt(Date.from(Instant.now()));
-        adminUser.setUpdatedAt(Date.from(Instant.now()));
+        adminUser.setCreatedAt(new Date());
+        adminUser.setUpdatedAt(new Date());
         adminUser.setLastLogin(Instant.now());
 
-        // Save the admin user to the repository.
         userRepository.save(adminUser);
+        logger.debug("Admin user object saved to database: {}", adminUser.getEmail());
     }
 }
