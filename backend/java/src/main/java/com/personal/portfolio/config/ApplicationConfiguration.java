@@ -10,15 +10,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Application-wide authentication and security configuration.
+ * Provides central beans for password encoding and authentication management.
  */
 @Configuration
 public class ApplicationConfiguration {
 
+    /**
+     * Configurable strength for the BCrypt encoder (default: 12).
+     */
     @Value("${bcrypt.strength:12}")
     private int bcryptStrength;
 
     /**
-     * Provides a BCrypt password encoder with configurable strength.
+     * Provides a BCrypt password encoder with the configured strength.
+     * Used across the application for secure password hashing.
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -26,7 +31,7 @@ public class ApplicationConfiguration {
     }
 
     /**
-     * Exposes the AuthenticationManager bean.
+     * Exposes the AuthenticationManager bean to be injected where needed.
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {

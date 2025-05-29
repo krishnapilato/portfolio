@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.Date;
 
 /**
- * Service for handling user authentication and registration.
+ * Service responsible for handling user authentication and registration.
+ * Provides transactional operations and logs security-critical events.
  */
 @Service
 @RequiredArgsConstructor
@@ -34,10 +34,10 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     /**
-     * Authenticates a user.
+     * Authenticates a user based on their login credentials.
      *
      * @param input The login request containing email and password.
-     * @throws BadCredentialsException if authentication fails.
+     * @throws BadCredentialsException if authentication fails due to invalid credentials.
      */
     public void authenticate(LoginUserRequest input) {
         logger.info("Attempting authentication for email: {}", input.email());
@@ -45,42 +45,37 @@ public class AuthenticationService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(input.email(), input.password())
             );
+            logger.info("Authentication successful for email: {}", input.email());
         } catch (AuthenticationException e) {
             logger.warn("Authentication failed for email: {}", input.email());
-            if (e instanceof BadCredentialsException) {
-                throw e;
-            }
             throw new BadCredentialsException("Invalid credentials provided", e);
         }
     }
 
     /**
-     * Registers a new user.
+     * Registers a new user in the system.
      *
-     * @param input The registration request containing user details.
-     * @return The saved user entity.
+     * @param input The registration request with user details.
+     * @return The saved User entity, including its generated ID.
      * @throws DuplicateKeyException if a user with the given email already exists.
      */
     @Transactional
     public User signup(RegisterUserRequest input) {
         if (userRepository.existsByEmail(input.email())) {
+            logger.warn("Signup attempt failed: email {} already exists.", input.email());
             throw new DuplicateKeyException("User with email " + input.email() + " already exists.");
         }
 
-        Instant now = Instant.now();
-        Date nowDate = Date.from(now);
-
-        User user = new User();
-        user.setFullName(input.fullName());
-        user.setEmail(input.email());
-        user.setPassword(passwordEncoder.encode(input.password()));
-        user.setRole(Role.USER);
-        user.setCreatedAt(nowDate);
-        user.setUpdatedAt(nowDate);
-        user.setLastLogin(now);
+        User user = User.builder()
+                .fullName(input.fullName())
+                .email(input.email())
+                .password(passwordEncoder.encode(input.password()))
+                .role(Role.USER)
+                .lastLogin(Instant.now())
+                .build();
 
         User savedUser = userRepository.save(user);
-        logger.info("User registered with email: {}", input.email());
+        logger.info("New user registered with email: {}", savedUser.getEmail());
         return savedUser;
     }
 }

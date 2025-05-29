@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>Backend Services</title>
@@ -152,16 +152,8 @@
         <div class="mt-10 pt-6 border-t border-gray-800">
             <div class="flex flex-wrap justify-center gap-4">
                 <div class="flex items-center">
-                    <div class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
-                    <span class="text-sm text-gray-400">API: Operational</span>
-                </div>
-                <div class="flex items-center">
-                    <div class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" style="animation-delay: 0.2s"></div>
-                    <span class="text-sm text-gray-400">Database: Connected</span>
-                </div>
-                <div class="flex items-center">
-                    <div class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" style="animation-delay: 0.4s"></div>
-                    <span class="text-sm text-gray-400">Cache: Active</span>
+                    <div th:class="${overallStatus} == 'UP' ? 'w-2 h-2 rounded-full bg-green-500 animate-pulse mr-2' : 'w-2 h-2 rounded-full bg-red-500 mr-2'"></div>
+                    <span class="text-sm text-gray-400">Overall System: <span th:text="${overallStatus}"></span></span>
                 </div>
             </div>
         </div>

@@ -3,7 +3,10 @@ package com.personal.portfolio.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * Enum representing user roles in the application.
@@ -17,18 +20,18 @@ public enum Role {
 
     private final String displayName;
 
-    // Efficiently map display names to roles using HashMap (EnumMap is not possible here)
-    private static final Map<String, Role> DISPLAY_NAME_TO_ROLE = new HashMap<>();
-
-    // Cached list of all available display names for error messages
+    // Efficient mapping for lookup (use EnumMap for enum keys, but here we map by String, so HashMap is fine)
+    private static final Map<String, Role> DISPLAY_NAME_TO_ROLE;
     private static final String AVAILABLE_ROLES;
 
     static {
+        Map<String, Role> map = new HashMap<>();
         StringJoiner joiner = new StringJoiner(", ");
         for (Role role : values()) {
-            DISPLAY_NAME_TO_ROLE.put(role.displayName.toLowerCase(), role);
+            map.put(role.displayName.toLowerCase(), role);
             joiner.add(role.displayName);
         }
+        DISPLAY_NAME_TO_ROLE = Collections.unmodifiableMap(map);
         AVAILABLE_ROLES = joiner.toString();
     }
 
@@ -42,14 +45,16 @@ public enum Role {
     }
 
     /**
-     * Retrieves a Role enum based on the provided display name.
+     * Retrieve Role enum by display name (case-insensitive).
      *
-     * @param displayName The display name of the role.
-     * @return The Role corresponding to the display name.
-     * @throws IllegalArgumentException if the display name is null, blank, or invalid.
+     * @param displayName the display name.
+     * @return the corresponding Role.
+     * @throws IllegalArgumentException if display name is null, blank, or invalid.
      */
     public static Role fromDisplayName(String displayName) {
-        Objects.requireNonNull(displayName, "Display name cannot be null.");
+        if (displayName == null || displayName.isBlank()) {
+            throw new IllegalArgumentException("Display name cannot be null or blank.");
+        }
         Role role = DISPLAY_NAME_TO_ROLE.get(displayName.toLowerCase());
         if (role == null) {
             throw new IllegalArgumentException("Invalid role: '" + displayName + "'. Available roles: " + AVAILABLE_ROLES);
@@ -58,17 +63,20 @@ public enum Role {
     }
 
     /**
-     * Jackson deserialization support: Converts a JSON string into an enum value.
+     * Jackson deserialization support.
+     *
+     * @param displayName JSON string.
+     * @return Role.
      */
     @JsonCreator
-    public static Role fromDisplayNameForJson(String displayName) {
+    public static Role fromJson(String displayName) {
         return fromDisplayName(displayName);
     }
 
     /**
-     * Retrieves all available role display names as a single string.
+     * Get all available role display names (comma-separated).
      *
-     * @return Comma-separated role names.
+     * @return available roles.
      */
     public static String getAllDisplayNames() {
         return AVAILABLE_ROLES;

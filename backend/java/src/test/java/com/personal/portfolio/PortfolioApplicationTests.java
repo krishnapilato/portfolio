@@ -4,17 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- * Test suite for the Portfolio application.
- * Ensures the application context loads correctly.
+ * Basic smoke test for the Portfolio application.
+ * This verifies that the Spring Boot application context loads without errors.
  */
 @SpringBootTest
 class PortfolioApplicationTests {
 
-    /**
-     * Verifies that the application context loads without issues.
-     */
     @Test
     void contextLoads() {
-        // This test will pass if the application context is loaded successfully.
+        // This test passes if the application context starts successfully.
     }
 }

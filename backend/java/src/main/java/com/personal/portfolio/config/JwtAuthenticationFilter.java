@@ -21,6 +21,7 @@ import java.util.Optional;
 
 /**
  * JWT Authentication Filter to validate and authenticate users based on JWT tokens.
+ * Intercepts requests and sets authentication in the SecurityContext if valid.
  */
 @Component
 @RequiredArgsConstructor
@@ -28,7 +29,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private static final String[] PUBLIC_ENDPOINT_PREFIXES = { "/auth/", "/api/email/" };
+
+    /**
+     * Define public endpoints that skip JWT authentication checks.
+     */
+    private static final String[] PUBLIC_ENDPOINT_PREFIXES = {"/auth/", "/api/email/"};
+
     private static final String TOKEN_PREFIX = "Bearer ";
 
     @Override
@@ -37,7 +43,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String requestURI = request.getRequestURI();
 
-        // Only attempt authentication if the endpoint is not public and authentication is not already set.
         if (!isPublicEndpoint(requestURI) && SecurityContextHolder.getContext().getAuthentication() == null) {
             extractJwtToken(request).ifPresent(token -> authenticateUser(token, request));
         }
@@ -45,24 +50,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * Checks if the requested URI matches any public (non-authenticated) endpoint.
+     */
     private boolean isPublicEndpoint(String requestURI) {
         return Arrays.stream(PUBLIC_ENDPOINT_PREFIXES)
                 .anyMatch(requestURI::startsWith);
     }
 
+    /**
+     * Extracts the JWT token from the Authorization header if present and valid.
+     */
     private Optional<String> extractJwtToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
                 .filter(header -> header.startsWith(TOKEN_PREFIX))
                 .map(header -> header.substring(TOKEN_PREFIX.length()));
     }
 
+    /**
+     * Validates the JWT token and sets authentication in the SecurityContext if valid.
+     */
     private void authenticateUser(String jwtToken, HttpServletRequest request) {
         String userEmail = jwtService.extractUsername(jwtToken);
         UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
         if (jwtService.isTokenValid(jwtToken, userDetails) && userDetails.isEnabled()) {
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }

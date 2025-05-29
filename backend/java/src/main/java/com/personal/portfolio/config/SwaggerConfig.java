@@ -9,9 +9,13 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,30 +24,32 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
+    @Autowired
+    private Environment environment;
+
+    @Value("${spring.application.version}")
+    private String projectVersion;
+
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(apiInfo())
-                .servers(List.of(
-                        new Server().url("http://localhost:8080")
-                                .description("Local Development Server"),
-                        new Server().url("https://prismnexus-backend.eu-south-1.elasticbeanstalk.com")
-                                .description("Production Server (Accessible only via AWS Client VPN)")
-                ))
+                .servers(apiServers())
                 .components(new Components().addSecuritySchemes("bearerAuth",
                         new SecurityScheme()
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
-                                .bearerFormat("JWT")))
+                                .bearerFormat("JWT")
+                                .description("Provide the JWT token obtained after authentication")))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 
     private Info apiInfo() {
         return new Info()
                 .title("Backend API")
-                .version("v0.8.5")
+                .version(projectVersion)
                 .description("""
-                        The PrismNexus Backend provides secure authentication,
+                        This Backend provides secure authentication,
                         user management, and email functionalities.
                         """)
                 .contact(new Contact()
@@ -55,19 +61,29 @@ public class SwaggerConfig {
                         .url("https://opensource.org/licenses/MIT"));
     }
 
+    private List<Server> apiServers() {
+        List<Server> servers = new ArrayList<>();
+        if (environment.acceptsProfiles("dev")) {
+            servers.add(new Server().url("http://localhost:8080").description("Local Development Server"));
+        }
+        servers.add(new Server().url("https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com")
+                .description("Production Server (Accessible only via AWS Client VPN)"));
+        return servers;
+    }
+
     @Bean
     public List<GroupedOpenApi> groupedApis() {
         return List.of(
                 GroupedOpenApi.builder()
-                        .group("Authentication")
+                        .group("01-Authentication")
                         .pathsToMatch("/auth/**")
                         .build(),
                 GroupedOpenApi.builder()
-                        .group("User")
+                        .group("02-User")
                         .pathsToMatch("/api/users/**")
                         .build(),
                 GroupedOpenApi.builder()
-                        .group("Email")
+                        .group("03-Email")
                         .pathsToMatch("/api/email/**")
                         .build()
         );

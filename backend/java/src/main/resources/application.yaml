@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: portfolio
+    version: 0.1.0
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+  security:
+    user:
+      name: admin
+      password: 1234567890
+      email: admin.email@gmail.com
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: ${PORT:8080}
+
+jwt:
+  token:
+    expiration: 7200000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework: WARN
+      hibernate: WARN
+      apache:
+        catalina: WARN
+    com:
+      zaxxer:
+        hikari: WARN
+  file:
+    name: logs/application.log
+
+java:
+  runtime:
+    version: 24
+
+management:
+  endpoint:
+    health:
+      show-details: when-authorized
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  health:
+    mail:
+      enabled: false

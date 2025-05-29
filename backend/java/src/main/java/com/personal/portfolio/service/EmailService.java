@@ -1,5 +1,6 @@
 package com.personal.portfolio.service;
 
+import jakarta.annotation.PreDestroy;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.constraints.Email;
@@ -315,5 +316,19 @@ public class EmailService {
             sendEmail(recipient, subject, body, cc, bcc, replyTo, isHtml);
             logger.info("Scheduled email sent to {} at {}", recipient, sendTime);
         }, Math.max(delay, 0), TimeUnit.MILLISECONDS);
+    }
+
+    @PreDestroy
+    public void shutdownScheduler() {
+        scheduler.shutdown();
+        try {
+            if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
+                scheduler.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            scheduler.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+        logger.info("ScheduledExecutorService in EmailService has been shut down.");
     }
 }
