@@ -66,10 +66,9 @@ public class SwaggerConfig {
     private List<Server> apiServers() {
         List<Server> servers = new ArrayList<>();
         if (environment.matchesProfiles("dev")) {
-            servers.add(new Server().url("http://localhost:8080").description("Local Development Server"));
+            servers.add(new Server().url("http://localhost:8080"));
         }
-        servers.add(new Server().url("https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com")
-                .description("Production Server (Accessible only via AWS Client VPN)"));
+        servers.add(new Server().url("https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com"));
         return servers;
     }
 

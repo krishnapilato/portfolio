@@ -151,7 +151,7 @@ public class JwtService {
         }
     }
 
-    private SecretKey getSignInKey() {
+    public SecretKey getSignInKey() {
         if (cachedSigningKey == null) {
             lock.lock();
             try {
@@ -165,7 +165,7 @@ public class JwtService {
         return cachedSigningKey;
     }
 
-    private SecretKey decodeKey(String encodedKey) {
+    public SecretKey decodeKey(String encodedKey) {
         return Keys.hmacShaKeyFor(Base64.getDecoder().decode(encodedKey));
     }
 }
