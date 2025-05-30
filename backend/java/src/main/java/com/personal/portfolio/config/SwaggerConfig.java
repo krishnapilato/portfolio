@@ -9,7 +9,6 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +23,14 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-    @Autowired
     private Environment environment;
 
     @Value("${spring.application.version}")
     private String projectVersion;
+
+    SwaggerConfig(Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -63,7 +65,7 @@ public class SwaggerConfig {
 
     private List<Server> apiServers() {
         List<Server> servers = new ArrayList<>();
-        if (environment.acceptsProfiles("dev")) {
+        if (environment.matchesProfiles("dev")) {
             servers.add(new Server().url("http://localhost:8080").description("Local Development Server"));
         }
         servers.add(new Server().url("https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com")

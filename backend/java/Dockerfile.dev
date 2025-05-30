@@ -3,7 +3,7 @@ FROM maven:3.9.9-eclipse-temurin-24-alpine AS build
 
 # Set metadata for clarity (good for image scanning and traceability)
 LABEL maintainer="Khova Krishna Pilato <krishnak.pilato@gmail.com>" \
-      description="Development Docker image with hot reload for Portfolio Spring Boot app" \
+      description="Development Docker image with hot reload for Spring Boot app" \
       version="0.1.0"
 
 # Set working directory inside the container

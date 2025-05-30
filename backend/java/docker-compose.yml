@@ -3,7 +3,7 @@ services:
     container_name: mysql-db
     image: mysql:9.3.0
     environment:
-      MYSQL_ROOT_PASSWORD: your-mysql-root-password
+      MYSQL_ROOT_PASSWORD: devpassword
       MYSQL_DATABASE: database
     ports:
       - "3307:3306"
@@ -26,9 +26,10 @@ services:
       - "8080:8080"
     volumes:
       - .:/app
+      - ~/.m2:/root/.m2
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/database?createDatabaseIfNotExist=true
-      - SPRING_DATASOURCE_PASSWORD=your-spring-datasource-password
+      - SPRING_DATASOURCE_PASSWORD=devpassword
     depends_on:
       mysql:
         condition: service_healthy

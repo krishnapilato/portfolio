@@ -24,8 +24,8 @@ import java.util.stream.Stream;
  * Entry point for the Portfolio Application.
  * Initializes the application, sets up caching, and ensures an admin user exists.
  *
- * @author Krishna
- * @version 0.8.5
+ * @author Khova Krishna Pilato
+ * @version 0.1.0
  */
 @SpringBootApplication
 @EnableCaching
@@ -90,7 +90,7 @@ public class PortfolioApplication {
      * @param passwordEncoder Encoder for securing passwords.
      */
     @Transactional
-    private void createAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    void createAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         User adminUser = new User();
         adminUser.setFullName(adminUsername);
         adminUser.setEmail(adminEmail);
