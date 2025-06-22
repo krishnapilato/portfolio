@@ -1,10 +1,10 @@
 # Welcome to my portfolio
 
-![Java Version](https://badgen.net/badge/Java/23/blue?icon=java)
-![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.4.3-brightgreen?style=flat&logo=spring-boot)
-![Angular Version](https://img.shields.io/badge/Angular-19.1.7-red?style=flat&logo=angular)
-![MySQL](https://img.shields.io/badge/MySQL-9.2.0-blue?style=flat&logo=mysql)
-![Version](https://img.shields.io/badge/Version-0.8.5-blue?style=flat)
+![Java Version](https://badgen.net/badge/Java/24/blue?icon=java)
+![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-3.5.3-brightgreen?style=flat&logo=spring-boot)
+![Angular Version](https://img.shields.io/badge/Angular-20.0.4-red?style=flat&logo=angular)
+![MySQL](https://img.shields.io/badge/MySQL-9.3.0-blue?style=flat&logo=mysql)
+![Version](https://img.shields.io/badge/Version-0.0.5-blue?style=flat)
 [![GitHub Actions](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
 
 Explore a curated collection of my **technical expertise**, **professional accomplishments**, and **innovative projects**—all designed to highlight my skills and commitment to excellence.
@@ -13,7 +13,7 @@ Explore a curated collection of my **technical expertise**, **professional accom
 
 ---
 
-![image](https://github.com/user-attachments/assets/9ff03144-1170-4348-8ece-a254589a76c5)
+![image](https://github.com/user-attachments/assets/7a6371de-345a-4fd6-8701-f9f389f498f5)
 
 ---
 
