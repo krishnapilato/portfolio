@@ -1,10 +1,11 @@
 package com.personal.portfolio.dto.login;
 
+import java.time.Instant;
+
 import com.personal.portfolio.model.Role;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-
-import java.time.Instant;
 
 /**
  * DTO for handling user login responses.

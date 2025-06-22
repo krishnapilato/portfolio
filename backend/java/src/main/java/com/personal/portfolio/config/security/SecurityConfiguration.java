@@ -1,4 +1,4 @@
-package com.personal.portfolio.config;
+package com.personal.portfolio.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

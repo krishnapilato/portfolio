@@ -1,31 +1,28 @@
 package com.personal.portfolio;
 
+import com.personal.portfolio.config.admin.AdminConfig;
 import com.personal.portfolio.model.Role;
 import com.personal.portfolio.model.User;
-import com.personal.portfolio.repository.UserRepository;
+import com.personal.portfolio.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 /**
  * Entry point for the Portfolio Application.
  * Initializes the application, sets up caching, and ensures an admin user exists.
  *
- * @author Khova Krishna Pilato
- * @version 0.1.0
+ * @author Khova Krishna
+ * @version 0.0.5
  */
 @SpringBootApplication
 @EnableCaching
@@ -33,18 +30,11 @@ public class PortfolioApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(PortfolioApplication.class);
 
-    @Value("${spring.security.user.name:admin}")
-    private String adminUsername;
-
-    @Value("${spring.security.user.password:password}")
-    private String adminPassword;
-
-    @Value("${spring.security.user.email:admin.email@gmail.com}")
-    private String adminEmail;
-
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(PortfolioApplication.class);
-        app.run(args);
+        new SpringApplicationBuilder(PortfolioApplication.class)
+                .bannerMode(Banner.Mode.CONSOLE)
+                .logStartupInfo(true)
+                .run(args);
     }
 
     /**
@@ -52,53 +42,34 @@ public class PortfolioApplication {
      * This bean is active only in non-production environments (`!prod` profile) to prevent
      * automatic admin creation in production.
      *
-     * @param userRepository  Repository for user-related operations.
-     * @param passwordEncoder Encoder for securing user passwords.
+     * @param userService Service for user-related operations.
      * @return CommandLineRunner to execute database initialization logic.
      */
     @Bean
     @Profile("!prod")
-    public CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public CommandLineRunner initDatabase(UserService userService, AdminConfig adminConfig) {
         return args -> {
-            if (Stream.of(adminUsername, adminPassword, adminEmail).anyMatch(Objects::isNull)) {
-                logger.error("Startup error: Missing admin credentials! Configure 'spring.security.user.*' in properties/yml.");
+            if (Stream.of(adminConfig.getName(), adminConfig.getPassword(), adminConfig.getEmail())
+                    .anyMatch(Objects::isNull)) {
+                logger.error("Startup error: Missing admin credentials! Check application.yml.");
                 return;
             }
 
-            CompletableFuture.runAsync(() -> {
-                try {
-                    if (!userRepository.existsByEmail(adminEmail)) {
-                        createAdminUser(userRepository, passwordEncoder);
-                        logger.info("Default admin user '{}' created successfully.", adminEmail);
-                    } else {
-                        logger.info("Admin user '{}' already exists. Skipping creation.", adminEmail);
-                    }
-                } catch (Exception e) {
-                    logger.error("Error during admin user initialization: {}", e.getMessage(), e);
-                } finally {
-                    logger.info("Backend is running! Access it at: http://localhost:8080");
-                }
-            });
+            if (!userService.existsByEmail(adminConfig.getEmail())) {
+                User adminUser = new User();
+                adminUser.setFullName(adminConfig.getName());
+                adminUser.setEmail(adminConfig.getEmail());
+                adminUser.setPassword(adminConfig.getPassword());
+                adminUser.setRole(Role.ADMIN);
+                adminUser.setEnabled(true);
+
+                userService.createUser(adminUser);
+                logger.info("Default admin user '{}' created successfully.", adminConfig.getEmail());
+            } else {
+                logger.info("Admin user '{}' already exists. Skipping creation.", adminConfig.getEmail());
+            }
+
+            logger.info("Application started! Access at: http://localhost:8080");
         };
-    }
-
-    /**
-     * Creates the default admin user with predefined credentials.
-     * Marked as @Transactional to ensure atomicity of the operation.
-     *
-     * @param userRepository  Repository for user operations.
-     * @param passwordEncoder Encoder for securing passwords.
-     */
-    @Transactional
-    void createAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        User adminUser = new User();
-        adminUser.setFullName(adminUsername);
-        adminUser.setEmail(adminEmail);
-        adminUser.setPassword(passwordEncoder.encode(adminPassword));
-        adminUser.setRole(Role.ADMIN);
-        adminUser.setLastLogin(Instant.now());
-
-        userRepository.save(adminUser);
-        logger.debug("Admin user object saved to database: {}", adminUser.getEmail());
     }
 }

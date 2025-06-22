@@ -1,14 +1,14 @@
 spring:
   application:
     name: portfolio
-    version: 0.1.0
+    version: 0.0.5
   profiles:
     active: dev
   datasource:
     url: jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    password: 95Z-5GaYjeCZU%4nV+DdR^2zUqDspg?+kVZbeZQ-ZcYte4^6&Nc*Buzx_8CEHkBV
   jpa:
     hibernate:
       ddl-auto: update

@@ -1,0 +1,16 @@
+[34mINFO [0;39m [[36m2025-06-22 10:53:17[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication v0.0.5 using Java 24.0.1 with PID 56228 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-06-22 10:53:17[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
+[34mINFO [0;39m [[36m2025-06-22 10:53:19[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-06-22 10:53:21[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Deleted 1 expired JWT keys.
+[34mINFO [0;39m [[36m2025-06-22 10:53:21[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - New JWT signing key created (ID: 9bc53e5a-fe42-4fa0-8dc3-ef7461232922).
+[34mINFO [0;39m [[36m2025-06-22 10:53:21[0;39m] [[33mmain[0;39m] [32mc.p.p.c.c.ApplicationConfiguration[0;39m - Using BCrypt encoder with strength 12
+[34mINFO [0;39m [[36m2025-06-22 10:53:22[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-06-22 10:53:22[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 5.539 seconds (process running for 5.838)
+[34mINFO [0;39m [[36m2025-06-22 10:53:22[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user 'admin.email@gmail.com' already exists. Skipping creation.
+[34mINFO [0;39m [[36m2025-06-22 10:53:22[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Application started! Access at: http://localhost:8080
+[34mINFO [0;39m [[36m2025-06-22 10:53:42[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 206 ms
+[34mINFO [0;39m [[36m2025-06-22 10:53:59[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.c.AuthenticationController[0;39m - Login request for admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-06-22 10:53:59[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-06-22 10:53:59[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Authentication successful for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-06-22 10:53:59[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.c.AuthenticationController[0;39m - Authentication successful for admin.email@gmail.com
+[34mINFO [0;39m [[36m2025-06-22 10:54:22[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mc.p.portfolio.service.EmailService[0;39m - ScheduledExecutorService in EmailService has been shut down.

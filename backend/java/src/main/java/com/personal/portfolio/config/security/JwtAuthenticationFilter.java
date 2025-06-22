@@ -1,4 +1,4 @@
-package com.personal.portfolio.config;
+package com.personal.portfolio.config.security;
 
 import com.personal.portfolio.service.JwtService;
 import jakarta.servlet.FilterChain;
