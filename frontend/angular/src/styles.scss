@@ -1,15 +1,15 @@
 @use "tailwindcss";
 @import url('leaflet/dist/leaflet.css');
 
-html,
-body {
-  scroll-behavior: smooth !important;
-  -ms-overflow-style: none !important;
-  scrollbar-width: none !important;
-  overflow-y: scroll !important;
-}
+// html,
+// body {
+//   scroll-behavior: smooth !important;
+//   -ms-overflow-style: none !important;
+//   scrollbar-width: none !important;
+//   overflow-y: scroll !important;
+// }
 
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-  display: none !important;
-}
+// html::-webkit-scrollbar,
+// body::-webkit-scrollbar {
+//   display: none !important;
+// }

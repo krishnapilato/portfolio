@@ -10,7 +10,6 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
@@ -25,7 +24,6 @@ import java.util.stream.Stream;
  * @version 0.0.5
  */
 @SpringBootApplication
-@EnableCaching
 public class PortfolioApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(PortfolioApplication.class);
