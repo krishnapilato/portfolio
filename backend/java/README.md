@@ -1,132 +1,152 @@
-# Spring Boot Backend
+## Portfolio Backend API (Spring Boot)
 
-This project serves as the backend for my portfolio website. It provides a robust and scalable RESTful API, built with **Spring Boot**, to handle features such as user authentication, data management, and more. The backend is designed to be both secure and efficient, providing a seamless experience for users interacting with the website.
+Production-ready REST API for a personal portfolio: authentication, user management, and email workflows. Built on Spring Boot 4 (milestone) with Java 24, secured via JWT, documented with OpenAPI/Swagger, and containerized for local development.
+
+Key URLs (dev):
+- App: http://localhost:8080/
+- Swagger UI: http://localhost:8080/swagger-ui
+- OpenAPI JSON: http://localhost:8080/v3/api-docs
+
+Deployed example: https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com
 
 ## Features
 
-- **User Authentication**: Secure login and registration functionality using JWT (JSON Web Tokens) for authentication.
-- **Data Management**: Manage user profiles, portfolio items, and other data using RESTful endpoints.
-- **Database Integration**: MySQL database support for persistent storage with Spring Data JPA.
-- **Security**: The application uses **Spring Security** to protect sensitive endpoints and ensure authorized access.
-- **API Documentation**: Built-in Swagger UI for easy interaction with the API.
-- **Error Handling**: Custom error messages and status codes for better API responses.
+- JWT auth (HS512) with daily key rotation persisted in DB
+- User CRUD and account lifecycle (activate, lock/unlock, role change, password reset)
+- Email delivery (single, bulk, attachments, scheduled) via SMTP (Mailtrap in dev)
+- Actuator health/info and structured logging with rolling files
+- OpenAPI groups per domain with Swagger UI
+- CORS for local SPA and deployed domain
 
-## Getting Started
+## Tech stack
 
-Follow these steps to set up the backend locally on your machine:
+- Language/Runtime: Java 24
+- Frameworks: Spring Boot 4.0.0-M1, Spring Web, Spring Security, Spring Data JPA, Validation, Actuator, Thymeleaf
+- Auth: JJWT 0.12.x (HS512)
+- Database: MySQL (Connector/J 9.x)
+- Docs: springdoc-openapi 2.x
+- Build: Maven (wrapper), Docker (dev image), Docker Compose
 
-### 1. Prerequisites
+## API surface (high level)
 
-Make sure you have the following tools installed on your local machine:
+- Auth: POST /auth/login, POST /auth/signup
+- Users: GET/POST/PUT/DELETE /api/users, plus:
+    - GET /api/users/{id}
+    - PUT /api/users/{id}/lock
+    - PUT /api/users/{id}/role?role=ADMIN|USER
+    - PUT /api/users/{id}/activate
+    - POST /api/users/reset-password?email=...&newPassword=...
+- Email: under /api/email
+    - POST /send, /send-with-attachment, /send-bulk, /schedule
+    - POST /forgot-password, /resend-confirmation
+    - GET /status/{emailId}
+- Landing page: GET /
 
-- **Java JDK 23**: Required to build and run the Spring Boot application.
-- **Maven**: A build automation tool to manage dependencies and build the project.
-- **MySQL Database**: A relational database to store user data and portfolio content.
-- **IDE**: Integrated Development Environment (IDE) like **IntelliJ IDEA**.
-- **Postman/Swagger UI**: For testing the API endpoints.
+Use Swagger UI for precise schemas, examples, and response codes.
 
-### 2. Configuration
+## Configuration
 
-Before running the application, you need to configure the database and environment settings:
+Profiles
+- Default: dev (spring.profiles.active=dev)
+- prod: tighten logging and disables dev conveniences
 
-1. **Database Configuration**:
-    - Make sure you have a running instance of **MySQL**.
-    - Create a database for the backend (e.g., `portfolio_backend`).
-    - Update the `application.properties` file located in the `src/main/resources` directory with your database credentials:
+Essential environment variables (override defaults in application.yaml):
+- SPRING_DATASOURCE_USERNAME, SPRING_DATASOURCE_PASSWORD
+- SPRING_DATASOURCE_URL (override when using Dockerized MySQL or non-default ports)
+- SPRING_MAIL_USERNAME, SPRING_MAIL_PASSWORD (Mailtrap or real SMTP)
+- PORT (defaults to 8080)
+- bcrypt.strength (default 12; valid 4–31)
 
-    ```properties
-    spring.datasource.url=jdbc:mysql://localhost:3306/portfolio_backend?useSSL=false&serverTimezone=UTC
-    spring.datasource.username=your_mysql_username
-    spring.datasource.password=your_mysql_password
-    spring.jpa.hibernate.ddl-auto=update
-    spring.jpa.properties.hibernate.format_sql=true
-    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-    ```
+Admin bootstrap (dev only)
+- On startup, a default admin is created if absent using values configured in application.yaml (see spring.security.user.* via AdminConfig). Not active in prod.
 
-2. **Application Properties**:
-    - Update the `application.properties` file to reflect your application-specific settings such as JWT secret, authentication options, and logging level:
+CORS
+- Allowed origins include http://localhost:4200 and the Elastic Beanstalk domain. Update SecurityConfiguration.corsConfigurationSource() to add more.
 
-    ```properties
-    # JWT Configuration
-    jwt.secret=your_jwt_secret_key
-    jwt.expiration=3600
-    
-    # Logging
-    logging.level.org.springframework.web=DEBUG
-    logging.level.com.yourapp=INFO
-    ```
+Logging
+- logs/application.log with daily+size rolling (logback-spring.xml). Actuator health/info exposed.
 
-### 3. Clone & Run
+## Run locally (Windows)
 
-Once your prerequisites and configurations are ready, follow these steps to run the project:
+Prerequisites
+- JDK 24 (required by Maven Enforcer)
+- Maven Wrapper (included)
+- MySQL 8+ (local) or Docker Desktop
 
-1. **Clone the repository**:
-    ```bash
-    git clone https://github.com/krishnapilato/portfolio.git
-    ```
+Option A — Native run (using your local MySQL)
+1) Ensure a MySQL instance is available and credentials are set via env vars.
+2) From backend/java:
 
-2. **Navigate to the backend directory**:
-    ```bash
-    cd backend/java
-    ```
+```cmd
+mvnw.cmd spring-boot:run
+```
 
-3. **Build and run the Spring Boot application**:
-    - You can use **Maven** to run the application using the following command:
+Option B — Docker Compose (MySQL + dev app container)
+From backend/java execute:
 
-    ```bash
-    ./mvnw spring-boot:run
-    ```
+```cmd
+powershell -File .\make.ps1 up
+```
 
-    - Alternatively, if you're using an IDE, simply import the project and run the `Application.java` class as a Spring Boot application.
+Notes
+- The compose file maps MySQL to host port 3307 and the app to 8080.
+- When running the app on your host against the Dockerized DB, override the datasource URL:
 
-Your backend API should now be accessible at `http://localhost:8080`.
+```cmd
+set SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3307/database?createDatabaseIfNotExist=true
+mvnw.cmd spring-boot:run
+```
 
-### 4. Testing the API
+## Build, test, and package
 
-You can test the RESTful endpoints using **Postman** or **Swagger UI** (enabled by default for easy exploration of API).
+Run tests:
+```cmd
+mvnw.cmd -q test
+```
 
-- **Swagger UI**: After running the application, visit `http://localhost:8080/swagger-ui.html` to interact with the API directly.
-- **Postman**: Test API endpoints such as login (`POST /api/auth/login`), user registration (`POST /api/auth/register`), and other data management endpoints like `/api/portfolio` and `/api/users`.
+Create a runnable JAR:
+```cmd
+mvnw.cmd -q clean package
+```
 
-## Technologies Used
+The artifact will be under target/. Start it with:
+```cmd
+java -jar target\portfolio-0.0.5.jar
+```
 
-This project incorporates several technologies that are popular in the Java ecosystem. Below are the key technologies used in the backend:
+## Security model
 
-- **Java**: The primary language used to develop the backend service.
-- **Spring Boot**: The framework chosen to simplify and accelerate the development of the backend.
-- **Spring Security**: A comprehensive security framework for securing the API with authentication and authorization features.
-- **Spring Data JPA**: Provides easy-to-use data access features and ORM (Object-Relational Mapping) integration with MySQL.
-- **Hibernate ORM**: Facilitates seamless interaction between Java objects and the MySQL database.
-- **JWT (JSON Web Tokens)**: A compact, URL-safe means of representing claims between two parties.
-- **MySQL**: The relational database used for storing application data.
-- **Maven**: A build automation tool used to manage project dependencies.
-- **Swagger**: A tool for documenting and testing the API directly from the browser.
+- Stateless JWT auth via Authorization: Bearer <token>
+- HS512-signed tokens; secret keys rotated daily (scheduled job) and stored in MySQL (JwtKeys table)
+- Public endpoints: /, /auth/**, /api/email/**, /swagger-ui/**, /v3/api-docs/**
 
-## Deployment
+## Database
 
-When ready for deployment, the backend can be packaged as a **JAR** or **WAR** file and deployed on cloud services such as **AWS**, **Heroku**, or any platform supporting Java-based applications.
+- Default schema name: database (see init.sql)
+- JPA hibernate.ddl-auto=update for dev convenience; prefer migrations for prod
 
-- To build the project as a JAR file:
-    ```bash
-    ./mvnw clean package
-    ```
+## Observability
 
-- The resulting JAR file can be found in the `target` directory and can be run with:
-    ```bash
-    java -jar target/portfolio-backend.jar
-    ```
+- Health: /actuator/health (details for authorized only)
+- Info: /actuator/info
+- Logs: rolling file and console (dev)
 
-## Need Help?
+## Swagger/OpenAPI
 
-If you encounter any issues, feel free to reach out:
+- UI: /swagger-ui
+- Grouped APIs: 01-Authentication, 02-User, 03-Email
+- Global bearerAuth security scheme with JWT in Authorization header
 
-- **GitHub Issues**: Open an issue in the [GitHub repository](https://github.com/krishnapilato/kodek/issues).
-- **LinkedIn**: Connect with me on [LinkedIn](https://www.linkedin.com/in/khovakrishnapilato).
+## Notes & caveats
+
+- This project targets Java 24 and Spring Boot 4.0.0-M1; ensure a matching toolchain.
+- Do not commit real secrets. Values in application.yaml are for local development and must be overridden via environment variables in any shared or production environment.
+- If you run only MySQL via Docker (port 3307) and the app natively, remember to update SPRING_DATASOURCE_URL accordingly.
 
 ## Contributing
 
-Contributions are welcome! Feel free to fork the repository, create a feature branch, and submit a pull request. Please ensure that your code follows the established coding style and includes appropriate tests.
+PRs are welcome. Please include tests for behavioral changes and follow existing code style. For significant changes, open an issue first to discuss scope.
 
----
+## License
 
-Thank you for checking out this project! Enjoy building with Spring Boot!
+Unless stated otherwise in the repository root, all rights reserved Khova Krishna Pilato.

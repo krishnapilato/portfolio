@@ -1,84 +1,123 @@
-# Welcome to my portfolio
+## Portfolio — Angular SSR frontend + Spring Boot API
 
-![Java Version](https://badgen.net/badge/Java/24.0.2/blue?icon=java)
-![Spring Boot Version](https://img.shields.io/badge/Spring%20Boot-4.0.0-brightgreen?style=flat&logo=spring-boot)
-![Angular Version](https://img.shields.io/badge/Angular-20.1.3-red?style=flat&logo=angular)
-![MySQL](https://img.shields.io/badge/MySQL-9.3.0-blue?style=flat&logo=mysql)
+![Java](https://badgen.net/badge/Java/24.0.2/blue?icon=java)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.0--M1-brightgreen?style=flat&logo=spring-boot)
+![Angular](https://img.shields.io/badge/Angular-20.1.6-red?style=flat&logo=angular)
+![MySQL](https://img.shields.io/badge/MySQL-9.4.0-blue?style=flat&logo=mysql)
 ![Version](https://img.shields.io/badge/Version-0.0.5-blue?style=flat)
-[![GitHub Actions](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
+[![CI](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
 
-Explore a curated collection of my **technical expertise**, **professional accomplishments**, and **innovative projects**—all designed to highlight my skills and commitment to excellence.
+Monorepo hosting a production-ready Angular 20 (SSR) frontend and a Spring Boot 4 API. Clean UX, fast first paint, email contact flow, OpenAPI docs, and containerized local dev.
 
-**Experience it live:** [visit portfolio](https://krishnapilato.github.io/portfolio)
+- Live site (frontend): https://krishnapilato.github.io/portfolio
+- Demo API (backend): https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com  
+   *(Accessible only via AWS VPN)*
 
----
+### Layout
 
-![image](https://github.com/user-attachments/assets/7a6371de-345a-4fd6-8701-f9f389f498f5)
+- `frontend/angular` — Angular 20 app with SSR; EmailJS-powered contact form
+- `backend/java` — Spring Boot 4 API (JWT, OpenAPI, MySQL), Docker-compose for dev
 
----
-
-## Key Features
-
-- **Comprehensive Skills and Experience:** Highlighting my proficiency in cutting-edge technologies and frameworks.  
-- **Professional Background Overview:** A detailed introduction to my career journey, achievements, and interests.  
-- **Interactive Contact Form:** Seamlessly connect with me for collaborations, inquiries, or feedback.  
-- **Dynamic Project Gallery:** Showcasing my work through visual presentations and in-depth explanations.  
+For deep details, see the module READMEs:
+- Frontend: `frontend/angular/README.md`
+- Backend: `backend/java/README.md`
 
 ---
 
-## Local Development Setup
+## Quickstart (Windows)
 
-Set up the project locally by following these steps:
+Clone and switch to the development branch:
 
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/krishnapilato/portfolio.git && cd portfolio && git checkout dev
-   ```
+```cmd
+git clone https://github.com/krishnapilato/portfolio.git
+cd portfolio
+git checkout dev
+```
 
-2. **Install Dependencies:**
-   - For the backend:
-     ```bash
-     cd backend
-     ./mvnw install
-     ./mvnw spring-boot:run
-     ```
-   - For the frontend:
-     ```bash
-     cd frontend
-     npm install
-     ng serve
-     ```
+### Backend (Spring Boot API)
 
-3. **Scripts Folder:**
-   Refer to the `scripts` folder for additional setup instructions. It contains commands to streamline local development for both backend and frontend.
+Prereqs: JDK 24, MySQL 8+ (local) or Docker Desktop.
+
+Option A — native run against your DB:
+
+```cmd
+cd backend\java
+mvnw.cmd spring-boot:run
+```
+
+Option B — Docker (MySQL + app container):
+
+```cmd
+cd backend\java
+powershell -File .\make.ps1 up
+```
+
+Dev URLs:
+- App root: http://localhost:8080/
+- Swagger UI: http://localhost:8080/swagger-ui
+- OpenAPI JSON: http://localhost:8080/v3/api-docs
+
+### Frontend (Angular SSR)
+
+Prereqs: Node 18+, npm 9+.
+
+Dev server:
+
+```cmd
+cd frontend\angular
+npm install
+npm start
+```
+
+SSR build and serve locally:
+
+```cmd
+npm run build
+npm run serve:ssr:angular
+```
 
 ---
 
-## Work in Progress
+## Configuration
 
-This portfolio is a continuously evolving project, with frequent updates aimed at enhancing functionality and optimizing the user experience. While the core features are fully operational, the frontend is currently undergoing final refinements to resolve a lot of bugs and ensure peak performance. Your feedback is invaluable in shaping this portfolio into a polished and reliable platform.
+- Backend environment (DB, SMTP, ports): see `backend/java/README.md` → Configuration. Common vars: `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`, `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD`.
+- Frontend contact form uses EmailJS. Replace service/template IDs and public key in `src/app/contact/contact.component.ts` or externalize via environment injection. See `frontend/angular/README.md`.
 
-
-## Skills
-
-A showcase of the technical skills and tools I excel in:
-
-- **Programming Languages:** Java, JavaScript, TypeScript, Python, C#  
-- **Frameworks & Libraries:** Spring Boot, Angular, React  
-- **Database Technologies:** MySQL, MongoDB  
-- **Development Tools & Platforms:** Docker, Kubernetes, Git, Jenkins  
-- **Additional Expertise:** RESTful APIs, Microservices Architecture, Agile Development Practices
-  
 ---
 
-## Contribution Guidelines
+## Lighthouse
 
-Contributions are always welcome! To get involved, simply follow these steps:
+Current scores (last run: YYYY‑MM‑DD):
 
-1. **Fork the Repository**  
-   Create a personal copy of the repository to work on.  
+| Target | Performance | Accessibility | Best Practices | SEO |
+|--------|-------------|---------------|----------------|-----|
+| Desktop | 100 | 96 | 96 | 91 |
+| Mobile  | 98 | 96 | 96 | 91 |
 
-2. **Create a Feature Branch**  
-   Use a descriptive name for your branch:  
-   ```bash
-   git checkout -b feature/YourFeature
+How to re-run locally:
+1) Start the frontend (dev or SSR).
+2) Use Lighthouse in Chrome DevTools, or run via CLI (desktop/mobile presets). Save the report and update the table above.
+
+Notes: prioritize LCP (hero/media sizing), CLS (explicit sizes), and main-thread work (defer non-critical scripts). The UI respects reduced motion.
+
+---
+
+## Build, test, package
+
+- Backend
+   - Tests: `mvnw.cmd -q test`
+   - Package: `mvnw.cmd -q clean package` → `backend/java/target/portfolio-0.0.5.jar`
+
+- Frontend
+   - Unit tests: `npm test`
+   - Build (SSR): `npm run build`
+
+---
+
+## Contributing
+
+PRs welcome. Keep changes focused, include tests where behavior changes, and follow existing style. For larger work, open an issue first.
+
+## License
+
+Unless stated otherwise, all rights reserved © Khova Krishna Pilato.
