@@ -154,7 +154,7 @@ public class EmailService {
      */
     public void sendPasswordResetEmail(@NotBlank @Email String recipient, @NotBlank String token) {
         validateEmail(recipient);
-        String resetLink = "https://prismnexus-backend.eu-south-1.elasticbeanstalk.com/reset-password?token=" + token;
+        String resetLink = baseUrl + "/reset-password?token=" + token;
         sendEmail(recipient, "Password Reset Request", "Reset your password: " + resetLink, null, null, null, false);
     }
 
