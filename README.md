@@ -120,4 +120,4 @@ PRs welcome. Keep changes focused, include tests where behavior changes, and fol
 
 ## License
 
-This project is open-source under the MIT License. See `LICENSE` for details.
+Unless stated otherwise, all rights reserved © Khova Krishna Pilato.
