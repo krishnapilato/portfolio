@@ -61,7 +61,15 @@ export class ContactComponent {
           from_email: email,
           message: `${name} said: ${message}`
         },
-        'Snh_1YI8Oz07iuS5R'
+        environment.emailJsServiceId,
+        environment.emailJsTemplateId,
+        {
+          to_name: 'Khova Krishna Pilato',
+          from_name: name,
+          from_email: email,
+          message: `${name} said: ${message}`
+        },
+        environment.emailJsPublicKey
       );
 
       this.isSuccess = true;
