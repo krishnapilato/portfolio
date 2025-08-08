@@ -1,28 +1,24 @@
-<section id="projects" style="margin-top: 30rem; margin-bottom: 30rem;" data-aos="fade-in">
-
+<section id="projects" data-aos="fade-in">
   <!-- Section Heading -->
-  <div class="max-w-5xl mx-auto text-center mb-12" data-aos="fade-up" data-aos-delay="100">
+  <div class="head" data-aos="fade-up" data-aos-delay="100">
     <h2 class="section-title">{{ heading }}</h2>
-    <p class="text-gray-400 max-w-2xl mx-auto text-lg mb-3">
-      {{ description }}
-    </p>
-    <p class="text-gray-500 max-w-2xl mx-auto text-base">
-      {{ subtext }}
-    </p>
+    <p class="lead">{{ description }}</p>
+    <p class="muted">{{ subtext }}</p>
   </div>
 
   <!-- Projects Grid -->
-  <div class="project-grid">
-    <div class="project-card" *ngFor="let project of projects" [attr.data-aos]="'fade-up'"
-      [attr.data-aos-delay]="project.delay">
-      <div class="project-info">
-        <p class="text-sm text-red-400 font-semibold mb-1">{{ project.year }}</p>
-        <h3 class="project-title">{{ project.title }}</h3>
-        <p class="project-description">{{ project.description }}</p>
-        <div class="project-tech-tags">
-          <span class="tech-tag" *ngFor="let tag of project.tags">{{ tag }}</span>
-        </div>
+  <div class="grid">
+    <article class="card" *ngFor="let p of projects; trackBy: trackByTitle" [class.effort-high]="p.effort === 'high'" [attr.data-aos]="'fade-up'" [attr.data-aos-delay]="p.delay">
+      <div class="meta">
+        <span class="year">{{ p.year }}</span>
+        <span class="chip">{{ p.category }}</span>
+        <span class="effort" [attr.data-effort]="p.effort">{{ p.effort }}</span>
       </div>
-    </div>
+      <h3 class="title">{{ p.title }}</h3>
+      <p class="desc">{{ p.description }}</p>
+      <div class="tags">
+        <span class="t" *ngFor="let t of p.tags">{{ t }}</span>
+      </div>
+    </article>
   </div>
 </section>

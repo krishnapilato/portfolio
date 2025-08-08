@@ -1,52 +1,48 @@
-<section id="home" class="hero" data-aos="fade-in">
+<section id="home" class="hero" data-aos="fade-in" [style.--mx.px]="mouseX" [style.--my.px]="mouseY">
+        <!-- Background handled globally for continuity -->
 
-    <div class="hero-content" data-aos="zoom-in" data-aos-delay="100">
-
-        <!-- Introduction -->
-        <p class="hero-intro" data-aos="fade-up" data-aos-delay="300">
-            {{ greeting }}
-        </p>
-
-        <!-- Role Title -->
-        <div class="mt-12 relative inline-block" data-aos="fade-up" data-aos-delay="400">
-            <h1 class="hero-title gradient-text">
-                {{ title }}
-            </h1>
-
-            <div data-aos="fade-down" data-aos-delay="500"
-                class="absolute -top-2 right-0 bg-emerald-600 text-white text-xs px-3 py-1 rounded-full shadow-sm">
+    <div class="hero-inner container">
+        <div class="left" data-aos="fade-up" data-aos-delay="100">
+            <div class="chip">
+                <span class="dot"></span>
                 {{ availability }}
             </div>
+
+            <h1 class="title">
+                <span class="overline">{{ greeting }}</span>
+                <span class="line gradient">{{ title }}</span>
+            </h1>
+
+            <p class="lede">{{ techDescription }}</p>
+            <p class="bio">{{ bio }}</p>
+
+            <div class="cta">
+                <a href="#projects" class="btn btn-primary">{{ cta.viewProjects }}</a>
+                <a [href]="'mailto:' + cta.emailAddress" class="btn btn-outline">{{ cta.email }}</a>
+            </div>
+
+            <div class="stats" role="list">
+                <div class="stat" *ngFor="let s of stats" role="listitem">
+                    <div class="val">{{ s.value }}</div>
+                    <div class="lab">{{ s.label }}</div>
+                </div>
+            </div>
+
+            <div class="ticker" aria-label="Technologies">
+                <div class="track">
+                    <span class="item" *ngFor="let t of techs">{{ t }}</span>
+                    <span class="item" *ngFor="let t of techs">{{ t }}</span>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Tech Focus Line -->
-        <p class="hero-sub" data-aos="fade-up" data-aos-delay="500">
-            {{ techDescription }}
-        </p>
-
-        <!-- Bio Paragraph -->
-        <p class="hero-bio" data-aos="fade-up" data-aos-delay="600">
-            {{ bio }}
-        </p>
-
-        <!-- Call to Actions -->
-        <div class="hero-cta" data-aos="fade-up" data-aos-delay="700">
-            <a href="#projects" class="btn btn-primary">{{ cta.viewProjects }}</a>
-
-            <a [href]="'mailto:' + cta.emailAddress" class="btn btn-outline relative group">
-                {{ cta.email }}
-                <span
-                    class="absolute left-1/2 -translate-x-1/2 -top-10 opacity-0 group-hover:opacity-100 transition bg-gray-800 text-white text-xs rounded px-2 py-1 pointer-events-none whitespace-nowrap z-10">
-                    {{ cta.emailTooltip }}
-                </span>
-            </a>
-        </div>
-
-        <!-- Scroll Hint -->
-        <div class="scroll-hint" data-aos="fade-up" data-aos-delay="800">
-            <span>{{ scrollHint }}</span>
-            <i class="fas fa-angle-down"></i>
-        </div>
-
+        <!-- <div class="right" data-aos="zoom-in" data-aos-delay="200">
+            <div class="profile-card" aria-hidden="true">
+                <div class="ring"></div>
+                <div class="badge">KP</div>
+                <div class="tag">Full‑Stack</div>
+            </div>
+        </div> -->
     </div>
 </section>

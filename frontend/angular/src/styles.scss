@@ -1,15 +1,101 @@
 @use "tailwindcss";
-@import url('leaflet/dist/leaflet.css');
 
-// html,
-// body {
-//   scroll-behavior: smooth !important;
-//   -ms-overflow-style: none !important;
-//   scrollbar-width: none !important;
-//   overflow-y: scroll !important;
-// }
+:root {
+	/* Color tokens */
+	--bg: #0b0f19;
+	--surface: #121826;
+	--surface-2: #1b2232;
+	--text: #e5e7eb;
+	--muted: #9aa4b2;
+	--primary: #ff4d4d;
+	--primary-600: #e04545;
+	--accent: #f9cb28;
+	--purple: #8b5cf6;
 
-// html::-webkit-scrollbar,
-// body::-webkit-scrollbar {
-//   display: none !important;
-// }
+	/* Shadows & radii */
+	--radius: 16px;
+	--radius-lg: 24px;
+	--shadow-1: 0 8px 24px rgba(0,0,0,0.35);
+	--shadow-2: 0 16px 48px rgba(0,0,0,0.45);
+
+		/* Pointer spotlight defaults */
+		--mx: 50%;
+		--my: 50%;
+}
+
+html, body {
+	height: 100%;
+	background: var(--bg);
+	color: var(--text);
+}
+
+* { box-sizing: border-box; }
+
+/* Smooth scrolling and nicer scrollbars */
+html { scroll-behavior: smooth; }
+/* WebKit scrollbars (Chrome/Edge) */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: #2c3446; border-radius: 999px; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* Utility containers */
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 1.25rem;
+}
+
+/* Global aurora background (fixed, behind content) */
+.app-bg { position: fixed; inset: -10% -5% -10% -5%; pointer-events: none; z-index: 0; }
+.app-bg .aurora { position:absolute; inset:0; background:
+	conic-gradient(from 210deg at 50% 60%, rgba(255,130,130,.18), transparent 50%),
+	conic-gradient(from 20deg at 40% 40%, rgba(140,200,255,.18), transparent 50%),
+	conic-gradient(from -30deg at 60% 30%, rgba(140,255,210,.16), transparent 55%),
+	radial-gradient(1200px 600px at 50% 110%, rgba(255,255,255,.07), transparent 70%);
+	animation: app-drift 22s ease-in-out infinite alternate; filter: blur(24px);
+}
+.app-bg .spotlight { position:absolute; inset:-10%; background:
+	radial-gradient(40% 56% at calc(var(--mx) + 10%) calc(var(--my) + 6%), rgba(255,150,150,.22), transparent 60%),
+	radial-gradient(36% 52% at calc(var(--mx) - 12%) calc(var(--my) - 4%), rgba(150,195,255,.20), transparent 60%),
+	radial-gradient(32% 48% at calc(var(--mx) + 6%) calc(var(--my) - 10%), rgba(160,255,220,.18), transparent 60%);
+	filter: blur(70px);
+}
+.app-bg .grain { position:absolute; inset:0; opacity:.08; background-image: radial-gradient(rgba(255,255,255,.4) 1px, transparent 1px); background-size: 3px 3px; }
+@keyframes app-drift { 0%{ transform: translateY(0) } 100%{ transform: translateY(-2%) } }
+
+@media (prefers-reduced-motion: reduce) {
+	.app-bg .aurora { animation: none; }
+}
+
+/* Cards */
+.card {
+	background: rgba(18,24,38,0.6);
+	border: 1px solid rgba(255,255,255,0.06);
+	border-radius: var(--radius);
+	backdrop-filter: blur(10px);
+	box-shadow: var(--shadow-1);
+}
+
+/* Buttons */
+.btn { 
+	display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+	padding: .9rem 1.4rem; border-radius: 10px; font-weight:600; text-decoration:none;
+	border: 1px solid transparent; transition: all .25s ease; cursor: pointer; color: var(--text);
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-600); transform: translateY(-1px); }
+.btn-outline { border-color: rgba(255,255,255,.2); background: transparent; }
+.btn-outline:hover { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.06); }
+
+/* Section spacing */
+section { padding: 5rem 0; scroll-margin-top: 96px; }
+
+/* Typography */
+h1,h2,h3 { line-height: 1.15; }
+.section-title { 
+	font-size: clamp(1.8rem, 1.2rem + 2.2vw, 2.8rem);
+	font-weight: 800;
+	background: linear-gradient(90deg, var(--primary), var(--accent));
+	-webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.section-subtitle { color: var(--muted); }

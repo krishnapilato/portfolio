@@ -9,49 +9,58 @@ import { Component } from '@angular/core';
   styleUrls: ['./about-me.component.scss']
 })
 export class AboutMeComponent {
+  // Profile
+  public profileName = 'Krishna Pilato';
+  public profileTitle = 'Full Stack Developer';
+  public profileImage = 'https://media.licdn.com/dms/image/v2/D4D03AQEBYpmjLJByRw/profile-displayphoto-crop_800_800/B4DZhBRHuGGsAM-/0/1753441665104?e=1757548800&v=beta&t=CZbDJRJFUrr5a21TKWWczNRvPFKJY5AVdck-svLLCG0';
 
-  public profileName: string = 'Krishna Pilato';
-  public profileTitle: string = 'Full Stack Developer';
-  public profileImage: string = 'https://media.licdn.com/dms/image/v2/D4D03AQHz4QqGswkKQw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1663335482367?e=1752710400&v=beta&t=IlprvqLOEBHNT-n5ely_Lmi5ZDxOdvwIdQWomv51yrU';
-
-  public profileDescription: string[] = [
-    `I’m a passionate full stack developer with a strong focus on backend systems and clean architecture. I enjoy turning complex problems into elegant, maintainable solutions.`,
-    `With Java, Spring Boot, and Angular in my toolkit, I build robust APIs and modern interfaces. I'm also experienced in databases, Docker, and cloud.`,
-    `I care deeply about quality, simplicity, and continuous learning. I bring precision, curiosity, and dedication to every line of code I write.`
+  // Intro
+  public introTitle = 'About me';
+  public introParagraphs: string[] = [
+    'I craft reliable backends and clean frontends. My focus is building scalable APIs and smooth user experiences.',
+    'I ship with Java, Spring Boot, and Angular—using strong patterns, tests, and CI/CD to keep things maintainable.',
+    'I value clarity, correctness, and speed. I’m always learning and raising the bar for quality.'
+  ];
+  public highlights: string[] = [
+    'Clean architecture & SOLID',
+    'RESTful APIs & Websockets',
+    'CI/CD with Docker & pipelines'
   ];
 
-  public journeyTitle: string = 'Tech Journey';
-  public journeySubtitle: string = 'From first lines of code to professional development.';
+  // Quick stats
+  public stats: Array<{ label: string; value: string; icon: string }>= [
+    { label: 'Years', value: '4+', icon: 'fas fa-calendar' },
+    { label: 'Projects', value: '10+', icon: 'fas fa-diagram-project' },
+    { label: 'Tech', value: '10+', icon: 'fas fa-toolbox' }
+  ];
 
-  public timeline: {
-    year: string;
-    title: string;
-    description: string;
-    delay: number;
-  }[] = [
-      {
-        year: '2016',
-        title: 'First Steps in Programming',
-        description: 'Discovered passion for coding through school projects, focusing on Java fundamentals and algorithms.',
-        delay: 700
-      },
-      {
-        year: '2022',
-        title: 'Backend Specialization',
-        description: 'Deep dived into the Spring Boot ecosystem, building REST APIs and microservice-based architectures.',
-        delay: 800
-      },
-      {
-        year: '2023',
-        title: 'Full Stack Transition',
-        description: 'Expanded skills to Angular frontend development, creating full-featured applications from database to user interface.',
-        delay: 900
-      },
-      {
-        year: '2025',
-        title: 'Cloud & DevOps',
-        description: 'Currently mastering Docker, Kubernetes and cloud deployment strategies for scalable applications.',
-        delay: 1000
-      }
-    ];
+  // Skills
+  public skills: Array<{ category: string; items: string[] }> = [
+    { category: 'Backend', items: ['Java', 'Spring Boot', 'REST', 'JPA/Hibernate', 'JWT'] },
+    { category: 'Frontend', items: ['Angular', 'RxJS', 'SCSS', 'A11y', 'AOS'] },
+    { category: 'Data', items: ['PostgreSQL', 'MySQL', 'Redis'] },
+    { category: 'DevOps', items: ['Docker', 'CI/CD', 'GitHub Actions'] }
+  ];
+
+  // Journey
+  public timeline: Array<{ year: string; title: string; description: string; delay: number }> = [
+    { year: '2016', title: 'First steps', description: 'Learned Java and core algorithms; fell in love with solving problems.', delay: 700 },
+    { year: '2022', title: 'Backend focus', description: 'Built REST APIs with Spring Boot; designed clean, testable services.', delay: 800 },
+    { year: '2023', title: 'Full stack', description: 'Adopted Angular for modern UIs; delivered end-to-end features.', delay: 900 },
+    { year: '2025', title: 'Cloud & delivery', description: 'Containerized apps; automated pipelines; focused on reliability.', delay: 1000 }
+  ];
+
+  // CTAs
+  public contactEmail = 'krishnak.pilato@gmail.com';
+  public cvUrl = '#';
+
+  // Utils
+  public trackByIndex(index: number) { return index; }
+
+  // Feature cards
+  public features: Array<{ icon: string; title: string; description: string }> = [
+    { icon: 'fas fa-shield-halved', title: 'Quality first', description: 'Clean architecture, strong typing, and tests to keep code safe and scalable.' },
+    { icon: 'fas fa-seedling', title: 'Simple by design', description: 'I prefer small, composable pieces over complexity—clarity beats cleverness.' },
+    { icon: 'fas fa-rocket', title: 'Fast delivery', description: 'Automated pipelines and incremental delivery to ship value quickly.' }
+  ];
 }

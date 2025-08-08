@@ -11,45 +11,70 @@ import { CommonModule } from '@angular/common';
 export class ProjectsComponent {
 
   public heading: string = 'Featured Projects';
-
   public description: string = `A curated selection of the projects I've built across different stacks – from backend APIs and frontend interfaces to cross-platform mobile apps.`;
+  public subtext: string = `Each project reflects my hands-on experience, adaptability, and love for clean, scalable architecture.`;
 
-  public subtext: string = `Each project reflects my hands-on experience, adaptability, and love for clean, scalable architecture. Whether you're browsing for inspiration or hiring, here's a window into how I turn ideas into elegant solutions.`;
-
-  public projects: {
+  public projects: Array<{
     year: string;
     title: string;
     description: string;
     tags: string[];
+    category: 'Web' | 'Backend' | 'Mobile' | 'Tools';
+    effort: 'high' | 'medium' | 'low';
     delay: number;
-  }[] = [
-      {
-        year: '2021',
-        title: 'Clock Application',
-        description: 'A clean and functional clock app with real-time timekeeping, alarm features, and a sleek UI — built entirely with HTML, CSS, and JavaScript.',
-        tags: ['HTML', 'CSS', 'JavaScript'],
-        delay: 200
-      },
-      {
-        year: '2022',
-        title: 'Java EE Todo List',
-        description: 'A full-stack task management app using Java Servlets (backend) and Angular (frontend). Includes user authentication and full CRUD task functionality.',
-        tags: ['Java EE', 'Servlets', 'Angular', 'HTML/CSS'],
-        delay: 300
-      },
-      {
-        year: '2023',
-        title: 'Photo Notes App',
-        description: 'A cross-platform Flutter app that enables users to capture, annotate, and organize photos as digital notes. Works on both mobile and desktop.',
-        tags: ['Flutter', 'Dart', 'Mobile', 'Multiplatform'],
-        delay: 400
-      },
-      {
-        year: '2024',
-        title: 'Minimal Portfolio CMS',
-        description: 'A lightweight CMS for developers to manage and deploy their portfolios with ease. Includes Markdown support, custom theming, and GitHub integration.',
-        tags: ['Node.js', 'Express', 'MongoDB', 'Markdown'],
-        delay: 500
-      }
-    ];
+  links?: { live?: string; repo?: string };
+    image?: string;
+  }> = [
+    {
+      year: '2021',
+      title: 'Clock Application',
+      description: 'A clean and functional clock app with real-time timekeeping, alarms, and a sleek UI — built with HTML, CSS, and JavaScript.',
+      tags: ['HTML', 'CSS', 'JavaScript'],
+      category: 'Web',
+      effort: 'low',
+      delay: 150,
+      links: { repo: '#', live: '#' }
+    },
+    {
+      year: '2022',
+      title: 'Java EE Todo List',
+      description: 'A full-stack task manager using Java Servlets for backend and Angular for frontend. Includes auth and full CRUD.',
+      tags: ['Java EE', 'Servlets', 'Angular', 'HTML/CSS'],
+      category: 'Backend',
+      effort: 'high',
+      delay: 200,
+      links: { repo: '#', live: '#' }
+    },
+    {
+      year: '2023',
+      title: 'Photo Notes App',
+      description: 'A Flutter app to capture, annotate, and organize photos as notes. Ships to mobile and desktop.',
+      tags: ['Flutter', 'Dart', 'Mobile', 'Multiplatform'],
+      category: 'Mobile',
+      effort: 'medium',
+      delay: 250,
+      links: { repo: '#', live: '#' }
+    },
+    {
+      year: '2024',
+      title: 'Minimal Portfolio CMS',
+      description: 'A lightweight CMS to build and deploy portfolios. Markdown support, theming, and GitHub integration.',
+      tags: ['Node.js', 'Express', 'MongoDB', 'Markdown'],
+      category: 'Web',
+      effort: 'medium',
+      delay: 300,
+      links: { repo: '#', live: '#' }
+    },
+    {
+      year: '2025',
+      title: 'React Recipe Finder',
+      description: 'A fast React SPA that searches and filters recipes, with offline caching and responsive UI.',
+      tags: ['React', 'TypeScript', 'Vite', 'PWA'],
+      category: 'Web',
+      effort: 'low',
+      delay: 400
+    }
+  ];
+
+  public trackByTitle(index: number, p: { title: string }) { return p.title; }
 }

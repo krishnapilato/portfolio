@@ -1,18 +1,47 @@
 <section id="contact" class="mt-12" data-aos="fade-in">
     <div class="contact-container" data-aos="fade-up" data-aos-delay="100">
 
-        <!-- Map -->
-        <div class="map-3d-container" data-aos="zoom-in" data-aos-delay="200">
-            <div class="map-3d" id="map-3d"></div>
-            <div class="location-pin">
-                <div class="pin-pulse"></div>
-                <i class="fas fa-map-marker-alt"></i>
+        <!-- Info Card -->
+        <div class="info-card" data-aos="zoom-in" data-aos-delay="150">
+            <div class="availability">
+                <span class="dot"></span>
+                {{ heading }}
             </div>
-            <div class="map-overlay"></div>
+            <h3 class="info-title">Let’s build something great</h3>
+            <p class="info-subtitle">I usually reply within 1 hour! If you prefer, reach me directly via:</p>
+
+            <ul class="info-list" role="list">
+                <li class="info-row" role="listitem">
+                    <span class="icon"><i class="fas fa-envelope"></i></span>
+                    <a [href]="'mailto:' + cta.emailAddress" class="link">{{ cta.emailAddress }}</a>
+                </li>
+                <li class="info-row" role="listitem">
+                    <span class="icon"><i class="fas fa-location-dot"></i></span>
+                    <span>Milan, Italy • UTC+2</span>
+                </li>
+                <li class="info-row" role="listitem">
+                    <span class="icon"><i class="fas fa-clock"></i></span>
+                    <span>Mon–Fri • 9:00–18:00</span>
+                </li>
+            </ul>
+
+            <div class="badges">
+                <span class="badge">Java & Spring Boot</span>
+                <span class="badge">Angular</span>
+                <span class="badge">Docker • CI/CD</span>
+            </div>
+
+            <!-- Socials -->
+            <div class="socials" data-aos="fade-up" data-aos-delay="250">
+                <a *ngFor="let social of socials" [href]="social.url" target="_blank" rel="noopener noreferrer" class="social-pill" [attr.aria-label]="social.name">
+                    <i [class]="social.icon"></i>
+                    <span>{{ social.name }}</span>
+                </a>
+            </div>
         </div>
 
         <!-- Form -->
-        <div class="contact-form-container" data-aos="fade-left" data-aos-delay="300">
+        <div class="contact-form-container" data-aos="fade-left" data-aos-delay="250">
             <div class="form-header">
                 <h2 class="section-title">
                     <span class="title-word">{{ heading }}</span>
@@ -22,19 +51,19 @@
 
             <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
                 <div class="form-group floating-label" data-aos="fade-up" data-aos-delay="400">
-                    <input id="name" type="text" formControlName="name" required />
+                    <input id="name" type="text" formControlName="name" required placeholder=" " />
                     <label for="name">Your Name</label>
                     <div class="underline"></div>
                 </div>
 
                 <div class="form-group floating-label" data-aos="fade-up" data-aos-delay="500">
-                    <input id="email" type="email" formControlName="email" required />
+                    <input id="email" type="email" formControlName="email" required placeholder=" " />
                     <label for="email">Email Address</label>
                     <div class="underline"></div>
                 </div>
 
                 <div class="form-group floating-label" data-aos="fade-up" data-aos-delay="600">
-                    <textarea id="message" formControlName="message" required style="resize: none;"></textarea>
+                    <textarea id="message" formControlName="message" required style="resize: none;" placeholder=" "></textarea>
                     <label for="message">Your Message</label>
                     <div class="underline"></div>
                 </div>
@@ -58,30 +87,6 @@
                     <span class="btn-hover-effect"></span>
                 </button>
             </form>
-
-            <!-- Socials -->
-            <div class="social-links flex gap-4 mt-6" data-aos="fade-up" data-aos-delay="800">
-                <a *ngFor="let social of socials" [href]="social.url" target="_blank" class="social-icon relative group"
-                    [attr.aria-label]="social.name">
-                    <i [class]="social.icon"></i>
-                    <span class="social-wave"></span>
-                    <span
-                        class="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none z-10 whitespace-nowrap">
-                        {{ social.name }}
-                    </span>
-                </a>
-            </div>
         </div>
     </div>
-</section>
-
-<!-- Footer -->
-<footer class="mt-12 text-center text-sm text-gray-500">
-    <p>
-        &copy; {{ currentYear }} <span class="text-primary-500 font-medium">Khova Krishna Pilato</span>.
-        Crafted with Angular & TailwindCSS.
-    </p>
-    <p class="text-xs mt-1 text-gray-600">
-        v0.0.5 – Last updated 28 June 2025, 1PM UTC+2
-    </p>
-</footer>
+ </section>

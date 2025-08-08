@@ -1,5 +1,5 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import emailjs from '@emailjs/browser';
 
@@ -13,7 +13,6 @@ import emailjs from '@emailjs/browser';
 export class ContactComponent {
   protected currentYear: number = new Date().getFullYear();
   private fb = inject(FormBuilder);
-  private platformId = inject(PLATFORM_ID);
 
   // 🧠 UI content
   public heading: string = "Let's create together";
@@ -22,11 +21,13 @@ export class ContactComponent {
   public sendingButton: string = "Sending...";
   public sentMessage: string = "Message sent successfully!";
   public errorMessage: string = "Failed to send. Try again later.";
+  public cta = {
+    emailAddress: 'krishnak.pilato@gmail.com'
+  };
   public socials = [
     { name: 'GitHub', icon: 'fab fa-github', url: 'https://github.com/krishnapilato' },
     { name: 'LinkedIn', icon: 'fab fa-linkedin-in', url: 'https://www.linkedin.com/in/khovakrishnapilato' },
-    { name: 'Facebook', icon: 'fab fa-facebook', url: 'https://www.facebook.com/krishnapilato' },
-    { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://www.instagram.com/khovakrishna.pilato' },
+    { name: 'Facebook', icon: 'fab fa-facebook', url: 'https://www.facebook.com/krishnapilato' }
   ];
 
   // 🧠 Form
@@ -40,22 +41,6 @@ export class ContactComponent {
   protected submitMessage: string = '';
   protected isSuccess: boolean = false;
 
-  ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        import('leaflet').then(L => {
-          const map = L.map('map-3d', {
-            zoomControl: false,
-            attributionControl: false,
-          }).setView([45.4642, 9.19], 12);
-
-          L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            subdomains: 'abcd'
-          }).addTo(map);
-        });
-      }, 300);
-    }
-  }
 
   protected async onSubmit() {
     if (this.contactForm.invalid) return;
