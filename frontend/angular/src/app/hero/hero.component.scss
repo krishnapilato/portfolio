@@ -8,7 +8,7 @@
 
 /* Left side */
 .left { position: relative; }
-.chip { display:inline-flex; align-items:center; gap:.5rem; padding:.5rem .9rem; border-radius:999px; background: rgba(18,24,38,.55); border:1px solid rgba(255,255,255,.1); box-shadow: 0 6px 18px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.06) inset; font-weight:600; color: var(--text); -webkit-backdrop-filter: blur(8px) saturate(140%); backdrop-filter: blur(8px) saturate(140%); }
+.chip { display:inline-flex; align-items:center; gap:.5rem; padding:.5rem .9rem; border-radius:999px; background: rgba(20,16,14,.55); border:1px solid rgba(255,255,255,.1); box-shadow: 0 6px 18px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.06) inset; font-weight:600; color: var(--text); -webkit-backdrop-filter: blur(8px) saturate(140%); backdrop-filter: blur(8px) saturate(140%); }
 .chip .dot { width:8px; height:8px; border-radius:999px; background: linear-gradient(135deg, var(--primary), var(--accent)); box-shadow: 0 0 10px rgba(249,203,40,.55); }
 
 .title { margin: 1.25rem 0 0.75rem; }
@@ -30,19 +30,19 @@
 .ticker { position: relative; overflow:hidden; margin-top: 1.25rem; -webkit-mask-image: linear-gradient( to right, transparent, #000 10%, #000 90%, transparent ); mask-image: linear-gradient( to right, transparent, #000 10%, #000 90%, transparent ); }
 .track { display:inline-flex; gap: 1.25rem; padding: .5rem 0; animation: marquee 20s linear infinite; }
 .ticker:hover .track { animation-play-state: paused; }
-.item { display:inline-flex; align-items:center; gap:.45rem; padding: .4rem .9rem; border-radius: 999px; background: rgba(17,24,39,.5); border:1px solid rgba(255,255,255,.1); white-space: nowrap; font-size: .9rem; color: var(--text); box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 4px 12px rgba(0,0,0,.18); -webkit-backdrop-filter: blur(8px) saturate(140%); backdrop-filter: blur(8px) saturate(140%); transition: transform .15s ease, background .15s ease, border-color .15s ease; }
+.item { display:inline-flex; align-items:center; gap:.45rem; padding: .4rem .9rem; border-radius: 999px; background: rgba(20,16,14,.5); border:1px solid rgba(255,255,255,.1); white-space: nowrap; font-size: .9rem; color: var(--text); box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 4px 12px rgba(0,0,0,.18); -webkit-backdrop-filter: blur(8px) saturate(140%); backdrop-filter: blur(8px) saturate(140%); transition: transform .15s ease, background .15s ease, border-color .15s ease; }
 .item::before { content:""; width: 6px; height: 6px; border-radius: 999px; background: linear-gradient(135deg, var(--primary), var(--accent)); box-shadow: 0 0 8px rgba(249,203,40,.5); }
 .item:hover { transform: translateY(-1px); background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.18); }
-.item:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(249,203,40,.45); }
+.item:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(255,183,3,.45); }
 @keyframes marquee { 0%{ transform: translateX(0)} 100%{ transform: translateX(-50%)} }
 @media (prefers-reduced-motion: reduce) { .track { animation-duration: 45s; } }
 
 /* Right side visual */
 .right { display:grid; place-items:center; perspective: 1000px; }
-.profile-card { position: relative; width: 300px; height: 340px; border-radius: 26px; background: linear-gradient(160deg, rgba(18,24,38,.8), rgba(18,24,38,.5)); border:1px solid rgba(255,255,255,.08); box-shadow: var(--shadow-2); overflow:hidden; transform-style: preserve-3d; transition: transform .25s ease; }
+.profile-card { position: relative; width: 300px; height: 340px; border-radius: 26px; background: linear-gradient(160deg, rgba(20,16,14,.8), rgba(20,16,14,.5)); border:1px solid rgba(255,255,255,.08); box-shadow: var(--shadow-2); overflow:hidden; transform-style: preserve-3d; transition: transform .25s ease; }
 .profile-card:hover { transform: rotateX(6deg) rotateY(-6deg) translateY(-2px); }
-.profile-card .ring { position:absolute; inset:-30%; border-radius:50%; background: conic-gradient(from 0deg, var(--primary), var(--accent), var(--purple), var(--primary)); filter: blur(26px); opacity:.28; animation: spin 12s linear infinite; transform: translateZ(-40px); }
-.profile-card .badge { position:absolute; top: 22px; left: 22px; width: 60px; height:60px; display:grid; place-items:center; border-radius:14px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--purple)); transform: translateZ(40px); }
+.profile-card .ring { position:absolute; inset:-30%; border-radius:50%; background: conic-gradient(from 0deg, var(--primary), var(--accent), var(--primary)); filter: blur(26px); opacity:.28; animation: spin 12s linear infinite; transform: translateZ(-40px); }
+.profile-card .badge { position:absolute; top: 22px; left: 22px; width: 60px; height:60px; display:grid; place-items:center; border-radius:14px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--accent)); transform: translateZ(40px); }
 .profile-card .tag { position:absolute; bottom: 22px; right: 22px; padding:.45rem .8rem; border-radius:999px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); font-weight:600; transform: translateZ(30px); }
 @keyframes spin { to { transform: rotate(360deg); } }
 

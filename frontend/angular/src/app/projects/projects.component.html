@@ -1,23 +1,35 @@
-<section id="projects" data-aos="fade-in">
+<section id="projects" data-aos="fade-in" aria-labelledby="projects-title">
   <!-- Section Heading -->
   <div class="head" data-aos="fade-up" data-aos-delay="100">
-    <h2 class="section-title">{{ heading }}</h2>
+    <h2 id="projects-title" class="section-title">{{ heading }}</h2>
     <p class="lead">{{ description }}</p>
     <p class="muted">{{ subtext }}</p>
   </div>
 
-  <!-- Projects Grid -->
-  <div class="grid">
-    <article class="card" *ngFor="let p of projects; trackBy: trackByTitle" [class.effort-high]="p.effort === 'high'" [attr.data-aos]="'fade-up'" [attr.data-aos-delay]="p.delay">
-      <div class="meta">
-        <span class="year">{{ p.year }}</span>
-        <span class="chip">{{ p.category }}</span>
-        <span class="effort" [attr.data-effort]="p.effort">{{ p.effort }}</span>
-      </div>
-      <h3 class="title">{{ p.title }}</h3>
-      <p class="desc">{{ p.description }}</p>
-      <div class="tags">
-        <span class="t" *ngFor="let t of p.tags">{{ t }}</span>
+  <!-- Liquid Glass Gallery -->
+  <div class="gallery">
+    <article
+      class="project-card"
+      *ngFor="let p of projects; trackBy: trackByTitle"
+      [class.span-2]="p.effort === 'high'"
+      [attr.data-aos]="'fade-up'"
+      [attr.data-aos-delay]="p.delay"
+      (mousemove)="onCardMouseMove($event)"
+      (mouseleave)="onCardMouseLeave($event)"
+      tabindex="0"
+    >
+      <div class="layers" aria-hidden="true"></div>
+      <div class="card-inner">
+        <div class="top">
+          <span class="badge year">{{ p.year }}</span>
+          <span class="badge category">{{ p.category }}</span>
+          <span class="badge effort" [attr.data-effort]="p.effort">{{ p.effort }}</span>
+        </div>
+        <h3 class="title">{{ p.title }}</h3>
+        <p class="desc">{{ p.description }}</p>
+        <div class="tags" role="list">
+          <span class="tag" *ngFor="let t of p.tags" role="listitem">{{ t }}</span>
+        </div>
       </div>
     </article>
   </div>

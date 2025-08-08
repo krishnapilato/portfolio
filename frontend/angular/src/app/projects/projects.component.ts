@@ -77,4 +77,42 @@ export class ProjectsComponent {
   ];
 
   public trackByTitle(index: number, p: { title: string }) { return p.title; }
+
+  // Liquid-glass hover: set CSS variables for pointer position and intensity
+  private rafPending = false;
+  private lastEvent: MouseEvent | null = null;
+
+  public onCardMouseMove(ev: MouseEvent) {
+    this.lastEvent = ev;
+    if (this.rafPending) return;
+    this.rafPending = true;
+    requestAnimationFrame(() => {
+      this.rafPending = false;
+      const target = ev.currentTarget as HTMLElement;
+      const rect = target.getBoundingClientRect();
+      const x = ev.clientX - rect.left;
+      const y = ev.clientY - rect.top;
+      target.style.setProperty('--px', `${x}px`);
+      target.style.setProperty('--py', `${y}px`);
+      // Slight elevate on hover
+      target.style.setProperty('--elev', '1');
+      // Tilt calculation: map pointer to -4..4 degrees range
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const dx = (x - cx) / cx; // -1..1
+      const dy = (y - cy) / cy; // -1..1
+      const max = 4; // degrees
+      const ry = (dx * max).toFixed(3) + 'deg';
+      const rx = (dy * -max).toFixed(3) + 'deg';
+      target.style.setProperty('--ry', ry);
+      target.style.setProperty('--rx', rx);
+    });
+  }
+
+  public onCardMouseLeave(ev: MouseEvent) {
+    const target = ev.currentTarget as HTMLElement;
+    target.style.setProperty('--elev', '0');
+    target.style.setProperty('--rx', '0deg');
+    target.style.setProperty('--ry', '0deg');
+  }
 }
