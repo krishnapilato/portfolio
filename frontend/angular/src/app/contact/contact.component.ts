@@ -60,7 +60,6 @@ export class ContactComponent {
           from_name: name,
           from_email: email,
           message: `${name} said: ${message}`
-        },
         environment.emailJsServiceId,
         environment.emailJsTemplateId,
         {
