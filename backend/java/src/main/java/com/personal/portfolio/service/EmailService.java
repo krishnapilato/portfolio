@@ -165,7 +165,7 @@ public class EmailService {
      */
     public void resendConfirmationEmail(@NotBlank @Email String recipient) {
         validateEmail(recipient);
-        String confirmationLink = "https://prismnexus-backend.eu-south-1.elasticbeanstalk.com/confirm-email?email=" + recipient;
+        String confirmationLink = baseUrl + "/confirm-email?email=" + recipient;
         sendEmail(recipient, "Email Confirmation", "Confirm your email: " + confirmationLink, null, null, null, false);
         logger.info("Resent confirmation email to: {}", recipient);
     }
