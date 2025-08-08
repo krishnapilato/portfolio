@@ -1,0 +1,32 @@
+#-------------------------------------------------------------------------------#
+#               Qodana analysis is configured by qodana.yaml file               #
+#             https://www.jetbrains.com/help/qodana/qodana-yaml.html            #
+#-------------------------------------------------------------------------------#
+version: "1.0"
+
+# Specify inspection profile for code analysis
+profile:
+  name: qodana.starter
+
+# Enable inspections (You can include specific inspections by uncommenting below)
+#include:
+#  - name: <SomeEnabledInspectionId>
+
+# Disable inspections (Add custom inspections to exclude here)
+exclude:
+  - name: "SuspiciousMethodCalls" # Example inspection ID to disable
+    paths:
+      - src/main/java/com/personal/portfolio/dto # Specify paths where this inspection is not required
+
+# Set the correct project JDK
+projectJDK: 23  # (Ensure the project's JDK version is compatible with this setting)
+
+# Execute shell command before Qodana execution (Uncomment if CI/CD step needed)
+# bootstrap: sh ./prepare-qodana.sh
+
+# Install IDE plugins before Qodana execution (Only if you have plugin dependencies)
+# plugins:
+#   - id: <plugin.id> #(Example plugin, refer to JetBrains plugin repository)
+
+# Specify Qodana linter for analysis (can use a more specific image if needed)
+linter: jetbrains/qodana-jvm-community:latest

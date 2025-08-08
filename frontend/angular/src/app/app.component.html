@@ -1,0 +1,60 @@
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app-bg" aria-hidden="true">
+    <div class="aurora"></div>
+    <div class="spotlight"></div>
+        <div class="grain"></div>
+    <!-- progress bar sits above in header -->
+</div>
+<header class="site-header" [class.condensed]="isCondensed" role="banner">
+    <div class="container header-inner">
+        <a href="#home" class="brand">
+            <span class="brand-mark">KP</span>
+            <span class="brand-text">Krishna Pilato</span>
+        </a>
+        <nav class="nav desktop" aria-label="Primary">
+            <a href="#home" [class.active]="isActive('home')">Home</a>
+            <a href="#about" [class.active]="isActive('about')">About</a>
+            <a href="#projects" [class.active]="isActive('projects')">Projects</a>
+            <a href="#contact" [class.active]="isActive('contact')">Contact</a>
+        </nav>
+        <button class="hamburger" aria-label="Menu" [attr.aria-expanded]="isMenuOpen" (click)="toggleMenu()">
+                <span [class.open]="isMenuOpen"></span>
+            </button>
+    </div>
+    <nav class="nav mobile" aria-label="Mobile" [class.open]="isMenuOpen" (click)="closeMenu()">
+        <a href="#home" [class.active]="isActive('home')">Home</a>
+        <a href="#about" [class.active]="isActive('about')">About</a>
+        <a href="#projects" [class.active]="isActive('projects')">Projects</a>
+        <a href="#contact" [class.active]="isActive('contact')">Contact</a>
+        </nav>
+            <div class="progress" [style.--w]="scrollProgress + '%' " aria-hidden="true"></div>
+  
+</header>
+
+<div class="mobile-overlay" [class.open]="isMenuOpen" (click)="closeMenu()" aria-hidden="true"></div>
+
+<div *ngIf="showWipBanner" class="wip-banner" role="status" aria-live="polite">
+    <div class="container wip-inner">
+        <div class="msg"><i class="fas fa-wand-magic-sparkles"></i> Work in progress: UI/UX is being refined.</div>
+        <button class="wip-dismiss" type="button" (click)="dismissWipBanner()" aria-label="Dismiss banner">
+            <i class="fas fa-xmark"></i>
+        </button>
+    </div>
+    <div class="wip-progress" aria-hidden="true"></div>
+    </div>
+
+<main id="main">
+    <div class="container">
+        <app-hero></app-hero>
+        <app-about-me></app-about-me>
+        <app-projects></app-projects>
+        <app-contact></app-contact>
+    </div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+    <div class="container footer-compact">
+        <span class="copy">&copy; {{ currentYear }} • v{{ version }} • {{ releaseDate }}</span>
+        <a href="#home" class="to-top-mini" aria-label="Back to top"><i class="fas fa-arrow-up"></i></a>
+    </div>
+  </footer>

@@ -1,0 +1,20 @@
+[34mINFO [0;39m [[36m2025-07-24 18:44:30[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication v0.0.5 using Java 24.0.2 with PID 171368 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-07-24 18:44:30[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
+[34mINFO [0;39m [[36m2025-07-24 18:44:32[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-07-24 18:44:34[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Deleted 1 expired JWT keys.
+[34mINFO [0;39m [[36m2025-07-24 18:44:34[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - New JWT signing key created (ID: 67774714-db28-4c23-a7b8-41fd6b234a16).
+[34mINFO [0;39m [[36m2025-07-24 18:44:34[0;39m] [[33mmain[0;39m] [32mc.p.p.c.c.ApplicationConfiguration[0;39m - Using BCrypt encoder with strength 12
+[34mINFO [0;39m [[36m2025-07-24 18:44:35[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-07-24 18:44:35[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 5.618 seconds (process running for 5.943)
+[34mINFO [0;39m [[36m2025-07-24 18:44:35[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user 'admin.email@gmail.com' already exists. Skipping creation.
+[34mINFO [0;39m [[36m2025-07-24 18:44:35[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Application started! Access at: http://localhost:8080
+[34mINFO [0;39m [[36m2025-07-24 18:44:37[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mc.p.portfolio.service.EmailService[0;39m - ScheduledExecutorService in EmailService has been shut down.
+[34mINFO [0;39m [[36m2025-08-08 12:45:23[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication v0.0.5 using Java 24.0.2 with PID 168768 (C:\Users\krish\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2025-08-08 12:45:23[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
+[34mINFO [0;39m [[36m2025-08-08 12:45:25[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-08-08 12:45:27[0;39m] [[33mmain[0;39m] [32mc.p.p.c.c.ApplicationConfiguration[0;39m - Using BCrypt encoder with strength 12
+[34mINFO [0;39m [[36m2025-08-08 12:45:29[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2025-08-08 12:45:29[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 5.582 seconds (process running for 6.003)
+[34mINFO [0;39m [[36m2025-08-08 12:45:29[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Admin user 'admin.email@gmail.com' already exists. Skipping creation.
+[34mINFO [0;39m [[36m2025-08-08 12:45:29[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Application started! Access at: http://localhost:8080
+[34mINFO [0;39m [[36m2025-08-08 12:45:32[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mc.p.portfolio.service.EmailService[0;39m - ScheduledExecutorService in EmailService has been shut down.

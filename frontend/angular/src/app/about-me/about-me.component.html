@@ -1,0 +1,63 @@
+<section id="about" class="about-redesign" data-aos="fade-in">
+    <!-- Banner header with portrait -->
+    <div class="about-banner container" data-aos="fade-up" data-aos-delay="100">
+        <div class="banner-left">
+            <h2 class="banner-title">About me</h2>
+            <p class="banner-sub">I build robust backends and delightful frontends—fast, simple, reliable.</p>
+            <div class="banner-cta">
+                <a [href]="'mailto:' + contactEmail" class="btn-primary"><i class="fas fa-envelope"></i><span>Contact</span></a>
+                <a *ngIf="cvUrl" [attr.href]="'https://drive.google.com/file/d/1OEKB2HAYgvfyN8QS5pX3YRWaFTLb4kDH/view?usp=sharing'" class="btn-ghost"><i class="fas fa-file"></i><span>CV</span></a>
+            </div>
+            <div class="banner-stats">
+                <div class="stat" *ngFor="let s of stats">
+                    <div class="stat-value">{{ s.value }}</div>
+                    <div class="stat-label">{{ s.label }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="banner-right">
+            <div class="portrait">
+            <img [src]="profileImage" alt="{{ profileName }}" title="{{ profileName }}" draggable="false" loading="lazy" decoding="async" width="440" height="440" />
+                <div class="ring"></div>
+                <div class="glow"></div>
+            </div>
+            <div class="who">
+                <div class="name">{{ profileName }}</div>
+                <div class="title">{{ profileTitle }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature cards -->
+        <div class="features container" data-aos="fade-up" data-aos-delay="200">
+        <article class="feature" *ngFor="let f of features; trackBy: trackByIndex">
+            <i [class]="f.icon"></i>
+            <h3>{{ f.title }}</h3>
+            <p>{{ f.description }}</p>
+        </article>
+    </div>
+
+    <!-- Toolbox (skills) -->
+        <div class="toolbox container" data-aos="fade-up" data-aos-delay="250">
+        <div class="tool-group" *ngFor="let g of skills">
+            <div class="tool-title">{{ g.category }}</div>
+            <div class="tool-tags">
+                <span class="tag" *ngFor="let it of g.items; trackBy: trackByIndex">{{ it }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Horizontal milestones rail -->
+        <div class="milestones container" data-aos="fade-up" data-aos-delay="300">
+        <div class="rail" tabindex="0" aria-label="Career milestones">
+            <div class="mile" *ngFor="let m of timeline; let i = index">
+                <div class="dot"></div>
+                <div class="card">
+                    <div class="year">{{ m.year }}</div>
+                    <div class="title">{{ m.title }}</div>
+                    <p>{{ m.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

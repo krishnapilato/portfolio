@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Backend Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            500: '#FF4D4D',
+                            600: '#E04545',
+                        },
+                        dark: {
+                            900: '#0F0F15',
+                            800: '#1A1A24',
+                            700: '#252533',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'gradient': 'gradient 8s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        gradient: {
+                            '0%, 100%': { 'background-position': '0% 50%' },
+                            '50%': { 'background-position': '100% 50%' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F0F15;
+            color: #FFFFFF;
+            opacity: 0;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(26, 26, 36, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.36);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #FF4D4D, #F9CB28);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% 200%;
+            animation: gradient 8s ease infinite;
+        }
+
+        .hover-scale {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s;
+        }
+
+        .hover-scale:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(255, 77, 77, 0.2);
+        }
+
+        .grid-pattern {
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+
+<body class="grid-pattern select-none" oncontextmenu="return false;">
+
+<div class="min-h-screen flex flex-col items-center justify-center p-4 relative z-10">
+    <div class="glass-card w-full max-w-4xl p-8 rounded-2xl">
+        <div class="flex flex-col items-center text-center mb-10">
+            <div class="w-24 h-24 bg-gradient-to-br from-primary-500 to-yellow-400 rounded-2xl flex items-center justify-center mb-6 shadow-lg hover-scale">
+                <i class="fas fa-server text-4xl text-white"></i>
+            </div>
+            <h1 class="text-5xl font-bold mb-4 gradient-text">Backend Services</h1>
+            <p class="text-lg text-gray-300 max-w-2xl">
+                High-performance backend infrastructure running smoothly.
+                <br>
+                APIs are optimized and ready for integration.
+            </p>
+        </div>
+
+        <!-- Service Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a href="swagger-ui" class="glass-card p-6 rounded-xl transition-all hover-scale group">
+                <div class="flex items-start space-x-4">
+                    <div class="bg-primary-500 bg-opacity-20 p-3 rounded-lg group-hover:bg-opacity-30 transition">
+                        <i class="fas fa-code text-primary-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-1">API Documentation</h3>
+                        <p class="text-gray-400 text-sm">
+                            Explore the comprehensive API documentation with Swagger UI
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <div class="w-8 h-8 rounded-full bg-primary-500 bg-opacity-20 flex items-center justify-center group-hover:bg-opacity-40 transition">
+                        <i class="fas fa-arrow-right text-xs text-primary-500"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="https://krishnapilato.github.io/portfolio" target="_blank" class="glass-card p-6 rounded-xl transition-all hover-scale group">
+                <div class="flex items-start space-x-4">
+                    <div class="bg-blue-500 bg-opacity-20 p-3 rounded-lg group-hover:bg-opacity-30 transition">
+                        <i class="fas fa-globe text-blue-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-1">Frontend Application</h3>
+                        <p class="text-gray-400 text-sm">
+                            Visit the modern frontend interface powered by this backend
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center group-hover:bg-opacity-40 transition">
+                        <i class="fas fa-external-link-alt text-xs text-blue-400"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Status indicators -->
+        <div class="mt-10 pt-6 border-t border-gray-800">
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="flex items-center">
+                    <div th:class="${overallStatus} == 'UP' ? 'w-2 h-2 rounded-full bg-green-500 animate-pulse mr-2' : 'w-2 h-2 rounded-full bg-red-500 mr-2'"></div>
+                    <span class="text-sm text-gray-400">Overall System: <span th:text="${overallStatus}"></span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stack Chips -->
+        <div class="mt-8 flex flex-wrap justify-center gap-2">
+            <span class="px-3 py-1 text-sm text-white border border-white/10 rounded-full bg-white/5 hover:bg-primary-500 hover:text-white transition">Java 24</span>
+            <span class="px-3 py-1 text-sm text-white border border-white/10 rounded-full bg-white/5 hover:bg-primary-500 hover:text-white transition">Spring Boot 4.0.0</span>
+            <span class="px-3 py-1 text-sm text-white border border-white/10 rounded-full bg-white/5 hover:bg-primary-500 hover:text-white transition">MySQL 9.3</span>
+        </div>
+    </div>
+
+    <footer class="mt-12 text-center">
+        <p class="text-gray-500 text-sm">
+            &copy; 2025 <span class="text-primary-500">Khova Krishna Pilato</span>.
+            Crafted with modern web technologies.
+        </p>
+    </footer>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.style.opacity = '1';
+
+        gsap.from(".glass-card", {
+            duration: 1,
+            y: 20,
+            opacity: 0,
+            ease: "power3.out",
+            stagger: 0.1
+        });
+    });
+</script>
+</body>
+</html>

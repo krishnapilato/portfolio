@@ -1,0 +1,11 @@
+# Backend (Java)
+backend/java/src/* linguist-language=Java
+
+# Frontend (Angular - TypeScript, HTML, SCSS)
+frontend/angular/*.ts linguist-language=TypeScript
+frontend/angular/*.html linguist-language=HTML
+frontend/angular/*.scss linguist-language=SCSS
+
+# Exclude build and vendor files
+frontend/angular/dist/* linguist-generated
+frontend/angular/node_modules/* linguist-vendored

@@ -1,0 +1,24 @@
+<section id="projects" data-aos="fade-in">
+  <!-- Section Heading -->
+  <div class="head" data-aos="fade-up" data-aos-delay="100">
+    <h2 class="section-title">{{ heading }}</h2>
+    <p class="lead">{{ description }}</p>
+    <p class="muted">{{ subtext }}</p>
+  </div>
+
+  <!-- Projects Grid -->
+  <div class="grid">
+    <article class="card" *ngFor="let p of projects; trackBy: trackByTitle" [class.effort-high]="p.effort === 'high'" [attr.data-aos]="'fade-up'" [attr.data-aos-delay]="p.delay">
+      <div class="meta">
+        <span class="year">{{ p.year }}</span>
+        <span class="chip">{{ p.category }}</span>
+        <span class="effort" [attr.data-effort]="p.effort">{{ p.effort }}</span>
+      </div>
+      <h3 class="title">{{ p.title }}</h3>
+      <p class="desc">{{ p.description }}</p>
+      <div class="tags">
+        <span class="t" *ngFor="let t of p.tags">{{ t }}</span>
+      </div>
+    </article>
+  </div>
+</section>
