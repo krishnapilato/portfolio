@@ -105,7 +105,6 @@ public class User implements UserDetails {
             this.password = new BCryptPasswordEncoder().encode(password);
         }
     }
-
     @Override
     public String getUsername() {
         return email;
