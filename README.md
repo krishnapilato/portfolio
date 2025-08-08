@@ -87,7 +87,7 @@ npm run serve:ssr:angular
 
 ## Lighthouse
 
-Current scores (last run: YYYY‑MM‑DD):
+Current scores (last run: 2025‑08‑08):
 
 | Target | Performance | Accessibility | Best Practices | SEO |
 |--------|-------------|---------------|----------------|-----|
