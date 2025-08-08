@@ -26,6 +26,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   public mx = 50; // percentage
   public my = 50; // percentage
   public showWipBanner = false;
+  private mouseRafPending = false;
+  private lastMouse: { x: number; y: number } | null = null;
 
   private observer?: IntersectionObserver;
   private platformId = inject(PLATFORM_ID);
@@ -45,12 +47,19 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(ev: MouseEvent) {
     if (!isPlatformBrowser(this.platformId)) return;
-    const w = window.innerWidth || document.documentElement.clientWidth;
-    const h = window.innerHeight || document.documentElement.clientHeight;
-    this.mx = Math.max(0, Math.min(100, (ev.clientX / w) * 100));
-    this.my = Math.max(0, Math.min(100, (ev.clientY / h) * 100));
-    document.documentElement.style.setProperty('--mx', this.mx + '%');
-    document.documentElement.style.setProperty('--my', this.my + '%');
+    this.lastMouse = { x: ev.clientX, y: ev.clientY };
+    if (this.mouseRafPending) return;
+    this.mouseRafPending = true;
+    requestAnimationFrame(() => {
+      if (!this.lastMouse) { this.mouseRafPending = false; return; }
+      const w = window.innerWidth || document.documentElement.clientWidth;
+      const h = window.innerHeight || document.documentElement.clientHeight;
+      this.mx = Math.max(0, Math.min(100, (this.lastMouse.x / w) * 100));
+      this.my = Math.max(0, Math.min(100, (this.lastMouse.y / h) * 100));
+      document.documentElement.style.setProperty('--mx', this.mx + '%');
+      document.documentElement.style.setProperty('--my', this.my + '%');
+      this.mouseRafPending = false;
+    });
   }
 
   toggleMenu() {

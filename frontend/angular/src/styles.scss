@@ -90,6 +90,11 @@ html { scroll-behavior: smooth; }
 /* Section spacing */
 section { padding: 5rem 0; scroll-margin-top: 96px; }
 
+/* Section spacing adjustments to use more space between major blocks */
+section#about { padding-bottom: 6.5rem; }
+section#projects { padding-top: 6.5rem; padding-bottom: 6rem; }
+section#contact { padding-top: 6.5rem; }
+
 /* Typography */
 h1,h2,h3 { line-height: 1.15; }
 .section-title { 
