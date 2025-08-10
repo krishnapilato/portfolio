@@ -26,14 +26,14 @@
             </ul>
 
             <div class="badges">
-                <span class="badge">Java & Spring Boot</span>
-                <span class="badge">Angular</span>
-                <span class="badge">Docker • CI/CD</span>
+                <span class="badge" appLiquidTilt>Java & Spring Boot</span>
+                <span class="badge" appLiquidTilt>Angular</span>
+                <span class="badge" appLiquidTilt>Docker • CI/CD</span>
             </div>
 
             <!-- Socials -->
             <div class="socials" data-aos="fade-up" data-aos-delay="250">
-                <a *ngFor="let social of socials" [href]="social.url" target="_blank" rel="noopener noreferrer" class="social-pill" [attr.aria-label]="social.name">
+                <a *ngFor="let social of socials" [href]="social.url" target="_blank" rel="noopener noreferrer" class="social-pill" appLiquidTilt [attr.aria-label]="social.name">
                     <i [class]="social.icon"></i>
                     <span>{{ social.name }}</span>
                 </a>

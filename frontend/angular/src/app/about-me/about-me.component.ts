@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { LiquidTiltDirective } from '../shared/liquid-tilt.directive';
 
 @Component({
   selector: 'app-about-me',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LiquidTiltDirective],
   templateUrl: './about-me.component.html',
   styleUrls: ['./about-me.component.scss']
 })
@@ -12,7 +13,7 @@ export class AboutMeComponent {
   // Profile
   public profileName = 'Krishna Pilato';
   public profileTitle = 'Full Stack Developer';
-  public profileImage = 'https://media.licdn.com/dms/image/v2/D4D03AQEBYpmjLJByRw/profile-displayphoto-crop_800_800/B4DZhBRHuGGsAM-/0/1753441665104?e=1757548800&v=beta&t=CZbDJRJFUrr5a21TKWWczNRvPFKJY5AVdck-svLLCG0';
+  public profileImage = '/profile_picture.JPG';
 
   // Intro
   public introTitle = 'About me';

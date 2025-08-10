@@ -16,6 +16,10 @@
             <a href="#about" [class.active]="isActive('about')">About</a>
             <a href="#projects" [class.active]="isActive('projects')">Projects</a>
             <a href="#contact" [class.active]="isActive('contact')">Contact</a>
+            <!-- <button type="button" class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="theme==='dark' ? 'Switch to light theme' : 'Switch to dark theme'">
+                <i class="fas" [class.fa-sun]="theme==='dark'" [class.fa-moon]="theme==='light'"></i>
+                <span class="sr-only">Toggle theme</span>
+            </button> -->
         </nav>
         <button class="hamburger" aria-label="Menu" [attr.aria-expanded]="isMenuOpen" (click)="toggleMenu()">
                 <span [class.open]="isMenuOpen"></span>
@@ -26,6 +30,11 @@
         <a href="#about" [class.active]="isActive('about')">About</a>
         <a href="#projects" [class.active]="isActive('projects')">Projects</a>
         <a href="#contact" [class.active]="isActive('contact')">Contact</a>
+        <!-- <button type="button" class="theme-toggle mobile" (click)="toggleTheme()" [attr.aria-label]="theme==='dark' ? 'Switch to light theme' : 'Switch to dark theme'">
+            <i class="fas" [class.fa-sun]="theme==='dark'" [class.fa-moon]="theme==='light'"></i>
+            <span class="label">{{ theme==='dark' ? 'Light' : 'Dark' }}</span>
+            <span class="sr-only">Toggle theme</span>
+        </button> -->
         </nav>
             <div class="progress" [style.--w]="scrollProgress + '%' " aria-hidden="true"></div>
   

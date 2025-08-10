@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
+import { LiquidTiltDirective } from '../shared/liquid-tilt.directive';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LiquidTiltDirective],
   templateUrl: './hero.component.html',
   styleUrls: ['./hero.component.scss']
 })

@@ -19,7 +19,7 @@ main { position: relative; z-index: 10; }
 .nav { display:flex; gap:1rem; }
 .nav a { position: relative; color: var(--muted); text-decoration:none; padding:.5rem .75rem; border-radius:8px; transition: all .2s ease; outline: none; }
 .nav a:hover { color: var(--text); background: rgba(255,255,255,.06); }
-.nav a:focus-visible { box-shadow: 0 0 0 2px rgba(255,183,3,.5); }
+.nav a:focus-visible { box-shadow: 0 0 0 2px rgba(21,216,255,.6), 0 0 0 4px rgba(103,91,255,.35); }
 .nav a.active { color: var(--text); }
 .nav a.active::after { content:""; position:absolute; left: .75rem; right:.75rem; bottom: .35rem; height: 2px; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 1px; }
 .nav.desktop { display: none; }

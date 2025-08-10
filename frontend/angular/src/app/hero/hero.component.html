@@ -22,7 +22,7 @@
             </div>
 
             <div class="stats" role="list">
-                <div class="stat" *ngFor="let s of stats" role="listitem">
+                <div class="stat" appLiquidTilt *ngFor="let s of stats" role="listitem">
                     <div class="val">{{ s.value }}</div>
                     <div class="lab">{{ s.label }}</div>
                 </div>
@@ -30,8 +30,8 @@
 
             <div class="ticker" aria-label="Technologies">
                 <div class="track">
-                    <span class="item" *ngFor="let t of techs">{{ t }}</span>
-                    <span class="item" *ngFor="let t of techs">{{ t }}</span>
+                    <span class="item" appLiquidTilt *ngFor="let t of techs">{{ t }}</span>
+                    <span class="item" appLiquidTilt *ngFor="let t of techs">{{ t }}</span>
                 </div>
             </div>
 

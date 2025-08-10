@@ -26,6 +26,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   public mx = 50; // percentage
   public my = 50; // percentage
   public showWipBanner = false;
+  public theme: 'dark' | 'light' = 'dark';
   private mouseRafPending = false;
   private lastMouse: { x: number; y: number } | null = null;
 
@@ -78,6 +79,18 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;
+    // Theme initialization
+    try {
+      const stored = localStorage.getItem('theme');
+      if (stored === 'light' || stored === 'dark') {
+        this.setTheme(stored as 'light' | 'dark');
+      } else {
+        const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        this.setTheme(prefersLight ? 'light' : 'dark');
+      }
+    } catch {
+      this.setTheme('dark');
+    }
     // WIP banner visibility persisted in localStorage
     try {
       const dismissed = localStorage.getItem('wipBannerDismissed') === '1';
@@ -107,6 +120,18 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   // Initial compute
   this.computeActiveSection();
     }, 0);
+  }
+
+  toggleTheme() {
+    this.setTheme(this.theme === 'dark' ? 'light' : 'dark');
+  }
+
+  private setTheme(next: 'dark' | 'light') {
+    this.theme = next;
+    if (isPlatformBrowser(this.platformId)) {
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch {}
+    }
   }
 
   dismissWipBanner() {
