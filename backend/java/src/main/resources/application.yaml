@@ -17,7 +17,7 @@ spring:
   security:
     user:
       name: admin
-      password: ${SPRING_SECURITY_USER_PASSWORD:95Z-5GaYjeCZU%4nV+DdR^2zUqDspg?+kVZbeZQ-ZcYte4^6&Nc*Buzx_8CEHkBV}
+      password: 1234567890
       email: admin.email@gmail.com
   mail:
     host: sandbox.smtp.mailtrap.io
