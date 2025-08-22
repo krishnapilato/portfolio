@@ -7,16 +7,19 @@
   </div>
 
   <!-- Liquid Glass Gallery -->
-  <div class="gallery">
+  <div class="gallery" role="list">
     <article
       class="project-card"
-      *ngFor="let p of projects; trackBy: trackByTitle"
+      *ngFor="let p of projects; let i = index; trackBy: trackByTitle"
+      role="listitem"
       [class.span-2]="p.effort === 'high'"
       [attr.data-aos]="'fade-up'"
       [attr.data-aos-delay]="p.delay"
       (mousemove)="onCardMouseMove($event)"
       (mouseleave)="onCardMouseLeave($event)"
-      tabindex="0"
+      [attr.aria-labelledby]="'proj-' + i"
+      [attr.aria-describedby]="'proj-desc-' + i"
+      [attr.tabindex]="(p.links?.live || p.links?.repo) ? 0 : -1"
     >
       <div class="layers" aria-hidden="true"></div>
       <div class="card-inner">
@@ -25,8 +28,14 @@
           <span class="badge category">{{ p.category }}</span>
           <span class="badge effort" [attr.data-effort]="p.effort">{{ p.effort }}</span>
         </div>
-        <h3 class="title">{{ p.title }}</h3>
-        <p class="desc">{{ p.description }}</p>
+
+        <!-- Optional thumbnail -->
+        <figure class="thumb" *ngIf="p.image" aria-hidden="true">
+          <img [src]="p.image" [alt]="p.title" loading="lazy"/>
+        </figure>
+
+        <h3 class="title" [id]="'proj-' + i">{{ p.title }}</h3>
+        <p class="desc" [id]="'proj-desc-' + i">{{ p.description }}</p>
         <div class="tags" role="list">
           <span class="tag" *ngFor="let t of p.tags" role="listitem">{{ t }}</span>
         </div>

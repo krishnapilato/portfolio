@@ -1,5 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, TrackByFunction } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+interface ProjectLinks { live?: string; repo?: string }
+export interface Project {
+  year: string;
+  title: string;
+  description: string;
+  tags: string[];
+  category: 'Web' | 'Backend' | 'Mobile' | 'Tools';
+  effort: 'high' | 'medium' | 'low';
+  delay: number;
+  links?: ProjectLinks;
+  image?: string;
+}
 
 @Component({
   selector: 'app-projects',
@@ -14,17 +27,7 @@ export class ProjectsComponent {
   public description: string = `A curated selection of the projects I've built across different stacks – from backend APIs and frontend interfaces to cross-platform mobile apps.`;
   public subtext: string = `Each project reflects my hands-on experience, adaptability, and love for clean, scalable architecture.`;
 
-  public projects: Array<{
-    year: string;
-    title: string;
-    description: string;
-    tags: string[];
-    category: 'Web' | 'Backend' | 'Mobile' | 'Tools';
-    effort: 'high' | 'medium' | 'low';
-    delay: number;
-  links?: { live?: string; repo?: string };
-    image?: string;
-  }> = [
+  public projects: Project[] = [
     {
       year: '2021',
       title: 'Clock Application',
@@ -76,7 +79,7 @@ export class ProjectsComponent {
     }
   ];
 
-  public trackByTitle(index: number, p: { title: string }) { return p.title; }
+  public trackByTitle: TrackByFunction<Project> = (_: number, p: Project) => p.title;
 
   // Liquid-glass hover: set CSS variables for pointer position and intensity
   private rafPending = false;
