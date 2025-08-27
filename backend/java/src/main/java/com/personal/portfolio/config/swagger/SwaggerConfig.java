@@ -23,7 +23,7 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-    private Environment environment;
+    private final Environment environment;
 
     @Value("${spring.application.version}")
     private String projectVersion;
