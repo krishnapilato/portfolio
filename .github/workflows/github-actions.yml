@@ -51,7 +51,7 @@ jobs:
     steps:
       # Checkout the repository to the runner machine for subsequent operations.
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Cache Node.js dependencies to avoid re-installing them on each run.
       - name: Cache Node.js dependencies
@@ -64,9 +64,9 @@ jobs:
 
       # Set up Node.js version 23.5.0 for the frontend build.
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '24.5.0'
+          node-version: '24.7.0'
 
       # Install the Angular CLI globally to build the project.
       - name: Install Angular CLI
