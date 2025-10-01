@@ -12,7 +12,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -21,7 +24,7 @@ import java.util.stream.Stream;
  * Initializes the application, sets up caching, and ensures an admin user exists.
  *
  * @author Khova Krishna
- * @version 0.0.5
+ * @version 0.1.0
  */
 @SpringBootApplication
 public class PortfolioApplication {
@@ -41,33 +44,43 @@ public class PortfolioApplication {
      * automatic admin creation in production.
      *
      * @param userService Service for user-related operations.
+     * @param adminConfig Configuration with admin credentials.
+     * @param passwordEncoder Password encoder for secure storage.
+     * @param env Spring environment for logging.
      * @return CommandLineRunner to execute database initialization logic.
      */
     @Bean
     @Profile("!prod")
-    public CommandLineRunner initDatabase(UserService userService, AdminConfig adminConfig) {
+    public CommandLineRunner initDatabase(UserService userService,
+                                          AdminConfig adminConfig,
+                                          PasswordEncoder passwordEncoder,
+                                          Environment env) {
         return args -> {
+            // Validate required config
             if (Stream.of(adminConfig.getName(), adminConfig.getPassword(), adminConfig.getEmail())
                     .anyMatch(Objects::isNull)) {
-                logger.error("Startup error: Missing admin credentials! Check application.yml.");
-                return;
+                throw new IllegalStateException("Startup error: Missing admin credentials! Check application.yml.");
             }
 
+            // Create admin if not present
             if (!userService.existsByEmail(adminConfig.getEmail())) {
                 User adminUser = new User();
                 adminUser.setFullName(adminConfig.getName());
                 adminUser.setEmail(adminConfig.getEmail());
-                adminUser.setPassword(adminConfig.getPassword());
+                adminUser.setPassword(passwordEncoder.encode(adminConfig.getPassword()));
                 adminUser.setRole(Role.ADMIN);
                 adminUser.setEnabled(true);
 
                 userService.createUser(adminUser);
                 logger.info("Default admin user '{}' created successfully.", adminConfig.getEmail());
             } else {
-                logger.info("Admin user '{}' already exists. Skipping creation.", adminConfig.getEmail());
+                logger.info("ℹAdmin user '{}' already exists. Skipping creation.", adminConfig.getEmail());
             }
 
-            logger.info("Application started! Access at: http://localhost:8080");
+            // Dynamic startup log
+            String port = env.getProperty("server.port", "8080");
+            String[] profiles = env.getActiveProfiles();
+            logger.info("Application started on http://localhost:{} with profiles: {}", port, Arrays.toString(profiles));
         };
     }
 }

@@ -17,7 +17,7 @@ public record LoginResponse(
         @NotNull String status,
         @NotNull String message,
         String token,
-        long expiresIn, // 0 for error responses
+        long expiresIn,
         String errorCode,
         Role role,
         @NotNull Instant timestamp

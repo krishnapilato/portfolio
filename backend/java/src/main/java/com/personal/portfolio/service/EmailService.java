@@ -59,9 +59,9 @@ public class EmailService {
         if (StringUtils.isBlank(input)) {
             throw new IllegalArgumentException("Input cannot be null or empty.");
         }
-        // Remove potentially dangerous characters and escape HTML.
-        String sanitized = input.replaceAll("[<>\"'%;()&+]", "").trim();
-        return StringEscapeUtils.escapeHtml4(sanitized);
+        // More efficient pattern-based replacement and trim before escaping
+        String sanitized = input.replaceAll("[<>\"'%;()&+]", "");
+        return StringEscapeUtils.escapeHtml4(sanitized.trim());
     }
 
     /**
@@ -183,12 +183,28 @@ public class EmailService {
             @NotBlank String body) {
         String sanitizedSubject = sanitizeInput(subject);
         String sanitizedBody = sanitizeInput(body);
-
-        recipients.parallelStream()
+        
+        // Filter valid recipients first to avoid processing invalid ones
+        List<String> validRecipients = recipients.stream()
                 .filter(this::isValidEmail)
-                .forEach(recipient -> sendEmail(recipient, sanitizedSubject, sanitizedBody, null, null, null, false));
-
-        logger.info("Bulk email sent to {} recipients.", recipients.size());
+                .toList();
+        
+        int successCount = 0;
+        int failureCount = 0;
+        
+        // Sequential processing with better error handling
+        for (String recipient : validRecipients) {
+            try {
+                sendEmail(recipient, sanitizedSubject, sanitizedBody, null, null, null, false);
+                successCount++;
+            } catch (Exception e) {
+                failureCount++;
+                logger.warn("Failed to send bulk email to {}: {}", recipient, e.getMessage());
+            }
+        }
+        
+        logger.info("Bulk email completed: {} successful, {} failed out of {} valid recipients", 
+                   successCount, failureCount, validRecipients.size());
     }
 
     /**
@@ -269,14 +285,14 @@ public class EmailService {
             setOptionalRecipients(helper, cc, bcc, replyTo);
 
             if (attachments != null && !attachments.isEmpty()) {
-                attachments.forEach((fileName, fileContent) ->
-                {
+                for (Map.Entry<String, byte[]> attachment : attachments.entrySet()) {
                     try {
-                        helper.addAttachment(fileName, new ByteArrayResource(fileContent));
+                        helper.addAttachment(attachment.getKey(), new ByteArrayResource(attachment.getValue()));
                     } catch (MessagingException e) {
-                        throw new RuntimeException(e);
+                        logger.error("Failed to add attachment {}: {}", attachment.getKey(), e.getMessage());
+                        throw new RuntimeException("Failed to add attachment: " + attachment.getKey(), e);
                     }
-                });
+                }
             }
             javaMailSender.send(mimeMessage);
             emailStatusMap.put(emailId, "SENT");
@@ -311,10 +327,18 @@ public class EmailService {
             @NotNull @Future Date sendTime) {
 
         long delay = sendTime.getTime() - System.currentTimeMillis();
-        // Schedule the email to be sent directly after the calculated delay.
+        if (delay <= 0) {
+            logger.warn("Scheduled time is in the past, sending immediately for recipient: {}", recipient);
+        }
+        
+        // Schedule the email with proper error handling
         scheduler.schedule(() -> {
-            sendEmail(recipient, subject, body, cc, bcc, replyTo, isHtml);
-            logger.info("Scheduled email sent to {} at {}", recipient, sendTime);
+            try {
+                sendEmail(recipient, subject, body, cc, bcc, replyTo, isHtml);
+                logger.info("Scheduled email sent to {} at {}", recipient, sendTime);
+            } catch (Exception e) {
+                logger.error("Failed to send scheduled email to {}: {}", recipient, e.getMessage(), e);
+            }
         }, Math.max(delay, 0), TimeUnit.MILLISECONDS);
     }
 

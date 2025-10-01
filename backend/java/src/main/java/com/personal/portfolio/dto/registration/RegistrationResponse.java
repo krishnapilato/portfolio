@@ -15,8 +15,8 @@ public record RegistrationResponse(
 
         @NotNull String status,
         @NotNull String message,
-        Long userId,  // null if error
-        Role role,    // null if error
+        Long userId,
+        Role role,
         @NotNull Instant timestamp
 
 ) {
