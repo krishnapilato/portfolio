@@ -135,7 +135,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>3.6.2</version>
                 <executions>
                     <execution>
                         <id>enforce</id>
@@ -152,28 +152,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- Docker Build Plugin -->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.13</version>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!--suppress UnresolvedMavenProperty -->
-                    <repository>${docker.image.prefix}/portfolio-backend</repository>
-                    <tag>${project.version}</tag>
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
 
