@@ -3,6 +3,7 @@ package com.personal.portfolio.service;
 import com.personal.portfolio.model.Role;
 import com.personal.portfolio.model.User;
 import com.personal.portfolio.repository.UserRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    @Getter
     private final EmailService emailService;
 
     @Override

@@ -32,12 +32,13 @@ public class JwtService {
     private static final ReentrantLock lock = new ReentrantLock();
 
     @Value("${jwt.token.expiration:7200000}")
-    private long tokenExpiration;
+    private final long tokenExpiration;
 
     private final JwtKeysRepository keyRepository;
     private volatile SecretKey cachedSigningKey;
 
-    public JwtService(JwtKeysRepository keyRepository) {
+    public JwtService(long tokenExpiration, JwtKeysRepository keyRepository) {
+        this.tokenExpiration = tokenExpiration;
         this.keyRepository = keyRepository;
         rotateKey(); // Initialize key on startup
     }

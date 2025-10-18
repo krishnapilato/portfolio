@@ -31,7 +31,7 @@ public class PortfolioApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(PortfolioApplication.class);
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         new SpringApplicationBuilder(PortfolioApplication.class)
                 .bannerMode(Banner.Mode.CONSOLE)
                 .logStartupInfo(true)
@@ -55,7 +55,7 @@ public class PortfolioApplication {
                                           AdminConfig adminConfig,
                                           PasswordEncoder passwordEncoder,
                                           Environment env) {
-        return args -> {
+        return _ -> {
             // Validate required config
             if (Stream.of(adminConfig.getName(), adminConfig.getPassword(), adminConfig.getEmail())
                     .anyMatch(Objects::isNull)) {
