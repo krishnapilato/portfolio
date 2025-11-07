@@ -21,31 +21,25 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * Service for managing JSON Web Tokens (JWT).
- * Includes functionality for generating, validating, and rotating JWT secret keys.
- */
 @Service
 public class JwtService {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
     private static final ReentrantLock lock = new ReentrantLock();
 
-    @Value("${jwt.token.expiration:7200000}")
     private final long tokenExpiration;
-
     private final JwtKeysRepository keyRepository;
     private volatile SecretKey cachedSigningKey;
 
-    public JwtService(long tokenExpiration, JwtKeysRepository keyRepository) {
+    public JwtService(
+            @Value("${jwt.token.expiration:7200000}") long tokenExpiration,
+            JwtKeysRepository keyRepository
+    ) {
         this.tokenExpiration = tokenExpiration;
         this.keyRepository = keyRepository;
         rotateKey(); // Initialize key on startup
     }
 
-    /**
-     * Scheduled task to rotate the secret key daily at midnight.
-     */
     @Scheduled(cron = "0 0 0 * * ?")
     public void rotateKey() {
         lock.lock();

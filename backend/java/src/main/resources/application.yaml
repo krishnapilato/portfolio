@@ -39,6 +39,8 @@ jwt:
     expiration: 7200000
 
 springdoc:
+  api-docs:
+    enabled: true
   swagger-ui:
     path: /swagger-ui
     enabled: true
