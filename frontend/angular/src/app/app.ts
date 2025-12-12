@@ -8,4 +8,8 @@ import { Component, signal } from '@angular/core';
 })
 export class App {
   protected readonly title = signal('angular');
+
+  protected viewLinkedInProfile(): void {
+    window.open('https://www.linkedin.com/in/khovakrishnapilato', '_blank');
+  }
 }
