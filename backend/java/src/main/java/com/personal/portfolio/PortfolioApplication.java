@@ -67,7 +67,7 @@ public class PortfolioApplication {
                 User adminUser = new User();
                 adminUser.setFullName(adminConfig.getName());
                 adminUser.setEmail(adminConfig.getEmail());
-                adminUser.setPassword(passwordEncoder.encode(adminConfig.getPassword()));
+                adminUser.setPassword(adminConfig.getPassword());
                 adminUser.setRole(Role.ADMIN);
                 adminUser.setEnabled(true);
 
