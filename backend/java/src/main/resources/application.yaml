@@ -61,7 +61,7 @@ logging:
 
 java:
   runtime:
-    version: 24
+    version: 25
 
 management:
   endpoint:
