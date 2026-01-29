@@ -1,0 +1,23 @@
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <span class="mono">KP</span>
+    </a>
+    
+    <div class="nav-links">
+      <a href="#about" class="link">About</a>
+      <a href="#projects" class="link">Projects</a>
+      <a href="#contact" class="link">Contact</a>
+    </div>
+    
+    <button class="menu-btn" (click)="toggleMenu()" aria-label="Menu">
+      <span class="menu-icon">{{ menuOpen ? '✕' : '☰' }}</span>
+    </button>
+  </div>
+  
+  <div class="mobile-menu" [class.open]="menuOpen">
+    <a href="#about" class="mobile-link" (click)="toggleMenu()">About</a>
+    <a href="#projects" class="mobile-link" (click)="toggleMenu()">Projects</a>
+    <a href="#contact" class="mobile-link" (click)="toggleMenu()">Contact</a>
+  </div>
+</nav>
