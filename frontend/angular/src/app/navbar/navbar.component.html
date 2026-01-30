@@ -34,9 +34,9 @@
     </a>
     
     <div class="nav-links">
-      <a href="#about" class="nav-link">About</a>
-      <a href="#projects" class="nav-link">Projects</a>
-      <a href="#contact" class="nav-link">Contact</a>
+      <a href="#about" class="nav-link"><i class="fas fa-user"></i>About</a>
+      <a href="#projects" class="nav-link"><i class="fas fa-briefcase"></i>Projects</a>
+      <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i>Contact</a>
     </div>
     
     <button class="menu-toggle" [class.active]="menuOpen" (click)="toggleMenu()" aria-label="Menu" [attr.aria-expanded]="menuOpen">
@@ -47,9 +47,9 @@
   
   <div class="mobile-nav" #mobileNav [class.active]="menuOpen">
     <div class="mobile-nav-content" #mobileNavContent>
-      <a href="#about" class="mobile-link" (click)="toggleMenu()">About</a>
-      <a href="#projects" class="mobile-link" (click)="toggleMenu()">Projects</a>
-      <a href="#contact" class="mobile-link" (click)="toggleMenu()">Contact</a>
+      <a href="#about" class="mobile-link" (click)="toggleMenu()"><i class="fas fa-user"></i>About</a>
+      <a href="#projects" class="mobile-link" (click)="toggleMenu()"><i class="fas fa-briefcase"></i>Projects</a>
+      <a href="#contact" class="mobile-link" (click)="toggleMenu()"><i class="fas fa-envelope"></i>Contact</a>
     </div>
   </div>
 </nav>
