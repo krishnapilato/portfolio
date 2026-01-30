@@ -53,11 +53,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      # Set up Node.js version 23.5.0 for the frontend build.
+      # Set up Node.js LTS version for the frontend build.
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '25.5.0'
+          node-version: '24.13.0'
 
       # Install the Angular CLI globally to build the project.
       - name: Install Angular CLI
@@ -79,7 +79,7 @@ jobs:
       - name: Build Angular App
         run: |
           cd frontend/angular
-          npx ng build --base-href "/angular/" --output-path dist/angular
+          npx ng build --base-href "/portfolio/"
 
       # Deploy the built Angular application to GitHub Pages.
       - name: Deploy to GitHub Pages
@@ -87,3 +87,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: frontend/angular/dist/angular/browser
+          
