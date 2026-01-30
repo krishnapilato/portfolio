@@ -1,0 +1,33 @@
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(200, 178, 124, 0.9);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(255, 255, 255, 0.8);stop-opacity:1" />
+    </linearGradient>
+    <filter id="logoGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="48" height="48" rx="8" fill="#000000"/>
+  
+  <!-- K letter -->
+  <path class="logo-letter logo-k" 
+        d="M 8 12 L 8 36 L 11 36 L 11 25 L 17 32 L 21 32 L 14.5 24 L 21 16 L 17 16 L 11 23 L 11 12 Z" 
+        fill="url(#logoGradient)" 
+        filter="url(#logoGlow)"/>
+  
+  <!-- P letter -->
+  <path class="logo-letter logo-p" 
+        d="M 27 12 L 27 36 L 30 36 L 30 26 L 36 26 C 38.5 26 40 24.5 40 22 L 40 16 C 40 13.5 38.5 12 36 12 Z M 30 15 L 36 15 C 36.5 15 37 15.5 37 16 L 37 22 C 37 22.5 36.5 23 36 23 L 30 23 Z" 
+        fill="url(#logoGradient)" 
+        filter="url(#logoGlow)"/>
+  
+  <!-- Accent dot -->
+  <circle cx="42" cy="34" r="2" fill="rgba(200, 178, 124, 0.85)" filter="url(#logoGlow)"/>
+</svg>
