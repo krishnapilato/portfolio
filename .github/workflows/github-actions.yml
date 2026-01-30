@@ -67,7 +67,7 @@ jobs:
       - name: Install Dependencies
         run: |
           cd frontend/angular
-          npm ci
+          npm install
 
       # Update baseline-browser-mapping to ensure accurate Baseline data.
       - name: Update baseline-browser-mapping
