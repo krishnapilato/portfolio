@@ -16,3 +16,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+body.menu-open {
+  overflow: hidden;
+}
+
+body.menu-open .main {
+  filter: blur(6px);
+}

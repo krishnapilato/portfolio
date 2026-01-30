@@ -1,138 +1,22 @@
 <app-navbar></app-navbar>
 
-<main class="main">
+<main class="main select-none">
   <section class="hero">
     <div class="container">
       <div class="hero-layout">
         <div class="hero-content">
-          <p class="label">Java Full-Stack Developer</p>
-          <h1 class="title">Building scalable systems with precision and purpose</h1>
-          <p class="subtitle">Specialized in Spring Boot, Angular, and cloud-native architectures. Currently focused on microservices and real-time data processing.</p>
+          <p class="label">Krishna Pilato · He/Him · 25</p>
+          <h1 class="title">Crafting reliable products with Java and Angular</h1>
+          <p class="subtitle">I bring 4+ years of practical, end-to-end experience across backend services, front-end systems, and cloud-ready architectures. My work focuses on clean design, predictable performance, and scalable delivery.</p>
           <div class="actions">
             <a href="#projects" class="btn-primary">View Projects</a>
             <a href="#contact" class="btn-secondary">Get in Touch</a>
           </div>
         </div>
-        <div class="hero-image">
-          <img src="/assets/profile.png" alt="Profile" class="profile-img">
-        </div>
       </div>
-    </div>
-  </section>
-
-  <section id="about" class="about">
-    <div class="container">
-      <div class="section-header">
-        <p class="label">About Me</p>
-      </div>
-
-      <div class="about-layout">
-        <div class="about-left">
-          <h2 class="section-title">Crafting robust solutions across the full stack</h2>
-          <div class="about-text">
-            <p>I'm a Java Full-Stack Developer with a passion for building scalable, maintainable systems. My approach combines clean architecture principles with modern frameworks to deliver solutions that stand the test of time.</p>
-            <p>With expertise spanning backend services, frontend applications, and cloud infrastructure, I focus on creating seamless experiences from database to user interface.</p>
-          </div>
-        </div>
-
-        <div class="about-right">
-          <div class="skills-grid">
-            <div class="skill-category">
-              <h3 class="skill-title">Backend</h3>
-              <ul class="skill-list">
-                <li>Java & Spring Boot</li>
-                <li>RESTful APIs</li>
-                <li>Microservices</li>
-                <li>PostgreSQL & MongoDB</li>
-              </ul>
-            </div>
-
-            <div class="skill-category">
-              <h3 class="skill-title">Frontend</h3>
-              <ul class="skill-list">
-                <li>Angular & TypeScript</li>
-                <li>Responsive Design</li>
-                <li>State Management</li>
-                <li>Modern CSS</li>
-              </ul>
-            </div>
-
-            <div class="skill-category">
-              <h3 class="skill-title">DevOps & Cloud</h3>
-              <ul class="skill-list">
-                <li>Docker & Kubernetes</li>
-                <li>AWS / Azure</li>
-                <li>CI/CD Pipelines</li>
-                <li>Monitoring & Logging</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="projects" class="projects">
-    <div class="container">
-      <div class="section-header">
-        <p class="label">Selected Work</p>
-        <h2 class="section-title">Projects that solve real problems</h2>
-      </div>
-
-      <div class="projects-slider">
-        <swiper-container
-          slides-per-view="auto"
-          space-between="48"
-          pagination="true"
-          pagination-clickable="true"
-          autoplay="true"
-          autoplay-delay="3000"
-          loop="true"
-        >
-          <swiper-slide *ngFor="let project of projects">
-            <div class="project-card">
-              <div class="project-header">
-                <h3 class="project-title">{{ project.title }}</h3>
-                <div class="project-meta">{{ project.year }}</div>
-              </div>
-              <p class="project-description">{{ project.description }}</p>
-              <div class="project-tags">
-                <span class="tag" *ngFor="let tag of project.tags">{{ tag }}</span>
-              </div>
-            </div>
-          </swiper-slide>
-        </swiper-container>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="contact">
-    <div class="container">
-      <div class="section-header">
-        <p class="label">Get in Touch</p>
-        <h2 class="section-title">Let's build something together</h2>
-      </div>
-
-      <div class="contact-layout">
-        <div class="contact-info">
-          <p class="contact-text">Whether you're looking to collaborate on a project, need technical consultation, or just want to connect, I'm always open to new opportunities.</p>
-        </div>
-
-        <form class="contact-form">
-          <div class="form-group">
-            <input autocomplete="off" type="text" id="name" placeholder="Name" class="form-input" required>
-          </div>
-
-          <div class="form-group">
-            <input autocomplete="off" type="email" id="email" placeholder="Email" class="form-input" required>
-          </div>
-
-          <div class="form-group">
-            <textarea autocomplete="off" id="message" placeholder="Message" class="form-textarea" rows="6" required></textarea>
-          </div>
-
-          <button type="submit" class="btn-submit">Send Message</button>
-        </form>
+      <div class="scroll-hint" aria-hidden="true">
+        <span class="scroll-text">Scroll</span>
+        <span class="scroll-line"></span>
       </div>
     </div>
   </section>

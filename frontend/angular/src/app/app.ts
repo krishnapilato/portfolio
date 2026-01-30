@@ -1,49 +1,51 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { NavbarComponent } from './navbar/navbar.component';
-import { register } from 'swiper/element/bundle';
-
-register();
-
-interface Project {
-  title: string;
-  description: string;
-  tags: string[];
-  year: string;
-}
+import { gsap } from 'gsap';
 
 @Component({
   selector: 'app-root',
   imports: [NavbarComponent, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class App {
-  projects: Project[] = [
-    {
-      title: 'E-Commerce Platform',
-      description: 'Scalable microservices architecture handling 10k+ daily orders with real-time inventory management, payment processing, and order tracking.',
-      tags: ['Spring Boot', 'Angular', 'PostgreSQL', 'Redis', 'Docker'],
-      year: '2024'
-    },
-    {
-      title: 'Real-Time Analytics Dashboard',
-      description: 'Live data visualization platform processing millions of events per day with WebSocket connections and efficient data aggregation.',
-      tags: ['Java', 'Angular', 'Kafka', 'MongoDB', 'D3.js'],
-      year: '2023'
-    },
-    {
-      title: 'Healthcare Management System',
-      description: 'HIPAA-compliant patient management system with appointment scheduling, medical records, and secure messaging between providers.',
-      tags: ['Spring Boot', 'Angular', 'MySQL', 'AWS', 'OAuth2'],
-      year: '2023'
-    },
-    {
-      title: 'API Gateway & Service Mesh',
-      description: 'Cloud-native infrastructure managing authentication, rate limiting, and routing across 20+ microservices with 99.9% uptime.',
-      tags: ['Spring Cloud', 'Kubernetes', 'Istio', 'Prometheus'],
-      year: '2024'
+export class App implements AfterViewInit, OnDestroy {
+  private ctx?: gsap.Context;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
+
+  ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
     }
-  ];
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    this.ctx = gsap.context(() => {
+      gsap.to('.hero-content > *', {
+        y: 6,
+        duration: 8,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        stagger: 0.3,
+      });
+
+      gsap.to('.scroll-hint', {
+        y: 10,
+        duration: 4.5,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+      });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.ctx?.revert();
+  }
 }

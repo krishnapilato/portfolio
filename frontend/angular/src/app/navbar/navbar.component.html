@@ -10,14 +10,16 @@
       <a href="#contact" class="link">Contact</a>
     </div>
     
-    <button class="menu-btn" (click)="toggleMenu()" aria-label="Menu">
+    <button class="menu-btn" (click)="toggleMenu()" aria-label="Menu" [attr.aria-expanded]="menuOpen">
       <span class="menu-icon">{{ menuOpen ? '✕' : '☰' }}</span>
     </button>
   </div>
   
   <div class="mobile-menu" [class.open]="menuOpen">
-    <a href="#about" class="mobile-link" (click)="toggleMenu()">About</a>
-    <a href="#projects" class="mobile-link" (click)="toggleMenu()">Projects</a>
-    <a href="#contact" class="mobile-link" (click)="toggleMenu()">Contact</a>
+    <div class="mobile-menu-inner">
+      <a href="#about" class="mobile-link" (click)="toggleMenu()">About</a>
+      <a href="#projects" class="mobile-link" (click)="toggleMenu()">Projects</a>
+      <a href="#contact" class="mobile-link" (click)="toggleMenu()">Contact</a>
+    </div>
   </div>
 </nav>

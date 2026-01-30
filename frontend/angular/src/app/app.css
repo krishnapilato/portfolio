@@ -1,32 +1,40 @@
 .main {
   min-height: 100vh;
-  background: #000;
+  background: radial-gradient(1200px 600px at 50% -10%, rgba(255, 255, 255, 0.06), transparent 60%),
+    #000;
   color: #fff;
-  padding-top: 64px;
+  padding-top: 60px;
+  transition: filter 0.4s ease;
 }
 
 .hero {
   display: flex;
   align-items: center;
-  min-height: calc(100vh - 64px);
-  padding: 80px 0;
+  min-height: calc(100vh - 60px);
+  padding: 180px 0 160px;
+  position: relative;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 40px;
 }
 
 .hero-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  grid-template-columns: 1fr;
+  gap: 0;
   align-items: center;
+  justify-items: center;
 }
 
 .hero-content {
-  max-width: 720px;
+  width: 100%;
+  max-width: 760px;
+  text-align: center;
+  margin: 0 auto;
+  align-items: center;
 }
 
 .hero-image {
@@ -40,47 +48,81 @@
   max-width: 420px;
   height: auto;
   background: transparent;
-  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5))
-          drop-shadow(0 0 40px rgba(255, 255, 255, 0.05));
+  filter: drop-shadow(0 18px 50px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.04));
   transition: all 0.3s;
 }
 
 .profile-img:hover {
   transform: translateY(-8px);
-  filter: drop-shadow(0 30px 80px rgba(0, 0, 0, 0.6))
-          drop-shadow(0 0 60px rgba(255, 255, 255, 0.08));
+  filter: drop-shadow(0 26px 70px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 48px rgba(255, 255, 255, 0.06));
 }
 
 .label {
   font-size: 13px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+  color: rgba(200, 178, 124, 0.85);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin: 0 0 24px 0;
+  letter-spacing: 0.26em;
+  margin: 0 0 28px 0;
 }
 
 .title {
-  font-size: clamp(36px, 6vw, 64px);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  margin: 0 0 24px 0;
+  font-size: clamp(36px, 5.8vw, 64px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  margin: 0 0 28px 0;
   color: #fff;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  text-wrap: balance;
 }
 
 .subtitle {
   font-size: 18px;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0 0 40px 0;
-  max-width: 600px;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.62);
+  margin: 0 0 64px 0;
+  max-width: 660px;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: balance;
 }
 
 .actions {
   display: flex;
-  gap: 16px;
+  gap: 22px;
   flex-wrap: wrap;
+  justify-content: center;
+}
+
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.scroll-text {
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0)
+  );
 }
 
 .btn-primary,
@@ -88,34 +130,38 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 28px;
-  font-size: 14px;
+  padding: 12px 22px;
+  font-size: 12px;
   font-weight: 600;
+  text-transform: uppercase;
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 999px;
   transition: all 0.2s;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.14em;
 }
 
 .btn-primary {
-  background: #fff;
-  color: #000;
+  background: linear-gradient(135deg, rgba(200, 178, 124, 0.18), rgba(255, 255, 255, 0.06));
+  color: #fff;
+  border: 1px solid rgba(200, 178, 124, 0.35);
 }
 
 .btn-primary:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(135deg, rgba(200, 178, 124, 0.28), rgba(255, 255, 255, 0.1));
+  border-color: rgba(200, 178, 124, 0.6);
   transform: translateY(-1px);
 }
 
 .btn-secondary {
   background: transparent;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .btn-secondary:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
 }
 
 /* About Section */
@@ -376,12 +422,12 @@ swiper-container::part(bullet-active) {
 
 @media (max-width: 640px) {
   .hero {
-    padding: 40px 0;
+    padding: 32px 0;
   }
 
   .hero-layout {
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: 36px;
   }
 
   .hero-image {
