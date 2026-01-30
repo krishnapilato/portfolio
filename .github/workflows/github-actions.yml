@@ -51,22 +51,13 @@ jobs:
     steps:
       # Checkout the repository to the runner machine for subsequent operations.
       - name: Checkout repository
-        uses: actions/checkout@v5
-
-      # Cache Node.js dependencies to avoid re-installing them on each run.
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v4
-        with:
-          path: frontend/angular/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('frontend/angular/package-lock.json') }}-v2
-          restore-keys: |
-            ${{ runner.os }}-node-
+        uses: actions/checkout@v6
 
       # Set up Node.js version 23.5.0 for the frontend build.
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
-          node-version: '24.7.0'
+          node-version: '25.5.0'
 
       # Install the Angular CLI globally to build the project.
       - name: Install Angular CLI
