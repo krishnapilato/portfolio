@@ -51,22 +51,13 @@ jobs:
     steps:
       # Checkout the repository to the runner machine for subsequent operations.
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
-      # Cache Node.js dependencies to avoid re-installing them on each run.
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v4
-        with:
-          path: frontend/angular/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('frontend/angular/package-lock.json') }}-v2
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      # Set up Node.js version 23.5.0 for the frontend build.
+      # Set up Node.js LTS version for the frontend build.
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
-          node-version: '24.7.0'
+          node-version: '24.13.0'
 
       # Install the Angular CLI globally to build the project.
       - name: Install Angular CLI
@@ -76,13 +67,19 @@ jobs:
       - name: Install Dependencies
         run: |
           cd frontend/angular
-          npm ci
+          npm install
+
+      # Update baseline-browser-mapping to ensure accurate Baseline data.
+      - name: Update baseline-browser-mapping
+        run: |
+          cd frontend/angular
+          npm i baseline-browser-mapping@latest -D
 
       # Build the Angular application and output the compiled files to the "dist" directory.
       - name: Build Angular App
         run: |
           cd frontend/angular
-          npx ng build --base-href "/angular/" --output-path dist/angular
+          npx ng build --base-href "/portfolio/"
 
       # Deploy the built Angular application to GitHub Pages.
       - name: Deploy to GitHub Pages
@@ -90,3 +87,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: frontend/angular/dist/angular/browser
+          
