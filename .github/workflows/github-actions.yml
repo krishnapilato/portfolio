@@ -81,6 +81,9 @@ jobs:
           cd frontend/angular
           npx ng build --base-href "/portfolio/"
 
+      - name: Copy 404.html to dist
+        run: cp 404.html frontend/angular/dist/angular/browser/404.html
+
       # Deploy the built Angular application to GitHub Pages.
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
