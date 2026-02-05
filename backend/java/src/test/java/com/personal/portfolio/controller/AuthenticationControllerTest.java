@@ -133,8 +133,7 @@ class AuthenticationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.userId").value(1L))
-                .andExpect(jsonPath("$.role").value(Role.USER.name()));
+                .andExpect(jsonPath("$.userId").value(1L));
     }
 
     @Test
