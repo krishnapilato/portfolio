@@ -1,14 +1,16 @@
-[34mINFO [0;39m [[36m2026-02-21 09:53:46[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication v0.0.5 using Java 25.0.2 with PID 15564 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
-[34mINFO [0;39m [[36m2026-02-21 09:53:46[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
-[34mINFO [0;39m [[36m2026-02-21 09:53:47[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
-[34mINFO [0;39m [[36m2026-02-21 09:53:48[0;39m] [[33mmain[0;39m] [32mc.p.p.c.c.ApplicationConfiguration[0;39m - Using BCrypt encoder with strength 12
-[34mINFO [0;39m [[36m2026-02-21 09:53:49[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
-[34mINFO [0;39m [[36m2026-02-21 09:53:49[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 3.548 seconds (process running for 3.853)
-[34mINFO [0;39m [[36m2026-02-21 09:53:49[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - ℹAdmin user 'admin.email@gmail.com' already exists. Skipping creation.
-[34mINFO [0;39m [[36m2026-02-21 09:53:49[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Application started on http://localhost:8080 with profiles: [dev]
-[34mINFO [0;39m [[36m2026-02-21 09:53:58[0;39m] [[33mhttp-nio-8080-exec-4[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 163 ms
-[34mINFO [0;39m [[36m2026-02-21 09:54:22[0;39m] [[33mhttp-nio-8080-exec-5[0;39m] [32mc.p.p.c.AuthenticationController[0;39m - Login request for admin.email@gmail.com
-[34mINFO [0;39m [[36m2026-02-21 09:54:22[0;39m] [[33mhttp-nio-8080-exec-5[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
-[34mINFO [0;39m [[36m2026-02-21 09:54:22[0;39m] [[33mhttp-nio-8080-exec-5[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Authentication successful for email: admin.email@gmail.com
-[34mINFO [0;39m [[36m2026-02-21 09:54:22[0;39m] [[33mhttp-nio-8080-exec-5[0;39m] [32mc.p.p.c.AuthenticationController[0;39m - Authentication successful for admin.email@gmail.com
-[34mINFO [0;39m [[36m2026-02-21 09:54:31[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mc.p.portfolio.service.EmailService[0;39m - ScheduledExecutorService in EmailService has been shut down.
+[34mINFO [0;39m [[36m2026-03-11 10:18:15[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication v0.0.5 using Java 25.0.2 with PID 1368 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
+[34mINFO [0;39m [[36m2026-03-11 10:18:15[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
+[34mINFO [0;39m [[36m2026-03-11 10:18:17[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2026-03-11 10:18:19[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Deleted 1 expired JWT keys.
+[34mINFO [0;39m [[36m2026-03-11 10:18:19[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - New JWT signing key created (ID: de03c40f-f415-493f-8fe5-6d0eb212f9cc).
+[34mINFO [0;39m [[36m2026-03-11 10:18:19[0;39m] [[33mmain[0;39m] [32mc.p.p.c.c.ApplicationConfiguration[0;39m - Using BCrypt encoder with strength 12
+[34mINFO [0;39m [[36m2026-03-11 10:18:20[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
+[34mINFO [0;39m [[36m2026-03-11 10:18:20[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 4.673 seconds (process running for 5.028)
+[34mINFO [0;39m [[36m2026-03-11 10:18:20[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - ℹAdmin user 'admin.email@gmail.com' already exists. Skipping creation.
+[34mINFO [0;39m [[36m2026-03-11 10:18:20[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Application started on http://localhost:8080 with profiles: [dev]
+[34mINFO [0;39m [[36m2026-03-11 10:18:42[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 190 ms
+[34mINFO [0;39m [[36m2026-03-11 10:19:17[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.c.AuthenticationController[0;39m - Login request for admin.email@gmail.com
+[34mINFO [0;39m [[36m2026-03-11 10:19:17[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2026-03-11 10:19:18[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Authentication successful for email: admin.email@gmail.com
+[34mINFO [0;39m [[36m2026-03-11 10:19:18[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.c.AuthenticationController[0;39m - Authentication successful for admin.email@gmail.com
+[34mINFO [0;39m [[36m2026-03-11 10:20:39[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mc.p.portfolio.service.EmailService[0;39m - ScheduledExecutorService in EmailService has been shut down.
