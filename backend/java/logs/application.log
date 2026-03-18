@@ -1,16 +1,111 @@
-[34mINFO [0;39m [[36m2026-03-11 10:18:15[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Starting PortfolioApplication v0.0.5 using Java 25.0.2 with PID 1368 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
-[34mINFO [0;39m [[36m2026-03-11 10:18:15[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - The following 1 profile is active: "dev"
-[34mINFO [0;39m [[36m2026-03-11 10:18:17[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Initializing ProtocolHandler ["http-nio-8080"]
-[34mINFO [0;39m [[36m2026-03-11 10:18:19[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - Deleted 1 expired JWT keys.
-[34mINFO [0;39m [[36m2026-03-11 10:18:19[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.service.JwtService[0;39m - New JWT signing key created (ID: de03c40f-f415-493f-8fe5-6d0eb212f9cc).
-[34mINFO [0;39m [[36m2026-03-11 10:18:19[0;39m] [[33mmain[0;39m] [32mc.p.p.c.c.ApplicationConfiguration[0;39m - Using BCrypt encoder with strength 12
-[34mINFO [0;39m [[36m2026-03-11 10:18:20[0;39m] [[33mmain[0;39m] [32mo.a.coyote.http11.Http11NioProtocol[0;39m - Starting ProtocolHandler ["http-nio-8080"]
-[34mINFO [0;39m [[36m2026-03-11 10:18:20[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Started PortfolioApplication in 4.673 seconds (process running for 5.028)
-[34mINFO [0;39m [[36m2026-03-11 10:18:20[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - ℹAdmin user 'admin.email@gmail.com' already exists. Skipping creation.
-[34mINFO [0;39m [[36m2026-03-11 10:18:20[0;39m] [[33mmain[0;39m] [32mc.p.portfolio.PortfolioApplication[0;39m - Application started on http://localhost:8080 with profiles: [dev]
-[34mINFO [0;39m [[36m2026-03-11 10:18:42[0;39m] [[33mhttp-nio-8080-exec-2[0;39m] [32mo.s.api.AbstractOpenApiResource[0;39m - Init duration for springdoc-openapi is: 190 ms
-[34mINFO [0;39m [[36m2026-03-11 10:19:17[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.c.AuthenticationController[0;39m - Login request for admin.email@gmail.com
-[34mINFO [0;39m [[36m2026-03-11 10:19:17[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Attempting authentication for email: admin.email@gmail.com
-[34mINFO [0;39m [[36m2026-03-11 10:19:18[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.service.AuthenticationService[0;39m - Authentication successful for email: admin.email@gmail.com
-[34mINFO [0;39m [[36m2026-03-11 10:19:18[0;39m] [[33mhttp-nio-8080-exec-3[0;39m] [32mc.p.p.c.AuthenticationController[0;39m - Authentication successful for admin.email@gmail.com
-[34mINFO [0;39m [[36m2026-03-11 10:20:39[0;39m] [[33mSpringApplicationShutdownHook[0;39m] [32mc.p.portfolio.service.EmailService[0;39m - ScheduledExecutorService in EmailService has been shut down.
+2026-03-18 10:08:23.390 [SpringApplicationShutdownHook] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-03-18 10:08:23.395 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-03-18 10:08:23.399 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-18 10:08:23.400 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-03-18 10:08:23.403 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-03-18 11:01:05.969 [main] INFO  c.p.portfolio.PortfolioApplication - Starting PortfolioApplication v0.0.5 using Java 25.0.2 with PID 22376 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
+2026-03-18 11:01:05.970 [main] DEBUG c.p.portfolio.PortfolioApplication - Running with Spring Boot v4.1.0-M2, Spring v7.0.5
+2026-03-18 11:01:05.970 [main] INFO  c.p.portfolio.PortfolioApplication - The following 1 profile is active: "dev"
+2026-03-18 11:01:06.577 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-18 11:01:06.620 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 39 ms. Found 2 JPA repository interfaces.
+2026-03-18 11:01:06.996 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-18 11:01:07.012 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-18 11:01:07.012 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-18 11:01:07.053 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1054 ms
+2026-03-18 11:01:07.187 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-18 11:01:07.229 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-03-18 11:01:07.494 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-18 11:01:07.511 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-03-18 11:01:07.754 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@26caf4b6
+2026-03-18 11:01:07.755 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-03-18 11:01:07.802 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 9.6
+	Default catalog/schema: database/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-18 11:01:08.289 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-18 11:01:08.367 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-18 11:01:08.402 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-18 11:01:08.882 [main] INFO  c.p.p.c.c.ApplicationConfiguration - Initializing BCrypt encoder with strength: 12
+2026-03-18 11:01:08.924 [main] DEBUG c.p.p.c.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-03-18 11:01:08.951 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userService
+2026-03-18 11:01:09.411 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 12 endpoints beneath base path '/actuator'
+2026-03-18 11:01:09.442 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-03-18 11:01:09.444 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-18 11:01:09.446 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-03-18 11:01:09.450 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-03-18 11:01:09.466 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-03-18 11:01:09.481 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-03-18 11:02:05.299 [main] INFO  c.p.portfolio.PortfolioApplication - Starting PortfolioApplication v0.0.5 using Java 25.0.2 with PID 13944 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
+2026-03-18 11:02:05.300 [main] DEBUG c.p.portfolio.PortfolioApplication - Running with Spring Boot v4.1.0-M2, Spring v7.0.5
+2026-03-18 11:02:05.301 [main] INFO  c.p.portfolio.PortfolioApplication - The following 1 profile is active: "dev"
+2026-03-18 11:02:05.912 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-18 11:02:05.949 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 29 ms. Found 2 JPA repository interfaces.
+2026-03-18 11:02:06.311 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-03-18 11:02:06.320 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-18 11:02:06.320 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-18 11:02:06.376 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1047 ms
+2026-03-18 11:02:06.497 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-18 11:02:06.526 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-03-18 11:02:06.789 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-18 11:02:06.806 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-03-18 11:02:06.982 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@446fb72e
+2026-03-18 11:02:06.983 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-03-18 11:02:07.028 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 9.6
+	Default catalog/schema: database/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-18 11:02:07.533 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-18 11:02:07.584 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-18 11:02:07.620 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-18 11:02:08.223 [main] INFO  c.p.p.c.c.ApplicationConfiguration - Initializing BCrypt encoder with strength: 12
+2026-03-18 11:02:08.274 [main] DEBUG c.p.p.c.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-03-18 11:02:08.307 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userService
+2026-03-18 11:02:08.824 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 12 endpoints beneath base path '/actuator'
+2026-03-18 11:02:08.873 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-03-18 11:02:08.874 [main] INFO  c.p.portfolio.PortfolioApplication - Started PortfolioApplication in 3.929 seconds (process running for 4.219)
+2026-03-18 11:02:08.957 [main] INFO  c.p.portfolio.PortfolioApplication - Admin [admin.email@gmail.com] present. Skipping provisioning.
+2026-03-18 11:02:11.608 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-18 11:02:11.608 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-03-18 11:02:11.608 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2026-03-18 11:02:11.690 [http-nio-8080-exec-1] INFO  c.p.p.c.AuthenticationController - Login request received for admin.email@gmail.com
+2026-03-18 11:02:11.690 [http-nio-8080-exec-1] INFO  c.p.p.service.AuthenticationService - Attempting authentication for email: admin.email@gmail.com
+2026-03-18 11:02:12.113 [http-nio-8080-exec-1] INFO  c.p.p.service.AuthenticationService - Authentication passed manager checks for email: admin.email@gmail.com
+2026-03-18 11:02:12.190 [http-nio-8080-exec-1] INFO  c.p.p.c.AuthenticationController - Authentication successful for admin.email@gmail.com
+2026-03-18 11:14:08.081 [http-nio-8080-exec-3] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 137 ms
+2026-03-18 11:14:29.605 [http-nio-8080-exec-8] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 123 ms
+2026-03-18 11:14:44.507 [SpringApplicationShutdownHook] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-03-18 11:14:44.512 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-03-18 11:14:44.516 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-18 11:14:44.517 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-03-18 11:14:44.520 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

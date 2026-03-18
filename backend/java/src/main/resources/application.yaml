@@ -1,24 +1,70 @@
+# ===================================================================
+# 1. COMMON CONFIGURATION
+# ===================================================================
 spring:
   application:
     name: portfolio
     version: 0.0.5
   profiles:
-    active: dev
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  jpa:
+    open-in-view: false
+
+  security:
+    user:
+      name: ${ADMIN_USERNAME:admin}
+      password: ${ADMIN_PASSWORD:1234567890}
+      email: ${ADMIN_EMAIL:admin.email@gmail.com}
+
+server:
+  port: ${PORT:8080}
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui
+    enabled: true
+
+app:
+  cors:
+    allowed-origins:
+      - "http://localhost:4200"
+      - "https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com"
+
+jwt:
+  token:
+    expiration: 7200000
+
+bcrypt:
+  strength: 12
+  mode: STANDARD
+  debug-logging-enabled: false
+
+---
+# ===================================================================
+# 2. DEVELOPMENT PROFILE
+# ===================================================================
+spring:
+  config:
+    activate:
+      on-profile: dev
+
   datasource:
     url: jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
-    open-in-view: false
-  security:
-    user:
-      name: admin
-      password: 1234567890
-      email: admin.email@gmail.com
+
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 2525
@@ -31,46 +77,71 @@ spring:
           starttls:
             enable: true
 
-server:
-  port: ${PORT:8080}
-
-jwt:
-  token:
-    expiration: 7200000
-
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    path: /swagger-ui
-    enabled: true
-
-logging:
-  level:
-    root: INFO
-    org:
-      springframework: WARN
-      hibernate: WARN
-      apache:
-        catalina: WARN
-    com:
-      zaxxer:
-        hikari: WARN
-  file:
-    name: logs/application.log
-
-java:
-  runtime:
-    version: 25
-
 management:
-  endpoint:
-    health:
-      show-details: when-authorized
   endpoints:
     web:
       exposure:
-        include: health, info
+        include: "*"
+      discovery:
+        enabled: true
+  endpoint:
+    health:
+      show-details: always
   health:
     mail:
       enabled: false
+
+app:
+  base-url: http://localhost:8080
+
+---
+# ===================================================================
+# 3. PRODUCTION PROFILE
+# ===================================================================
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  mail:
+    host: ${SPRING_MAIL_HOST}
+    port: 587
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics"
+      discovery:
+        enabled: false
+  endpoint:
+    health:
+      show-details: never
+
+app:
+  base-url: https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com

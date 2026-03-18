@@ -7,217 +7,87 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
-/**
- * Controller to handle user-related operations.
- * Provides endpoints for CRUD operations and user account management.
- */
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Tag(name = "Users", description = "Endpoints for managing user data.")
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
     private final UserService userService;
 
-    /**
-     * Retrieve a list of all registered users.
-     *
-     * @return ResponseEntity containing the list of users or 500 if an error occurs
-     */
     @GetMapping
-    @Operation(summary = "Get all users", description = "Retrieve a list of all registered users.")
+    @Operation(summary = "Get all users")
     public ResponseEntity<List<User>> getAllUsers() {
-        try {
-            List<User> users = userService.getAllUsers();
-            if (users.isEmpty()) {
-                logger.warn("No users found in the system.");
-                return ResponseEntity.noContent().build(); // Returns 204 if no users are found
-            }
-            logger.info("Retrieved {} users from the database.", users.size());
-            return ResponseEntity.ok(users);
-        } catch (Exception e) {
-            logger.error("Error retrieving users: {}", e.getMessage(), e); // Logs error if there's an exception
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Returns 500 in case of error
-        }
+        var users = userService.getAllUsers();
+        return users.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get user by ID", description = "Retrieve a user by ID.")
-    @Cacheable(value = "users", key = "#id")
+    @Operation(summary = "Get user by ID")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    /**
-     * Register a new user.
-     *
-     * @param newUser User object to be created
-     * @return ResponseEntity containing the created user and the location URI, or an error message if a user already exists
-     */
     @PostMapping
-    @Operation(summary = "Create a new user", description = "Registers a new user in the system.")
+    @Operation(summary = "Create a new user")
     public ResponseEntity<?> createUser(@Valid @RequestBody User newUser) {
-        try {
-            // Check if the user already exists based on unique fields like email
-            if (userService.existsByEmail(newUser.getEmail())) {
-                logger.warn("User creation failed, email already exists: {}", newUser.getEmail());
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("User with this email already exists.");
-            }
-
-            // Proceed with user creation if no conflict
-            User createdUser = userService.createUser(newUser);
-            URI location = URI.create("/api/users/" + createdUser.getId());
-            logger.info("User created successfully with ID: {}", createdUser.getId());
-            return ResponseEntity.created(location).body(createdUser);
-        } catch (Exception e) {
-            // Handle unexpected errors, log them, and return a generic error response
-            logger.error("Unexpected error occurred while creating user: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the user.");
+        if (userService.existsByEmail(newUser.getEmail())) {
+            log.warn("User creation failed, email already exists: {}", newUser.getEmail());
+            // Note: Ideally, throw a custom UserAlreadyExistsException and handle via @RestControllerAdvice
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User with this email already exists.");
         }
+
+        var createdUser = userService.createUser(newUser);
+        var location = URI.create("/api/users/" + createdUser.getId());
+        return ResponseEntity.created(location).body(createdUser);
     }
 
-    /**
-     * Update an existing user's details by their ID.
-     *
-     * @param id          User ID
-     * @param updatedUser Updated User object
-     * @return ResponseEntity containing the updated user or 404 if the user is not found
-     */
     @PutMapping("/{id}")
-    @Operation(summary = "Update user by ID", description = "Update a user's details by their ID.")
-    public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @Valid @RequestBody User updatedUser) {
-        if (id == null || updatedUser == null) {
-            logger.warn("Update failed: Invalid user ID or empty user details.");
-            return ResponseEntity.badRequest().build();
-        }
-
-        try {
-            User user = userService.updateUser(id, updatedUser);
-            logger.info("User updated successfully with ID: {}", user.getId());
-            return ResponseEntity.ok(user);
-        } catch (UsernameNotFoundException e) {
-            logger.warn("Update failed for user with ID: {} - {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            logger.error("Unexpected error occurred while updating user with ID: {} - {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @Operation(summary = "Update user by ID")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
+        return ResponseEntity.ok(userService.updateUser(id, updatedUser));
     }
 
-    /**
-     * Lock or unlock a user account.
-     *
-     * @param id User ID
-     * @return ResponseEntity containing the updated user or 404 if the user is not found
-     */
     @PutMapping("/{id}/lock")
-    @Operation(summary = "Toggle user lock status", description = "Locks or unlocks a user account by toggling the lock status.")
-    public ResponseEntity<User> toggleLockUser(@PathVariable("id") Long id) {
-        if (id == null) {
-            logger.warn("Toggle lock failed: User ID is null.");
-            return ResponseEntity.badRequest().build();
-        }
-
-        try {
-            User user = userService.toggleLock(id);
-            logger.info("User lock status toggled successfully for ID: {}", user.getId());
-            return ResponseEntity.ok(user);
-        } catch (UsernameNotFoundException e) {
-            logger.warn("Toggle lock failed for user with ID: {} - {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            logger.error("Unexpected error occurred while toggling lock status for user with ID: {} - {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @Operation(summary = "Toggle user lock status")
+    public ResponseEntity<User> toggleLockUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.toggleLock(id));
     }
 
-    /**
-     * Deletes a user by their ID.
-     *
-     * @param id User ID
-     * @return ResponseEntity with no content if successful, or 404 if the user is not found
-     */
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete user by ID", description = "Delete a user by their unique ID.")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
-        if (id == null) {
-            logger.warn("Delete failed: ID is null.");
-            return ResponseEntity.badRequest().build();
-        }
-
-        try {
-            userService.deleteUser(id);
-            logger.info("User with ID: {} successfully deleted.", id);
-            return ResponseEntity.noContent().build();
-        } catch (UsernameNotFoundException e) {
-            logger.warn("Delete failed for user with ID: {} - {}", id, e.getMessage());
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            logger.error("Unexpected error occurred while deleting user with ID: {} - {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @Operation(summary = "Delete user by ID")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/reset-password")
-    @Operation(summary = "Reset user password", description = "Resets the password for a user using their email address.")
-    public ResponseEntity<String> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
-        try {
-            userService.resetPassword(email, newPassword);
-            logger.info("Password reset successfully for email: {}", email);
-            return ResponseEntity.ok("Password reset successfully.");
-        } catch (UsernameNotFoundException e) {
-            logger.warn("Password reset failed: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with this email.");
-        } catch (Exception e) {
-            logger.error("Unexpected error during password reset: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while resetting the password.");
-        }
+    @Operation(summary = "Reset user password")
+    public ResponseEntity<Void> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
+        userService.resetPassword(email, newPassword);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}/role")
-    @Operation(summary = "Change user role", description = "Changes the role of an existing user.")
+    @Operation(summary = "Change user role")
     public ResponseEntity<User> changeUserRole(@PathVariable Long id, @RequestParam Role role) {
-        try {
-            User updatedUser = userService.changeUserRole(id, role);
-            logger.info("User role updated successfully for ID: {}", id);
-            return ResponseEntity.ok(updatedUser);
-        } catch (UsernameNotFoundException e) {
-            logger.warn("Role change failed for user ID {}: {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            logger.error("Unexpected error while changing role for user ID {}: {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.ok(userService.changeUserRole(id, role));
     }
 
     @PutMapping("/{id}/activate")
-    @Operation(summary = "Activate user account", description = "Activates a user's account upon confirmation.")
+    @Operation(summary = "Activate user account")
     public ResponseEntity<User> activateUserAccount(@PathVariable Long id) {
-        try {
-            User activatedUser = userService.activateUserAccount(id);
-            logger.info("User account activated successfully for ID: {}", id);
-            return ResponseEntity.ok(activatedUser);
-        } catch (UsernameNotFoundException e) {
-            logger.warn("Account activation failed for user ID {}: {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            logger.error("Unexpected error while activating account for user ID {}: {}", id, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.ok(userService.activateUserAccount(id));
     }
 }

@@ -13,41 +13,37 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Configures Swagger and OpenAPI documentation.
- */
 @Configuration
 public class SwaggerConfig {
 
-    private final Environment environment;
-
-    @Value("${spring.application.version}")
-    private String projectVersion;
-
-    SwaggerConfig(Environment environment) {
-        this.environment = environment;
-    }
-
     @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(apiInfo())
-                .servers(apiServers())
-                .components(new Components().addSecuritySchemes("bearerAuth",
-                        new SecurityScheme()
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")
-                                .description("Provide the JWT token obtained after authentication")))
-                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
-    }
+    public OpenAPI customOpenAPI(
+            Environment environment,
+            @Value("${spring.application.version:1.0.0}") String projectVersion) {
 
-    private Info apiInfo() {
-        return new Info()
+        var servers = new ArrayList<Server>();
+
+        if (environment.acceptsProfiles(Profiles.of("dev"))) {
+            servers.add(new Server()
+                    .url("http://localhost:8080")
+                    .description("Local Development"));
+        }
+
+        servers.add(new Server()
+                .url("https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com")
+                .description("Production Environment"));
+
+        var securityScheme = new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT")
+                .description("Provide the JWT token obtained after authentication");
+
+        var info = new Info()
                 .title("Backend API")
                 .version(projectVersion)
                 .description("""
@@ -61,32 +57,35 @@ public class SwaggerConfig {
                 .license(new License()
                         .name("MIT License")
                         .url("https://opensource.org/licenses/MIT"));
-    }
 
-    private List<Server> apiServers() {
-        List<Server> servers = new ArrayList<>();
-        if (environment.matchesProfiles("dev")) {
-            servers.add(new Server().url("http://localhost:8080"));
-        }
-        servers.add(new Server().url("https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com"));
-        return servers;
+        return new OpenAPI()
+                .info(info)
+                .servers(servers)
+                .components(new Components().addSecuritySchemes("bearerAuth", securityScheme))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 
     @Bean
-    public List<GroupedOpenApi> groupedApis() {
-        return List.of(
-                GroupedOpenApi.builder()
-                        .group("01-Authentication")
-                        .pathsToMatch("/auth/**")
-                        .build(),
-                GroupedOpenApi.builder()
-                        .group("02-User")
-                        .pathsToMatch("/api/users/**")
-                        .build(),
-                GroupedOpenApi.builder()
-                        .group("03-Email")
-                        .pathsToMatch("/api/email/**")
-                        .build()
-        );
+    public GroupedOpenApi authApi() {
+        return GroupedOpenApi.builder()
+                .group("01-Authentication")
+                .pathsToMatch("/auth/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi userApi() {
+        return GroupedOpenApi.builder()
+                .group("02-User")
+                .pathsToMatch("/api/users/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi emailApi() {
+        return GroupedOpenApi.builder()
+                .group("03-Email")
+                .pathsToMatch("/api/email/**")
+                .build();
     }
 }

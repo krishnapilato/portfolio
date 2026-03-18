@@ -1,6 +1,5 @@
 package com.personal.portfolio.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,18 +7,19 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.validator.constraints.URL;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Instant;
-import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -30,16 +30,13 @@ import java.util.Collections;
 })
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
 
     @NotBlank
@@ -49,12 +46,12 @@ public class User implements UserDetails {
 
     @NotBlank
     @Email
-    @Column(nullable = false, unique = true, length = 255)
+    @NaturalId
+    @Column(nullable = false, updatable = false, length = 255)
     private String email;
 
     @NotBlank
     @Size(min = 8, max = 255)
-    @JsonIgnore
     @Column(nullable = false, length = 255)
     private String password;
 
@@ -67,19 +64,22 @@ public class User implements UserDetails {
     @Column(unique = true, length = 20)
     private String phoneNumber;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean enabled = true;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean locked = false;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean accountNonExpired = true;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean credentialsNonExpired = true;
 
-    @JsonIgnore
     private Instant lastLogin;
 
     @URL
@@ -97,15 +97,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Instant updatedAt;
 
-    // Automatically hash password before saving
-    @PrePersist
-    @PreUpdate
-    private void hashPassword() {
-        if (password != null && !password.startsWith("$2")) { // bcrypt hashes start with $2
-            this.password = new BCryptPasswordEncoder().encode(password);
-        }
-    }
-
     @Override
     public String getUsername() {
         return email;
@@ -113,14 +104,13 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        if (!accountNonExpired) return false;
-        Instant expirationTime = createdAt.plusSeconds(31536000); // 1 year
-        return Instant.now().isBefore(expirationTime);
+        if (!accountNonExpired || createdAt == null) return false;
+        return Instant.now().isBefore(createdAt.plus(365, ChronoUnit.DAYS));
     }
 
     @Override
@@ -137,7 +127,28 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         if (!enabled) return false;
         if (lastLogin == null) return true;
-        Instant sixMonthsAgo = ZonedDateTime.now().minusMonths(6).toInstant();
-        return lastLogin.isAfter(sixMonthsAgo);
+        return lastLogin.isAfter(Instant.now().minus(180, ChronoUnit.DAYS));
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy hp
+                ? hp.getHibernateLazyInitializer().getPersistentClass()
+                : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy hp
+                ? hp.getHibernateLazyInitializer().getPersistentClass()
+                : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        User user = (User) o;
+        return getEmail() != null && Objects.equals(getEmail(), user.getEmail());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy hp
+                ? hp.getHibernateLazyInitializer().getPersistentClass().hashCode()
+                : getClass().hashCode();
     }
 }

@@ -1,7 +1,7 @@
 services:
   mysql:
     container_name: mysql-db
-    image: mysql:9.4.0
+    image: mysql:9.6.0
     environment:
       MYSQL_ROOT_PASSWORD: devpassword
       MYSQL_DATABASE: database
@@ -25,10 +25,13 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - .:/app
+      - ./src:/app/src
+      - ./pom.xml:/app/pom.xml
       - ~/.m2:/root/.m2
     environment:
+      - SPRING_PROFILES_ACTIVE=dev
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/database?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=devpassword
     depends_on:
       mysql:

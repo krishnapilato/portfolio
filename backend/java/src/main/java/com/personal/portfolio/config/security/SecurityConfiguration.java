@@ -1,9 +1,9 @@
 package com.personal.portfolio.config.security;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,31 +16,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-/**
- * Security configuration for the application.
- * Defines public and secured endpoints, CORS settings, and integrates the JWT authentication filter.
- */
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    /**
-     * Publicly accessible endpoints that do not require authentication.
-     */
-    private static final String[] PUBLIC_ENDPOINTS = {
-            "/", "/v3/api-docs/**", "/swagger-ui/**", "/auth/**", "/api/email/**"
-    };
+    private static final String[] PUBLIC_ENDPOINTS = { "/", "/v3/api-docs/**", "/swagger-ui/**", "/auth/**", "/api/email/**", "/actuator/**" };
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    /**
-     * Configures the security filter chain with stateless session, JWT authentication, and CORS.
-     */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
@@ -50,24 +35,17 @@ public class SecurityConfiguration {
                 .build();
     }
 
-    /**
-     * Configures Cross-Origin Resource Sharing (CORS) for specified origins, methods, and headers.
-     */
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:4200",
-                "https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com"
-        ));
-        configuration.setAllowedMethods(List.of(
-                HttpMethod.GET.name(), HttpMethod.POST.name(),
-                HttpMethod.PUT.name(), HttpMethod.DELETE.name(), HttpMethod.OPTIONS.name()
-        ));
+    public CorsConfigurationSource corsConfigurationSource(
+            @Value("${app.cors.allowed-origins:http://localhost:4200}") List<String> allowedOrigins) {
+
+        var configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(allowedOrigins);
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }

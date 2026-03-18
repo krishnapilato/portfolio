@@ -1,152 +1,138 @@
-## Portfolio Backend API (Spring Boot)
+# Portfolio Backend API
 
-Production-ready REST API for a personal portfolio: authentication, user management, and email workflows. Built on Spring Boot 4 (milestone) with Java 24, secured via JWT, documented with OpenAPI/Swagger, and containerized for local development.
+[![Java](https://img.shields.io/badge/Java-25.0.2-orange.svg)](https://java.oracle.com/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0--M2-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![MySQL](https://img.shields.io/badge/MySQL-9.6-blue.svg)](https://www.mysql.com/)
+[![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED.svg)](https://www.docker.com/)
 
-Key URLs (dev):
-- App: http://localhost:8080/
-- Swagger UI: http://localhost:8080/swagger-ui
-- OpenAPI JSON: http://localhost:8080/v3/api-docs
+A high-performance, enterprise-grade REST API built as the backend engine for a personal portfolio. Engineered with modern **Java 25** and **Spring Boot 4.1.0-M2**, this service handles secure authentication, robust user management, and automated email workflows.
 
-Deployed example: https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com
+It features a stateless security architecture with automated JWT key rotation, a fully containerized developer experience with hot-reload, and high-throughput asynchronous logging.
 
-## Features
+### Quick Links
+- **Live Production Example:** [khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com](https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com)
+- **Local Application:** [`http://localhost:8080/`](http://localhost:8080/)
+- **Swagger UI (Interactive API):** [`http://localhost:8080/swagger-ui/index.html`](http://localhost:8080/swagger-ui/index.html)
+- **OpenAPI 3.0 JSON:** [`http://localhost:8080/v3/api-docs`](http://localhost:8080/v3/api-docs)
 
-- JWT auth (HS512) with daily key rotation persisted in DB
-- User CRUD and account lifecycle (activate, lock/unlock, role change, password reset)
-- Email delivery (single, bulk, attachments, scheduled) via SMTP (Mailtrap in dev)
-- Actuator health/info and structured logging with rolling files
-- OpenAPI groups per domain with Swagger UI
-- CORS for local SPA and deployed domain
+---
 
-## Tech stack
+## Core Features
 
-- Language/Runtime: Java 24
-- Frameworks: Spring Boot 4.0.0-M1, Spring Web, Spring Security, Spring Data JPA, Validation, Actuator, Thymeleaf
-- Auth: JJWT 0.12.x (HS512)
-- Database: MySQL (Connector/J 9.x)
-- Docs: springdoc-openapi 2.x
-- Build: Maven (wrapper), Docker (dev image), Docker Compose
+*   **Advanced Security:** Stateless JWT authentication (HS512) with automated, database-persisted daily key rotation to prevent token tampering.
+*   **User Identity & Access:** Complete user lifecycle management including registration, role-based access control (Admin/User), account locking, and secure password resets.
+*   **Email Engine:** SMTP integration (Mailtrap for dev, scalable in prod) supporting single delivery, bulk dispatch, attachments, and scheduled messaging.
+*   **Resilient Observability:** Integrated Spring Actuator for health metrics and highly optimized asynchronous rolling file logs (`logback-spring.xml`).
+*   **Developer Experience (DX):** Fully containerized local environment using Docker Compose with volume-mounted hot reloading.
+*   **Interactive Documentation:** Auto-generated, grouped OpenAPI 3.0 specifications available via Swagger UI.
 
-## API surface (high level)
+---
 
-- Auth: POST /auth/login, POST /auth/signup
-- Users: GET/POST/PUT/DELETE /api/users, plus:
-    - GET /api/users/{id}
-    - PUT /api/users/{id}/lock
-    - PUT /api/users/{id}/role?role=ADMIN|USER
-    - PUT /api/users/{id}/activate
-    - POST /api/users/reset-password?email=...&newPassword=...
-- Email: under /api/email
-    - POST /send, /send-with-attachment, /send-bulk, /schedule
-    - POST /forgot-password, /resend-confirmation
-    - GET /status/{emailId}
-- Landing page: GET /
+## Technology Stack
 
-Use Swagger UI for precise schemas, examples, and response codes.
+| Category | Technologies                                                |
+| :--- |:------------------------------------------------------------|
+| **Core Runtime** | Java 25.0.2, Spring Boot 4.1.0-M2                           |
+| **Data Layer** | Spring Data JPA, Hibernate, MySQL 9.6, HikariCP             |
+| **Security** | Spring Security, JJWT 0.13.0, BCrypt                        |
+| **DevOps & Infrastructure** | Docker, Docker Compose, Maven Wrapper                       |
+| **Observability & Docs** | Springdoc OpenAPI (Swagger), Spring Actuator, SLF4J/Logback |
 
-## Configuration
+---
 
-Profiles
-- Default: dev (spring.profiles.active=dev)
-- prod: tighten logging and disables dev conveniences
+## Getting Started (Local Development)
 
-Essential environment variables (override defaults in application.yaml):
-- SPRING_DATASOURCE_USERNAME, SPRING_DATASOURCE_PASSWORD
-- SPRING_DATASOURCE_URL (override when using Dockerized MySQL or non-default ports)
-- SPRING_MAIL_USERNAME, SPRING_MAIL_PASSWORD (Mailtrap or real SMTP)
-- PORT (defaults to 8080)
-- bcrypt.strength (default 12; valid 4–31)
+### Prerequisites
+*   [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
+*   *Optional:* JDK 25 installed locally if you wish to run outside of Docker.
 
-Admin bootstrap (dev only)
-- On startup, a default admin is created if absent using values configured in application.yaml (see spring.security.user.* via AdminConfig). Not active in prod.
+### Recommended: Docker Compose (Zero-Setup Hot Reload)
+The easiest way to run the application. This spins up a MySQL database and the Spring Boot application in isolated containers, mapping your local source code for instant hot-reloading.
 
-CORS
-- Allowed origins include http://localhost:4200 and the Elastic Beanstalk domain. Update SecurityConfiguration.corsConfigurationSource() to add more.
+```bash
+# 1. Start the database and application
+docker compose up -d --build
 
-Logging
-- logs/application.log with daily+size rolling (logback-spring.xml). Actuator health/info exposed.
-
-## Run locally (Windows)
-
-Prerequisites
-- JDK 24 (required by Maven Enforcer)
-- Maven Wrapper (included)
-- MySQL 8+ (local) or Docker Desktop
-
-Option A — Native run (using your local MySQL)
-1) Ensure a MySQL instance is available and credentials are set via env vars.
-2) From backend/java:
-
-```cmd
-mvnw.cmd spring-boot:run
+# 2. View the application logs
+docker compose logs -f app
 ```
 
-Option B — Docker Compose (MySQL + dev app container)
-From backend/java execute:
+### Alternative: Native Run (Local JDK)
+If you prefer running the application directly on your host machine against the Dockerized database:
 
-```cmd
-powershell -File .\make.ps1 up
-```
+```bash
+# 1. Start only the database container (mapped to port 3307)
+docker compose up -d mysql
 
-Notes
-- The compose file maps MySQL to host port 3307 and the app to 8080.
-- When running the app on your host against the Dockerized DB, override the datasource URL:
-
-```cmd
+# 2. Export the database URL environment variable (Windows CMD)
 set SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3307/database?createDatabaseIfNotExist=true
-mvnw.cmd spring-boot:run
+
+# 3. Run the application via Maven Wrapper
+./mvnw spring-boot:run
 ```
 
-## Build, test, and package
+---
 
-Run tests:
-```cmd
-mvnw.cmd -q test
+## Configuration & Environment Variables
+
+The application uses Spring Profiles (`dev`, `prod`, `test`) to manage environments securely. You can override default behaviors using the following environment variables:
+
+| Variable | Description | Default (Dev) |
+| :--- | :--- | :--- |
+| `SPRING_PROFILES_ACTIVE` | Active runtime profile (`dev` or `prod`). | `dev` |
+| `PORT` | The port the application listens on. | `8080` |
+| `SPRING_DATASOURCE_URL` | JDBC connection string. | `jdbc:mysql://localhost:3306/database` |
+| `SPRING_DATASOURCE_USERNAME` | Database user. | `root` |
+| `SPRING_DATASOURCE_PASSWORD` | Database password. | `root` |
+| `SPRING_MAIL_USERNAME` | SMTP User (e.g., Mailtrap). | *None* |
+| `SPRING_MAIL_PASSWORD` | SMTP Password. | *None* |
+| `ADMIN_EMAIL` | Auto-provisioned admin email (Dev only). | `admin.email@gmail.com` |
+| `ADMIN_PASSWORD` | Auto-provisioned admin password (Dev only).| `1234567890` |
+
+---
+
+## API Surface (High Level)
+
+All endpoints (except public routes) require a valid JWT passed in the `Authorization: Bearer <token>` header. For strict payloads and examples, please consult the **Swagger UI**.
+
+*   **Authentication** (`/auth/**`)
+  *   `POST /auth/signup` - Register a new user
+  *   `POST /auth/login` - Authenticate and receive JWT
+*   **User Management** (`/api/users/**`)
+  *   `GET /api/users` - Retrieve paginated users (Admin)
+  *   `PUT /api/users/{id}/lock` - Toggle account lock (Admin)
+  *   `PUT /api/users/{id}/role` - Update user permissions (Admin)
+  *   `POST /api/users/reset-password` - Process password recovery
+*   **Email Services** (`/api/email/**`)
+  *   `POST /send` - Dispatch standard email
+  *   `POST /send-bulk` - Dispatch batch emails
+  *   `POST /schedule` - Queue email for future delivery
+
+---
+
+## Build, Test, and Deploy
+
+**Run Unit & Integration Tests:**
+```bash
+./mvnw clean test
 ```
 
-Create a runnable JAR:
-```cmd
-mvnw.cmd -q clean package
+**Build Production Executable:**
+```bash
+./mvnw clean package -DskipTests
 ```
+*The resulting highly-optimized `.jar` will be generated in the `/target` directory.*
 
-The artifact will be under target/. Start it with:
-```cmd
-java -jar target\portfolio-0.0.5.jar
-```
+---
 
-## Security model
+## Security Notes & Best Practices
 
-- Stateless JWT auth via Authorization: Bearer <token>
-- HS512-signed tokens; secret keys rotated daily (scheduled job) and stored in MySQL (JwtKeys table)
-- Public endpoints: /, /auth/**, /api/email/**, /swagger-ui/**, /v3/api-docs/**
+*   **Database Migrations:** The `dev` profile uses `spring.jpa.hibernate.ddl-auto=update` for rapid iteration. The `prod` profile strictly enforces `validate` to prevent accidental schema destruction.
+*   **CORS Configuration:** Allowed origins are restricted. To add new frontend clients, update `SecurityConfiguration.corsConfigurationSource()`.
+*   **Secrets:** Never commit real SMTP credentials or Production Database passwords to version control. Always inject them via environment variables in your deployment environment (e.g., AWS Elastic Beanstalk).
 
-## Database
-
-- Default schema name: database (see init.sql)
-- JPA hibernate.ddl-auto=update for dev convenience; prefer migrations for prod
-
-## Observability
-
-- Health: /actuator/health (details for authorized only)
-- Info: /actuator/info
-- Logs: rolling file and console (dev)
-
-## Swagger/OpenAPI
-
-- UI: /swagger-ui
-- Grouped APIs: 01-Authentication, 02-User, 03-Email
-- Global bearerAuth security scheme with JWT in Authorization header
-
-## Notes & caveats
-
-- This project targets Java 24 and Spring Boot 4.0.0-M1; ensure a matching toolchain.
-- Do not commit real secrets. Values in application.yaml are for local development and must be overridden via environment variables in any shared or production environment.
-- If you run only MySQL via Docker (port 3307) and the app natively, remember to update SPRING_DATASOURCE_URL accordingly.
-
-## Contributing
-
-PRs are welcome. Please include tests for behavioral changes and follow existing code style. For significant changes, open an issue first to discuss scope.
+---
 
 ## License
 
-Unless stated otherwise in the repository root, all rights reserved Khova Krishna Pilato.
+Unless stated otherwise in the repository root, all rights reserved **Khova Krishna Pilato**.
