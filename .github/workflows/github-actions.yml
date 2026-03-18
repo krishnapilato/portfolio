@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - dev
   pull_request:
     branches:
       - main
-      - dev
 
 permissions:
   contents: write
@@ -19,7 +17,6 @@ jobs:
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
     
-    # This ensures all 'run' commands start inside the react-app folder
     defaults:
       run:
         working-directory: ./frontend/react-app
@@ -31,19 +28,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '25'
 
       - name: Install Dependencies
-        # Using 'npm ci' is faster and more reliable for CI/CD than 'npm install'
         run: npm ci
 
       - name: Build React App
-        # Building the project with the base path for GitHub Pages
         run: npm run build -- --base=/portfolio/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # Path relative to the repository root
           publish_dir: ./frontend/react-app/dist
