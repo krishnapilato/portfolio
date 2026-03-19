@@ -1,184 +1,165 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import {
-  Environment,
-  MeshTransmissionMaterial,
-  Trail,
-  Float,
-  Lightformer,
-} from "@react-three/drei";
+import { Float, Environment } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 import * as THREE from "three";
 import "./App.css";
 
-// --- 1. RESPONSIVE GAME CONTROLLER (Mouse, Touch, Arrows) ---
-const InteractiveFlightSpark = () => {
-  const sparkRef = useRef();
-  const lightRef = useRef();
+// --- DICTIONARY (EN / IT) ---
+const TRANSLATIONS = {
+  en: {
+    name: "KHOVA KRISHNA PILATO",
+    role: "FULL-STACK JAVA DEVELOPER",
+    status: "SYSTEMS BOOTING",
+    title1: "COMING",
+    title2: "SOON",
+    connect: "INITIATE HANDSHAKE",
+    hint: "STEER LIGHT (MOUSE/ARROWS)",
+  },
+  it: {
+    name: "KHOVA KRISHNA PILATO",
+    role: "SVILUPPATORE JAVA FULL-STACK",
+    status: "AVVIO SISTEMI",
+    title1: "IN",
+    title2: "ARRIVO",
+    connect: "AVVIA CONNESSIONE",
+    hint: "MUOVI LA LUCE (MOUSE/FRECCE)",
+  },
+};
+
+// --- 3D SCENE: THE DARK GYROSCOPE ---
+const PrecisionGyroscope = () => {
+  const groupRef = useRef();
+  const ring1 = useRef();
+  const ring2 = useRef();
+  const ring3 = useRef();
+
   const { viewport } = useThree();
-  const target = useRef(new THREE.Vector3(0, 0, 0));
+  const target = useRef(new THREE.Vector2(0, 0));
+  const lightRef = useRef();
+
+  // 1. ADD THIS: We create our own time tracker
+  const timeRef = useRef(0);
+
+  // Responsive scaling
+  const scale = viewport.width < 5 ? 0.6 : 1;
 
   useEffect(() => {
-    let mouseX = 0;
-    let mouseY = 0;
-
-    // Desktop Mouse
-    const handleMouseMove = (e) => {
-      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-      target.current.set(
-        mouseX * (viewport.width / 2),
-        mouseY * (viewport.height / 2),
-        -2,
-      );
+    const handleMove = (x, y) => {
+      target.current.x = (x / window.innerWidth) * 2 - 1;
+      target.current.y = -(y / window.innerHeight) * 2 + 1;
+    };
+    const onMouseMove = (e) => handleMove(e.clientX, e.clientY);
+    const onTouchMove = (e) => {
+      if (e.touches.length > 0)
+        handleMove(e.touches[0].clientX, e.touches[0].clientY);
+    };
+    const onKeyDown = (e) => {
+      const speed = 0.2;
+      if (e.key === "ArrowRight")
+        target.current.x = Math.min(target.current.x + speed, 1);
+      if (e.key === "ArrowLeft")
+        target.current.x = Math.max(target.current.x - speed, -1);
+      if (e.key === "ArrowUp")
+        target.current.y = Math.min(target.current.y + speed, 1);
+      if (e.key === "ArrowDown")
+        target.current.y = Math.max(target.current.y - speed, -1);
     };
 
-    // Mobile / Tablet Touch
-    const handleTouchMove = (e) => {
-      if (e.touches.length > 0) {
-        mouseX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
-        mouseY = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
-        target.current.set(
-          mouseX * (viewport.width / 2.2),
-          mouseY * (viewport.height / 2.2),
-          -2,
-        );
-      }
-    };
-
-    // Keyboard Arrows
-    const handleKeyDown = (e) => {
-      const speed = viewport.width * 0.05; // Responsive speed
-      if (e.key === "ArrowRight") target.current.x += speed;
-      if (e.key === "ArrowLeft") target.current.x -= speed;
-      if (e.key === "ArrowUp") target.current.y += speed;
-      if (e.key === "ArrowDown") target.current.y -= speed;
-
-      // Keep strictly within screen bounds
-      target.current.x = THREE.MathUtils.clamp(
-        target.current.x,
-        -viewport.width / 2,
-        viewport.width / 2,
-      );
-      target.current.y = THREE.MathUtils.clamp(
-        target.current.y,
-        -viewport.height / 2,
-        viewport.height / 2,
-      );
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    window.addEventListener("keydown", handleKeyDown);
-
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("keydown", onKeyDown);
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("keydown", onKeyDown);
     };
-  }, [viewport]);
+  }, []);
 
   useFrame((state, delta) => {
-    if (!sparkRef.current) return;
+    // 2. USE THIS: Accumulate time manually using the frame delta
+    timeRef.current += delta;
+    const time = timeRef.current;
 
-    // Smooth aerodynamic tracking
-    sparkRef.current.position.lerp(target.current, delta * 5);
+    if (lightRef.current) {
+      const lightX = THREE.MathUtils.lerp(
+        lightRef.current.position.x,
+        target.current.x * 10,
+        delta * 3,
+      );
+      const lightY = THREE.MathUtils.lerp(
+        lightRef.current.position.y,
+        target.current.y * 10,
+        delta * 3,
+      );
+      lightRef.current.position.set(lightX, lightY, 5);
+    }
 
-    // Dynamic Z-depth: It loops deep behind the glass, then flies in front
-    sparkRef.current.position.z = Math.sin(state.clock.elapsedTime * 2) * 3;
+    // 3. USE OUR CUSTOM TIME FOR ROTATIONS
+    if (ring1.current) ring1.current.rotation.x = time * 0.2;
+    if (ring2.current) ring2.current.rotation.y = time * 0.3;
+    if (ring3.current) ring3.current.rotation.z = time * 0.1;
 
-    lightRef.current.position.copy(sparkRef.current.position);
+    if (groupRef.current) {
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(
+        groupRef.current.rotation.y,
+        target.current.x * 0.5,
+        delta * 2,
+      );
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(
+        groupRef.current.rotation.x,
+        -target.current.y * 0.5,
+        delta * 2,
+      );
+    }
+  });
+
+  const darkMetal = new THREE.MeshStandardMaterial({
+    color: "#050505",
+    metalness: 1,
+    roughness: 0.15,
   });
 
   return (
     <>
-      <pointLight ref={lightRef} intensity={60} distance={15} color="#FF9933" />
-      <Trail
-        width={viewport.width < 5 ? 0.2 : 0.5}
-        length={viewport.width < 5 ? 4 : 8}
-        color="#FF9933"
-        attenuation={(t) => t * t}
-      >
-        <mesh ref={sparkRef}>
-          <sphereGeometry args={[viewport.width < 5 ? 0.05 : 0.08, 16, 16]} />
-          <meshBasicMaterial color="#ffffff" />
-        </mesh>
-      </Trail>
+      <pointLight ref={lightRef} intensity={80} distance={20} color="#ffffff" />
+      <ambientLight intensity={0.5} />
+      <directionalLight
+        position={[-5, 5, -5]}
+        intensity={1.5}
+        color="#FFe6cc"
+      />
+      <directionalLight
+        position={[5, -5, -5]}
+        intensity={1.5}
+        color="#cce6ff"
+      />
+
+      <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
+        <group ref={groupRef} scale={scale}>
+          <mesh material={darkMetal}>
+            <sphereGeometry args={[1, 64, 64]} />
+          </mesh>
+          <mesh ref={ring1} material={darkMetal}>
+            <torusGeometry args={[1.4, 0.02, 32, 100]} />
+          </mesh>
+          <mesh ref={ring2} material={darkMetal}>
+            <torusGeometry args={[1.8, 0.02, 32, 100]} />
+          </mesh>
+          <mesh ref={ring3} material={darkMetal}>
+            <torusGeometry args={[2.2, 0.02, 32, 100]} />
+          </mesh>
+        </group>
+      </Float>
+      <Environment preset="studio" />
     </>
   );
 };
 
-// --- 2. RESPONSIVE MORPHING GLASS ---
-const LiquidGlassMonolith = () => {
-  const meshRef = useRef();
-  const { viewport } = useThree();
-
-  // Intelligent 3D scaling based on device width
-  const isMobile = viewport.width < 5;
-  const responsiveScale = isMobile ? viewport.width * 0.25 : 1;
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.1;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.15;
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-      <mesh ref={meshRef} scale={responsiveScale}>
-        <torusKnotGeometry args={[1.5, 0.6, 256, 64]} />
-        <MeshTransmissionMaterial
-          backside
-          backsideThickness={2}
-          thickness={1.5}
-          roughness={0.05}
-          transmission={1}
-          ior={1.33}
-          chromaticAberration={0.2}
-          anisotropy={0.5}
-          color="#e0f2fe"
-        />
-      </mesh>
-    </Float>
-  );
-};
-
-// --- MAIN APP ---
-function App() {
-  const [terminalLines, setTerminalLines] = useState([]);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Responsive Layout Hook
-  useEffect(() => {
-    const checkSize = () => setIsMobile(window.innerWidth < 768);
-    checkSize();
-    window.addEventListener("resize", checkSize);
-    return () => window.removeEventListener("resize", checkSize);
-  }, []);
-
-  const bootSequence = [
-    "> INITIALIZING JVM CONTEXT...",
-    "> BOOTSTRAPPING SPRING BOOT 4.1 KERNEL...",
-    "> ESTABLISHING SECURE HIKARICP POOL TO POSTGRESQL...",
-    "> VALIDATING JWT ENCLAVE & ROTATING CRYPTO KEYS...",
-    "> HYDRATING COMPONENT TREE & RESOLVING ASYNC CHUNKS...",
-    "> MOUNTING DOCKER CONTAINER VOLUMES...",
-    "> ALL SYSTEMS NOMINAL. AWAITING CONNECTION_",
-  ];
-
-  useEffect(() => {
-    let timeouts = [];
-    let delay = 0;
-    bootSequence.forEach((line) => {
-      delay += Math.random() * 500 + 1000;
-      const timeout = setTimeout(() => {
-        setTerminalLines((prev) => [...prev, line]);
-      }, delay);
-      timeouts.push(timeout);
-    });
-    return () => timeouts.forEach(clearTimeout);
-  }, []);
+// --- MAIN APP COMPONENT ---
+export default function App() {
+  const [lang, setLang] = useState("en");
+  const t = TRANSLATIONS[lang];
 
   return (
     <div
@@ -186,13 +167,13 @@ function App() {
         width: "100vw",
         height: "100vh",
         position: "relative",
-        background: "#030303",
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-        touchAction: "none", // CRITICAL: Prevents mobile pull-to-refresh so swipe controls work perfectly
+        background: "#020202", // Pitch black
+        fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
+        overflow: "hidden",
+        color: "#ffffff",
       }}
     >
-      {/* --- THE DEEP 3D CANVAS --- */}
+      {/* 3D CANVAS - Perfectly optimized */}
       <div
         style={{
           position: "absolute",
@@ -203,43 +184,12 @@ function App() {
           zIndex: 0,
         }}
       >
-        <Canvas shadows camera={{ position: [0, 0, 8], fov: 45 }}>
-          <ambientLight intensity={0.2} />
-          {/* Subtle background ambient lights */}
-          <pointLight
-            position={[-10, 10, -10]}
-            intensity={10}
-            color="#0284c7"
-          />
-          <pointLight
-            position={[10, -10, -10]}
-            intensity={10}
-            color="#15803d"
-          />
-
-          <LiquidGlassMonolith />
-          <InteractiveFlightSpark />
-
-          <Environment resolution={256}>
-            <Lightformer
-              form="rect"
-              intensity={2}
-              position={[5, 5, -5]}
-              scale={[10, 10, 1]}
-              target={[0, 0, 0]}
-            />
-            <Lightformer
-              form="rect"
-              intensity={2}
-              position={[-5, -5, -5]}
-              scale={[10, 10, 1]}
-              target={[0, 0, 0]}
-            />
-          </Environment>
+        <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 7], fov: 45 }}>
+          <PrecisionGyroscope />
         </Canvas>
       </div>
 
-      {/* --- RESPONSIVE HUD (UI) --- */}
+      {/* FOREGROUND UI OVERLAY */}
       <div
         style={{
           position: "absolute",
@@ -252,79 +202,83 @@ function App() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: isMobile ? "25px" : "40px",
+          padding: "clamp(20px, 4vw, 50px)",
           boxSizing: "border-box",
         }}
       >
-        {/* Top Header */}
+        {/* HEADER */}
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-start",
-            flexDirection: isMobile ? "column" : "row",
-            gap: isMobile ? "15px" : "0",
           }}
         >
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
             <h1
               style={{
-                fontSize: isMobile ? "1rem" : "1.2rem",
+                fontSize: "0.85rem",
                 fontWeight: 600,
+                letterSpacing: "0.15em",
                 margin: 0,
-                color: "#fff",
-                letterSpacing: "0.05em",
               }}
             >
-              KHOVA KRISHNA PILATO
+              {t.name}
             </h1>
             <p
               style={{
-                fontSize: isMobile ? "0.7rem" : "0.8rem",
+                fontSize: "0.65rem",
                 color: "#888",
-                margin: "4px 0 0 0",
                 letterSpacing: "0.1em",
+                marginTop: "6px",
               }}
             >
-              FULL STACK JAVA DEVELOPER &middot; ITALY
+              {t.role}
             </p>
           </motion.div>
 
+          {/* LANGUAGE TOGGLE */}
           <motion.div
-            initial={{ opacity: 0, x: isMobile ? -20 : 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            style={{
+              display: "flex",
+              gap: "15px",
+              pointerEvents: "auto",
+              fontSize: "0.75rem",
+              fontWeight: 500,
+              letterSpacing: "0.1em",
+            }}
           >
-            <div
+            <span
+              onClick={() => setLang("en")}
               style={{
-                fontSize: "0.65rem",
-                color: "#fff",
-                letterSpacing: "0.2em",
-                opacity: 0.6,
+                cursor: "pointer",
+                color: lang === "en" ? "#fff" : "#555",
+                transition: "color 0.3s",
               }}
             >
-              SYSTEMS ACTIVE
-            </div>
-            <motion.div
-              animate={{ opacity: [1, 0.2, 1] }}
-              transition={{ repeat: Infinity, duration: 2 }}
+              EN
+            </span>
+            <span
+              onClick={() => setLang("it")}
               style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "#4ADE80",
-                boxShadow: "0 0 10px #4ADE80",
+                cursor: "pointer",
+                color: lang === "it" ? "#fff" : "#555",
+                transition: "color 0.3s",
               }}
-            />
+            >
+              IT
+            </span>
           </motion.div>
         </div>
 
-        {/* Center: Awwwards Typography */}
+        {/* CENTER TITLE */}
         <div
           style={{
             position: "absolute",
@@ -336,59 +290,90 @@ function App() {
             mixBlendMode: "difference",
           }}
         >
-          <motion.h2
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
-            style={{
-              fontSize: "clamp(2.5rem, 12vw, 8rem)",
-              fontWeight: 800,
-              margin: 0,
-              color: "#ffffff",
-              lineHeight: 0.9,
-              letterSpacing: "-0.04em",
-            }}
-          >
-            WORK IN
-            <br />
-            PROGRESS
-          </motion.h2>
+          <AnimatePresence mode="wait">
+            <motion.h2
+              key={lang} // Forces animation re-run when language changes
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(10px)" }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+              style={{
+                fontSize: "clamp(3rem, 12vw, 9rem)",
+                fontWeight: 800,
+                margin: 0,
+                lineHeight: 0.9,
+                letterSpacing: "-0.04em",
+                color: "#ffffff",
+              }}
+            >
+              {t.title1}
+              <br />
+              {t.title2}
+            </motion.h2>
+          </AnimatePresence>
         </div>
 
-        {/* Bottom Section: Dynamic Layout */}
+        {/* FOOTER */}
         <div
           style={{
             display: "flex",
-            flexDirection: isMobile ? "column-reverse" : "row",
             justifyContent: "space-between",
-            alignItems: isMobile ? "stretch" : "flex-end",
-            gap: "20px",
+            alignItems: "flex-end",
           }}
         >
-          {/* Action Button & Hints */}
+          {/* STATUS */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <div
+              style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                background: "#fff",
+                animation: "pulse 2s infinite",
+              }}
+            />
+            <span
+              style={{
+                fontSize: "0.65rem",
+                letterSpacing: "0.15em",
+                color: "#888",
+                textTransform: "uppercase",
+              }}
+            >
+              {t.status}
+            </span>
+          </motion.div>
+
+          {/* ACTION BUTTON */}
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              alignItems: isMobile ? "center" : "flex-start",
+              alignItems: "flex-end",
               gap: "15px",
-              order: isMobile ? 1 : 2,
             }}
           >
-            <div
+            <span
               style={{
-                fontSize: "0.6rem",
-                color: "#666",
+                fontSize: "0.55rem",
                 letterSpacing: "0.2em",
-                textAlign: isMobile ? "center" : "left",
+                color: "#666",
               }}
             >
-              STEER THE SPARK <br />{" "}
-              {isMobile ? "(SWIPE SCREEN)" : "(MOUSE / ARROWS)"}
-            </div>
+              {t.hint}
+            </span>
             <motion.button
-              whileHover={{ scale: 1.03, background: "#fff", color: "#000" }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={{
+                scale: 1.05,
+                background: "#ffffff",
+                color: "#000000",
+              }}
+              whileTap={{ scale: 0.95 }}
               onClick={() =>
                 window.open(
                   "https://www.linkedin.com/in/khovakrishnapilato/",
@@ -396,64 +381,32 @@ function App() {
                 )
               }
               style={{
-                padding: isMobile ? "16px 0" : "14px 28px",
-                width: isMobile ? "100%" : "auto",
-                background: "rgba(255,255,255,0.05)",
-                color: "#fff",
-                border: "1px solid rgba(255,255,255,0.2)",
-                borderRadius: "30px",
-                fontSize: "0.75rem",
+                padding: "12px 28px",
+                background: "transparent",
+                color: "#ffffff",
+                border: "1px solid rgba(255,255,255,0.3)",
+                borderRadius: "40px",
+                fontSize: "0.7rem",
                 letterSpacing: "0.15em",
                 cursor: "pointer",
                 pointerEvents: "auto",
-                backdropFilter: "blur(10px)",
+                transition: "background 0.3s, color 0.3s",
               }}
             >
-              CONNECT
+              {t.connect}
             </motion.button>
           </div>
-
-          {/* Faux Terminal */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            style={{
-              fontFamily: "monospace",
-              fontSize: isMobile ? "0.65rem" : "0.75rem",
-              color: "#a3e635",
-              display: "flex",
-              flexDirection: "column",
-              gap: "6px",
-              order: isMobile ? 2 : 1,
-              textAlign: isMobile ? "center" : "left",
-              opacity: isMobile ? 0.7 : 1, // Slightly fade terminal on mobile to avoid noise
-            }}
-          >
-            {terminalLines.map((line, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                {line}
-              </motion.div>
-            ))}
-            <motion.div
-              animate={{ opacity: [0, 1, 0] }}
-              transition={{ repeat: Infinity, duration: 0.8 }}
-              style={{
-                width: "6px",
-                height: "12px",
-                background: "#a3e635",
-                margin: isMobile ? "0 auto" : "0",
-              }}
-            />
-          </motion.div>
         </div>
       </div>
+
+      {/* Simple CSS animation injected for the pulsing dot */}
+      <style>{`
+        @keyframes pulse {
+          0% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.3; transform: scale(1.5); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
     </div>
   );
 }
-
-export default App;
