@@ -189,7 +189,6 @@ function App() {
         background: "#030303",
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif',
-        overflow: "hidden",
         touchAction: "none", // CRITICAL: Prevents mobile pull-to-refresh so swipe controls work perfectly
       }}
     >
