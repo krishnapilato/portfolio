@@ -1,4 +1,4 @@
-import { Environment, Float } from "@react-three/drei";
+import { Environment, Float, Lightformer } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
@@ -145,7 +145,6 @@ const PrecisionGyroscope = ({ gyroEnabled }) => {
     }
   });
 
-  // Upgraded physical material for deep, clearcoat reflections
   const deepMetal = new THREE.MeshPhysicalMaterial({
     color: "#020202",
     metalness: 1,
@@ -178,14 +177,25 @@ const PrecisionGyroscope = ({ gyroEnabled }) => {
           </mesh>
         </group>
       </Float>
-      <Environment preset="studio" />
+
+      {/* CUSTOM VIRTUAL ENVIRONMENT (Replaces 'studio' preset) */}
+      <Environment resolution={512}>
+        {/* Top/Ceiling soft box for smooth upper reflections */}
+        <Lightformer form="rect" intensity={1} position={[0, 10, 0]} scale={[20, 5, 1]} target={[0, 0, 0]} />
+        {/* Left sharp LED strip reflection */}
+        <Lightformer form="rect" intensity={1.5} position={[-10, 0, -10]} scale={[2, 20, 1]} target={[0, 0, 0]} />
+        {/* Right sharp LED strip reflection */}
+        <Lightformer form="rect" intensity={1.5} position={[10, 0, -10]} scale={[2, 20, 1]} target={[0, 0, 0]} />
+        {/* Subtle background glow to prevent total blackness */}
+        <Lightformer form="circle" intensity={0.5} position={[0, -5, -20]} scale={[20, 20, 1]} target={[0, 0, 0]} />
+      </Environment>
     </>
   );
 };
 
 // --- MAIN APP COMPONENT ---
 export default function App() {
-  const [lang, setLang] = useState("en");
+  const[lang, setLang] = useState("en");
   const [gyroEnabled, setGyroEnabled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const t = TRANSLATIONS[lang];
@@ -193,10 +203,10 @@ export default function App() {
   // Bulletproof Responsive Layout Detection
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize(); // Initial check
+    handleResize(); 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  },[]);
 
   const requestGyroPermission = async () => {
     if (gyroEnabled) {
@@ -238,7 +248,7 @@ export default function App() {
     <div
       style={{
         width: "100%",
-        height: "100dvh", // Changed from 100vh to 100dvh to fix mobile bottom bar issue
+        height: "100dvh", 
         position: "relative",
         background: "#020202",
         fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
@@ -261,7 +271,7 @@ export default function App() {
           zIndex: 0,
         }}
       >
-        <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 8], fov: 35 }}>
+        <Canvas dpr={[1, 2]} camera={{ position:[0, 0, 8], fov: 35 }}>
           <PrecisionGyroscope gyroEnabled={gyroEnabled} />
         </Canvas>
       </motion.div>
@@ -280,7 +290,6 @@ export default function App() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: isMobile ? "25px" : "40px",
-          // Extra bottom padding for mobile to clear iOS home bar + browser UI buffers
           paddingBottom: isMobile ? "max(45px, env(safe-area-inset-bottom, 45px))" : "40px",
           boxSizing: "border-box",
         }}
@@ -361,7 +370,7 @@ export default function App() {
           </motion.div>
         </div>
 
-        {/* CENTER TITLE */}
+        {/* CENTER TITLE & DATE */}
         <div
           style={{
             position: "absolute",
@@ -374,24 +383,46 @@ export default function App() {
           }}
         >
           <AnimatePresence mode="wait">
-            <motion.h2
+            <motion.div
               key={lang}
-              initial={{ opacity: 0, filter: "blur(20px)", scale: 0.8, letterSpacing: "-0.1em" }}
-              animate={{ opacity: 1, filter: "blur(0px)", scale: 1, letterSpacing: "-0.04em" }}
+              initial={{ opacity: 0, filter: "blur(20px)", scale: 0.8 }}
+              animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
               exit={{ opacity: 0, filter: "blur(20px)", scale: 1.1 }}
               transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
-              style={{
-                fontSize: "clamp(3rem, 14vw, 9rem)",
-                fontWeight: 800,
-                margin: 0,
-                lineHeight: 0.85,
-                color: "#ffffff",
-              }}
+              style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
             >
-              {t.title1}
-              <br />
-              {t.title2}
-            </motion.h2>
+              <motion.h2
+                initial={{ letterSpacing: "-0.1em" }}
+                animate={{ letterSpacing: "-0.04em" }}
+                transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
+                style={{
+                  fontSize: "clamp(3rem, 14vw, 9rem)",
+                  fontWeight: 800,
+                  margin: 0,
+                  lineHeight: 0.85,
+                  color: "#ffffff",
+                }}
+              >
+                {t.title1}
+                <br />
+                {t.title2}
+              </motion.h2>
+
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
+                style={{
+                  marginTop: "20px",
+                  fontSize: "clamp(0.8rem, 3vw, 1.2rem)",
+                  fontWeight: 600,
+                  letterSpacing: "0.4em",
+                  color: "#4d4d4d", 
+                }}
+              >
+                06 · 05 · 2026
+              </motion.div>
+            </motion.div>
           </AnimatePresence>
         </div>
 
