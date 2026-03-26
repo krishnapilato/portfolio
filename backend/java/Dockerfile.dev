@@ -1,14 +1,18 @@
-# Java 21 LTS is rock solid and guaranteed to exist
-FROM maven:3.9-eclipse-temurin-25-alpine
+FROM maven:3-eclipse-temurin-25-alpine
 
-LABEL maintainer="Khova Krishna Pilato" \ description="Development Docker image for Spring Boot app"
+LABEL maintainer="Khova Krishna Pilato" \
+      description="Development Docker image for Spring Boot app"
 
 WORKDIR /app
 
 COPY pom.xml .
-RUN mvn dependency:go-offline
+
+RUN mvn dependency:go-offline -B
+
+COPY src ./src
 
 EXPOSE 8080
+
 ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
 
-ENTRYPOINT ["sh", "-c", "mvn spring-boot:run -Dspring-boot.run.jvmArguments='${JAVA_OPTS}'"]
+ENTRYPOINT ["sh", "-c", "mvn spring-boot:run -Dspring-boot.run.jvmArguments=\"${JAVA_OPTS}\""]

@@ -1,38 +1,41 @@
 services:
   mysql:
     container_name: mysql-db
-    image: mysql:9.6.0
+    image: mysql:latest
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: devpassword
-      MYSQL_DATABASE: database
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-devpassword}
+      MYSQL_DATABASE: ${DB_NAME:-database}
     ports:
       - "3307:3306"
     networks:
       - backend-net
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
     volumes:
       - mysql_data:/var/lib/mysql
 
   app:
-    container_name: portfolio-backend-dev
+    container_name: backend-dev
     build:
       context: .
       dockerfile: Dockerfile.dev
+    restart: unless-stopped
     ports:
       - "8080:8080"
     volumes:
-      - ./src:/app/src
-      - ./pom.xml:/app/pom.xml
-      - ~/.m2:/root/.m2
+      - ./src:/app/src:ro
+      - ./pom.xml:/app/pom.xml:ro
+      - maven_cache:/root/.m2
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/database?createDatabaseIfNotExist=true
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=devpassword
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE:-dev}
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/${DB_NAME:-database}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-devpassword}
     depends_on:
       mysql:
         condition: service_healthy
@@ -41,6 +44,8 @@ services:
 
 networks:
   backend-net:
+    driver: bridge
 
 volumes:
   mysql_data:
+  maven_cache:
