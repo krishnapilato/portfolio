@@ -1,26 +1,27 @@
 import { AnimatePresence } from "framer-motion";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import AchievementToast from "./components/ui/AchievementToast.jsx";
 import Cursor from "./components/ui/Cursor.jsx";
 import ProgressBar from "./components/ui/ProgressBar.jsx";
-import NavBar from "./components/layout/NavBar.jsx";
 import { useLenis } from "./hooks/useLenis.js";
 import { useAppStore } from "./store/index.js";
 import content from "./data/content.json";
 import "./App.css";
 
 // Sections (lazy-loaded for performance)
-const EntrySequence = lazy(() => import("./sections/Entry.jsx"));
-const HeroSection   = lazy(() => import("./sections/Hero.jsx"));
-const AboutSection  = lazy(() => import("./sections/About.jsx"));
-const SkillsSection = lazy(() => import("./sections/Skills.jsx"));
+const TunnelScene      = lazy(() => import("./scenes/TunnelScene.jsx"));
+const EntrySequence    = lazy(() => import("./sections/Entry.jsx"));
+const HeroSection      = lazy(() => import("./sections/Hero.jsx"));
+const AboutSection     = lazy(() => import("./sections/About.jsx"));
+const SkillsSection    = lazy(() => import("./sections/Skills.jsx"));
 const ExperienceSection = lazy(() => import("./sections/Experience.jsx"));
-const ProjectsSection   = lazy(() => import("./sections/Projects.jsx"));
-const ContactSection    = lazy(() => import("./sections/Contact.jsx"));
+const ProjectsSection  = lazy(() => import("./sections/Projects.jsx"));
+const ContactSection   = lazy(() => import("./sections/Contact.jsx"));
 
 export default function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [showEntry, setShowEntry] = useState(true);
+  const scrollProgressRef = useRef(0);
 
   const setScrollProgress = useAppStore((s) => s.setScrollProgress);
   const unlockAchievement = useAppStore((s) => s.unlockAchievement);
@@ -36,11 +37,13 @@ export default function App() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Scroll progress tracker
+  // Scroll progress tracker — writes to both the store and the ref for the 3D scene
   useEffect(() => {
     const onScroll = () => {
       const total = document.documentElement.scrollHeight - window.innerHeight;
-      if (total > 0) setScrollProgress(window.scrollY / total);
+      const progress = total > 0 ? window.scrollY / total : 0;
+      scrollProgressRef.current = progress;
+      if (total > 0) setScrollProgress(progress);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -74,16 +77,21 @@ export default function App() {
   }, [discoveredSections.size, unlockAchievement]);
 
   return (
-    <div
-      className="relative min-h-screen"
-      style={{ background: "radial-gradient(ellipse at 50% 0%, #0e0e12 0%, #050505 65%)" }}
-    >
+    <div className="relative min-h-screen bg-void">
+      {/* ── Immersive 3D tunnel — persists behind all content ── */}
+      {!showEntry && (
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <Suspense fallback={null}>
+            <TunnelScene scrollProgressRef={scrollProgressRef} isMobile={isMobile} />
+          </Suspense>
+        </div>
+      )}
+
       {/* Custom cursor (desktop only) */}
       {!isMobile && <Cursor />}
 
       {/* Global overlays */}
       <ProgressBar />
-      <NavBar />
       <AchievementToast />
 
       {/* Entry sequence */}
@@ -95,16 +103,13 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Main content */}
-      <main>
+      {/* Main content scrolls over the fixed tunnel */}
+      <main className="relative z-10">
         <Suspense fallback={null}>
-          <HeroSection personal={content.personal} isMobile={isMobile} />
+          <HeroSection personal={content.personal} />
         </Suspense>
         <Suspense fallback={null}>
-          <AboutSection
-            about={content.about}
-            stats={content.stats}
-          />
+          <AboutSection about={content.about} stats={content.stats} />
         </Suspense>
         <Suspense fallback={null}>
           <SkillsSection skills={content.skills} isMobile={isMobile} />

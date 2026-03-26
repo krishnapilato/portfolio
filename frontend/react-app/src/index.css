@@ -2,26 +2,27 @@
 
 @theme {
   /* ── Colours ── */
-  --color-void: #050505;
-  --color-surface: #0a0a0f;
-  --color-surface-2: #111118;
-  --color-border: rgba(255, 255, 255, 0.07);
-  --color-border-bright: rgba(255, 255, 255, 0.14);
-  --color-accent: #6366f1;
-  --color-accent-2: #8b5cf6;
-  --color-glow: rgba(99, 102, 241, 0.35);
-  --color-text-primary: #f8fafc;
-  --color-text-secondary: rgba(255, 255, 255, 0.5);
-  --color-text-muted: rgba(255, 255, 255, 0.22);
+  --color-void:            #050505;
+  --color-surface:         #0a0a0f;
+  --color-surface-2:       #0f0f18;
+  --color-border:          rgba(255, 255, 255, 0.07);
+  --color-border-bright:   rgba(255, 255, 255, 0.14);
+  --color-accent:          #6366f1;
+  --color-accent-2:        #a78bfa;
+  --color-accent-3:        #e879f9;
+  --color-glow:            rgba(99, 102, 241, 0.35);
+  --color-text-primary:    #f8fafc;
+  --color-text-secondary:  rgba(255, 255, 255, 0.52);
+  --color-text-muted:      rgba(255, 255, 255, 0.22);
 
   /* ── Typography ── */
-  --font-sans: "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont,
-    sans-serif;
+  --font-sans: "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", "Fira Code", ui-monospace, monospace;
 
   /* ── Easing ── */
-  --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-apple:    cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* ── Spacing ── */
   --spacing-section: 120px;
@@ -30,29 +31,43 @@
 /* ── Global ───────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
+  color-scheme:    dark;
 }
 
 body {
   margin: 0;
   background-color: var(--color-void);
-  color: var(--color-text-primary);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
+  color:            var(--color-text-primary);
+  font-family:      var(--font-sans);
+  -webkit-font-smoothing:  antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar            { width: 3px; }
-::-webkit-scrollbar-track      { background: transparent; }
-::-webkit-scrollbar-thumb      { background: rgba(99,102,241,0.4); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover{ background: rgba(99,102,241,0.7); }
+/* Improved scrollbar — ultra-thin, indigo accent */
+::-webkit-scrollbar             { width: 2px; }
+::-webkit-scrollbar-track       { background: transparent; }
+::-webkit-scrollbar-thumb       { background: rgba(99,102,241,0.35); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(167,139,250,0.6); }
 
 /* Lenis reset */
-html.lenis { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
+html.lenis                       { height: auto; }
+.lenis.lenis-smooth              { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 
 /* Selection */
-::selection { background: rgba(99,102,241,0.3); }
+::selection { background: rgba(99,102,241,0.28); }
+
+/* Noise overlay — subtle film grain for depth */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
