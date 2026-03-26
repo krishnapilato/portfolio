@@ -1,25 +1,23 @@
 ## Portfolio — Angular SSR frontend + Spring Boot API
 
-![Java](https://badgen.net/badge/Java/24.0.2/blue?icon=java)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.0--M1-brightgreen?style=flat&logo=spring-boot)
-![Angular](https://img.shields.io/badge/Angular-20.1.6-red?style=flat&logo=angular)
-![MySQL](https://img.shields.io/badge/MySQL-9.4.0-blue?style=flat&logo=mysql)
+![Java](https://badgen.net/badge/Java/25.0.2/blue?icon=java)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0--M3-brightgreen?style=flat&logo=spring-boot)
+![Angular](https://img.shields.io/badge/React-19.2.4-blue?style=flat&logo=react)
+![MySQL](https://img.shields.io/badge/MySQL-9.6.0-blue?style=flat&logo=mysql)
 ![Version](https://img.shields.io/badge/Version-0.0.5-blue?style=flat)
 [![CI](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
 
-Monorepo hosting a production-ready Angular 20 (SSR) frontend and a Spring Boot 4 API. Clean UX, fast first paint, email contact flow, OpenAPI docs, and containerized local dev.
+Monorepo hosting a production-ready React 19 frontend and a Spring Boot 4 API. Clean UX, fast first paint, email contact flow, OpenAPI docs, and containerized local dev.
 
-- Live site (frontend): https://krishnapilato.github.io/portfolio
-- Demo API (backend): https://khovakrishnapilato-backend.eu-south-1.elasticbeanstalk.com  
-   *(Accessible only via AWS VPN)*
+- Live site: https://krishnapilato.github.io/portfolio
 
 ### Layout
 
-- `frontend/angular` — Angular 20 app with SSR; EmailJS-powered contact form
+- `frontend/react-app` — React 19.2 portfolio app
 - `backend/java` — Spring Boot 4 API (JWT, OpenAPI, MySQL), Docker-compose for dev
 
 For deep details, see the module READMEs:
-- Frontend: `frontend/angular/README.md`
+- Frontend: `frontend/react-app/README.md`
 - Backend: `backend/java/README.md`
 
 ---
@@ -57,23 +55,16 @@ Dev URLs:
 - Swagger UI: http://localhost:8080/swagger-ui
 - OpenAPI JSON: http://localhost:8080/v3/api-docs
 
-### Frontend (Angular SSR)
+### Frontend (React)
 
-Prereqs: Node 18+, npm 9+.
+Prereqs: Node 24+, npm 11+.
 
 Dev server:
 
 ```cmd
-cd frontend\angular
-npm install
-npm start
-```
-
-SSR build and serve locally:
-
-```cmd
-npm run build
-npm run serve:ssr:angular
+cd frontend\react-app
+npm install --legacy-peer-deps
+npm run dev -- --host
 ```
 
 ---
@@ -81,7 +72,6 @@ npm run serve:ssr:angular
 ## Configuration
 
 - Backend environment (DB, SMTP, ports): see `backend/java/README.md` → Configuration. Common vars: `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`, `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD`.
-- Frontend contact form uses EmailJS. Replace service/template IDs and public key in `src/app/contact/contact.component.ts` or externalize via environment injection. See `frontend/angular/README.md`.
 
 ---
 
@@ -107,10 +97,6 @@ Notes: prioritize LCP (hero/media sizing), CLS (explicit sizes), and main-thread
 - Backend
    - Tests: `mvnw.cmd -q test`
    - Package: `mvnw.cmd -q clean package` → `backend/java/target/portfolio-0.0.5.jar`
-
-- Frontend
-   - Unit tests: `npm test`
-   - Build (SSR): `npm run build`
 
 ---
 
