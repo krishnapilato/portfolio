@@ -120,7 +120,7 @@ export default function ContactSection({ personal, contacts }) {
         <Reveal delay={0.4}>
           <div className="mt-24 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <p className="text-[0.6rem] tracking-[0.1em] text-white/18">
-              © 2025 {personal.name}. All rights reserved.
+              © {new Date().getFullYear()} {personal.name}. All rights reserved.
             </p>
             <p className="text-[0.6rem] tracking-[0.1em] text-white/12">
               React 19 · Three.js · Framer Motion · Zustand

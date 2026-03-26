@@ -16,64 +16,102 @@
     "When I'm not architecting services, I'm exploring the intersection of 3D graphics, motion design, and developer tooling."
   ],
   "stats": [
-    { "value": "5+", "label": "Years of experience" },
-    { "value": "30+", "label": "Projects shipped" },
+    { "value": "4+", "label": "Years of experience" },
+    { "value": "10+", "label": "Projects shipped" },
     { "value": "12+", "label": "Technologies mastered" },
     { "value": "100%", "label": "Commitment to craft" }
   ],
   "experience": [
     {
       "id": "exp-1",
-      "role": "Senior Full-Stack Developer",
-      "company": "TechVentures GmbH",
-      "location": "Berlin, Germany (Remote)",
-      "period": "2023 – Present",
+      "role": "Frontend Developer",
+      "company": "SEA Vision",
+      "location": "Pavia, Lombardy, Italy",
+      "period": "July 2025 – January 2026",
       "type": "Full-time",
-      "description": "Architected microservices platform processing 2M+ daily transactions. Led migration of monolith to event-driven Spring Boot services with Kafka. Built React dashboard for real-time analytics.",
+      "description": "Designed and developed high-performance UIs for pharmaceutical packaging software, focusing on real-time data views and compliance.",
       "highlights": [
-        "Reduced API latency by 65% through caching strategy and query optimisation",
-        "Designed event-sourcing architecture with CQRS patterns",
-        "Mentored 4 junior developers in code quality practices"
+        "Built responsive, real-time data interfaces using Angular 18 and Material CDK",
+        "Architected reusable frontend components to accelerate development cycles",
+        "Collaborated in Agile sprints to deliver compliant, user-first interfaces"
       ],
-      "stack": ["Java 21", "Spring Boot", "Kafka", "React", "PostgreSQL", "Docker", "AWS"]
+      "stack": ["Angular 18", "Material CDK", "Agile"]
     },
     {
       "id": "exp-2",
-      "role": "Java Backend Engineer",
-      "company": "FinCore Solutions",
-      "location": "Milan, Italy",
-      "period": "2021 – 2023",
-      "type": "Full-time",
-      "description": "Core engineer on payment processing engine handling PCI-DSS compliance. Implemented REST and GraphQL APIs consumed by 200k+ users. Introduced automated testing strategy raising coverage from 40% to 92%.",
+      "role": "Frontend Developer",
+      "company": "Fincons Group",
+      "location": "Milan, Lombardy, Italy",
+      "period": "April 2025 – June 2025",
+      "type": "Freelance",
+      "description": "Joined a short-term freelance project in the insurance sector to support a critical delivery phase and ensure backend synchronization.",
       "highlights": [
-        "Built fraud detection module reducing false positives by 40%",
-        "Implemented CI/CD pipeline cutting deployment time by 70%",
-        "Achieved 99.98% uptime across payment services"
+        "Built responsive UIs bridging legacy and modern frameworks (AngularJS & Angular 12)",
+        "Ensured smooth frontend-to-backend integration utilizing Java Spring"
       ],
-      "stack": ["Java 17", "Spring Security", "GraphQL", "Redis", "MySQL", "Kubernetes", "GCP"]
+      "stack": ["Angular 12", "AngularJS", "Spring"]
     },
     {
       "id": "exp-3",
-      "role": "Full-Stack Developer",
-      "company": "AgencyOne",
-      "location": "Rome, Italy",
-      "period": "2019 – 2021",
-      "type": "Full-time",
-      "description": "Built client-facing web applications across fintech, healthcare, and e-commerce verticals. Sole frontend architect on three flagship products.",
+      "role": "Full Stack Developer",
+      "company": "Intesa Sanpaolo",
+      "location": "Milan, Lombardy, Italy",
+      "period": "January 2024 – April 2025",
+      "type": "External Consultant",
+      "description": "Acted as an external consultant enhancing the enterprise CRM and maintaining the core 'Custody' application within a microservices architecture.",
       "highlights": [
-        "Delivered 12 production applications with 0 critical post-launch issues",
-        "Established component library used across 8 client projects",
-        "Integrated third-party APIs (Stripe, Twilio, Salesforce)"
+        "Developed new CRM features and performance improvements using Angular",
+        "Maintained and evolved backend services with Java, Spring Boot, and MongoDB",
+        "Collaborated closely with cross-functional teams to deliver scalable, business-aligned solutions"
       ],
-      "stack": ["React", "TypeScript", "Node.js", "Spring Boot", "MongoDB", "AWS S3"]
+      "stack": ["Java", "Spring Boot", "Angular", "MongoDB", "Microservices"]
+    },
+    {
+      "id": "exp-4",
+      "role": "Full Stack Developer",
+      "company": "Capgemini Engineering",
+      "location": "Milan, Lombardy, Italy",
+      "period": "January 2022 – January 2024",
+      "type": "Full-time",
+      "description": "Progressed from maintaining legacy utility billing systems to leading Full Stack development for a key Bosch R&D project in the IoT space.",
+      "highlights": [
+        "Took ownership of core IoT features, working across modern backend and frontend stacks",
+        "Maintained and enhanced electricity/gas billing systems using Java 8, Oracle DB, and GWT",
+        "Contributed to a fully remote Scrum team delivering high-quality, scalable solutions"
+      ],
+      "stack": ["Java 8", "Spring", "Oracle DB", "GWT", "IoT", "Scrum"]
+    },
+    {
+      "id": "exp-5",
+      "role": "Java Developer Intern",
+      "company": "AGM SOLUTIONS",
+      "location": "Milan, Lombardy, Italy",
+      "period": "September 2021 – November 2021",
+      "type": "Internship",
+      "description": "Completed an intensive mentorship program focused on Java application development and enterprise best practices.",
+      "highlights": [
+        "Contributed to real-world projects via feature implementation, debugging, and code optimization",
+        "Learned and applied best practices under the direct guidance of senior developers"
+      ],
+      "stack": ["Java", "Debugging", "Optimization"]
     }
   ],
   "skills": {
     "backend": [
       { "id": "s1", "name": "Java", "level": 95, "category": "backend" },
       { "id": "s2", "name": "Spring Boot", "level": 92, "category": "backend" },
-      { "id": "s3", "name": "Spring Security", "level": 88, "category": "backend" },
-      { "id": "s4", "name": "Hibernate / JPA", "level": 85, "category": "backend" },
+      {
+        "id": "s3",
+        "name": "Spring Security",
+        "level": 88,
+        "category": "backend"
+      },
+      {
+        "id": "s4",
+        "name": "Hibernate / JPA",
+        "level": 85,
+        "category": "backend"
+      },
       { "id": "s5", "name": "Kafka", "level": 78, "category": "backend" },
       { "id": "s6", "name": "GraphQL", "level": 75, "category": "backend" }
     ],
@@ -81,8 +119,18 @@
       { "id": "s7", "name": "React", "level": 90, "category": "frontend" },
       { "id": "s8", "name": "TypeScript", "level": 85, "category": "frontend" },
       { "id": "s9", "name": "Three.js", "level": 72, "category": "frontend" },
-      { "id": "s10", "name": "Framer Motion", "level": 80, "category": "frontend" },
-      { "id": "s11", "name": "CSS / Tailwind", "level": 88, "category": "frontend" },
+      {
+        "id": "s10",
+        "name": "Framer Motion",
+        "level": 80,
+        "category": "frontend"
+      },
+      {
+        "id": "s11",
+        "name": "CSS / Tailwind",
+        "level": 88,
+        "category": "frontend"
+      },
       { "id": "s12", "name": "Next.js", "level": 78, "category": "frontend" }
     ],
     "data": [
@@ -102,57 +150,93 @@
     {
       "id": "p1",
       "num": "01",
-      "title": "Portfolio Universe",
-      "category": "Creative Development",
-      "year": "2025",
-      "description": "This very experience — a cinematic, 3D-immersive portfolio built with React 19, Three.js, and Spring Boot. Designed to feel like a product, not a page.",
-      "tech": ["React 19", "Three.js", "Spring Boot", "PostgreSQL", "Framer Motion"],
-      "status": "Live",
+      "title": "PixelPaper",
+      "category": "Mobile App Development",
+      "year": "2024",
+      "description": "A high-performance, minimalist Flutter application designed to bridge the gap between physical documents and digital management. Allows users to capture images, enhance them via a professional-grade editor, and compile them into organized PDFs.",
+      "tech": [
+        "Flutter",
+        "Dart",
+        "Image Processing",
+        "PDF Generation",
+        "Mobile UI/UX"
+      ],
+      "status": "Production",
       "featured": true,
-      "color": "#6366f1"
+      "color": "#00e5ff"
     },
     {
       "id": "p2",
       "num": "02",
-      "title": "PayCore Engine",
-      "category": "Backend Architecture",
-      "year": "2024",
-      "description": "High-throughput payment processing engine supporting 2M+ daily transactions. Event-sourced CQRS architecture with Kafka event streams and distributed tracing.",
-      "tech": ["Java 21", "Spring Boot", "Kafka", "PostgreSQL", "Redis", "Docker"],
-      "status": "Production",
-      "featured": true,
-      "color": "#8b5cf6"
+      "title": "The Flight of Khova",
+      "category": "Creative Web Development",
+      "year": "2025",
+      "description": "This very experience — a cinematic, 3D-immersive portfolio. Designed as an interactive aviation HUD to feel like a gamified product rather than a standard webpage.",
+      "tech": [
+        "React 19",
+        "Three.js",
+        "Vanilla CSS",
+        "Lenis Smooth Scroll",
+        "Framer Motion"
+      ],
+      "status": "Live",
+      "featured": false,
+      "color": "#ffffff"
     },
     {
       "id": "p3",
-      "title": "Sentinel API Gateway",
+      "title": "Vocabolario Cherubini",
       "num": "03",
-      "category": "API Design",
-      "year": "2024",
-      "description": "Intelligent API gateway with JWT authentication, adaptive rate limiting, request fingerprinting, and a real-time observability dashboard.",
-      "tech": ["Spring Security", "Java 17", "Redis", "Docker", "AWS", "Grafana"],
-      "status": "Production",
+      "category": "Desktop Architecture",
+      "year": "2021",
+      "description": "A complex desktop application developed to digitize and search through the historical 'Cherubini' Milanese-Italian dictionary. Features an advanced search algorithm and a custom graphical interface built over legacy data.",
+      "tech": [
+        "Java",
+        "Java Swing",
+        "Java AWT",
+        "Desktop UI",
+        "Data Structures"
+      ],
+      "status": "Completed",
       "featured": false,
-      "color": "#06b6d4"
+      "color": "#ff9933"
     },
     {
       "id": "p4",
-      "title": "AnalyticsPilot",
+      "title": "Tower of Hanoi & Clock Engine",
       "num": "04",
-      "category": "Full-Stack",
-      "year": "2023",
-      "description": "Real-time analytics dashboard for SaaS metrics — live websocket charts, cohort analysis, and exportable reports. Sub-100ms data pipeline.",
-      "tech": ["React", "TypeScript", "Spring Boot", "WebSockets", "PostgreSQL", "Chart.js"],
-      "status": "Production",
+      "category": "Algorithms & Graphics",
+      "year": "2019",
+      "description": "A visual and interactive simulation of the classic Tower of Hanoi mathematical puzzle, alongside a custom digital clock rendering engine. Built to demonstrate recursive algorithms paired with a responsive GUI.",
+      "tech": [
+        "Java 8",
+        "Java Swing",
+        "Java AWT",
+        "Recursion",
+        "Event Listeners"
+      ],
+      "status": "Completed",
+      "featured": true,
+      "color": "#ff3333"
+    },
+    {
+      "id": "p5",
+      "title": "Codice Fiscale Generator",
+      "num": "05",
+      "category": "CLI Application",
+      "year": "2016",
+      "description": "A lightweight, efficient script to accurately calculate the official Italian Tax Code (Codice Fiscale) based on user demographics. This was my very first programming project.",
+      "tech": ["Python 3.3.x", "String Manipulation", "Algorithms", "CLI"],
+      "status": "Archived",
       "featured": false,
-      "color": "#10b981"
+      "color": "#041d2e"
     }
   ],
   "contacts": [
     {
       "label": "Email",
-      "value": "krishna@pilato.dev",
-      "href": "mailto:krishna@pilato.dev",
+      "value": "krishnak.pilato@gmail.com",
+      "href": "mailto:krishnak.pilato@gmail.com",
       "icon": "mail"
     },
     {
@@ -163,8 +247,8 @@
     },
     {
       "label": "LinkedIn",
-      "value": "linkedin.com/in/krishnapilato",
-      "href": "https://linkedin.com/in/krishnapilato",
+      "value": "linkedin.com/in/khovakrishnapilato",
+      "href": "https://linkedin.com/in/khovakrishnapilato",
       "icon": "linkedin"
     }
   ]

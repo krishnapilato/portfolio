@@ -39,9 +39,9 @@ export default function ProjectsSection({ projects }) {
         {/* Featured cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {featured.map((project, i) => (
-            <Reveal key={project.id} delay={0.08 * i}>
+            <Reveal key={project.id} delay={0.08 * i} className="h-full">
               <motion.div
-                className="relative group p-8 rounded-3xl border overflow-hidden cursor-none h-full"
+                className="relative group flex flex-col p-8 rounded-3xl border overflow-hidden cursor-none h-full"
                 style={{
                   borderColor: hovered === project.id ? `${project.color}40` : "rgba(255,255,255,0.07)",
                   background: hovered === project.id ? `${project.color}08` : "rgba(255,255,255,0.015)",
@@ -87,7 +87,7 @@ export default function ProjectsSection({ projects }) {
                 </p>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between">
+                <div className="mt-auto flex items-center justify-between pt-4">
                   <div className="flex flex-wrap gap-1.5">
                     {project.tech.slice(0, 3).map((t) => (
                       <span key={t} className="px-2 py-0.5 text-[0.55rem] tracking-[0.06em] text-white/28 border border-white/[0.07] rounded-full">
