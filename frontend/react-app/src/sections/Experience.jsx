@@ -57,7 +57,7 @@ export default function ExperienceSection({ experience }) {
             className="font-extralight leading-[1.05] tracking-[-0.04em] text-white mb-16"
             style={{ fontSize: "clamp(2.4rem, 5.5vw, 4rem)" }}
           >
-            The{" "}
+            Where I&apos;ve{" "}
             <em
               className="not-italic font-black"
               style={{
@@ -67,7 +67,7 @@ export default function ExperienceSection({ experience }) {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              journey.
+              delivered.
             </em>
           </h2>
         </Reveal>

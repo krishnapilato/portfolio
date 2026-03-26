@@ -137,7 +137,7 @@ export default function SkillsSection({ skills, isMobile }) {
                 className="font-extralight leading-[1.05] tracking-[-0.04em] text-white mb-3"
                 style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.4rem)" }}
               >
-                Technology{" "}
+                Tools for the{" "}
                 <em
                   className="not-italic font-black"
                   style={{
@@ -147,11 +147,11 @@ export default function SkillsSection({ skills, isMobile }) {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  stack.
+                  job.
                 </em>
               </h2>
               <p className="text-[0.78rem] font-light text-white/30 mb-10">
-                4+ years across the full engineering spectrum.
+                Battle-tested across 4+ years of production engineering — not just tutorials.
               </p>
             </Reveal>
 

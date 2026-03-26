@@ -106,7 +106,7 @@ export default function App() {
       {/* Main content scrolls over the fixed tunnel */}
       <main className="relative z-10">
         <Suspense fallback={null}>
-          <HeroSection personal={content.personal} isMobile={isMobile} />
+          <HeroSection personal={content.personal} />
         </Suspense>
         <Suspense fallback={null}>
           <AboutSection about={content.about} stats={content.stats} />

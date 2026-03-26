@@ -173,10 +173,10 @@ export default function ProjectsSection({ projects }) {
 
         <Reveal delay={0.06}>
           <h2
-            className="font-extralight leading-[1.02] tracking-[-0.04em] text-white mb-16"
+            className="font-extralight leading-[1.02] tracking-[-0.04em] text-white mb-4"
             style={{ fontSize: "clamp(2.4rem, 6vw, 4.5rem)" }}
           >
-            Selected{" "}
+            Things I&apos;ve actually{" "}
             <em
               className="not-italic font-black"
               style={{
@@ -186,9 +186,12 @@ export default function ProjectsSection({ projects }) {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              work.
+              shipped.
             </em>
           </h2>
+          <p className="text-[0.78rem] font-light text-white/28 mb-16">
+            Evidence over claims — code that runs in production.
+          </p>
         </Reveal>
 
         {/* Featured grid */}

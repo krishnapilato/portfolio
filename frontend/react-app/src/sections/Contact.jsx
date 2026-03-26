@@ -16,6 +16,9 @@ export default function ContactSection({ personal, contacts }) {
   const setCursorVariant  = useAppStore((s) => s.setCursorVariant);
   const unlockAchievement = useAppStore((s) => s.unlockAchievement);
 
+  // Derive the email href once, not on every render
+  const mailHref = contacts.find((c) => c.icon === "mail")?.href;
+
   return (
     <section
       id="contact"
@@ -84,17 +87,16 @@ export default function ContactSection({ personal, contacts }) {
 
             <Reveal delay={0.16}>
               <p className="text-[0.88rem] font-light leading-[1.95] text-white/36 max-w-md mb-12">
-                Open to freelance projects, full-time opportunities, and
-                interesting collaborations. If you have a problem worth solving,
-                I want to hear it.
+                You need an engineer who solves hard problems, ships on time, and
+                makes the team around them better. That&apos;s the role I show up for
+                every day — let&apos;s talk.
               </p>
             </Reveal>
 
             <Reveal delay={0.22}>
               <div className="flex flex-wrap gap-4 items-center">
-                {/* contacts[].icon is the data key ("mail","github","linkedin"), not the display symbol */}
                 <MagneticButton
-                  href={contacts.find((c) => c.icon === "mail")?.href}
+                  href={mailHref}
                   onClick={() => unlockAchievement("contact", "Ready to connect!")}
                 >
                   <span>Start a conversation</span>

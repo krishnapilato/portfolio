@@ -93,7 +93,7 @@ export default function AboutSection({ about, stats }) {
           <div className="flex items-center gap-4 mb-20">
             <span className="h-px w-12 bg-indigo-500/40" />
             <p className="text-[0.55rem] tracking-[0.45em] uppercase text-indigo-400/60">
-              Chapter 02 / Origin Story
+              Chapter 02 / Why Hire Me
             </p>
           </div>
         </Reveal>
@@ -107,7 +107,7 @@ export default function AboutSection({ about, stats }) {
                 className="font-extralight leading-[1.05] tracking-[-0.04em] text-white mb-6"
                 style={{ fontSize: "clamp(2.4rem, 5.5vw, 4rem)" }}
               >
-                Engineering{" "}
+                I ship things that{" "}
                 <em
                   className="not-italic font-black"
                   style={{
@@ -117,16 +117,15 @@ export default function AboutSection({ about, stats }) {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  elegant
-                </em>{" "}
-                systems at scale.
+                  work.
+                </em>
               </h2>
             </Reveal>
 
             <Reveal delay={0.14}>
               <p className="text-[0.82rem] font-light leading-[1.95] text-white/38 max-w-sm mb-14">
-                Building software that is invisible — it just works, elegantly. From
-                resilient Java backends to immersive React frontends.
+                Production systems for major institutions, not just side projects.
+                Full-stack, cross-functional, and focused on outcomes that matter.
               </p>
             </Reveal>
 

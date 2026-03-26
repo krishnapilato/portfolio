@@ -11,9 +11,9 @@
   },
   "summary": "I build precision-crafted software systems — from resilient Java backends to immersive React frontends. I obsess over performance, clarity, and the space where engineering meets craft.",
   "about": [
-    "I'm a full-stack engineer with deep roots in the Java ecosystem and a strong command of modern frontend architecture. I believe great software is invisible — it just works, elegantly and at scale.",
-    "My background spans enterprise backend systems at major financial institutions, cloud-native microservices, and interactive 3D web experiences. Every problem I touch becomes a system design challenge with a human at the end of it.",
-    "When I'm not architecting distributed services, I'm pushing the boundaries of what browsers can render — 3D graphics, physics-based motion, and the craft of developer tooling."
+    "I've shipped production systems for Italy's largest bank (Intesa Sanpaolo), built R&D IoT platforms at Bosch via Capgemini, and delivered pharmaceutical compliance UIs for global markets. I don't prototype — I engineer and ship.",
+    "My approach: treat every system as an interconnected design challenge. Java backends need the same precision as the frontends people interact with. I work across the full stack because technical problems never stop at one layer.",
+    "I care about the team as much as the codebase — I write maintainable code, communicate clearly, and leave every project in better shape than I found it."
   ],
   "stats": [
     { "value": "4+",   "label": "Years of production experience" },
