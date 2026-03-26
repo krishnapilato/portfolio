@@ -1,0 +1,1 @@
+var e=[.16,1,.3,1],t={hidden:{opacity:0,y:32,filter:`blur(8px)`},visible:(t=0)=>({opacity:1,y:0,filter:`blur(0px)`,transition:{duration:.9,ease:e,delay:t}})};export{t as n,e as t};
