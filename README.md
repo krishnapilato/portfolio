@@ -1,4 +1,4 @@
-## Portfolio — Angular SSR frontend + Spring Boot API
+## Portfolio
 
 ![Java](https://badgen.net/badge/Java/25.0.2/blue?icon=java)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0--M3-brightgreen?style=flat&logo=spring-boot)
