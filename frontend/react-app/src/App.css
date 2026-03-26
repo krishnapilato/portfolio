@@ -1,1 +1,11 @@
- 
+/* App-level overrides — global layout handled by Tailwind + index.css */
+
+/* Hide cursor on interactive elements when custom cursor is active */
+@media (pointer: fine) {
+  * { cursor: none !important; }
+}
+
+/* Prevent FOUC on section reveals */
+.section-hidden {
+  opacity: 0;
+}

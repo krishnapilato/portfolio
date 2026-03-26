@@ -1,0 +1,171 @@
+{
+  "personal": {
+    "name": "Khova Krishna Pilato",
+    "nameShort": "Krishna Pilato",
+    "initials": "KP",
+    "role": "Full-Stack Java Developer",
+    "tagline": "Engineering elegant systems at scale.",
+    "location": "Italy",
+    "available": true,
+    "availableText": "Available for new opportunities"
+  },
+  "summary": "I build precision-crafted software systems — from resilient Java backends to immersive React frontends. I obsess over performance, clarity, and the space where engineering meets craft.",
+  "about": [
+    "I'm a full-stack developer with a deep focus on Java ecosystems and modern frontend architecture. I believe great software is invisible — it just works, elegantly.",
+    "With a background spanning enterprise backend systems, cloud infrastructure, and interactive UIs, I approach every project as a system design challenge with a human at the end of it.",
+    "When I'm not architecting services, I'm exploring the intersection of 3D graphics, motion design, and developer tooling."
+  ],
+  "stats": [
+    { "value": "5+", "label": "Years of experience" },
+    { "value": "30+", "label": "Projects shipped" },
+    { "value": "12+", "label": "Technologies mastered" },
+    { "value": "100%", "label": "Commitment to craft" }
+  ],
+  "experience": [
+    {
+      "id": "exp-1",
+      "role": "Senior Full-Stack Developer",
+      "company": "TechVentures GmbH",
+      "location": "Berlin, Germany (Remote)",
+      "period": "2023 – Present",
+      "type": "Full-time",
+      "description": "Architected microservices platform processing 2M+ daily transactions. Led migration of monolith to event-driven Spring Boot services with Kafka. Built React dashboard for real-time analytics.",
+      "highlights": [
+        "Reduced API latency by 65% through caching strategy and query optimisation",
+        "Designed event-sourcing architecture with CQRS patterns",
+        "Mentored 4 junior developers in code quality practices"
+      ],
+      "stack": ["Java 21", "Spring Boot", "Kafka", "React", "PostgreSQL", "Docker", "AWS"]
+    },
+    {
+      "id": "exp-2",
+      "role": "Java Backend Engineer",
+      "company": "FinCore Solutions",
+      "location": "Milan, Italy",
+      "period": "2021 – 2023",
+      "type": "Full-time",
+      "description": "Core engineer on payment processing engine handling PCI-DSS compliance. Implemented REST and GraphQL APIs consumed by 200k+ users. Introduced automated testing strategy raising coverage from 40% to 92%.",
+      "highlights": [
+        "Built fraud detection module reducing false positives by 40%",
+        "Implemented CI/CD pipeline cutting deployment time by 70%",
+        "Achieved 99.98% uptime across payment services"
+      ],
+      "stack": ["Java 17", "Spring Security", "GraphQL", "Redis", "MySQL", "Kubernetes", "GCP"]
+    },
+    {
+      "id": "exp-3",
+      "role": "Full-Stack Developer",
+      "company": "AgencyOne",
+      "location": "Rome, Italy",
+      "period": "2019 – 2021",
+      "type": "Full-time",
+      "description": "Built client-facing web applications across fintech, healthcare, and e-commerce verticals. Sole frontend architect on three flagship products.",
+      "highlights": [
+        "Delivered 12 production applications with 0 critical post-launch issues",
+        "Established component library used across 8 client projects",
+        "Integrated third-party APIs (Stripe, Twilio, Salesforce)"
+      ],
+      "stack": ["React", "TypeScript", "Node.js", "Spring Boot", "MongoDB", "AWS S3"]
+    }
+  ],
+  "skills": {
+    "backend": [
+      { "id": "s1", "name": "Java", "level": 95, "category": "backend" },
+      { "id": "s2", "name": "Spring Boot", "level": 92, "category": "backend" },
+      { "id": "s3", "name": "Spring Security", "level": 88, "category": "backend" },
+      { "id": "s4", "name": "Hibernate / JPA", "level": 85, "category": "backend" },
+      { "id": "s5", "name": "Kafka", "level": 78, "category": "backend" },
+      { "id": "s6", "name": "GraphQL", "level": 75, "category": "backend" }
+    ],
+    "frontend": [
+      { "id": "s7", "name": "React", "level": 90, "category": "frontend" },
+      { "id": "s8", "name": "TypeScript", "level": 85, "category": "frontend" },
+      { "id": "s9", "name": "Three.js", "level": 72, "category": "frontend" },
+      { "id": "s10", "name": "Framer Motion", "level": 80, "category": "frontend" },
+      { "id": "s11", "name": "CSS / Tailwind", "level": 88, "category": "frontend" },
+      { "id": "s12", "name": "Next.js", "level": 78, "category": "frontend" }
+    ],
+    "data": [
+      { "id": "s13", "name": "PostgreSQL", "level": 88, "category": "data" },
+      { "id": "s14", "name": "Redis", "level": 80, "category": "data" },
+      { "id": "s15", "name": "MySQL", "level": 82, "category": "data" },
+      { "id": "s16", "name": "MongoDB", "level": 70, "category": "data" }
+    ],
+    "cloud": [
+      { "id": "s17", "name": "Docker", "level": 85, "category": "cloud" },
+      { "id": "s18", "name": "AWS", "level": 80, "category": "cloud" },
+      { "id": "s19", "name": "Kubernetes", "level": 72, "category": "cloud" },
+      { "id": "s20", "name": "CI/CD", "level": 85, "category": "cloud" }
+    ]
+  },
+  "projects": [
+    {
+      "id": "p1",
+      "num": "01",
+      "title": "Portfolio Universe",
+      "category": "Creative Development",
+      "year": "2025",
+      "description": "This very experience — a cinematic, 3D-immersive portfolio built with React 19, Three.js, and Spring Boot. Designed to feel like a product, not a page.",
+      "tech": ["React 19", "Three.js", "Spring Boot", "PostgreSQL", "Framer Motion"],
+      "status": "Live",
+      "featured": true,
+      "color": "#6366f1"
+    },
+    {
+      "id": "p2",
+      "num": "02",
+      "title": "PayCore Engine",
+      "category": "Backend Architecture",
+      "year": "2024",
+      "description": "High-throughput payment processing engine supporting 2M+ daily transactions. Event-sourced CQRS architecture with Kafka event streams and distributed tracing.",
+      "tech": ["Java 21", "Spring Boot", "Kafka", "PostgreSQL", "Redis", "Docker"],
+      "status": "Production",
+      "featured": true,
+      "color": "#8b5cf6"
+    },
+    {
+      "id": "p3",
+      "title": "Sentinel API Gateway",
+      "num": "03",
+      "category": "API Design",
+      "year": "2024",
+      "description": "Intelligent API gateway with JWT authentication, adaptive rate limiting, request fingerprinting, and a real-time observability dashboard.",
+      "tech": ["Spring Security", "Java 17", "Redis", "Docker", "AWS", "Grafana"],
+      "status": "Production",
+      "featured": false,
+      "color": "#06b6d4"
+    },
+    {
+      "id": "p4",
+      "title": "AnalyticsPilot",
+      "num": "04",
+      "category": "Full-Stack",
+      "year": "2023",
+      "description": "Real-time analytics dashboard for SaaS metrics — live websocket charts, cohort analysis, and exportable reports. Sub-100ms data pipeline.",
+      "tech": ["React", "TypeScript", "Spring Boot", "WebSockets", "PostgreSQL", "Chart.js"],
+      "status": "Production",
+      "featured": false,
+      "color": "#10b981"
+    }
+  ],
+  "contacts": [
+    {
+      "label": "Email",
+      "value": "krishna@pilato.dev",
+      "href": "mailto:krishna@pilato.dev",
+      "icon": "mail"
+    },
+    {
+      "label": "GitHub",
+      "value": "github.com/krishnapilato",
+      "href": "https://github.com/krishnapilato",
+      "icon": "github"
+    },
+    {
+      "label": "LinkedIn",
+      "value": "linkedin.com/in/krishnapilato",
+      "href": "https://linkedin.com/in/krishnapilato",
+      "icon": "linkedin"
+    }
+  ]
+}
