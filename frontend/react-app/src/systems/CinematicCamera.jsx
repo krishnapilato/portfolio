@@ -16,6 +16,9 @@ import { useRef, memo } from "react";
 import * as THREE from "three";
 import { useAppStore } from "../store/index.js";
 
+// Reusable temp vector for lerp target (avoids per-frame allocation)
+const _lerpTarget = new THREE.Vector3();
+
 /**
  * Pre-defined camera paths for different cinematic events.
  * Each path is an array of { position, lookAt, duration } keyframes.
@@ -60,11 +63,11 @@ function CinematicCamera({ pathName = null, onComplete }) {
     const smooth = t * t * (3 - 2 * t);
 
     posV.current.set(...from.position).lerp(
-      new THREE.Vector3(...to.position),
+      _lerpTarget.set(...to.position),
       smooth,
     );
     lookV.current.set(...from.lookAt).lerp(
-      new THREE.Vector3(...to.lookAt),
+      _lerpTarget.set(...to.lookAt),
       smooth,
     );
 

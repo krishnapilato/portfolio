@@ -60,10 +60,10 @@ function ZoneMarker({ zone, isActive }) {
     if (glowRef.current) {
       const targetScale = isActive ? 1.3 : 1.0;
       const targetOpacity = isActive ? 0.6 : 0.2;
-      glowRef.current.scale.lerp(
-        new THREE.Vector3(targetScale, targetScale, targetScale),
-        delta * 4,
-      );
+      const s = glowRef.current.scale;
+      s.x = THREE.MathUtils.lerp(s.x, targetScale, delta * 4);
+      s.y = THREE.MathUtils.lerp(s.y, targetScale, delta * 4);
+      s.z = THREE.MathUtils.lerp(s.z, targetScale, delta * 4);
       glowRef.current.material.opacity = THREE.MathUtils.lerp(
         glowRef.current.material.opacity,
         targetOpacity,

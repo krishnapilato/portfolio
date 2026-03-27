@@ -34,7 +34,7 @@ function VirtualJoystick({ onMove }) {
 
       onMove?.({
         x: cx / MAX_DIST,
-        y: -cy / MAX_DIST, // invert Y so up = positive
+        y: -cy / MAX_DIST, // invert screen-space Y so forward (up on screen) = positive in world
       });
     },
     [onMove],

@@ -28,6 +28,7 @@ const _camLook = new THREE.Vector3();
 const _playerPos = new THREE.Vector3();
 const _euler = new THREE.Euler();
 const _quat = new THREE.Quaternion();
+const _yAxis = new THREE.Vector3(0, 1, 0);
 
 function Airplane({ isMobile }) {
   const bodyRef = useRef(null);
@@ -88,7 +89,7 @@ function Airplane({ isMobile }) {
     }
 
     // Forward vector
-    _forward.set(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), rotationY.current);
+    _forward.set(0, 0, -1).applyAxisAngle(_yAxis, rotationY.current);
 
     // Apply impulse
     const currentVel = body.linvel();
@@ -127,12 +128,12 @@ function Airplane({ isMobile }) {
     // ── Third-person camera ───────────────────────────────
     _camTarget
       .copy(CAMERA_OFFSET)
-      .applyAxisAngle(new THREE.Vector3(0, 1, 0), rotationY.current)
+      .applyAxisAngle(_yAxis, rotationY.current)
       .add(_playerPos);
 
     _camLook
       .copy(CAMERA_LOOK_AHEAD)
-      .applyAxisAngle(new THREE.Vector3(0, 1, 0), rotationY.current)
+      .applyAxisAngle(_yAxis, rotationY.current)
       .add(_playerPos);
 
     state.camera.position.lerp(_camTarget, dt * 3.5);
