@@ -1,6 +1,6 @@
 import { useThree } from '@react-three/fiber'
 import gsap from 'gsap'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Group, PerspectiveCamera, Vector3, Object3D } from 'three'
 import { useGameStore, type ZoneId } from '../store/gameStore'
 import { getZoneVector } from './zones'
@@ -17,6 +17,7 @@ function CinematicController({ planeRef, worldRef }: CinematicControllerProps) {
   const setCinematic = useGameStore((s) => s.setCinematic)
   const setFlight = useGameStore((s) => s.setFlight)
   const setZone = useGameStore((s) => s.setZone)
+  const lookTarget = useRef(new Vector3())
 
   // Intro fly-in
   useEffect(() => {
@@ -75,7 +76,8 @@ function CinematicController({ planeRef, worldRef }: CinematicControllerProps) {
         .to(worldRef.current.position, desiredOffset, 0.2)
 
       timeline.eventCallback('onUpdate', () => {
-        camera.lookAt(planeRef.current!.getWorldPosition(new Vector3()))
+        if (!planeRef.current) return
+        camera.lookAt(planeRef.current.getWorldPosition(lookTarget.current))
       })
     }
 

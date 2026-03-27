@@ -28,7 +28,12 @@ export function useInput(enabled: boolean) {
       setInput((prev) => ({ ...prev, ...next }))
 
     const down = (e: KeyboardEvent) => {
-      if (['Space', 'ShiftLeft', 'ShiftRight'].includes(e.code)) e.preventDefault()
+      if (
+        ['Space', 'ShiftLeft', 'ShiftRight'].includes(e.code) &&
+        (e.target === document.body || !(e.target instanceof HTMLElement))
+      ) {
+        e.preventDefault()
+      }
       switch (e.code) {
         case 'KeyW':
         case 'ArrowUp':

@@ -91,9 +91,9 @@ function ZoneManager({ planeRef }: ZoneManagerProps) {
     })
 
     setNearest(closest)
-    const activeClosest = closest as ZoneConfig | null
-    if (activeClosest && closestDist < 12 && currentZone !== activeClosest.id) {
-      setZone(activeClosest.id)
+    const activeId = closest ? (closest as ZoneConfig).id : null
+    if (activeId && closestDist < 12 && currentZone !== activeId) {
+      setZone(activeId)
       setCameraMode(true, 'focus')
     } else if (closestDist > 18 && currentZone !== 'none') {
       setZone('none')

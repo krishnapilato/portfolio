@@ -15,6 +15,7 @@ function HUD({ speedProvider, zoneProvider, updateJoystick, resetJoystick }: HUD
   const [speed, setSpeed] = useState(0)
   const [zone, setZone] = useState<ZoneId>('none')
   const [joystickPos, setJoystickPos] = useState({ x: 0, y: 0 })
+  const [joystickActive, setJoystickActive] = useState(false)
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -33,7 +34,7 @@ function HUD({ speedProvider, zoneProvider, updateJoystick, resetJoystick }: HUD
     [zone],
   )
 
-  const startJoystick = (e: React.PointerEvent<HTMLDivElement>) => {
+  const updateJoystickPosition = (e: React.PointerEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2)
     const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2)
@@ -43,7 +44,22 @@ function HUD({ speedProvider, zoneProvider, updateJoystick, resetJoystick }: HUD
     updateJoystick(clampedX, clampedY)
   }
 
-  const endJoystick = () => {
+  const startJoystick = (e: React.PointerEvent<HTMLDivElement>) => {
+    setJoystickActive(true)
+    e.currentTarget.setPointerCapture(e.pointerId)
+    updateJoystickPosition(e)
+  }
+
+  const moveJoystick = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!joystickActive) return
+    updateJoystickPosition(e)
+  }
+
+  const endJoystick = (e: React.PointerEvent<HTMLDivElement>) => {
+    setJoystickActive(false)
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId)
+    }
     setJoystickPos({ x: 0, y: 0 })
     resetJoystick()
   }
@@ -82,7 +98,13 @@ function HUD({ speedProvider, zoneProvider, updateJoystick, resetJoystick }: HUD
       </div>
 
       <div className="hud-bottom">
-        <div className="touch-joystick" onPointerMove={startJoystick} onPointerDown={startJoystick} onPointerUp={endJoystick} onPointerLeave={endJoystick}>
+        <div
+          className="touch-joystick"
+          onPointerMove={moveJoystick}
+          onPointerDown={startJoystick}
+          onPointerUp={endJoystick}
+          onPointerLeave={endJoystick}
+        >
           <div
             className="joystick-thumb"
             style={{

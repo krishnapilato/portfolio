@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
+import { Suspense, useCallback } from 'react'
 import Experience from './experience/Experience'
 import HUD from './ui/HUD'
 import PerformanceManager from './systems/PerformanceManager'
@@ -10,6 +10,8 @@ import './App.css'
 function App() {
   const cinematicActive = useGameStore((s) => s.cinematicActive)
   const input = useInput(!cinematicActive)
+  const speedProvider = useCallback(() => useGameStore.getState().speed, [])
+  const zoneProvider = useCallback(() => useGameStore.getState().currentZone, [])
 
   return (
     <div className="app-shell">
@@ -27,8 +29,8 @@ function App() {
         </Suspense>
       </Canvas>
       <HUD
-        speedProvider={() => useGameStore.getState().speed}
-        zoneProvider={() => useGameStore.getState().currentZone}
+        speedProvider={speedProvider}
+        zoneProvider={zoneProvider}
         updateJoystick={input.updateJoystick}
         resetJoystick={input.resetJoystick}
       />

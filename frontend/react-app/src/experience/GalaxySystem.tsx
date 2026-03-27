@@ -2,6 +2,7 @@ import { Instances, Instance } from '@react-three/drei'
 import { useMemo } from 'react'
 import {
   AdditiveBlending,
+  BackSide,
   BufferGeometry,
   Color,
   Float32BufferAttribute,
@@ -125,7 +126,7 @@ function GalaxySystem({ radius = 220 }: GalaxySystemProps) {
 
       <mesh>
         <icosahedronGeometry args={[radius, 2]} />
-        <meshBasicMaterial color="#02040b" side={1} />
+        <meshBasicMaterial color="#02040b" side={BackSide} />
       </mesh>
 
       <points geometry={lightGeometry}>

@@ -16,6 +16,7 @@ const forwardBase = 18
 const boostBonus = 14
 const maxTilt = 0.45
 const maxRoll = 0.55
+const ENGINE_IDLE_GAIN = 0.0001 // keeps oscillator audible without pops when starting
 
 function FlightController({ worldRef, planeRef, input, onPosition }: FlightControllerProps) {
   const velocity = useRef(new Vector3(0, 0, -forwardBase))
@@ -38,7 +39,7 @@ function FlightController({ worldRef, planeRef, input, onPosition }: FlightContr
       const gain = ctx.createGain()
       osc.type = 'sawtooth'
       osc.frequency.value = 180
-      gain.gain.value = 0.0001
+      gain.gain.value = ENGINE_IDLE_GAIN
       osc.connect(gain).connect(ctx.destination)
       osc.start()
       audioRefs.current = { ctx, osc, gain }
@@ -101,8 +102,17 @@ function FlightController({ worldRef, planeRef, input, onPosition }: FlightContr
     )
     activeCamera.updateProjectionMatrix()
 
-    audioRefs.current.osc?.frequency?.setTargetAtTime(80 + nextSpeed * 3, 0, 0.05)
-    audioRefs.current.gain?.gain.setTargetAtTime(active ? 0.08 : 0.02, 0, 0.2)
+    const audioTime = audioRefs.current.ctx?.currentTime ?? 0
+    audioRefs.current.osc?.frequency?.setTargetAtTime(
+      80 + nextSpeed * 3,
+      audioTime,
+      0.05,
+    )
+    audioRefs.current.gain?.gain.setTargetAtTime(
+      active ? 0.08 : 0.02,
+      audioTime,
+      0.2,
+    )
 
     onPosition?.(planeRef.current.getWorldPosition(temp))
   })
