@@ -251,10 +251,8 @@ const ZONE_PANELS = {
 // ── MiniMap ───────────────────────────────────────────────
 
 function MiniMap() {
-  const { playerX, playerZ } = useAppStore((s) => ({
-    playerX: s.playerX,
-    playerZ: s.playerZ,
-  }));
+  const playerX = useAppStore((s) => s.playerX);
+  const playerZ = useAppStore((s) => s.playerZ);
 
   const ZONES_DATA = [
     { id: "about",      x: 0,  z: -35, color: "#6366f1" },
