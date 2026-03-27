@@ -97,7 +97,7 @@ export default function SkillsSection({ skills, isMobile }) {
           <div className="flex items-center gap-4 mb-20">
             <span className="h-px w-12 bg-indigo-500/40" />
             <p className="text-[0.55rem] tracking-[0.45em] uppercase text-indigo-400/60">
-              Chapter 03 / The Arsenal
+              Chapter 03 / Flight Instruments
             </p>
           </div>
         </Reveal>

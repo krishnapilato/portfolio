@@ -2,21 +2,28 @@ import { AnimatePresence } from "framer-motion";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import AchievementToast from "./components/ui/AchievementToast.jsx";
 import Cursor from "./components/ui/Cursor.jsx";
+import FPSCounter from "./components/ui/FPSCounter.jsx";
 import ProgressBar from "./components/ui/ProgressBar.jsx";
 import { useLenis } from "./hooks/useLenis.js";
 import { useAppStore } from "./store/index.js";
+import { usePerformanceMonitor } from "./systems/usePerformance.js";
+import { useInputManager } from "./systems/useInputManager.js";
 import content from "./data/content.json";
 import "./App.css";
 
-// Sections (lazy-loaded for performance)
-const TunnelScene      = lazy(() => import("./scenes/TunnelScene.jsx"));
-const EntrySequence    = lazy(() => import("./sections/Entry.jsx"));
-const HeroSection      = lazy(() => import("./sections/Hero.jsx"));
-const AboutSection     = lazy(() => import("./sections/About.jsx"));
-const SkillsSection    = lazy(() => import("./sections/Skills.jsx"));
+// Lazy-loaded sections (code-split for performance)
+const HangarScene       = lazy(() => import("./scenes/HangarScene.jsx"));
+const EntrySequence     = lazy(() => import("./sections/Entry.jsx"));
+const HeroSection       = lazy(() => import("./sections/Hero.jsx"));
+const AboutSection      = lazy(() => import("./sections/About.jsx"));
+const SkillsSection     = lazy(() => import("./sections/Skills.jsx"));
 const ExperienceSection = lazy(() => import("./sections/Experience.jsx"));
-const ProjectsSection  = lazy(() => import("./sections/Projects.jsx"));
-const ContactSection   = lazy(() => import("./sections/Contact.jsx"));
+const ProjectsSection   = lazy(() => import("./sections/Projects.jsx"));
+const ContactSection    = lazy(() => import("./sections/Contact.jsx"));
+
+// Lazy-loaded heavy components
+const FallbackPortfolio = lazy(() => import("./components/ui/FallbackPortfolio.jsx"));
+const VirtualJoystick   = lazy(() => import("./components/ui/VirtualJoystick.jsx"));
 
 export default function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -25,6 +32,13 @@ export default function App() {
 
   const setScrollProgress = useAppStore((s) => s.setScrollProgress);
   const unlockAchievement = useAppStore((s) => s.unlockAchievement);
+  const tier = useAppStore((s) => s.performanceTier);
+
+  // Performance monitoring — auto-downgrades tier on sustained FPS drops
+  const { sampler } = usePerformanceMonitor();
+
+  // Unified input system (WASD + mouse on desktop, joystick + touch on mobile)
+  const { onJoystickMove } = useInputManager(isMobile);
 
   // Smooth scroll
   useLenis();
@@ -72,17 +86,26 @@ export default function App() {
   const discoveredSections = useAppStore((s) => s.discoveredSections);
   useEffect(() => {
     if (discoveredSections.size >= 7) {
-      unlockAchievement("explorer", "Full journey completed!");
+      unlockAchievement("explorer", "Full flight plan completed!");
     }
   }, [discoveredSections.size, unlockAchievement]);
 
+  // "Potato" tier → show simplified 2D fallback (no WebGL)
+  if (tier === "potato") {
+    return (
+      <Suspense fallback={null}>
+        <FallbackPortfolio />
+      </Suspense>
+    );
+  }
+
   return (
     <div className="relative min-h-screen bg-void">
-      {/* ── Immersive 3D tunnel — persists behind all content ── */}
+      {/* ── 3D Hangar — aviation-themed persistent background ── */}
       {!showEntry && (
         <div className="fixed inset-0 z-0 pointer-events-none">
           <Suspense fallback={null}>
-            <TunnelScene scrollProgressRef={scrollProgressRef} isMobile={isMobile} />
+            <HangarScene scrollProgressRef={scrollProgressRef} isMobile={isMobile} />
           </Suspense>
         </div>
       )}
@@ -90,11 +113,21 @@ export default function App() {
       {/* Custom cursor (desktop only) */}
       {!isMobile && <Cursor />}
 
+      {/* Performance overlay (toggle with ` key) */}
+      <FPSCounter sampler={sampler} />
+
       {/* Global overlays */}
       <ProgressBar />
       <AchievementToast />
 
-      {/* Entry sequence */}
+      {/* Mobile virtual joystick */}
+      {isMobile && !showEntry && (
+        <Suspense fallback={null}>
+          <VirtualJoystick onMove={onJoystickMove} />
+        </Suspense>
+      )}
+
+      {/* Entry sequence — aviation pre-flight */}
       <AnimatePresence>
         {showEntry && (
           <Suspense fallback={null}>
@@ -103,7 +136,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Main content scrolls over the fixed tunnel */}
+      {/* Main content scrolls over the fixed hangar */}
       <main className="relative z-10">
         <Suspense fallback={null}>
           <HeroSection personal={content.personal} />

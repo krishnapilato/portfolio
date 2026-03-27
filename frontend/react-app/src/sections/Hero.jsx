@@ -4,7 +4,7 @@ import { useSectionObserver } from "../hooks/useSectionObserver.js";
 import { EASE_APPLE } from "../lib/motionVariants.js";
 import { useAppStore } from "../store/index.js";
 
-// ─── Capabilities that cycle to answer "what problems can you solve?" ──────────
+// ─── Capabilities — aviation-flavoured "flight capabilities" ─────────────────
 
 const CAPABILITIES = [
   "distributed systems",
@@ -22,7 +22,6 @@ function CapabilityTypewriter() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    // hold → fade out → advance → fade in
     const hold = setTimeout(() => setVisible(false), 2400);
     return () => clearTimeout(hold);
   }, [index]);
@@ -64,11 +63,37 @@ function CapabilityTypewriter() {
   );
 }
 
+// ─── HUD overlay elements (aviation cockpit feel) ────────────────────────────
+
+function HUDCorner({ position }) {
+  const posClasses = {
+    "top-left": "top-3 left-3",
+    "top-right": "top-3 right-3",
+    "bottom-left": "bottom-3 left-3",
+    "bottom-right": "bottom-3 right-3",
+  };
+  const rotation = {
+    "top-left": "rotate-0",
+    "top-right": "rotate-90",
+    "bottom-left": "-rotate-90",
+    "bottom-right": "rotate-180",
+  };
+
+  return (
+    <div className={`absolute ${posClasses[position]} z-[3] pointer-events-none`}>
+      <svg width="16" height="16" className={`${rotation[position]} text-indigo-500/20`}>
+        <path d="M0 16V0h16" fill="none" stroke="currentColor" strokeWidth="1" />
+      </svg>
+    </div>
+  );
+}
+
 // ─── Hero section ─────────────────────────────────────────────────────────────
 
 export default function HeroSection({ personal }) {
   const { ref } = useSectionObserver(1);
   const setCursorVariant = useAppStore((s) => s.setCursorVariant);
+  const tier = useAppStore((s) => s.performanceTier);
 
   return (
     <section
@@ -76,7 +101,13 @@ export default function HeroSection({ personal }) {
       ref={ref}
       className="relative w-full h-screen overflow-hidden flex items-center justify-center"
     >
-      {/* ── Perspective grid — recedes into the tunnel ── */}
+      {/* ── HUD corner brackets (cockpit instrument frame) ── */}
+      <HUDCorner position="top-left" />
+      <HUDCorner position="top-right" />
+      <HUDCorner position="bottom-left" />
+      <HUDCorner position="bottom-right" />
+
+      {/* ── Perspective grid — runway receding into the hangar ── */}
       <div
         className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
         style={{ perspective: "700px" }}
@@ -101,7 +132,7 @@ export default function HeroSection({ personal }) {
         />
       </div>
 
-      {/* Radial vignette — pulls focus to the centre */}
+      {/* Radial vignette — cockpit viewport feel */}
       <div
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
@@ -110,7 +141,7 @@ export default function HeroSection({ personal }) {
         }}
       />
 
-      {/* ── Chapter marker (top-left) ── */}
+      {/* ── Flight chapter marker (top-left) ── */}
       <motion.div
         className="absolute top-8 left-8 z-[3] pointer-events-none"
         initial={{ opacity: 0, x: -14 }}
@@ -118,7 +149,22 @@ export default function HeroSection({ personal }) {
         transition={{ duration: 1, ease: EASE_APPLE, delay: 1.6 }}
       >
         <p className="text-[0.5rem] tracking-[0.48em] uppercase text-white/22">Chapter 01</p>
-        <p className="text-[0.46rem] tracking-[0.32em] uppercase text-indigo-400/45 mt-0.5">Identity</p>
+        <p className="text-[0.46rem] tracking-[0.32em] uppercase text-indigo-400/45 mt-0.5">The Captain</p>
+      </motion.div>
+
+      {/* ── Altitude / Performance tier indicator (top-right) ── */}
+      <motion.div
+        className="absolute top-8 right-8 z-[3] pointer-events-none text-right"
+        initial={{ opacity: 0, x: 14 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, ease: EASE_APPLE, delay: 1.8 }}
+      >
+        <p className="text-[0.44rem] tracking-[0.3em] uppercase text-white/15 font-mono">
+          ALT {tier === "high" ? "FL350" : tier === "medium" ? "FL280" : "FL150"}
+        </p>
+        <p className="text-[0.42rem] tracking-[0.25em] uppercase text-indigo-400/30 font-mono mt-0.5">
+          HDG 270° · GS 480kt
+        </p>
       </motion.div>
 
       {/* ── Core content ── */}
@@ -161,7 +207,7 @@ export default function HeroSection({ personal }) {
           ))}
         </motion.h1>
 
-        {/* Cycling capability statement — answers "what problems can you solve?" */}
+        {/* Cycling capability statement */}
         <motion.div
           className="mt-11 flex flex-wrap items-baseline justify-center gap-x-2 text-[clamp(0.78rem,1.6vw,0.95rem)] font-light text-white/35"
           initial={{ opacity: 0 }}
@@ -187,7 +233,7 @@ export default function HeroSection({ personal }) {
         </motion.div>
       </div>
 
-      {/* ── Scroll cue ── */}
+      {/* ── Scroll cue — aviation descent indicator ── */}
       <motion.div
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[3] flex flex-col items-center gap-2 pointer-events-none"
         initial={{ opacity: 0 }}
@@ -195,7 +241,7 @@ export default function HeroSection({ personal }) {
         transition={{ delay: 2.5, duration: 1.2 }}
       >
         <span className="text-[0.46rem] tracking-[0.44em] uppercase text-white/16">
-          Begin journey
+          Begin descent
         </span>
         <motion.div
           className="w-px h-10 bg-gradient-to-b from-indigo-400/35 to-transparent"

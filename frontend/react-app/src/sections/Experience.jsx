@@ -47,7 +47,7 @@ export default function ExperienceSection({ experience }) {
           <div className="flex items-center gap-4 mb-20">
             <span className="h-px w-12 bg-indigo-500/40" />
             <p className="text-[0.55rem] tracking-[0.45em] uppercase text-indigo-400/60">
-              Chapter 04 / Mission Log
+              Chapter 04 / Flight Log
             </p>
           </div>
         </Reveal>

@@ -57,7 +57,7 @@ export default function ContactSection({ personal, contacts }) {
           <div className="flex items-center gap-4 mb-20">
             <span className="h-px w-12 bg-indigo-500/40" />
             <p className="text-[0.55rem] tracking-[0.45em] uppercase text-indigo-400/60">
-              Chapter 06 / Final Transmission
+              Chapter 06 / Control Tower
             </p>
           </div>
         </Reveal>

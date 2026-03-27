@@ -93,7 +93,7 @@ export default function AboutSection({ about, stats }) {
           <div className="flex items-center gap-4 mb-20">
             <span className="h-px w-12 bg-indigo-500/40" />
             <p className="text-[0.55rem] tracking-[0.45em] uppercase text-indigo-400/60">
-              Chapter 02 / Why Hire Me
+              Chapter 02 / Pilot Profile
             </p>
           </div>
         </Reveal>
@@ -169,7 +169,7 @@ export default function AboutSection({ about, stats }) {
             {/* Mindset tags */}
             <Reveal delay={0.3}>
               <div className="flex flex-wrap gap-2 mt-2">
-                {["Precision", "Performance", "Clarity", "Craft", "Systems", "Scale"].map((tag) => (
+                {["Precision", "Performance", "Altitude", "Craft", "Systems", "Scale"].map((tag) => (
                   <motion.span
                     key={tag}
                     className="px-3 py-1 text-[0.58rem] tracking-widest uppercase text-white/30 border border-white/[0.07] rounded-full bg-white/[0.02] hover:border-indigo-500/40 hover:text-indigo-300/60 transition-all duration-300 cursor-none"

@@ -166,7 +166,7 @@ export default function ProjectsSection({ projects }) {
           <div className="flex items-center gap-4 mb-20">
             <span className="h-px w-12 bg-indigo-500/40" />
             <p className="text-[0.55rem] tracking-[0.45em] uppercase text-indigo-400/60">
-              Chapter 05 / Deployed Systems
+              Chapter 05 / Completed Missions
             </p>
           </div>
         </Reveal>

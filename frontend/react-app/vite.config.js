@@ -6,4 +6,19 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: '/portfolio/',
+  build: {
+    sourcemap: false,
+    rolldownOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/three/')) return 'three-core';
+          if (id.includes('node_modules/@react-three/fiber')) return 'three-fiber';
+          if (id.includes('node_modules/@react-three/drei')) return 'three-drei';
+          if (id.includes('node_modules/framer-motion')) return 'motion';
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) return 'react-vendor';
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
+  },
 })

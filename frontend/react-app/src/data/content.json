@@ -4,22 +4,22 @@
     "nameShort": "Krishna Pilato",
     "initials": "KP",
     "role": "Full-Stack Engineer",
-    "tagline": "Engineering elegant systems at scale.",
+    "tagline": "Engineering elegant systems at altitude.",
     "location": "Italy",
     "available": true,
     "availableText": "Open to new opportunities"
   },
-  "summary": "I build precision-crafted software systems — from resilient Java backends to immersive React frontends. I obsess over performance, clarity, and the space where engineering meets craft.",
+  "summary": "I build precision-crafted software systems — from resilient Java backends to immersive React frontends. Like a pilot navigating complex airspace, I obsess over performance, clarity, and the space where engineering meets craft.",
   "about": [
     "I've shipped production systems for Italy's largest bank (Intesa Sanpaolo), built R&D IoT platforms at Bosch via Capgemini, and delivered pharmaceutical compliance UIs for global markets. I don't prototype — I engineer and ship.",
     "My approach: treat every system as an interconnected design challenge. Java backends need the same precision as the frontends people interact with. I work across the full stack because technical problems never stop at one layer.",
     "I care about the team as much as the codebase — I write maintainable code, communicate clearly, and leave every project in better shape than I found it."
   ],
   "stats": [
-    { "value": "4+",   "label": "Years of production experience" },
-    { "value": "10+",  "label": "Projects shipped" },
-    { "value": "15+",  "label": "Technologies mastered" },
-    { "value": "100%", "label": "Commitment to craft" }
+    { "value": "4+",   "label": "Years of flight hours" },
+    { "value": "10+",  "label": "Missions completed" },
+    { "value": "15+",  "label": "Instruments mastered" },
+    { "value": "100%", "label": "Commitment to altitude" }
   ],
   "experience": [
     {
@@ -145,7 +145,7 @@
       "title": "The Flight of Khova",
       "category": "Creative Web Development",
       "year": "2025",
-      "description": "This very experience — a cinematic, 3D-immersive portfolio designed as an interactive tunnel journey. Engineered to feel like a gamified product rather than a standard webpage.",
+      "description": "This very experience — a cinematic, aviation-themed 3D portfolio designed as an immersive cockpit journey. Engineered to feel like a gamified flight simulator rather than a standard webpage.",
       "tech": ["React 19", "Three.js", "Framer Motion", "Lenis", "Zustand"],
       "status": "Live",
       "featured": false,
