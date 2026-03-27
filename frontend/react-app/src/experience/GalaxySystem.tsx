@@ -27,7 +27,8 @@ function GalaxySystem({ radius = 220 }: GalaxySystemProps) {
   const tier = useGameStore((s) => s.performanceTier)
   const starCount = tier === 'potato' ? 500 : tier === 'low' ? 900 : tier === 'medium' ? 1500 : 2200
   const planetCount = tier === 'potato' ? 8 : 14
-  const lightCount = tier === 'potato' ? 120 : tier === 'low' ? 200 : 320
+  // Limit real lights to avoid uniform overflow on low-end/mobile GPUs
+  const lightCount = tier === 'potato' ? 4 : tier === 'low' ? 6 : tier === 'medium' ? 8 : 12
 
   const starGeometry = useMemo(() => {
     const random = mulberry32(1337 + starCount + Math.floor(radius * 10))
