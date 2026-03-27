@@ -15,6 +15,9 @@ const CHECKLIST = [
   { label: "Communications", delay: 2.0 },
 ];
 
+/** Total duration of the pre-flight sequence in seconds */
+const PREFLIGHT_DURATION_S = 3.4;
+
 export default function EntrySequence({ onComplete }) {
   const setEntryComplete  = useAppStore((s) => s.setEntryComplete);
   const unlockAchievement = useAppStore((s) => s.unlockAchievement);
@@ -36,7 +39,7 @@ export default function EntrySequence({ onComplete }) {
       setEntryComplete();
       unlockAchievement("entry", "Pre-flight check complete");
       onComplete?.();
-    }, 3400);
+    }, PREFLIGHT_DURATION_S * 1000);
 
     return () => {
       clearTimeout(timer);
@@ -126,7 +129,7 @@ export default function EntrySequence({ onComplete }) {
               <motion.span
                 className="w-1.5 h-1.5 rounded-full"
                 initial={{ background: "rgba(99,102,241,0.3)" }}
-                animate={{ background: progress > item.delay / 3.4 ? "rgba(74,222,128,0.8)" : "rgba(99,102,241,0.3)" }}
+                animate={{ background: progress > item.delay / PREFLIGHT_DURATION_S ? "rgba(74,222,128,0.8)" : "rgba(99,102,241,0.3)" }}
                 transition={{ duration: 0.3 }}
               />
               <span className="text-[0.48rem] tracking-[0.2em] uppercase text-white/30 font-mono">
