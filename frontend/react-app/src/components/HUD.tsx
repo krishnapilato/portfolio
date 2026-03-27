@@ -211,7 +211,7 @@ export default function HUD() {
           ▸ DEV_ROOM v1.0
         </motion.div>
         <div style={{ fontSize: 9, color: '#334', letterSpacing: 1, marginTop: 2 }}>
-          THREE.JS · REACT · RAPIER
+          Three.js · React · Rapier
         </div>
       </motion.div>
     </div>

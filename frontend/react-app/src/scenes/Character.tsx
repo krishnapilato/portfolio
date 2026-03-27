@@ -142,8 +142,10 @@ export default function Character() {
     }
 
     // Keep sub-component relative positions reset each frame for non-sitting states
+    const BODY_Y_STAND = 0.9;
+    const BODY_Y_STAND_MIN = 0.85;
     if (animState !== 'sitting_typing' && bodyRef.current) {
-      if (bodyRef.current.position.y < 0.85) bodyRef.current.position.y = 0.9;
+      if (bodyRef.current.position.y < BODY_Y_STAND_MIN) bodyRef.current.position.y = BODY_Y_STAND;
     }
 
     // Leg lower relative positioning
