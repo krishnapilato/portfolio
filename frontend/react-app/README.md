@@ -1,76 +1,73 @@
-# Interactive Developer Portfolio
+# React + TypeScript + Vite
 
-An interactive personal developer portfolio built with React, Three.js, and modern web animation tools. The application features interactive 3D scenes, smooth custom scrolling, complex animations, and responsive web design.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Key Features
+Currently, two official plugins are available:
 
-- **Interactive 3D Experience**: Powered by React Three Fiber (`@react-three/fiber`) and Drei (`@react-three/drei`).
-- **Smooth Scrolling**: Implemented using `lenis` for a fluid, natural scroll feel.
-- **Complex UI Animations**: Built with `framer-motion` and `@use-gesture/react` for elegant reveals, magnetic buttons, and custom interactive cursors.
-- **Modern Styling**: Styled with Tailwind CSS v4 and `clsx` / `class-variance-authority` (CVA) for scalable class construction.
-- **State Management**: Lightweight robust global state handling via Zustand (`zustand`).
-- **Performance Optimized**: Built on Vite with React 19.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Tech Stack
+## React Compiler
 
-- **Framework**: [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
-- **3D Graphics**: [Three.js](https://threejs.org/), [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/), React Three Postprocessing
-- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Scroll & Movement**: [Lenis](https://lenis.studiofreight.com/), React Use Gesture
-- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Project Structure
+## Expanding the ESLint configuration
 
-```text
-src/
-├── assets/          # Static assets (images, fonts, 3D models)
-├── components/      # Reusable UI components
-│   ├── layout/      # Navbar, Footers, Page containers
-│   └── ui/          # Micro-components (Buttons, Cursor, Toast, Reveal)
-├── data/            # Static JSON content for the portfolio
-├── hooks/           # Custom React Hooks (Lenis, MousePosition, Observer)
-├── lib/             # Utility functions (Tailwind merge, motion variants)
-├── scenes/          # 3D R3F Scenes (Hero, Skills)
-├── sections/        # Main landing page sections (About, Projects, Experience, Contact)
-└── store/           # Zustand global state management
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-## Getting Started
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-### Prerequisites
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-Ensure you have [Node.js](https://nodejs.org/) (v24+ recommended) installed on your machine.
-
-### Installation
-
-1. Clone the repository and navigate to the project directory:
-   ```bash
-   cd portfolio/frontend/react-app
-   ```
-
-2. Install the dependencies:
-   ```bash
-   npm install --legacy-peer-deps
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev -- --host
-   ```
-
-4. Open your browser and visit `http://localhost:5173` to view the application.
-
-## Building for Production
-
-To create a production-ready build:
-
-```bash
-npm run build
-```
-
-You can then preview the built project locally:
-
-```bash
-npm run preview
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
