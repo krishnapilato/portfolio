@@ -14,15 +14,63 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
-import { Environment, Stars } from "@react-three/drei";
-import { Suspense, memo, lazy } from "react";
+import { Stars } from "@react-three/drei";
+import { Suspense, memo, lazy, useMemo } from "react";
+import * as THREE from "three";
 import { useAppStore } from "../store/index.js";
 import { getTierConfig } from "../systems/PerformanceManager.js";
 
-const Airplane = lazy(() => import("./Airplane.jsx"));
-const Ground = lazy(() => import("./Ground.jsx"));
-const ZoneMarkers = lazy(() => import("./ZoneMarkers.jsx"));
+// Direct imports — these are already code-split via lazy GameWorld in App.jsx
+import Airplane from "./Airplane.jsx";
+import Ground from "./Ground.jsx";
+import ZoneMarkers from "./ZoneMarkers.jsx";
+
+// PostEffects is genuinely heavy (~160KB) — keep lazy
 const PostEffects = lazy(() => import("./HangarPostEffects.jsx"));
+
+// ── Visible ground that renders immediately (no physics dependency) ──
+// Ensures the scene isn't black while Rapier WASM loads.
+function ImmediateGround() {
+  const texture = useMemo(() => {
+    const size = 512;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#0a0a12";
+    ctx.fillRect(0, 0, size, size);
+    ctx.strokeStyle = "rgba(99, 102, 241, 0.08)";
+    ctx.lineWidth = 1;
+    const step = size / 16;
+    for (let i = 0; i <= 16; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * step, 0);
+      ctx.lineTo(i * step, size);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, i * step);
+      ctx.lineTo(size, i * step);
+      ctx.stroke();
+    }
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set(12, 12);
+    return tex;
+  }, []);
+
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
+      <planeGeometry args={[120, 120]} />
+      <meshStandardMaterial
+        map={texture}
+        color="#080810"
+        roughness={0.9}
+        metalness={0.1}
+      />
+    </mesh>
+  );
+}
 
 function GameWorld({ isMobile }) {
   const tier = useAppStore((s) => s.performanceTier);
@@ -32,6 +80,7 @@ function GameWorld({ isMobile }) {
     <Canvas
       shadows={config.shadows}
       camera={{ position: [0, 12, 20], fov: 55, near: 0.1, far: 500 }}
+      onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
       gl={{
         antialias: config.antialias,
         alpha: false,
@@ -64,12 +113,13 @@ function GameWorld({ isMobile }) {
         <Stars radius={120} depth={60} count={tier === "high" ? 3000 : 1500} factor={3} saturation={0.2} fade speed={0.5} />
       )}
 
+      {/* Immediate ground — visible while Rapier WASM loads */}
+      <ImmediateGround />
+
       <Physics gravity={[0, -20, 0]} timeStep="vary">
-        <Suspense fallback={null}>
-          <Ground />
-          <Airplane isMobile={isMobile} />
-          <ZoneMarkers />
-        </Suspense>
+        <Ground />
+        <Airplane isMobile={isMobile} />
+        <ZoneMarkers />
       </Physics>
 
       {/* Conditional postprocessing */}
