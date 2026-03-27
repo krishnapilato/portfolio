@@ -1,47 +1,30 @@
 import { AnimatePresence } from "framer-motion";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import AchievementToast from "./components/ui/AchievementToast.jsx";
-import Cursor from "./components/ui/Cursor.jsx";
 import FPSCounter from "./components/ui/FPSCounter.jsx";
-import ProgressBar from "./components/ui/ProgressBar.jsx";
-import { useLenis } from "./hooks/useLenis.js";
 import { useAppStore } from "./store/index.js";
 import { usePerformanceMonitor } from "./systems/usePerformance.js";
-import { useInputManager } from "./systems/useInputManager.js";
-import content from "./data/content.json";
 import "./App.css";
 
-// Lazy-loaded sections (code-split for performance)
-const HangarScene       = lazy(() => import("./scenes/HangarScene.jsx"));
-const EntrySequence     = lazy(() => import("./sections/Entry.jsx"));
-const HeroSection       = lazy(() => import("./sections/Hero.jsx"));
-const AboutSection      = lazy(() => import("./sections/About.jsx"));
-const SkillsSection     = lazy(() => import("./sections/Skills.jsx"));
-const ExperienceSection = lazy(() => import("./sections/Experience.jsx"));
-const ProjectsSection   = lazy(() => import("./sections/Projects.jsx"));
-const ContactSection    = lazy(() => import("./sections/Contact.jsx"));
-
-// Lazy-loaded heavy components
+// Lazy-loaded: 3D game world (heaviest chunk)
+const GameWorld = lazy(() => import("./scenes/GameWorld.jsx"));
+// Lazy-loaded: HUD overlay (HTML panels over canvas)
+const GameHUD = lazy(() => import("./components/ui/GameHUD.jsx"));
+// Lazy-loaded: entry sequence
+const EntrySequence = lazy(() => import("./sections/Entry.jsx"));
+// Lazy-loaded: virtual joystick for mobile
+const VirtualJoystick = lazy(() => import("./components/ui/VirtualJoystick.jsx"));
+// Lazy-loaded: 2D fallback for potato tier
 const FallbackPortfolio = lazy(() => import("./components/ui/FallbackPortfolio.jsx"));
-const VirtualJoystick   = lazy(() => import("./components/ui/VirtualJoystick.jsx"));
 
 export default function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [showEntry, setShowEntry] = useState(true);
-  const scrollProgressRef = useRef(0);
-
-  const setScrollProgress = useAppStore((s) => s.setScrollProgress);
-  const unlockAchievement = useAppStore((s) => s.unlockAchievement);
   const tier = useAppStore((s) => s.performanceTier);
+  const unlockAchievement = useAppStore((s) => s.unlockAchievement);
 
   // Performance monitoring — auto-downgrades tier on sustained FPS drops
   const { sampler } = usePerformanceMonitor();
-
-  // Unified input system (WASD + mouse on desktop, joystick + touch on mobile)
-  const { onJoystickMove } = useInputManager(isMobile);
-
-  // Smooth scroll
-  useLenis();
 
   // Responsive detection
   useEffect(() => {
@@ -50,18 +33,6 @@ export default function App() {
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
-
-  // Scroll progress tracker — writes to both the store and the ref for the 3D scene
-  useEffect(() => {
-    const onScroll = () => {
-      const total = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = total > 0 ? window.scrollY / total : 0;
-      scrollProgressRef.current = progress;
-      if (total > 0) setScrollProgress(progress);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [setScrollProgress]);
 
   // Easter egg: Konami code
   useEffect(() => {
@@ -82,7 +53,7 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Unlock achievement when all sections discovered
+  // Unlock achievement when all zones discovered
   const discoveredSections = useAppStore((s) => s.discoveredSections);
   useEffect(() => {
     if (discoveredSections.size >= 7) {
@@ -100,34 +71,8 @@ export default function App() {
   }
 
   return (
-    <div className="relative min-h-screen bg-void">
-      {/* ── 3D Hangar — aviation-themed persistent background ── */}
-      {!showEntry && (
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <Suspense fallback={null}>
-            <HangarScene scrollProgressRef={scrollProgressRef} isMobile={isMobile} />
-          </Suspense>
-        </div>
-      )}
-
-      {/* Custom cursor (desktop only) */}
-      {!isMobile && <Cursor />}
-
-      {/* Performance overlay (toggle with ` key) */}
-      <FPSCounter sampler={sampler} />
-
-      {/* Global overlays */}
-      <ProgressBar />
-      <AchievementToast />
-
-      {/* Mobile virtual joystick */}
-      {isMobile && !showEntry && (
-        <Suspense fallback={null}>
-          <VirtualJoystick onMove={onJoystickMove} />
-        </Suspense>
-      )}
-
-      {/* Entry sequence — aviation pre-flight */}
+    <div className="relative w-screen h-screen overflow-hidden bg-void">
+      {/* ── Entry sequence — aviation pre-flight ── */}
       <AnimatePresence>
         {showEntry && (
           <Suspense fallback={null}>
@@ -136,27 +81,40 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Main content scrolls over the fixed hangar */}
-      <main className="relative z-10">
-        <Suspense fallback={null}>
-          <HeroSection personal={content.personal} />
-        </Suspense>
-        <Suspense fallback={null}>
-          <AboutSection about={content.about} stats={content.stats} />
-        </Suspense>
-        <Suspense fallback={null}>
-          <SkillsSection skills={content.skills} isMobile={isMobile} />
-        </Suspense>
-        <Suspense fallback={null}>
-          <ExperienceSection experience={content.experience} />
-        </Suspense>
-        <Suspense fallback={null}>
-          <ProjectsSection projects={content.projects} />
-        </Suspense>
-        <Suspense fallback={null}>
-          <ContactSection personal={content.personal} contacts={content.contacts} />
-        </Suspense>
-      </main>
+      {/* ── Full-screen 3D game world ── */}
+      {!showEntry && (
+        <>
+          <div className="absolute inset-0 z-0">
+            <Suspense fallback={
+              <div className="w-full h-full flex items-center justify-center bg-void">
+                <p className="text-[0.5rem] tracking-[0.3em] uppercase text-white/20">Initializing world…</p>
+              </div>
+            }>
+              <GameWorld isMobile={isMobile} />
+            </Suspense>
+          </div>
+
+          {/* ── HUD overlay (HTML panels, minimap, hints) ── */}
+          <Suspense fallback={null}>
+            <GameHUD isMobile={isMobile} />
+          </Suspense>
+
+          {/* ── Mobile virtual joystick ── */}
+          {isMobile && (
+            <Suspense fallback={null}>
+              <VirtualJoystick onMove={({ x, y }) => {
+                window.dispatchEvent(new CustomEvent("joystick-move", { detail: { x, y } }));
+              }} />
+            </Suspense>
+          )}
+        </>
+      )}
+
+      {/* ── Performance overlay (toggle with ` key) ── */}
+      <FPSCounter sampler={sampler} />
+
+      {/* ── Global overlays ── */}
+      <AchievementToast />
     </div>
   );
 }

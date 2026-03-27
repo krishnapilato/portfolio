@@ -1,11 +1,12 @@
 /* App-level overrides — global layout handled by Tailwind + index.css */
 
-/* Hide cursor on interactive elements when custom cursor is active */
-@media (pointer: fine) {
-  * { cursor: none !important; }
-}
-
 /* Prevent FOUC on section reveals */
 .section-hidden {
   opacity: 0;
 }
+
+/* HUD panel scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 2px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.25); border-radius: 2px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(167,139,250,0.5); }
