@@ -1,64 +1,44 @@
 export default function Lighting() {
   return (
     <>
-      {/* Very dark ambient */}
-      <ambientLight color="#050510" intensity={0.8} />
+      {/* Hemisphere: deep indigo sky / near-black ground */}
+      <hemisphereLight color="#0d0d3a" groundColor="#020208" intensity={0.6} />
 
-      {/* Neon corner point lights */}
-      {/* North-West: Blue */}
-      <pointLight
-        position={[-13, 4, -13]}
-        color="#0044ff"
-        intensity={5}
-        distance={25}
-        decay={2}
-      />
-      {/* North-East: Cyan */}
-      <pointLight
-        position={[13, 4, -13]}
-        color="#00ffff"
-        intensity={4}
-        distance={25}
-        decay={2}
-      />
-      {/* South-West: Magenta */}
-      <pointLight
-        position={[-13, 4, 13]}
-        color="#ff00ff"
-        intensity={4}
-        distance={25}
-        decay={2}
-      />
-      {/* South-East: Purple */}
-      <pointLight
-        position={[13, 4, 13]}
-        color="#aa00ff"
-        intensity={3}
-        distance={25}
-        decay={2}
-      />
+      {/* Very dark ambient fill */}
+      <ambientLight color="#05050f" intensity={0.5} />
 
-      {/* Desk spotlight — cyan, pointing down */}
+      {/* NW corner: electric blue */}
+      <pointLight position={[-13, 4, -13]} color="#0055ff" intensity={6} distance={28} decay={2} />
+      {/* NE corner: cyan */}
+      <pointLight position={[13, 4, -13]} color="#00ffee" intensity={5} distance={28} decay={2} />
+      {/* SW corner: magenta */}
+      <pointLight position={[-13, 4, 13]} color="#ff00cc" intensity={5} distance={28} decay={2} />
+      {/* SE corner: deep violet */}
+      <pointLight position={[13, 4, 13]} color="#8800ff" intensity={4} distance={28} decay={2} />
+
+      {/* Desk spotlight — sharp cyan cone pointing at workstation */}
       <spotLight
-        position={[0, 5, -8]}
+        position={[0, 5.2, -8]}
         target-position={[0, 0, -8]}
         color="#00ffff"
-        intensity={8}
-        distance={12}
-        angle={0.4}
-        penumbra={0.5}
+        intensity={12}
+        distance={14}
+        angle={0.35}
+        penumbra={0.6}
         decay={2}
         castShadow
+        shadow-mapSize={[1024, 1024]}
       />
 
-      {/* Soft fill from below — faint blue */}
-      <pointLight
-        position={[0, 0.5, 0]}
-        color="#001133"
-        intensity={2}
-        distance={20}
-        decay={2}
-      />
+      {/* Subtle amber accent above desk — warmth for the workspace */}
+      <pointLight position={[0, 2.5, -7]} color="#ff8800" intensity={1.2} distance={5} decay={2} />
+
+      {/* Floor-level neon strip lights — east & west */}
+      <pointLight position={[-14, 0.3, 0]} color="#0044ff" intensity={3} distance={20} decay={2} />
+      <pointLight position={[14, 0.3, 0]} color="#0044ff" intensity={3} distance={20} decay={2} />
+
+      {/* Soft bounce from below center */}
+      <pointLight position={[0, 0.4, 0]} color="#001133" intensity={2.5} distance={22} decay={2} />
     </>
   );
 }

@@ -1,39 +1,43 @@
-import { Grid } from '@react-three/drei';
+import { Grid, MeshReflectorMaterial } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
 
 export default function Floor() {
   return (
     <>
-      {/* Physics floor */}
+      {/* Physics floor — invisible collider */}
       <RigidBody type="fixed" name="floor">
-        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <mesh rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[30, 30]} />
-          <meshStandardMaterial color="#050510" transparent opacity={0.0} />
+          <meshStandardMaterial transparent opacity={0} />
         </mesh>
       </RigidBody>
 
-      {/* Reflective base plane */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]}>
+      {/* Mirror-finish reflective base */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <planeGeometry args={[30, 30]} />
-        <meshStandardMaterial
-          color="#03030a"
-          roughness={0.1}
+        <MeshReflectorMaterial
+          blur={[400, 100]}
+          resolution={512}
+          mirror={0.65}
+          mixBlur={8}
+          mixStrength={1.2}
+          color="#03030c"
           metalness={0.9}
-          envMapIntensity={0.5}
+          roughness={0.12}
         />
       </mesh>
 
-      {/* Neon grid overlay */}
+      {/* Neon grid overlay — sits just above floor */}
       <Grid
-        position={[0, 0.002, 0]}
+        position={[0, 0.003, 0]}
         cellSize={1}
-        cellThickness={0.5}
-        cellColor="#00ffff"
+        cellThickness={0.4}
+        cellColor="#00ddee"
         sectionSize={5}
-        sectionThickness={1.2}
-        sectionColor="#ff00ff"
-        fadeDistance={40}
-        fadeStrength={1.5}
+        sectionThickness={1.0}
+        sectionColor="#cc00ff"
+        fadeDistance={35}
+        fadeStrength={1.2}
         infiniteGrid={false}
         args={[30, 30]}
       />

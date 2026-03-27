@@ -33,7 +33,7 @@ export default function App() {
 
       <Canvas
         dpr={dpr}
-        camera={{ position: [0, 3.5, 9], fov: 60, near: 0.1, far: 200 }}
+        camera={{ position: [0, 5, 12], fov: 55, near: 0.1, far: 200 }}
         shadows
         style={{ position: 'absolute', inset: 0 }}
         gl={{ antialias: tier !== 'low', alpha: false, powerPreference: 'high-performance' }}

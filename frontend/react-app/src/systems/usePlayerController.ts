@@ -37,7 +37,9 @@ export function usePlayerController() {
     }
 
     const isMoving = vx !== 0 || vz !== 0;
-    const direction = isMoving ? Math.atan2(vx, vz) : 0;
+    // atan2(-vx, -vz) makes the character face the direction of travel in Three.js
+    // (default forward = -Z, so W → rot=0, D → rot=-π/2, A → rot=π/2, S → rot=π)
+    const direction = isMoving ? Math.atan2(-vx, -vz) : 0;
     const velocity: [number, number, number] = [vx, 0, vz];
 
     return { velocity, isMoving, direction };

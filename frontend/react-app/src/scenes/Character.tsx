@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import useGameStore from '../store';
 
+// ── Module-level materials (created once) ────────────────────────────────────
 const bodyMat = new THREE.MeshStandardMaterial({
   color: '#0a0a1a',
   emissive: '#00ffff',
@@ -35,6 +36,19 @@ const limbMat = new THREE.MeshStandardMaterial({
   metalness: 0.6,
 });
 
+// ── Helpers defined outside the component to avoid per-frame allocations ─────
+function setRot(ref: React.RefObject<THREE.Object3D | null>, x: number, y: number, z: number) {
+  if (ref.current) {
+    ref.current.rotation.x = x;
+    ref.current.rotation.y = y;
+    ref.current.rotation.z = z;
+  }
+}
+
+function setPos(ref: React.RefObject<THREE.Object3D | null>, x: number, y: number, z: number) {
+  if (ref.current) ref.current.position.set(x, y, z);
+}
+
 export default function Character() {
   const groupRef = useRef<THREE.Group>(null);
   const bodyRef = useRef<THREE.Mesh>(null);
@@ -64,20 +78,6 @@ export default function Character() {
     // Position/rotation from store
     groupRef.current.position.set(...playerPos);
     groupRef.current.rotation.y = playerRot;
-
-    // Helper: safely set rotation
-    const setRot = (ref: React.RefObject<THREE.Object3D | null>, x: number, y: number, z: number) => {
-      if (ref.current) {
-        ref.current.rotation.x = x;
-        ref.current.rotation.y = y;
-        ref.current.rotation.z = z;
-      }
-    };
-    const setPos = (ref: React.RefObject<THREE.Object3D | null>, x: number, y: number, z: number) => {
-      if (ref.current) {
-        ref.current.position.set(x, y, z);
-      }
-    };
 
     if (animState === 'idle') {
       // Gentle breathing bob
