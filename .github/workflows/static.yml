@@ -4,7 +4,7 @@ name: Deploy static content to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["dev"]
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -38,8 +38,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Only upload content from frontend/angular directory
-          path: 'frontend/angular'
+          # Only upload content from frontend/react-app directory
+          path: 'frontend/react-app'
 
       - name: Deploy to GitHub Pages
         id: deployment
