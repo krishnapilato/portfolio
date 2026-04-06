@@ -4,19 +4,21 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  build-and-deploy-frontend:
+  build:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./frontend/react-app
@@ -28,16 +30,29 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '25'
+          node-version: '20'
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
 
       - name: Build React App
-        run: npm run build -- --base=/portfolio/
+        run: npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./frontend/react-app/dist
+          path: './frontend/react-app/dist'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
