@@ -1,0 +1,93 @@
+{
+  "hero": {
+    "greeting": "Hello, I'm",
+    "name": "Krishna Pilato",
+    "tagline": "Full-Stack Engineer & Creative Developer",
+    "subtitle": "Building systems that think. Crafting experiences that feel.",
+    "scrollCta": "Scroll to explore"
+  },
+  "identity": {
+    "headline": "I build at the intersection of",
+    "words": ["engineering", "design", "creativity", "performance", "scale"],
+    "description": "Senior engineer with 6+ years crafting high-performance systems and beautiful interfaces. Obsessed with the space between code and experience.",
+    "stats": [
+      { "value": "6+", "label": "Years Building" },
+      { "value": "50+", "label": "Projects Shipped" },
+      { "value": "10M+", "label": "Users Reached" }
+    ]
+  },
+  "experience": [
+    {
+      "company": "Stealth Startup",
+      "role": "Senior Full-Stack Engineer",
+      "period": "2023 — Present",
+      "description": "Architecting real-time distributed systems. 10x performance gains.",
+      "color": "#00f5ff"
+    },
+    {
+      "company": "Tech Corp",
+      "role": "Full-Stack Engineer",
+      "period": "2021 — 2023",
+      "description": "Led frontend architecture overhaul. Reduced bundle 60%.",
+      "color": "#7b00ff"
+    },
+    {
+      "company": "Agency X",
+      "role": "Frontend Developer",
+      "period": "2019 — 2021",
+      "description": "Built immersive web experiences for global brands.",
+      "color": "#ff006e"
+    }
+  ],
+  "systemThinking": {
+    "headline": "I think in systems",
+    "description": "Microservices, event-driven architecture, distributed state — I architect solutions that scale to millions.",
+    "nodes": [
+      { "id": "api", "label": "API Gateway", "x": 0.5, "y": 0.15 },
+      { "id": "auth", "label": "Auth Service", "x": 0.15, "y": 0.4 },
+      { "id": "user", "label": "User Service", "x": 0.5, "y": 0.4 },
+      { "id": "data", "label": "Data Layer", "x": 0.85, "y": 0.4 },
+      { "id": "queue", "label": "Message Queue", "x": 0.3, "y": 0.7 },
+      { "id": "cache", "label": "Cache", "x": 0.7, "y": 0.7 }
+    ],
+    "edges": [
+      ["api", "auth"], ["api", "user"], ["api", "data"],
+      ["user", "queue"], ["data", "cache"], ["auth", "user"],
+      ["queue", "cache"]
+    ]
+  },
+  "techStack": {
+    "headline": "The Stack",
+    "items": [
+      { "name": "React", "category": "Frontend", "color": "#61dafb" },
+      { "name": "TypeScript", "category": "Language", "color": "#3178c6" },
+      { "name": "Node.js", "category": "Backend", "color": "#68a063" },
+      { "name": "Three.js", "category": "3D/WebGL", "color": "#ffffff" },
+      { "name": "Python", "category": "Backend", "color": "#ffd43b" },
+      { "name": "PostgreSQL", "category": "Database", "color": "#4169e1" },
+      { "name": "Redis", "category": "Cache", "color": "#ff4444" },
+      { "name": "Docker", "category": "DevOps", "color": "#2496ed" },
+      { "name": "AWS", "category": "Cloud", "color": "#ff9900" },
+      { "name": "GraphQL", "category": "API", "color": "#e535ab" },
+      { "name": "Rust", "category": "Systems", "color": "#f74c00" },
+      { "name": "WebGL", "category": "Graphics", "color": "#00f5ff" }
+    ]
+  },
+  "philosophy": {
+    "statements": [
+      "Code is craft.",
+      "Performance is a feature.",
+      "Design serves purpose.",
+      "Systems should breathe.",
+      "Complexity is the enemy."
+    ]
+  },
+  "cta": {
+    "headline": "Let's build something",
+    "subheadline": "remarkable",
+    "description": "Open to senior roles, consulting, and ambitious projects.",
+    "email": "hello@krishnapilato.com",
+    "github": "https://github.com/krishnapilato",
+    "linkedin": "https://linkedin.com/in/krishnapilato"
+  }
+}
