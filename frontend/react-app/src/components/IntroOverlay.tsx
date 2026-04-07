@@ -5,29 +5,6 @@ interface Props {
   cinematicBars: boolean
 }
 
-// Cinematic letter reveal
-function SplitText({ text, delay = 0, className }: { text: string; delay?: number; className?: string }) {
-  return (
-    <span className={className} aria-label={text}>
-      {text.split('').map((ch, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, y: 18, filter: 'blur(6px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{
-            delay: delay + i * 0.045,
-            duration: 0.5,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          style={{ display: 'inline-block', whiteSpace: 'pre' }}
-        >
-          {ch}
-        </motion.span>
-      ))}
-    </span>
-  )
-}
-
 export default function IntroOverlay({ cinematicBars }: Props) {
   return (
     <div className="overlay">
@@ -83,72 +60,14 @@ export default function IntroOverlay({ cinematicBars }: Props) {
         transition={{ delay: 1.2, duration: 1.0, ease: 'linear' }}
       />
 
-      {/* ── Main glass card ── */}
+      {/* ── Main content container (No Card) ── */}
       <motion.div
-        className="glass-card"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
+        className="content-container minimal-countdown"
+        initial={{ opacity: 0, filter: 'blur(10px)', scale: 0.95 }}
+        animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
+        transition={{ delay: 1.8, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Sub-title / first name */}
-        <div className="name-first">
-          <SplitText text="KHOVA" delay={1.8} className="name-first-text" />
-        </div>
-
-        {/* Primary name */}
-        <h1 className="name-main">
-          <SplitText text="KRISHNA" delay={2.1} className="name-word" />
-          {' '}
-          <SplitText text="PILATO" delay={2.5} className="name-word accent" />
-        </h1>
-
-        {/* Role */}
-        <motion.p
-          className="role-text"
-          initial={{ opacity: 0, letterSpacing: '0.6em' }}
-          animate={{ opacity: 1, letterSpacing: '0.35em' }}
-          transition={{ delay: 3.1, duration: 0.9, ease: 'easeOut' }}
-        >
-          Software Engineer · AI &amp; Vision · Creative Dev
-        </motion.p>
-
-        {/* Separator */}
-        <motion.div
-          className="separator"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ delay: 3.7, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        />
-
-        {/* Coming Soon section */}
-        <motion.div
-          className="coming-soon"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 4.0, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <span className="coming-soon-label">COMING SOON</span>
-          <span className="coming-soon-date">20 · APRIL · 2026</span>
-        </motion.div>
-
-        {/* Countdown */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 4.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <CountdownTimer />
-        </motion.div>
-      </motion.div>
-
-      {/* ── Bottom caption ── */}
-      <motion.div
-        className="bottom-caption"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 5.0, duration: 1.0 }}
-      >
-        Portfolio · 2026
+        <CountdownTimer />
       </motion.div>
     </div>
   )
