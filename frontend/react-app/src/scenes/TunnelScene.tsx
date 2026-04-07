@@ -168,7 +168,7 @@ function Particles({ count, speed, colorTheme }: ParticlesProps) {
       const radius = Math.random() * 3.2
       pos[i * 3]     = Math.cos(angle) * radius
       pos[i * 3 + 1] = Math.sin(angle) * radius
-      pos[i * 3 + 2] = -(Math.random() * ringCountDepth(count))
+      pos[i * 3 + 2] = -(Math.random() * getMaxParticleZ(count))
       vel[i] = 0.25 + Math.random() * 0.75
     }
     const g = new THREE.BufferGeometry()
@@ -183,13 +183,13 @@ function Particles({ count, speed, colorTheme }: ParticlesProps) {
     if (!pts) return
     const pos = pts.geometry.attributes.position.array as Float32Array
     const t = state.clock.elapsedTime
-    const maxZ = ringCountDepth(count)
+    const maxZ = getMaxParticleZ(count)
     for (let i = 0; i < count; i++) {
       pos[i * 3 + 2] += speed * velocities[i] * delta * 14
       if (pos[i * 3 + 2] > 10) pos[i * 3 + 2] -= maxZ + 10 + Math.random() * 30
       // subtle twinkle via opacity done via material opacity (global), just scale with time for life
       const twinkle = 0.3 + Math.abs(Math.sin(t * 3.1 + i * 0.7)) * 0.7
-      pos[i * 3] *= (1 + (twinkle - 0.5) * 0.0001) // tiny drift
+      pos[i * 3] *= (1 + (twinkle - 0.5) * PARTICLE_DRIFT_FACTOR)
     }
     pts.geometry.attributes.position.needsUpdate = true
   })
@@ -213,9 +213,13 @@ function Particles({ count, speed, colorTheme }: ParticlesProps) {
   )
 }
 
-function ringCountDepth(count: number) {
+/** Returns the maximum Z-depth used for particle distribution along the tunnel. */
+function getMaxParticleZ(count: number) {
   return Math.max(200, count * 0.4)
 }
+
+/** Small per-particle XZ drift factor – keeps particles from feeling perfectly static. */
+const PARTICLE_DRIFT_FACTOR = 0.0001
 
 // ─── Central Glow Core ───────────────────────────────────────────────────────
 function TunnelCore({ colorTheme }: { colorTheme: ColorTheme }) {
