@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.0-M3</version>
+        <version>4.1.0-M4</version>
         <relativePath/>
     </parent>
 
@@ -21,7 +21,7 @@
 
     <!-- Properties -->
     <properties>
-        <java.version>25</java.version>
+        <java.version>26</java.version>
     </properties>
 
     <!-- Dependency Management -->
