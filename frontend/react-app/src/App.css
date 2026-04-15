@@ -3,132 +3,60 @@
   margin: 0;
   padding: 0;
 }
+
 body {
   background-color: #0a0a0a;
-  color: white;
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  display: grid;
+  place-items: center;
   min-height: 100vh;
-  overflow: hidden;
-}
-.coming-soon-container {
-  min-height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
   text-align: center;
+}
+
+.container {
+  animation: fadeIn 2s ease-out;
   padding: 2rem;
 }
-.glow-bg {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(0, 247, 255, 0.04) 0%,
-    transparent 60%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-.content-wrapper {
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  animation: wrapperFadeIn 1s ease-out;
-}
-.status-badge {
+
+.status {
   color: #00f7ff;
   font-family: monospace;
   text-transform: uppercase;
-  font-size: clamp(10px, 2vw, 14px);
-  margin-bottom: 20px;
-  letter-spacing: 0.3em;
-  opacity: 0;
-  animation: fadeInDown 1.5s ease-out 0.5s forwards;
-}
-.main-title {
-  font-size: clamp(2rem, 8vw, 5rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 40px;
-  line-height: 1.1;
-  text-shadow: 0 0 40px rgba(0, 247, 255, 0.2);
-  word-break: break-word;
-  opacity: 0;
-  transform: scale(0.95);
-  animation: scaleUp 1.5s ease-out 0.8s forwards;
-}
-.bottom-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  opacity: 0;
-  animation: fadeIn 1.5s ease-out 1.5s forwards;
-}
-.divider {
-  height: 1px;
-  width: clamp(60px, 15vw, 100px);
-  background: linear-gradient(90deg, transparent, #ff9f00, transparent);
-  opacity: 0.7;
-}
-.coming-soon-text {
-  color: #ff9f00;
-  font-size: clamp(1.25rem, 4vw, 2rem);
-  font-weight: 600;
   letter-spacing: 0.2em;
-  margin: 16px 0 8px;
+  font-size: 0.8rem;
+  margin-bottom: 2rem;
 }
-.date-text {
+
+.title {
+  font-size: clamp(2rem, 6vw, 4rem);
+  letter-spacing: 0.05em;
+  margin-bottom: 3rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #ff9f00;
+  letter-spacing: 0.2em;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.date {
   color: #888;
   font-family: monospace;
-  font-size: clamp(0.75rem, 2vw, 1rem);
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  margin-bottom: 16px;
+  letter-spacing: 0.2em;
+  font-size: 0.9rem;
 }
-@keyframes wrapperFadeIn {
+
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    letter-spacing: 0.1em;
-  }
-  to {
-    opacity: 0.8;
-    letter-spacing: 0.3em;
-  }
-}
-@keyframes scaleUp {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
