@@ -24,7 +24,7 @@ export function ConfettiBanner() {
         y: Math.random() * canvas.height - canvas.height,
         vx: (Math.random() - 0.5) * 4,
         vy: Math.random() * 3 + 1,
-        color: colors[Math.floor(Math.random() * colors.length)] ?? '#fff',
+        color: colors[Math.floor(Math.random() * colors.length)] as string,
         size: Math.random() * 6 + 2,
       })
     }

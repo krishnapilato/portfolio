@@ -75,7 +75,7 @@ export function StoryNarrative() {
       <div
         ref={containerRef}
         className="flex gap-6 overflow-x-auto px-8 pb-8 snap-x snap-mandatory"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}
+        style={{ scrollbarWidth: 'none' } as React.CSSProperties}
       >
         {PANELS.map((panel, i) => (
           <motion.div

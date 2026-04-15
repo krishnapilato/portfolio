@@ -70,7 +70,7 @@ function CodeParticles() {
 
   useFrame(() => {
     if (geoRef.current) {
-      const pos = geoRef.current.attributes['position'] as THREE.BufferAttribute
+      const pos = geoRef.current.attributes.position as THREE.BufferAttribute
       const arr = pos.array as Float32Array
       for (let i = 0; i < count; i++) {
         arr[i * 3 + 1] -= 0.005

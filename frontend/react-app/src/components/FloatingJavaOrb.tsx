@@ -15,7 +15,7 @@ export function FloatingJavaOrb({ mouseRef }: FloatingJavaOrbProps) {
     if (orbRef.current) {
       orbRef.current.rotation.y += delta * 0.4
       orbRef.current.rotation.x += delta * 0.1
-      orbRef.current.rotation.z = THREE.MathUtils.lerp(orbRef.current.rotation.z, mouseRef.current.x * 0.15, 0.05)
+      orbRef.current.rotation.z = THREE.MathUtils.lerp(orbRef.current.rotation.z, (mouseRef.current?.x ?? 0) * 0.15, 0.05)
       orbRef.current.position.y = Math.sin(Date.now() * 0.001) * 0.15
     }
     if (innerRef.current) {
