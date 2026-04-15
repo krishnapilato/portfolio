@@ -107,7 +107,7 @@ export function Hero3D() {
             >
               {activeSkill.label}
             </h2>
-            <p className="text-[#ccc] leading-relaxed text-sm mb-6">{activeSkill.lore}</p>
+            <p className="text-[#e0e0e0] leading-relaxed text-sm mb-6">{activeSkill.lore}</p>
             <button
               onClick={closeSkillModal}
               className="text-xs font-mono uppercase tracking-widest px-4 py-2 rounded-lg transition-all"

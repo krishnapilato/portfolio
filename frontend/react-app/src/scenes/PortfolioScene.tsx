@@ -107,6 +107,7 @@ function CameraRig({ mouseRef }: { mouseRef: React.RefObject<{ x: number; y: num
   const { camera } = useThree()
 
   useFrame(() => {
+    if (!mouseRef.current) return
     camera.position.x = THREE.MathUtils.lerp(camera.position.x, mouseRef.current.x * 1.5, 0.02)
     camera.position.y = THREE.MathUtils.lerp(camera.position.y, 1 + mouseRef.current.y * -0.8, 0.02)
   })
