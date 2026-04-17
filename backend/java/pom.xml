@@ -15,7 +15,7 @@
     <!-- Project Metadata -->
     <groupId>com.personal</groupId>
     <artifactId>portfolio</artifactId>
-    <version>0.0.5</version>
+    <version>1.0.0</version>
     <name>Portfolio Backend API</name>
     <description>Portfolio Backend API</description>
 

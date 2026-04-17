@@ -1,4 +1,4 @@
-FROM maven:3-eclipse-temurin-25-alpine
+FROM maven:3-sapmachine-26
 
 LABEL maintainer="Khova Krishna Pilato" \
       description="Development Docker image for Spring Boot app"
