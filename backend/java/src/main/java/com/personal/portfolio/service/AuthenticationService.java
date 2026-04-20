@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +26,20 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public void authenticate(LoginUserRequest input) {
+    @Transactional
+    public User authenticate(LoginUserRequest input) {
         log.info("Attempting authentication for email: {}", input.email());
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(input.email(), input.password())
         );
 
+        var user = userRepository.findByEmail(input.email())
+                .orElseThrow(() -> new UsernameNotFoundException("User with email " + input.email() + " does not exist."));
+        user.setLastLogin(Instant.now());
+
         log.info("Authentication passed manager checks for email: {}", input.email());
+        return userRepository.save(user);
     }
 
     @Transactional
@@ -47,7 +54,7 @@ public class AuthenticationService {
                 .email(input.email())
                 .password(passwordEncoder.encode(input.password()))
                 .role(Role.USER)
-                .lastLogin(Instant.now())
+                .enabled(true)
                 .build();
 
         var savedUser = userRepository.save(user);

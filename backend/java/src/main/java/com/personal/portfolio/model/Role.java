@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter
@@ -15,7 +15,7 @@ public enum Role {
 
     private final String displayName;
 
-    private static final Map<String, Role> LOOKUP = Arrays.stream(values()).collect(Collectors.toUnmodifiableMap(role -> role.displayName.toLowerCase(), Function.identity()));
+    private static final Map<String, Role> LOOKUP = createLookup();
 
     private static final String AVAILABLE_ROLES = Arrays.stream(values()).map(role -> role.displayName).collect(Collectors.joining(", "));
 
@@ -47,5 +47,14 @@ public enum Role {
 
     public static String getAllDisplayNames() {
         return AVAILABLE_ROLES;
+    }
+
+    private static Map<String, Role> createLookup() {
+        var lookup = new LinkedHashMap<String, Role>();
+        for (var role : values()) {
+            lookup.put(role.displayName.toLowerCase(), role);
+            lookup.put(role.name().toLowerCase(), role);
+        }
+        return Map.copyOf(lookup);
     }
 }

@@ -102,12 +102,16 @@ public class EmailService {
 
     public void sendPasswordResetEmail(@NotBlank @Email String recipient, @NotBlank String token) {
         var resetLink = appBaseUrl + "/reset-password?token=" + token;
-        sendEmail(recipient, "Password Reset Request", "Reset your password: " + resetLink, null, null, null, false);
-    }
+        var message = """
+                A password reset was requested for your account.
 
-    public void resendConfirmationEmail(@NotBlank @Email String recipient) {
-        var confirmationLink = appBaseUrl + "/confirm-email?email=" + recipient;
-        sendEmail(recipient, "Email Confirmation", "Confirm your email: " + confirmationLink, null, null, null, false);
+                Use this reset token:
+                %s
+
+                If your client supports reset links, open:
+                %s
+                """.formatted(token, resetLink);
+        sendEmail(recipient, "Password Reset Request", message, null, null, null, false);
     }
 
     public void sendBulkEmail(

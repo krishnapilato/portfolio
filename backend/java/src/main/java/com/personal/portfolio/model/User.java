@@ -1,5 +1,6 @@
 package com.personal.portfolio.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +17,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -52,6 +52,7 @@ public class User implements UserDetails {
 
     @NotBlank
     @Size(min = 8, max = 255)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false, length = 255)
     private String password;
 
@@ -109,8 +110,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        if (!accountNonExpired || createdAt == null) return false;
-        return Instant.now().isBefore(createdAt.plus(365, ChronoUnit.DAYS));
+        return accountNonExpired;
     }
 
     @Override
@@ -125,9 +125,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        if (!enabled) return false;
-        if (lastLogin == null) return true;
-        return lastLogin.isAfter(Instant.now().minus(180, ChronoUnit.DAYS));
+        return enabled;
     }
 
     @Override

@@ -1,12 +1,9 @@
 package com.personal.portfolio.controller;
 
 import com.personal.portfolio.service.EmailService;
-import com.personal.portfolio.service.UserService;
 import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +16,6 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 
-@Slf4j
 @Validated
 @RestController
 @RequestMapping("/api/email")
@@ -27,7 +23,6 @@ import java.util.List;
 public class EmailController {
 
     private final EmailService emailService;
-    private final UserService userService;
 
     @PostMapping("/send")
     public ResponseEntity<String> sendEmail(
@@ -41,28 +36,6 @@ public class EmailController {
 
         emailService.sendEmail(recipient, subject, body, cc, bcc, replyTo, isHtml);
         return ResponseEntity.ok("Email sent successfully.");
-    }
-
-    @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestParam @Email String email) {
-        if (!userService.existsByEmail(email)) {
-            throw new UsernameNotFoundException("No user found with that email address.");
-        }
-
-        var resetToken = emailService.generatePasswordResetToken();
-        emailService.sendPasswordResetEmail(email, resetToken);
-
-        return ResponseEntity.ok("Password reset email sent successfully.");
-    }
-
-    @PostMapping("/resend-confirmation")
-    public ResponseEntity<String> resendConfirmation(@RequestParam @Email String email) {
-        if (!userService.existsByEmail(email)) {
-            throw new UsernameNotFoundException("No user found with that email address.");
-        }
-
-        emailService.resendConfirmationEmail(email);
-        return ResponseEntity.ok("Confirmation email resent successfully.");
     }
 
     @PostMapping("/send-bulk")

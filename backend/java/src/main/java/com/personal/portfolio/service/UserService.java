@@ -5,6 +5,7 @@ import com.personal.portfolio.model.User;
 import com.personal.portfolio.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +24,6 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
 
     @Override
     public UserDetails loadUserByUsername(String email) {
@@ -44,11 +44,16 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public User createUser(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new DataIntegrityViolationException("User with email " + user.getEmail() + " already exists.");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(false);
         if (user.getRole() == null) {
             user.setRole(Role.USER);
         }
+        user.setLastLogin(null);
         return userRepository.save(user);
     }
 
@@ -57,10 +62,9 @@ public class UserService implements UserDetailsService {
         var user = getUserOrThrow(id);
 
         user.setFullName(updatedUser.getFullName());
-        user.setEmail(updatedUser.getEmail());
-        if (updatedUser.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-        }
+        user.setPhoneNumber(updatedUser.getPhoneNumber());
+        user.setProfilePictureUrl(updatedUser.getProfilePictureUrl());
+        user.setBio(updatedUser.getBio());
 
         return userRepository.save(user);
     }
@@ -70,15 +74,6 @@ public class UserService implements UserDetailsService {
         var user = getUserOrThrow(id);
         userRepository.delete(user);
         log.info("User deleted successfully with ID: {}", id);
-    }
-
-    @Transactional
-    public void resetPassword(String email, String newPassword) {
-        var user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
-        log.info("Password reset successfully for email: {}", email);
     }
 
     @Transactional

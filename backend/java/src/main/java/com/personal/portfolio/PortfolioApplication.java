@@ -25,7 +25,7 @@ public class PortfolioApplication {
     }
 
     @Bean
-    @Profile("!prod")
+    @Profile("dev")
     ApplicationRunner provisionDefaultAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder, AdminConfig adminConfig) {
         return args -> {
             if (userRepository.existsByEmail(adminConfig.email())) {

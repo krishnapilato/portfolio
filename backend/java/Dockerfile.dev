@@ -6,13 +6,13 @@ LABEL maintainer="Khova Krishna Pilato" \
 WORKDIR /app
 
 COPY pom.xml .
-
-RUN mvn dependency:go-offline -B
+RUN mvn -B -q -DskipTests dependency:go-offline
 
 COPY src ./src
+RUN mvn -B -DskipTests package
 
 EXPOSE 8080
 
 ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
 
-ENTRYPOINT ["sh", "-c", "mvn spring-boot:run -Dspring-boot.run.jvmArguments=\"${JAVA_OPTS}\""]
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar target/*.jar"]
