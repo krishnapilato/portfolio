@@ -4,11 +4,13 @@
 spring:
   application:
     name: portfolio
-    version: 0.0.5
+    version: 1.0.0
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
   jpa:
     open-in-view: false
+  flyway:
+    baseline-on-migrate: true
 
   security:
     user:
@@ -62,7 +64,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: false
 
   mail:

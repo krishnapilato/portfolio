@@ -18,26 +18,28 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_FILE_PATH}</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/application-%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
-            <maxFileSize>10MB</maxFileSize>
-            <maxHistory>30</maxHistory>
-            <totalSizeCap>512MB</totalSizeCap>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-            <charset>UTF-8</charset>
-        </encoder>
-    </appender>
+    <springProfile name="dev | prod">
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_FILE_PATH}</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>logs/application-%d{yyyy-MM-dd}-%i.log.gz</fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>512MB</totalSizeCap>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+                <charset>UTF-8</charset>
+            </encoder>
+        </appender>
 
-    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
-        <queueSize>512</queueSize>
-        <discardingThreshold>20</discardingThreshold>
-        <neverBlock>true</neverBlock>
-        <appender-ref ref="FILE"/>
-    </appender>
+        <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+            <queueSize>512</queueSize>
+            <discardingThreshold>20</discardingThreshold>
+            <neverBlock>true</neverBlock>
+            <appender-ref ref="FILE"/>
+        </appender>
+    </springProfile>
 
     <!-- DEV profile -->
     <springProfile name="dev">
@@ -58,6 +60,15 @@
         </root>
         <logger name="com.personal.portfolio" level="INFO" additivity="false">
             <appender-ref ref="ASYNC_FILE"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="test">
+        <root level="WARN">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        <logger name="com.personal.portfolio" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
         </logger>
     </springProfile>
 

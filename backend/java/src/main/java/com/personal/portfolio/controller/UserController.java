@@ -3,19 +3,25 @@ package com.personal.portfolio.controller;
 import com.personal.portfolio.dto.user.CreateUserRequest;
 import com.personal.portfolio.dto.user.UpdateUserRequest;
 import com.personal.portfolio.dto.user.UserResponse;
+import com.personal.portfolio.dto.common.PageResponse;
 import com.personal.portfolio.model.Role;
 import com.personal.portfolio.model.User;
 import com.personal.portfolio.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -25,12 +31,20 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @Operation(summary = "Get all users")
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        var users = userService.getAllUsers().stream()
-                .map(UserResponse::from)
-                .toList();
-        return users.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(users);
+    @Operation(summary = "Search users with pagination and filters")
+    public ResponseEntity<PageResponse<UserResponse>> getAllUsers(
+            @RequestParam(required = false) Role role,
+            @RequestParam(required = false) Boolean enabled,
+            @RequestParam(required = false) Boolean locked,
+            @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+            @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "DESC") Sort.Direction direction) {
+
+        var users = userService.getUsers(role, enabled, locked, search, page, size, sortBy, direction)
+                .map(UserResponse::from);
+        return ResponseEntity.ok(PageResponse.from(users));
     }
 
     @GetMapping("/{id}")

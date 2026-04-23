@@ -1,5 +1,6 @@
 # Ignore the compiled output of the project (Spring Boot target directory)
 target/
+logs/
 
 # Ignore Maven wrapper JAR and its associated files
 !.mvn/wrapper/maven-wrapper.jar

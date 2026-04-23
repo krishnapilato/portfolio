@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
@@ -22,6 +23,25 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByRole(Role role);
 
     Page<User> findByRole(Role role, Pageable pageable);
+
+    @Query("""
+            SELECT u
+            FROM User u
+            WHERE (:role IS NULL OR u.role = :role)
+              AND (:enabled IS NULL OR u.enabled = :enabled)
+              AND (:locked IS NULL OR u.locked = :locked)
+              AND (
+                    :search IS NULL
+                    OR LOWER(u.fullName) LIKE LOWER(CONCAT('%', :search, '%'))
+                    OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))
+              )
+            """)
+    Page<User> findAllByFilters(
+            @Param("role") Role role,
+            @Param("enabled") Boolean enabled,
+            @Param("locked") Boolean locked,
+            @Param("search") String search,
+            Pageable pageable);
 
     @Query("SELECT u FROM User u WHERE u.lastLogin IS NULL OR u.lastLogin < :threshold")
     List<User> findInactiveUsers(Instant threshold);
