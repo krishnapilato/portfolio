@@ -1,19 +1,24 @@
-2026-04-23 08:28:08.095 [main] INFO  c.p.portfolio.PortfolioApplication - Starting PortfolioApplication v0.0.5 using Java 26.0.1 with PID 13284 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
-2026-04-23 08:28:08.096 [main] DEBUG c.p.portfolio.PortfolioApplication - Running with Spring Boot v4.1.0-M4, Spring v7.0.6
-2026-04-23 08:28:08.097 [main] INFO  c.p.portfolio.PortfolioApplication - The following 1 profile is active: "dev"
-2026-04-23 08:28:08.785 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-23 08:28:08.825 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 34 ms. Found 3 JPA repository interfaces.
-2026-04-23 08:28:09.231 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-04-23 08:28:09.240 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-04-23 08:28:09.240 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.20]
-2026-04-23 08:28:09.285 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1155 ms
-2026-04-23 08:28:09.446 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
-2026-04-23 08:28:09.498 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.7.Final
-2026-04-23 08:28:09.824 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-04-23 08:28:09.846 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2026-04-23 08:28:10.112 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6e757f39
-2026-04-23 08:28:10.114 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2026-04-23 08:28:10.183 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+2026-04-24 09:14:13.126 [main] INFO  c.p.portfolio.PortfolioApplication - Starting PortfolioApplication v1.0.0 using Java 26.0.1 with PID 19764 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
+2026-04-24 09:14:13.127 [main] DEBUG c.p.portfolio.PortfolioApplication - Running with Spring Boot v4.1.0-RC1, Spring v7.0.7
+2026-04-24 09:14:13.128 [main] INFO  c.p.portfolio.PortfolioApplication - The following 1 profile is active: "dev"
+2026-04-24 09:14:13.744 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-24 09:14:13.780 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 30 ms. Found 3 JPA repository interfaces.
+2026-04-24 09:14:14.187 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-24 09:14:14.196 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-24 09:14:14.196 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-04-24 09:14:14.240 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1080 ms
+2026-04-24 09:14:14.487 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-24 09:14:14.792 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3815a7d1
+2026-04-24 09:14:14.794 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-24 09:14:14.815 [main] INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true (MySQL 9.6)
+2026-04-24 09:14:14.882 [main] WARN  o.f.c.i.database.base.Database - Using MySQL 9.6 which is newer than the version Flyway has been verified with. The latest verified version of MySQL is 9.4.
+2026-04-24 09:14:14.912 [main] INFO  o.f.core.internal.command.DbValidate - Successfully validated 2 migrations (execution time 00:00.020s)
+2026-04-24 09:14:14.921 [main] INFO  o.f.core.internal.command.DbMigrate - Current version of schema `database`: 1
+2026-04-24 09:14:14.922 [main] INFO  o.f.core.internal.command.DbMigrate - Schema `database` is up to date. No migration necessary.
+2026-04-24 09:14:14.989 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-24 09:14:15.030 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.12.Final
+2026-04-24 09:14:15.310 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-24 09:14:15.359 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
 	Database JDBC URL [jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true]
 	Database driver: MySQL Connector/J
 	Database dialect: MySQLDialect
@@ -25,41 +30,45 @@
 	Pool: DataSourceConnectionProvider
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-04-23 08:28:10.788 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-04-23 08:28:10.929 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-04-23 08:28:10.981 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-04-23 08:28:11.552 [main] INFO  c.p.p.c.c.ApplicationConfiguration - Initializing BCrypt encoder with strength: 12
-2026-04-23 08:28:11.578 [main] DEBUG c.p.p.c.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
-2026-04-23 08:28:11.611 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userService
-2026-04-23 08:28:12.150 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 12 endpoints beneath base path '/actuator'
-2026-04-23 08:28:12.205 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2026-04-23 08:28:12.213 [main] INFO  c.p.portfolio.PortfolioApplication - Started PortfolioApplication in 4.505 seconds (process running for 7.069)
-2026-04-23 08:28:12.275 [main] INFO  c.p.portfolio.PortfolioApplication - Admin [admin.email@gmail.com] present. Skipping provisioning.
-2026-04-23 08:29:18.643 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-04-23 08:29:18.644 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-04-23 08:29:18.645 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2026-04-23 08:29:23.450 [http-nio-8080-exec-1] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 215 ms
-2026-04-23 08:30:49.801 [SpringApplicationShutdownHook] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2026-04-23 08:30:49.807 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
-2026-04-23 08:30:49.810 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-04-23 08:30:49.812 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-2026-04-23 08:30:49.815 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
-2026-04-23 08:30:51.340 [main] INFO  c.p.portfolio.PortfolioApplication - Starting PortfolioApplication v1.0.0 using Java 26.0.1 with PID 6856 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
-2026-04-23 08:30:51.341 [main] DEBUG c.p.portfolio.PortfolioApplication - Running with Spring Boot v4.1.0-M4, Spring v7.0.6
-2026-04-23 08:30:51.342 [main] INFO  c.p.portfolio.PortfolioApplication - The following 1 profile is active: "dev"
-2026-04-23 08:30:52.002 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-23 08:30:52.040 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 33 ms. Found 3 JPA repository interfaces.
-2026-04-23 08:30:52.453 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-04-23 08:30:52.460 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-04-23 08:30:52.460 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.20]
-2026-04-23 08:30:52.509 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1132 ms
-2026-04-23 08:30:52.674 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
-2026-04-23 08:30:52.716 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.7.Final
-2026-04-23 08:30:52.985 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-04-23 08:30:53.002 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2026-04-23 08:30:53.188 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3338d29d
-2026-04-23 08:30:53.188 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2026-04-23 08:30:53.233 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+2026-04-24 09:14:15.846 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-24 09:14:15.871 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 09:14:15.901 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-24 09:14:16.562 [main] INFO  c.p.p.c.c.ApplicationConfiguration - Initializing BCrypt encoder with strength: 12
+2026-04-24 09:14:16.588 [main] DEBUG c.p.p.c.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-04-24 09:14:16.613 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userService
+2026-04-24 09:14:17.114 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 13 endpoints beneath base path '/actuator'
+2026-04-24 09:14:17.151 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-04-24 09:14:17.159 [main] INFO  c.p.portfolio.PortfolioApplication - Started PortfolioApplication in 4.4 seconds (process running for 4.972)
+2026-04-24 09:14:17.222 [main] INFO  c.p.portfolio.PortfolioApplication - Admin [admin.email@gmail.com] present. Skipping provisioning.
+2026-04-24 09:14:27.927 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-24 09:14:27.927 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-24 09:14:27.928 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-24 09:14:59.633 [SpringApplicationShutdownHook] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-24 09:14:59.639 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-24 09:14:59.643 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 09:14:59.644 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-24 09:14:59.647 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-24 09:15:00.946 [main] INFO  c.p.portfolio.PortfolioApplication - Starting PortfolioApplication v1.0.0 using Java 26.0.1 with PID 32096 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
+2026-04-24 09:15:00.947 [main] DEBUG c.p.portfolio.PortfolioApplication - Running with Spring Boot v4.1.0-RC1, Spring v7.0.7
+2026-04-24 09:15:00.948 [main] INFO  c.p.portfolio.PortfolioApplication - The following 1 profile is active: "dev"
+2026-04-24 09:15:01.571 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-24 09:15:01.613 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 35 ms. Found 3 JPA repository interfaces.
+2026-04-24 09:15:02.019 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-24 09:15:02.027 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-24 09:15:02.027 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-04-24 09:15:02.078 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1102 ms
+2026-04-24 09:15:02.308 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-24 09:15:02.492 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24dc150c
+2026-04-24 09:15:02.493 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-24 09:15:02.512 [main] INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true (MySQL 9.6)
+2026-04-24 09:15:02.541 [main] WARN  o.f.c.i.database.base.Database - Using MySQL 9.6 which is newer than the version Flyway has been verified with. The latest verified version of MySQL is 9.4.
+2026-04-24 09:15:02.566 [main] INFO  o.f.core.internal.command.DbValidate - Successfully validated 2 migrations (execution time 00:00.015s)
+2026-04-24 09:15:02.575 [main] INFO  o.f.core.internal.command.DbMigrate - Current version of schema `database`: 1
+2026-04-24 09:15:02.576 [main] INFO  o.f.core.internal.command.DbMigrate - Schema `database` is up to date. No migration necessary.
+2026-04-24 09:15:02.663 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-24 09:15:02.695 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.12.Final
+2026-04-24 09:15:02.978 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-24 09:15:03.026 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
 	Database JDBC URL [jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true]
 	Database driver: MySQL Connector/J
 	Database dialect: MySQLDialect
@@ -71,53 +80,45 @@
 	Pool: DataSourceConnectionProvider
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-04-23 08:30:53.754 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-04-23 08:30:53.828 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-04-23 08:30:53.864 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-04-23 08:30:54.382 [main] INFO  c.p.p.c.c.ApplicationConfiguration - Initializing BCrypt encoder with strength: 12
-2026-04-23 08:30:54.414 [main] DEBUG c.p.p.c.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
-2026-04-23 08:30:54.441 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userService
-2026-04-23 08:30:54.966 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 12 endpoints beneath base path '/actuator'
-2026-04-23 08:30:55.015 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2026-04-23 08:30:55.024 [main] INFO  c.p.portfolio.PortfolioApplication - Started PortfolioApplication in 4.072 seconds (process running for 4.371)
-2026-04-23 08:30:55.080 [main] INFO  c.p.portfolio.PortfolioApplication - Admin [admin.email@gmail.com] present. Skipping provisioning.
-2026-04-23 08:30:59.016 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-04-23 08:30:59.016 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-04-23 08:30:59.017 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2026-04-23 08:30:59.419 [http-nio-8080-exec-9] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 187 ms
-2026-04-23 08:32:19.593 [http-nio-8080-exec-6] INFO  c.p.p.c.AuthenticationController - Login request received for admin.email@gmail.com
-2026-04-23 08:32:19.595 [http-nio-8080-exec-6] INFO  c.p.p.service.AuthenticationService - Attempting authentication for email: admin.email@gmail.com
-2026-04-23 08:32:20.070 [http-nio-8080-exec-6] INFO  c.p.p.service.AuthenticationService - Authentication passed manager checks for email: admin.email@gmail.com
-2026-04-23 08:32:20.162 [http-nio-8080-exec-6] INFO  c.p.p.c.AuthenticationController - Authentication successful for admin.email@gmail.com
-2026-04-23 08:36:42.137 [SpringApplicationShutdownHook] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2026-04-23 08:36:42.144 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
-2026-04-23 08:36:42.148 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-04-23 08:36:42.149 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-2026-04-23 08:36:42.154 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
-2026-04-23 10:26:09.408 [main] INFO  c.p.portfolio.PortfolioApplication - Starting PortfolioApplication v1.0.0 using Java 26.0.1 with PID 15192 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
-2026-04-23 10:26:09.409 [main] DEBUG c.p.portfolio.PortfolioApplication - Running with Spring Boot v4.1.0-M4, Spring v7.0.6
-2026-04-23 10:26:09.409 [main] INFO  c.p.portfolio.PortfolioApplication - The following 1 profile is active: "dev"
-2026-04-23 10:26:10.004 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-23 10:26:10.041 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 32 ms. Found 3 JPA repository interfaces.
-2026-04-23 10:26:10.429 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-04-23 10:26:10.436 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-04-23 10:26:10.437 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.20]
-2026-04-23 10:26:10.480 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1041 ms
-2026-04-23 10:26:10.687 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2026-04-23 10:26:10.880 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@14ba7f15
-2026-04-23 10:26:10.882 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2026-04-23 10:26:10.902 [main] INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true (MySQL 9.6)
-2026-04-23 10:26:10.944 [main] WARN  o.f.c.i.database.base.Database - Using MySQL 9.6 which is newer than the version Flyway has been verified with. The latest verified version of MySQL is 9.4.
-2026-04-23 10:26:10.963 [main] INFO  o.f.c.i.s.JdbcTableSchemaHistory - Schema history table `database`.`flyway_schema_history` does not exist yet
-2026-04-23 10:26:10.965 [main] INFO  o.f.core.internal.command.DbValidate - Successfully validated 1 migration (execution time 00:00.011s)
-2026-04-23 10:26:10.996 [main] INFO  o.f.c.i.s.JdbcTableSchemaHistory - Creating Schema History table `database`.`flyway_schema_history` with baseline ...
-2026-04-23 10:26:11.072 [main] INFO  o.f.core.internal.command.DbBaseline - Successfully baselined schema with version: 1
-2026-04-23 10:26:11.081 [main] INFO  o.f.core.internal.command.DbMigrate - Current version of schema `database`: 1
-2026-04-23 10:26:11.083 [main] INFO  o.f.core.internal.command.DbMigrate - Schema `database` is up to date. No migration necessary.
-2026-04-23 10:26:11.151 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
-2026-04-23 10:26:11.180 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.7.Final
-2026-04-23 10:26:11.441 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-04-23 10:26:11.490 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+2026-04-24 09:15:03.529 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-24 09:15:03.552 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 09:15:03.589 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-24 09:15:04.278 [main] INFO  c.p.p.c.c.ApplicationConfiguration - Initializing BCrypt encoder with strength: 12
+2026-04-24 09:15:04.304 [main] DEBUG c.p.p.c.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-04-24 09:15:04.330 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userService
+2026-04-24 09:15:04.891 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 13 endpoints beneath base path '/actuator'
+2026-04-24 09:15:04.944 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-04-24 09:15:04.953 [main] INFO  c.p.portfolio.PortfolioApplication - Started PortfolioApplication in 4.437 seconds (process running for 4.745)
+2026-04-24 09:15:05.004 [main] INFO  c.p.portfolio.PortfolioApplication - Admin [admin.email@gmail.com] present. Skipping provisioning.
+2026-04-24 09:15:09.810 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-24 09:15:09.810 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-24 09:15:09.811 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-24 09:16:28.440 [SpringApplicationShutdownHook] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-24 09:16:28.445 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-24 09:16:28.449 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 09:16:28.450 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-24 09:16:28.454 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-24 09:16:30.385 [main] INFO  c.p.portfolio.PortfolioApplication - Starting PortfolioApplication v1.0.0 using Java 26.0.1 with PID 35252 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
+2026-04-24 09:16:30.386 [main] DEBUG c.p.portfolio.PortfolioApplication - Running with Spring Boot v4.1.0-RC1, Spring v7.0.7
+2026-04-24 09:16:30.386 [main] INFO  c.p.portfolio.PortfolioApplication - The following 1 profile is active: "dev"
+2026-04-24 09:16:31.043 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-24 09:16:31.083 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 34 ms. Found 3 JPA repository interfaces.
+2026-04-24 09:16:31.503 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-24 09:16:31.512 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-24 09:16:31.513 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-04-24 09:16:31.562 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1146 ms
+2026-04-24 09:16:31.782 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-24 09:16:31.964 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24dc150c
+2026-04-24 09:16:31.965 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-24 09:16:31.984 [main] INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true (MySQL 9.6)
+2026-04-24 09:16:32.005 [main] WARN  o.f.c.i.database.base.Database - Using MySQL 9.6 which is newer than the version Flyway has been verified with. The latest verified version of MySQL is 9.4.
+2026-04-24 09:16:32.030 [main] INFO  o.f.core.internal.command.DbValidate - Successfully validated 2 migrations (execution time 00:00.016s)
+2026-04-24 09:16:32.040 [main] INFO  o.f.core.internal.command.DbMigrate - Current version of schema `database`: 1
+2026-04-24 09:16:32.042 [main] INFO  o.f.core.internal.command.DbMigrate - Schema `database` is up to date. No migration necessary.
+2026-04-24 09:16:32.122 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-24 09:16:32.156 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.12.Final
+2026-04-24 09:16:32.447 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-24 09:16:32.502 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
 	Database JDBC URL [jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true]
 	Database driver: MySQL Connector/J
 	Database dialect: MySQLDialect
@@ -129,21 +130,78 @@
 	Pool: DataSourceConnectionProvider
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-04-23 10:26:11.975 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-04-23 10:26:11.996 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-04-23 10:26:12.024 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-04-23 10:26:12.654 [main] INFO  c.p.p.c.c.ApplicationConfiguration - Initializing BCrypt encoder with strength: 12
-2026-04-23 10:26:12.681 [main] DEBUG c.p.p.c.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
-2026-04-23 10:26:12.708 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userService
-2026-04-23 10:26:13.268 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 13 endpoints beneath base path '/actuator'
-2026-04-23 10:26:13.309 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2026-04-23 10:26:13.317 [main] INFO  c.p.portfolio.PortfolioApplication - Started PortfolioApplication in 4.281 seconds (process running for 4.571)
-2026-04-23 10:26:13.364 [main] INFO  c.p.portfolio.PortfolioApplication - Admin [admin.email@gmail.com] present. Skipping provisioning.
-2026-04-23 10:26:24.243 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-04-23 10:26:24.251 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-04-23 10:26:24.252 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2026-04-23 10:26:24.626 [http-nio-8080-exec-9] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 188 ms
-2026-04-23 10:26:38.703 [http-nio-8080-exec-10] INFO  c.p.p.c.AuthenticationController - Login request received for admin.email@gmail.com
-2026-04-23 10:26:38.703 [http-nio-8080-exec-10] INFO  c.p.p.service.AuthenticationService - Attempting authentication for email: admin.email@gmail.com
-2026-04-23 10:26:39.140 [http-nio-8080-exec-10] INFO  c.p.p.service.AuthenticationService - Authentication passed manager checks for email: admin.email@gmail.com
-2026-04-23 10:26:39.209 [http-nio-8080-exec-10] INFO  c.p.p.c.AuthenticationController - Authentication successful for admin.email@gmail.com
+2026-04-24 09:16:33.075 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-24 09:16:33.101 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 09:16:33.139 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-24 09:16:33.874 [main] INFO  c.p.p.c.c.ApplicationConfiguration - Initializing BCrypt encoder with strength: 12
+2026-04-24 09:16:33.901 [main] DEBUG c.p.p.c.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-04-24 09:16:33.931 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userService
+2026-04-24 09:16:34.526 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 13 endpoints beneath base path '/actuator'
+2026-04-24 09:16:34.570 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-04-24 09:16:34.579 [main] INFO  c.p.portfolio.PortfolioApplication - Started PortfolioApplication in 4.571 seconds (process running for 4.86)
+2026-04-24 09:16:34.633 [main] INFO  c.p.portfolio.PortfolioApplication - Admin [admin.email@gmail.com] present. Skipping provisioning.
+2026-04-24 09:19:46.807 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@651097f4 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-04-24 09:19:48.450 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6f5637b1 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-04-24 09:19:50.950 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@e18b298 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-04-24 09:19:59.258 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@64650841 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-04-24 09:20:04.378 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@24dc150c (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-04-24 09:20:06.088 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@19ab6251 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-04-24 09:20:16.126 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@55404625 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-04-24 09:20:22.768 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@212dba8d (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-04-24 09:20:23.428 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3470fe22 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-04-24 09:20:24.210 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@2588ecf4 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-04-24 09:21:20.666 [SpringApplicationShutdownHook] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-24 09:21:20.671 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-24 09:21:20.675 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 09:21:20.677 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-24 09:21:20.680 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-24 09:21:21.830 [main] INFO  c.p.portfolio.PortfolioApplication - Starting PortfolioApplication v1.0.0 using Java 26.0.1 with PID 27360 (C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java\target\classes started by krish in C:\Users\krish\OneDrive\Documents\GitHub\portfolio\backend\java)
+2026-04-24 09:21:21.831 [main] DEBUG c.p.portfolio.PortfolioApplication - Running with Spring Boot v4.1.0-RC1, Spring v7.0.7
+2026-04-24 09:21:21.831 [main] INFO  c.p.portfolio.PortfolioApplication - The following 1 profile is active: "dev"
+2026-04-24 09:21:22.481 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-24 09:21:22.520 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 34 ms. Found 3 JPA repository interfaces.
+2026-04-24 09:21:22.931 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-04-24 09:21:22.938 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-24 09:21:22.939 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-04-24 09:21:22.982 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 1120 ms
+2026-04-24 09:21:23.195 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-24 09:21:23.373 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24dc150c
+2026-04-24 09:21:23.374 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-24 09:21:23.393 [main] INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true (MySQL 9.7)
+2026-04-24 09:21:23.413 [main] WARN  o.f.c.i.database.base.Database - Using MySQL 9.7 which is newer than the version Flyway has been verified with. The latest verified version of MySQL is 9.4.
+2026-04-24 09:21:23.436 [main] INFO  o.f.core.internal.command.DbValidate - Successfully validated 2 migrations (execution time 00:00.015s)
+2026-04-24 09:21:23.445 [main] INFO  o.f.core.internal.command.DbMigrate - Current version of schema `database`: 1
+2026-04-24 09:21:23.446 [main] INFO  o.f.core.internal.command.DbMigrate - Schema `database` is up to date. No migration necessary.
+2026-04-24 09:21:23.514 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-24 09:21:23.545 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.12.Final
+2026-04-24 09:21:23.812 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-24 09:21:23.862 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/database?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 9.7
+	Default catalog/schema: database/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-24 09:21:24.356 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-24 09:21:24.377 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 09:21:24.408 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-24 09:21:25.096 [main] INFO  c.p.p.c.c.ApplicationConfiguration - Initializing BCrypt encoder with strength: 12
+2026-04-24 09:21:25.119 [main] DEBUG c.p.p.c.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-04-24 09:21:25.144 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userService
+2026-04-24 09:21:25.677 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 13 endpoints beneath base path '/actuator'
+2026-04-24 09:21:25.714 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-04-24 09:21:25.721 [main] INFO  c.p.portfolio.PortfolioApplication - Started PortfolioApplication in 4.313 seconds (process running for 4.605)
+2026-04-24 09:21:25.778 [main] INFO  c.p.portfolio.PortfolioApplication - Admin [admin.email@gmail.com] present. Skipping provisioning.
+2026-04-24 09:22:07.276 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-24 09:22:07.276 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-24 09:22:07.277 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-24 09:22:09.693 [http-nio-8080-exec-10] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 190 ms
+2026-04-24 09:22:38.718 [http-nio-8080-exec-1] INFO  c.p.p.c.AuthenticationController - Login request received for admin.email@gmail.com
+2026-04-24 09:22:38.720 [http-nio-8080-exec-1] INFO  c.p.p.service.AuthenticationService - Attempting authentication for email: admin.email@gmail.com
+2026-04-24 09:22:39.161 [http-nio-8080-exec-1] INFO  c.p.p.service.AuthenticationService - Authentication passed manager checks for email: admin.email@gmail.com
+2026-04-24 09:22:39.245 [http-nio-8080-exec-1] INFO  c.p.p.c.AuthenticationController - Authentication successful for admin.email@gmail.com
