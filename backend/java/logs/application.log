@@ -205,3 +205,8 @@
 2026-04-24 09:22:38.720 [http-nio-8080-exec-1] INFO  c.p.p.service.AuthenticationService - Attempting authentication for email: admin.email@gmail.com
 2026-04-24 09:22:39.161 [http-nio-8080-exec-1] INFO  c.p.p.service.AuthenticationService - Authentication passed manager checks for email: admin.email@gmail.com
 2026-04-24 09:22:39.245 [http-nio-8080-exec-1] INFO  c.p.p.c.AuthenticationController - Authentication successful for admin.email@gmail.com
+2026-04-24 09:23:12.586 [SpringApplicationShutdownHook] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-24 09:23:12.592 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-24 09:23:12.595 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-24 09:23:12.597 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-24 09:23:12.600 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
