@@ -19,14 +19,14 @@
     "gsap": "^3.15.0",
     "maath": "^0.10.8",
     "npm-check-updates": "^22.2.3",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "react-wrap-balancer": "^1.1.1",
     "split-type": "^0.3.4",
     "tailwind-merge": "^3.6.0",
     "three": "^0.184.0",
     "zustand": "^5.0.14",
-    "lucide-react": "^0.554.0"
+    "lucide-react": "^1.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
