@@ -71,3 +71,14 @@ export default defineConfig([
   },
 ])
 ```
+
+
+## EmailJS contact setup
+
+Set these variables in your frontend environment when you want form submissions sent via EmailJS:
+
+- `VITE_EMAILJS_SERVICE_ID`
+- `VITE_EMAILJS_TEMPLATE_ID`
+- `VITE_EMAILJS_PUBLIC_KEY`
+
+If they are not provided, the contact form falls back to opening the user's default mail app with a prefilled message.

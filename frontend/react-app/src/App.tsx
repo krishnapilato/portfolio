@@ -22,6 +22,9 @@ type SubmitState =
   | { type: "success"; message: string }
   | { type: "error"; message: string };
 
+const PORTFOLIO_OWNER_NAME = "Khova Krishna Pilato";
+const CONTACT_EMAIL = "krishnak.pilato@gmail.com";
+
 const workProjects = [
   {
     title: "Enterprise CRM Evolution",
@@ -181,9 +184,9 @@ export default function App() {
 
     const mailtoSubject = encodeURIComponent(trimmed.subject);
     const mailtoBody = encodeURIComponent(
-      `Hi Krishna,%0D%0A%0D%0A${trimmed.message}%0D%0A%0D%0AFrom: ${trimmed.name} (${trimmed.email})`,
+      `Hi ${PORTFOLIO_OWNER_NAME},%0D%0A%0D%0A${trimmed.message}%0D%0A%0D%0AFrom: ${trimmed.name} (${trimmed.email})`,
     );
-    window.location.href = `mailto:krishnak.pilato@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`;
 
     setSubmitState({
       type: "success",
@@ -231,7 +234,7 @@ export default function App() {
             </li>
             <li>
               <Mail size={16} aria-hidden="true" />
-              <a href="mailto:krishnak.pilato@gmail.com">krishnak.pilato@gmail.com</a>
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
             </li>
             <li>
               <MapPin size={16} aria-hidden="true" />
@@ -333,11 +336,6 @@ export default function App() {
               <p className={`form-status is-${submitState.type}`}>{submitState.message}</p>
             ) : null}
 
-            <p className="contact-note">
-              Add VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID and
-              VITE_EMAILJS_PUBLIC_KEY in your frontend environment to send
-              directly through EmailJS.
-            </p>
           </form>
         </section>
       </div>
