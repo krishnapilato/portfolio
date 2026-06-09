@@ -199,6 +199,9 @@ export default function App() {
       <BootSequence onComplete={() => setReady(true)} />
 
       <div className="background-layer" aria-hidden="true">
+        <div className="aurora-beam aurora-beam-left" data-parallax="slow" />
+        <div className="aurora-beam aurora-beam-right" data-parallax="fast" />
+        <div className="constellation-grid" />
         <div className="radial-light radial-light-cyan" data-parallax="slow" />
         <div className="radial-light radial-light-terracotta" data-parallax="fast" />
         <div className="grain-overlay" />
@@ -263,8 +266,9 @@ export default function App() {
           <p className="section-kicker">Projects</p>
           <h2>Selected Work</h2>
           <div className="project-grid">
-            {workProjects.map((project) => (
+            {workProjects.map((project, index) => (
               <article key={project.title} className="project-card glass-panel">
+                <p className="project-ordinal">0{index + 1}</p>
                 <p className="project-timeframe">{project.timeframe}</p>
                 <h3>{project.title}</h3>
                 <p>{project.summary}</p>
