@@ -1,8 +1,8 @@
-import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
-import Countdown from "./Countdown";
-import { CORE_STACK, EMAIL, GITHUB, LINKEDIN } from "../links";
+import { useLayoutEffect, useRef } from "react";
 import type { Copy } from "../i18n";
+import { CORE_STACK, EMAIL, GITHUB, LINKEDIN } from "../links";
+import Countdown from "./Countdown";
 
 export default function Hero({ copy }: { copy: Copy }) {
   const root = useRef<HTMLElement>(null);
@@ -13,9 +13,22 @@ export default function Hero({ copy }: { copy: Copy }) {
       media.add("(prefers-reduced-motion: no-preference)", () => {
         gsap
           .timeline({ defaults: { ease: "power3.out" } })
-          .from(".hero__panel", { autoAlpha: 0, y: 28, scale: 0.99, duration: 0.85 })
-          .from(".hero__line > span", { yPercent: 112, duration: 0.95, stagger: 0.07 }, 0.08)
-          .from("[data-hero]", { autoAlpha: 0, y: 14, duration: 0.65, stagger: 0.055 }, 0.32);
+          .from(".hero__panel", {
+            autoAlpha: 0,
+            y: 28,
+            scale: 0.99,
+            duration: 0.85,
+          })
+          .from(
+            ".hero__line > span",
+            { yPercent: 112, duration: 0.95, stagger: 0.07 },
+            0.08,
+          )
+          .from(
+            "[data-hero]",
+            { autoAlpha: 0, y: 14, duration: 0.65, stagger: 0.055 },
+            0.32,
+          );
       });
     }, root);
     return () => context.revert();
@@ -70,10 +83,20 @@ export default function Hero({ copy }: { copy: Copy }) {
           <a className="btn btn--primary" href={`mailto:${EMAIL}`}>
             {copy.contact}
           </a>
-          <a className="btn" href={GITHUB} target="_blank" rel="noreferrer noopener">
+          <a
+            className="btn"
+            href={GITHUB}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             GitHub
           </a>
-          <a className="btn" href={LINKEDIN} target="_blank" rel="noreferrer noopener">
+          <a
+            className="btn"
+            href={LINKEDIN}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             LinkedIn
           </a>
         </div>

@@ -1,16 +1,22 @@
-import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
-import Ambient from "./components/Ambient";
-import TopBar from "./components/TopBar";
-import Hero from "./components/Hero";
-import Prologue from "./components/Prologue";
-import Story from "./components/Story";
-import Projects from "./components/Projects";
-import Telemetry from "./components/Telemetry";
-import Closing from "./components/Closing";
-import SiteFooter from "./components/SiteFooter";
-import { prefersReducedMotion, useGlobalLight, useHotkey, useLanguage, useReveal } from "./lib/hooks";
+import { useLayoutEffect, useRef } from "react";
 import "./App.css";
+import Ambient from "./components/Ambient";
+import Closing from "./components/Closing";
+import Hero from "./components/Hero";
+import Projects from "./components/Projects";
+import Prologue from "./components/Prologue";
+import SiteFooter from "./components/SiteFooter";
+import Story from "./components/Story";
+import Telemetry from "./components/Telemetry";
+import TopBar from "./components/TopBar";
+import {
+  prefersReducedMotion,
+  useGlobalLight,
+  useHotkey,
+  useLanguage,
+  useReveal,
+} from "./lib/hooks";
 
 export default function App() {
   const { lang, copy, setLang, toggle } = useLanguage();
@@ -33,7 +39,13 @@ export default function App() {
     gsap.fromTo(
       target,
       { opacity: 0.4, y: 8 },
-      { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", clearProps: "transform,opacity" },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "power2.out",
+        clearProps: "transform,opacity",
+      },
     );
   }, [lang]);
 

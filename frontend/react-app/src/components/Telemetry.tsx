@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import { TELEMETRY_HISTORY, useTelemetry } from "../lib/hooks";
 import type { Copy } from "../i18n";
+import { TELEMETRY_HISTORY, useTelemetry } from "../lib/hooks";
 
 const CEILING = 120;
 
@@ -23,11 +23,18 @@ function sparkline(history: number[]) {
  */
 export default function Telemetry({ copy }: { copy: Copy }) {
   const root = useRef<HTMLElement>(null);
-  const { fps, history, load, paint, viewport, timeZone, reducedMotion } = useTelemetry(root);
+  const { fps, history, load, paint, viewport, timeZone, reducedMotion } =
+    useTelemetry(root);
 
   const rows = [
-    { label: copy.telemetryLabels.load, value: load === null ? "—" : `${load} ms` },
-    { label: copy.telemetryLabels.paint, value: paint === null ? "—" : `${paint} ms` },
+    {
+      label: copy.telemetryLabels.load,
+      value: load === null ? "—" : `${load} ms`,
+    },
+    {
+      label: copy.telemetryLabels.paint,
+      value: paint === null ? "—" : `${paint} ms`,
+    },
     { label: copy.telemetryLabels.viewport, value: viewport },
     { label: copy.telemetryLabels.timezone, value: timeZone },
     {

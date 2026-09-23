@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
-import { COPY, persistLang, resolveInitialLang } from "../i18n";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Copy, Lang } from "../i18n";
+import { COPY, persistLang, resolveInitialLang } from "../i18n";
 
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 
@@ -33,7 +33,10 @@ export function useLanguage() {
     persistLang(lang);
   }, [lang, copy]);
 
-  const toggle = useCallback(() => setLang((current) => (current === "en" ? "it" : "en")), []);
+  const toggle = useCallback(
+    () => setLang((current) => (current === "en" ? "it" : "en")),
+    [],
+  );
 
   return { lang, copy, setLang, toggle };
 }
@@ -50,10 +53,13 @@ export function useLanguage() {
  */
 export function useGlobalLight() {
   useEffect(() => {
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches)
+      return;
 
     const root = document.documentElement;
-    let surfaces = Array.from(document.querySelectorAll<HTMLElement>("[data-light]"));
+    let surfaces = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-light]"),
+    );
     let frame = 0;
     let x = window.innerWidth / 2;
     let y = window.innerHeight * 0.3;
@@ -81,7 +87,9 @@ export function useGlobalLight() {
     };
 
     const refresh = () => {
-      surfaces = Array.from(document.querySelectorAll<HTMLElement>("[data-light]"));
+      surfaces = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-light]"),
+      );
       schedule();
     };
 
@@ -106,7 +114,9 @@ export function useGlobalLight() {
  */
 export function useReveal(deps: unknown[] = []) {
   useEffect(() => {
-    const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    const targets = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-reveal]"),
+    );
     if (!targets.length) return;
 
     if (!("IntersectionObserver" in window) || prefersReducedMotion()) {
@@ -152,11 +162,16 @@ export const TELEMETRY_HISTORY = 44;
 export function useTelemetry(ref: RefObject<HTMLElement | null>): Telemetry {
   const [fps, setFps] = useState<number | null>(null);
   const [history, setHistory] = useState<number[]>([]);
-  const [timing, setTiming] = useState<{ load: number | null; paint: number | null }>({
+  const [timing, setTiming] = useState<{
+    load: number | null;
+    paint: number | null;
+  }>({
     load: null,
     paint: null,
   });
-  const [viewport, setViewport] = useState(() => `${window.innerWidth} × ${window.innerHeight}`);
+  const [viewport, setViewport] = useState(
+    () => `${window.innerWidth} × ${window.innerHeight}`,
+  );
   const [active, setActive] = useState(false);
 
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -171,7 +186,10 @@ export function useTelemetry(ref: RefObject<HTMLElement | null>): Telemetry {
         .getEntriesByType("paint")
         .find((entry) => entry.name === "first-contentful-paint");
       setTiming({
-        load: nav && nav.loadEventEnd > 0 ? Math.round(nav.loadEventEnd - nav.startTime) : null,
+        load:
+          nav && nav.loadEventEnd > 0
+            ? Math.round(nav.loadEventEnd - nav.startTime)
+            : null,
         paint: fcp ? Math.round(fcp.startTime) : null,
       });
     };
@@ -181,7 +199,8 @@ export function useTelemetry(ref: RefObject<HTMLElement | null>): Telemetry {
   }, []);
 
   useEffect(() => {
-    const onResize = () => setViewport(`${window.innerWidth} × ${window.innerHeight}`);
+    const onResize = () =>
+      setViewport(`${window.innerWidth} × ${window.innerHeight}`);
     window.addEventListener("resize", onResize, { passive: true });
     return () => window.removeEventListener("resize", onResize);
   }, []);
@@ -190,7 +209,10 @@ export function useTelemetry(ref: RefObject<HTMLElement | null>): Telemetry {
     const element = ref.current;
     if (!element || !("IntersectionObserver" in window)) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setActive(entry.isIntersecting && document.visibilityState === "visible"),
+      ([entry]) =>
+        setActive(
+          entry.isIntersecting && document.visibilityState === "visible",
+        ),
       { threshold: 0.2 },
     );
     observer.observe(element);
@@ -216,7 +238,9 @@ export function useTelemetry(ref: RefObject<HTMLElement | null>): Telemetry {
       if (elapsed >= 1000) {
         const value = Math.round((frames * 1000) / elapsed);
         setFps(value);
-        setHistory((previous) => [...previous, value].slice(-TELEMETRY_HISTORY));
+        setHistory((previous) =>
+          [...previous, value].slice(-TELEMETRY_HISTORY),
+        );
         frames = 0;
         start = time;
       }
@@ -227,7 +251,15 @@ export function useTelemetry(ref: RefObject<HTMLElement | null>): Telemetry {
     return () => cancelAnimationFrame(raf);
   }, [active]);
 
-  return { fps, history, load: timing.load, paint: timing.paint, viewport, timeZone, reducedMotion };
+  return {
+    fps,
+    history,
+    load: timing.load,
+    paint: timing.paint,
+    viewport,
+    timeZone,
+    reducedMotion,
+  };
 }
 
 /** Single-key shortcut, ignored while a field is focused or a modifier is held. */

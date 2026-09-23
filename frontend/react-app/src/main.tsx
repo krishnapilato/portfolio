@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import App from "./App.tsx";
+import "./index.css";
 
 // Scroll reveals start hidden only when scripting is available, so the page
 // still renders fully for crawlers and no-JS visitors.

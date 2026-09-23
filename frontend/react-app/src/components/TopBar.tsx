@@ -1,5 +1,5 @@
-import { LANGS } from "../i18n";
 import type { Copy, Lang } from "../i18n";
+import { LANGS } from "../i18n";
 
 type Props = {
   copy: Copy;
@@ -20,8 +20,16 @@ export default function TopBar({ copy, lang, onSelect }: Props) {
           <span className="status__text">{copy.status}</span>
         </span>
 
-        <div className="langswitch" role="group" aria-label={copy.languageLabel}>
-          <span className="langswitch__thumb" data-lang={lang} aria-hidden="true" />
+        <div
+          className="langswitch"
+          role="group"
+          aria-label={copy.languageLabel}
+        >
+          <span
+            className="langswitch__thumb"
+            data-lang={lang}
+            aria-hidden="true"
+          />
           {LANGS.map((option) => (
             <button
               className="langswitch__btn"

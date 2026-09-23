@@ -29,7 +29,10 @@ export default function Clock({ label, timeZone, now }: Props) {
 
   return (
     <div className="clock">
-      <span className={daylight ? "clock__orb clock__orb--day" : "clock__orb"} aria-hidden="true" />
+      <span
+        className={daylight ? "clock__orb clock__orb--day" : "clock__orb"}
+        aria-hidden="true"
+      />
       <span className="clock__time">{time}</span>
       <span className="clock__label">{label}</span>
     </div>

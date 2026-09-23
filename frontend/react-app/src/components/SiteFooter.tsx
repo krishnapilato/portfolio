@@ -1,5 +1,5 @@
-import { useTick } from "../lib/hooks";
 import type { Copy } from "../i18n";
+import { useTick } from "../lib/hooks";
 
 const clock = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Europe/Rome",

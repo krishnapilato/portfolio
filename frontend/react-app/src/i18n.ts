@@ -28,7 +28,13 @@ export type Copy = {
   rolePost: string;
   lede: string;
   launchLabel: string;
-  units: { day: string; days: string; hours: string; minutes: string; seconds: string };
+  units: {
+    day: string;
+    days: string;
+    hours: string;
+    minutes: string;
+    seconds: string;
+  };
   live: string;
   stackLabel: string;
   contact: string;
@@ -77,10 +83,15 @@ export const COPY: Record<Lang, Copy> = {
     rolePre: "Full Stack",
     roleAccent: "Java",
     rolePost: "Developer",
-    lede:
-      "Four years building scalable web platforms for banking, insurance, pharmaceutical, automotive and energy clients — Spring Boot services and REST APIs on the back, Angular and React on the front.",
+    lede: "Four years building scalable web platforms for banking, insurance, pharmaceutical, automotive and energy clients — Spring Boot services and REST APIs on the back, Angular and React on the front.",
     launchLabel: "Estimated launch",
-    units: { day: "Day", days: "Days", hours: "Hours", minutes: "Minutes", seconds: "Seconds" },
+    units: {
+      day: "Day",
+      days: "Days",
+      hours: "Hours",
+      minutes: "Minutes",
+      seconds: "Seconds",
+    },
     live: "The new portfolio is going live.",
     stackLabel: "Core stack",
     contact: "Get in touch",
@@ -99,8 +110,7 @@ export const COPY: Record<Lang, Copy> = {
         period: "2016 — 2022",
         place: "Voghera · Milan",
         title: "Foundations",
-        body:
-          "A technical diploma in computer science and telecommunications, then straight into enterprise Java: maintaining and extending an electricity and gas billing platform built on Java 8, Oracle DB and GWT. Old code, real users, no shortcuts.",
+        body: "A technical diploma in computer science and telecommunications, then straight into enterprise Java: maintaining and extending an electricity and gas billing platform built on Java 8, Oracle DB and GWT. Old code, real users, no shortcuts.",
       },
       {
         id: "scale",
@@ -109,8 +119,7 @@ export const COPY: Record<Lang, Copy> = {
         period: "2022 — 2025",
         place: "Milan · Remote",
         title: "Systems that carry weight",
-        body:
-          "A move into full-stack, leading development on a Bosch R&D IoT project inside a fully remote Scrum team. Then Intesa Sanpaolo — CRM features and performance work in Angular, and Custody backend services in Java, Spring Boot and MongoDB.",
+        body: "A move into full-stack, leading development on a Bosch R&D IoT project inside a fully remote Scrum team. Then Intesa Sanpaolo — CRM features and performance work in Angular, and Custody backend services in Java, Spring Boot and MongoDB.",
       },
       {
         id: "precision",
@@ -119,8 +128,7 @@ export const COPY: Record<Lang, Copy> = {
         period: "2025 — 2026",
         place: "Milan · Pavia",
         title: "Precision under regulation",
-        body:
-          "Responsive insurance interfaces in Angular 12 and AngularJS over Spring and Mule backends. Then pharmaceutical packaging software at SEA Vision: Angular 18, Material CDK, reusable components and real-time data views held to the regulatory bar of the sector.",
+        body: "Responsive insurance interfaces in Angular 12 and AngularJS over Spring and Mule backends. Then pharmaceutical packaging software at SEA Vision: Angular 18, Material CDK, reusable components and real-time data views held to the regulatory bar of the sector.",
       },
       {
         id: "today",
@@ -129,8 +137,7 @@ export const COPY: Record<Lang, Copy> = {
         period: "2026 — today",
         place: "Milan",
         title: "Data that moves a city",
-        body:
-          "At ATM, operational data across Milan's public transport network — punctuality and performance measured in SQL, validated at scale, automated into the weekly and monthly KPI reports that real decisions rest on.",
+        body: "At ATM, operational data across Milan's public transport network — punctuality and performance measured in SQL, validated at scale, automated into the weekly and monthly KPI reports that real decisions rest on.",
       },
     ],
     projectsKicker: "Chapter 05",
@@ -190,10 +197,15 @@ export const COPY: Record<Lang, Copy> = {
     rolePre: "Sviluppatore Full Stack",
     roleAccent: "Java",
     rolePost: "",
-    lede:
-      "Quattro anni di esperienza nella realizzazione di piattaforme web scalabili per clienti dei settori bancario, assicurativo, farmaceutico, automotive ed energetico — servizi Spring Boot e API REST sul backend, Angular e React sul frontend.",
+    lede: "Quattro anni di esperienza nella realizzazione di piattaforme web scalabili per clienti dei settori bancario, assicurativo, farmaceutico, automotive ed energetico — servizi Spring Boot e API REST sul backend, Angular e React sul frontend.",
     launchLabel: "Lancio previsto",
-    units: { day: "Giorno", days: "Giorni", hours: "Ore", minutes: "Minuti", seconds: "Secondi" },
+    units: {
+      day: "Giorno",
+      days: "Giorni",
+      hours: "Ore",
+      minutes: "Minuti",
+      seconds: "Secondi",
+    },
     live: "Il nuovo portfolio sta per andare online.",
     stackLabel: "Stack principale",
     contact: "Scrivimi",
@@ -212,8 +224,7 @@ export const COPY: Record<Lang, Copy> = {
         period: "2016 — 2022",
         place: "Voghera · Milano",
         title: "Fondamenta",
-        body:
-          "Diploma tecnico in informatica e telecomunicazioni, poi subito nel Java enterprise: manutenzione ed evoluzione di una piattaforma di fatturazione luce e gas costruita su Java 8, Oracle DB e GWT. Codice datato, utenti veri, nessuna scorciatoia.",
+        body: "Diploma tecnico in informatica e telecomunicazioni, poi subito nel Java enterprise: manutenzione ed evoluzione di una piattaforma di fatturazione luce e gas costruita su Java 8, Oracle DB e GWT. Codice datato, utenti veri, nessuna scorciatoia.",
       },
       {
         id: "scale",
@@ -222,8 +233,7 @@ export const COPY: Record<Lang, Copy> = {
         period: "2022 — 2025",
         place: "Milano · Remoto",
         title: "Sistemi che reggono il peso",
-        body:
-          "Il passaggio al full-stack, guidando lo sviluppo di un progetto IoT per la R&D di Bosch in un team Scrum completamente da remoto. Poi Intesa Sanpaolo — funzionalità e ottimizzazioni del CRM in Angular, e i servizi backend di Custody in Java, Spring Boot e MongoDB.",
+        body: "Il passaggio al full-stack, guidando lo sviluppo di un progetto IoT per la R&D di Bosch in un team Scrum completamente da remoto. Poi Intesa Sanpaolo — funzionalità e ottimizzazioni del CRM in Angular, e i servizi backend di Custody in Java, Spring Boot e MongoDB.",
       },
       {
         id: "precision",
@@ -232,8 +242,7 @@ export const COPY: Record<Lang, Copy> = {
         period: "2025 — 2026",
         place: "Milano · Pavia",
         title: "Precisione sotto normativa",
-        body:
-          "Interfacce assicurative responsive in Angular 12 e AngularJS su backend Spring e Mule. Poi il software per il packaging farmaceutico di SEA Vision: Angular 18, Material CDK, componenti riutilizzabili e viste dati in tempo reale all'altezza degli standard normativi del settore.",
+        body: "Interfacce assicurative responsive in Angular 12 e AngularJS su backend Spring e Mule. Poi il software per il packaging farmaceutico di SEA Vision: Angular 18, Material CDK, componenti riutilizzabili e viste dati in tempo reale all'altezza degli standard normativi del settore.",
       },
       {
         id: "today",
@@ -242,8 +251,7 @@ export const COPY: Record<Lang, Copy> = {
         period: "2026 — oggi",
         place: "Milano",
         title: "I dati che muovono una città",
-        body:
-          "In ATM, i dati operativi della rete di trasporto pubblico di Milano — puntualità e performance misurate in SQL, validate su larga scala, automatizzate nei report KPI settimanali e mensili su cui poggiano decisioni reali.",
+        body: "In ATM, i dati operativi della rete di trasporto pubblico di Milano — puntualità e performance misurate in SQL, validate su larga scala, automatizzate nei report KPI settimanali e mensili su cui poggiano decisioni reali.",
       },
     ],
     projectsKicker: "Capitolo 05",
@@ -299,7 +307,8 @@ export const DEFAULT_LANG: Lang = "en";
 
 const STORAGE_KEY = "kkp.lang";
 
-const isLang = (value: string | null): value is Lang => value === "en" || value === "it";
+const isLang = (value: string | null): value is Lang =>
+  value === "en" || value === "it";
 
 /** A saved choice wins, then an Italian browser, otherwise English. */
 export function resolveInitialLang(): Lang {

@@ -84,7 +84,11 @@
   height: 44vmax;
   bottom: -18vmax;
   left: 22vmax;
-  background: radial-gradient(circle at 50% 50%, var(--celadon), transparent 66%);
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--celadon),
+    transparent 66%
+  );
   animation: drift-c 52s ease-in-out infinite alternate;
 }
 
@@ -111,9 +115,21 @@
   position: absolute;
   inset: 0;
   background-image:
-    repeating-linear-gradient(90deg, var(--hair-soft) 0 1px, transparent 1px 96px),
-    repeating-linear-gradient(0deg, var(--hair-soft) 0 1px, transparent 1px 96px);
-  -webkit-mask-image: radial-gradient(120% 90% at 50% 20%, #000 25%, transparent 78%);
+    repeating-linear-gradient(
+      90deg,
+      var(--hair-soft) 0 1px,
+      transparent 1px 96px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      var(--hair-soft) 0 1px,
+      transparent 1px 96px
+    );
+  -webkit-mask-image: radial-gradient(
+    120% 90% at 50% 20%,
+    #000 25%,
+    transparent 78%
+  );
   mask-image: radial-gradient(120% 90% at 50% 20%, #000 25%, transparent 78%);
   opacity: 0.85;
 }
@@ -122,8 +138,16 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(130% 90% at 50% 0%, rgba(255, 255, 255, 0.85), transparent 55%),
-    radial-gradient(120% 80% at 50% 55%, transparent 42%, rgba(28, 32, 44, 0.085));
+    radial-gradient(
+      130% 90% at 50% 0%,
+      rgba(255, 255, 255, 0.85),
+      transparent 55%
+    ),
+    radial-gradient(
+      120% 80% at 50% 55%,
+      transparent 42%,
+      rgba(28, 32, 44, 0.085)
+    );
 }
 
 .grain {
@@ -150,7 +174,12 @@
   height: 100%;
   transform: scaleX(0);
   transform-origin: 0 50%;
-  background: linear-gradient(90deg, var(--bronze), var(--bronze-lift) 45%, var(--sapphire));
+  background: linear-gradient(
+    90deg,
+    var(--bronze),
+    var(--bronze-lift) 45%,
+    var(--sapphire)
+  );
 }
 
 @supports (animation-timeline: scroll()) {
@@ -471,7 +500,11 @@
   padding: 0.7rem 0.5rem 0.6rem;
   text-align: center;
   border-radius: var(--radius-md);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.5)
+  );
   border: 1px solid var(--rim);
   box-shadow: 0 8px 18px -14px rgba(26, 32, 48, 0.4);
 }
@@ -682,7 +715,13 @@
   position: relative;
   width: clamp(2.5rem, 12vw, 7rem);
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--hair) 20%, var(--hair) 80%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hair) 20%,
+    var(--hair) 80%,
+    transparent
+  );
 }
 
 .clocks__spark {
@@ -759,7 +798,12 @@
   inset: 0;
   transform: scaleY(0);
   transform-origin: top;
-  background: linear-gradient(180deg, var(--bronze), var(--bronze-lift) 45%, var(--sapphire));
+  background: linear-gradient(
+    180deg,
+    var(--bronze),
+    var(--bronze-lift) 45%,
+    var(--sapphire)
+  );
 }
 
 @supports (animation-timeline: view()) {

@@ -1,10 +1,15 @@
-import { useTick } from "../lib/hooks";
 import type { Copy } from "../i18n";
+import { useTick } from "../lib/hooks";
 
 /** Launch target for the countdown. Change this one line to move the date. */
 export const LAUNCH_DATE = new Date("2026-10-01T09:00:00+02:00");
 
-type Remaining = { days: number; hours: number; minutes: number; seconds: number };
+type Remaining = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
 
 function remainingUntil(target: Date, now: Date): Remaining | null {
   const total = Math.floor((target.getTime() - now.getTime()) / 1000);
@@ -29,7 +34,10 @@ export default function Countdown({ copy }: { copy: Copy }) {
       {left ? (
         <div className="tiles" role="timer" aria-label={copy.launchLabel}>
           {[
-            { value: left.days, label: left.days === 1 ? copy.units.day : copy.units.days },
+            {
+              value: left.days,
+              label: left.days === 1 ? copy.units.day : copy.units.days,
+            },
             { value: left.hours, label: copy.units.hours },
             { value: left.minutes, label: copy.units.minutes },
             { value: left.seconds, label: copy.units.seconds },

@@ -1,6 +1,6 @@
-import Clock from "./Clock";
-import { useTick } from "../lib/hooks";
 import type { Copy } from "../i18n";
+import { useTick } from "../lib/hooks";
+import Clock from "./Clock";
 
 /**
  * The opening beat of the story: two cities, two live clocks, and a thread
