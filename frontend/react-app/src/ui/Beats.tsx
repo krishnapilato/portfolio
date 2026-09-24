@@ -81,7 +81,7 @@ export default function Beats({ beats }: Props) {
                 <span className="beat__index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 {beat.kicker}
               </p>
-              <h2 className="beat__title" id={`${beat.id}-title`}>{beat.title}</h2>
+              <h2 className="beat__title" id={`${beat.id}-title`} tabIndex={-1}>{beat.title}</h2>
               <p className="beat__body">{beat.body}</p>
               {beat.meta ? <p className="beat__meta">{beat.meta}</p> : null}
               {beat.children}

@@ -52,7 +52,7 @@ export default function Readout({ labels }: Props) {
   const current = labels[beat] ?? labels[0];
 
   return (
-    <div className="readout" role="group" aria-label="Position in the story">
+    <nav className="readout" aria-label="Film position">
       <span className="readout__name">{current.label}</span>
       <span className="readout__index" aria-hidden="true">
         {String(beat + 1).padStart(2, "0")}<span className="readout__of">/{labels.length}</span>
@@ -77,10 +77,10 @@ export default function Readout({ labels }: Props) {
         <span className="tape__flag" aria-hidden="true">OFF</span>
       </div>
 
-      <span className="readout__attitude" aria-live="off">
+      <span className="readout__attitude" aria-hidden="true">
         <span className="readout__label">Pitch</span> <span className="readout__value" ref={pitch}>0</span>
         <span className="readout__label">Bank</span> <span className="readout__value" ref={bank}>0</span>
       </span>
-    </div>
+    </nav>
   );
 }

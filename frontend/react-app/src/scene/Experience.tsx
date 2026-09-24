@@ -78,6 +78,8 @@ export default function Experience({ children }: Props) {
   return (
     <Canvas
       className="stage"
+      role="presentation"
+      aria-hidden="true"
       flat={tier !== "low"}
       frameloop="demand"
       dpr={DPR_RANGE[tier]}

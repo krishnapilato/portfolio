@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { BEATS } from "./content/beats";
 import { decideTier, probeDevice } from "./lib/device";
 import { applyDeepLink, goToBeat, startEnvironmentSync, startKeyboardStepping, trackOf } from "./lib/interaction";
 import { startScroll } from "./lib/scroll";
 import { useTimeline } from "./lib/store";
-import CameraRig from "./scene/CameraRig";
-import Experience from "./scene/Experience";
-import Instrument from "./scene/Instrument";
 import { BEAT_IDS, KEYFRAMES } from "./scene/keyframes";
-import Stage from "./scene/Stage";
 import Beats, { type BeatContent } from "./ui/Beats";
 import Curtain from "./ui/Curtain";
 import Links from "./ui/Links";
 import Readout from "./ui/Readout";
+
+// The renderer is the heavy part; it loads after the first paint.
+const Scene = lazy(() => import("./scene/Scene"));
 
 const CONTENT: BeatContent[] = BEATS.map((beat, index) => ({
   id: beat.id,
@@ -68,23 +67,22 @@ export default function App() {
     <>
       <a
         className="skip"
-        href="#contact"
+        href="#contact-title"
         onClick={(event) => {
           const track = trackOf("contact");
           if (!track) return;
           event.preventDefault();
           goToBeat(track, "contact");
+          document.getElementById("contact-title")?.focus({ preventScroll: true });
         }}
       >
         Skip to contact
       </a>
 
       {webgl && !lost ? (
-        <Experience>
-          <Stage />
-          <Instrument />
-          <CameraRig keyframes={KEYFRAMES} />
-        </Experience>
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
       ) : null}
 
       <Curtain />

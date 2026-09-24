@@ -1,73 +1,32 @@
-# React + TypeScript + Vite
+# ATTITUDE — the portfolio frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A scroll-driven cinematic portfolio: one procedurally machined attitude
+indicator in a bench test fixture, ten beats of story, the horizon inside
+never moves. React 19.3, react-three-fiber 9, three 0.186, Vite 8.
 
-Currently, two official plugins are available:
+See `DESIGN.md` for the concept and the decision log.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+npm install --legacy-peer-deps
+npm run dev          # http://localhost:5173/portfolio/
+npm run build        # dist/, deployed to GitHub Pages by the workflow
+npm run preview      # serves dist/ at http://localhost:4173/portfolio/
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Node 22+ (Vite 8). TypeScript 7 builds; the TypeScript 6 API is aliased for ESLint.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Testing helpers
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `?tier=high|mid|low` forces the rendering tier.
+- `#horizon … #contact` deep-link to a beat's hold point.
+- `window.__timeline` exposes the store (progress, beat, tier, ready).
+- Keyboard: J/K, arrows, page keys, Home, End; Escape stops a move.
+
+## Deploy
+
+Pushes to `main` build this folder and publish `dist/` to GitHub Pages under
+`/portfolio/`. Nothing here calls a backend; the Spring Boot API in
+`backend/java` is independent.
