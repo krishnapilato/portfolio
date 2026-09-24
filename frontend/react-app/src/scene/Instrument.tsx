@@ -27,6 +27,8 @@ import { PALETTE } from "./palette";
 
 const RANGES = computeRanges(KEYFRAMES);
 const attitude: Attitude = { pitch: 0, roll: 0, yaw: 0 };
+/** react-three-fiber's event target: pointer capture that survives leaving the mesh. */
+type PointerTarget = { setPointerCapture?: (id: number) => void; releasePointerCapture?: (id: number) => void };
 const lighting: Lighting = { key: 18, rim: 32, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0, raker: 0 };
 /** Degrees of trim per pixel of drag, and the most a hand can add. */
 const TRIM_GAIN = 0.05;
@@ -55,7 +57,7 @@ export default function Instrument() {
   const practicalA = useRef<PointLight>(null);
   const practicalB = useRef<PointLight>(null);
   const invalidate = useThree((s) => s.invalidate);
-  const drag = useRef({ id: -1, x: 0, y: 0 });
+  const drag = useRef({ id: -1, x: 0, y: 0, target: null as PointerTarget | null });
   const last = useRef({ pitch: NaN, roll: NaN, post: NaN });
   // The post lights glow from inside the object in the epilogue. The bezel
   // takes the glow as a prop, so it is quantised to twenty steps: a handful
@@ -76,8 +78,10 @@ export default function Instrument() {
     if (innerGroup.current) innerGroup.current.rotation.x = -cradleRotationX(pitch);
 
     const glow = lighting.post;
-    if (practicalA.current) practicalA.current.intensity = glow;
-    if (practicalB.current) practicalB.current.intensity = glow;
+    // The practicals sit a hand's width from the bezel: a fraction of the
+    // emissive glow is all the enamel needs before bloom blooms.
+    if (practicalA.current) practicalA.current.intensity = glow * 0.45;
+    if (practicalB.current) practicalB.current.intensity = glow * 0.45;
     const step = Math.round((glow / 1.6) * 20);
     if (step !== glowStep) setGlowStep(step);
 
@@ -102,8 +106,11 @@ export default function Instrument() {
     d.id = event.pointerId;
     d.x = event.clientX;
     d.y = event.clientY;
+    // Capture through react-three-fiber's own target, so moves and the
+    // release keep reaching this mesh after the pointer leaves the sphere.
+    d.target = event.target as unknown as PointerTarget;
+    d.target.setPointerCapture?.(event.pointerId);
     trim.active = true;
-    (native.target as HTMLElement | null)?.setPointerCapture?.(event.pointerId);
     document.body.style.cursor = "grabbing";
   };
 
@@ -118,7 +125,9 @@ export default function Instrument() {
   const release = () => {
     const d = drag.current;
     if (d.id === -1 && !trim.active) return;
+    if (d.id !== -1) d.target?.releasePointerCapture?.(d.id);
     d.id = -1;
+    d.target = null;
     trim.active = false;
     trim.targetPitch = 0;
     trim.targetRoll = 0;
@@ -126,15 +135,27 @@ export default function Instrument() {
     invalidate();
   };
 
-  // Escape lets go of the instrument: a stable event handler for the effect,
-  // so the listener is registered once and still sees the latest closure.
+  // Escape lets go of the instrument, and so does any release the mesh did
+  // not see (a pointer cancelled by the system, a button let go over the
+  // readout): stable event handlers, so the listeners are registered once
+  // and still see the latest closure.
   const onEscape = useEffectEvent((event: KeyboardEvent) => {
     if (event.key === "Escape") release();
   });
+  const onWindowRelease = useEffectEvent(() => release());
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => onEscape(event);
+    const onUp = () => onWindowRelease();
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+    window.addEventListener("blur", onUp);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      window.removeEventListener("blur", onUp);
+    };
   }, []);
 
   return (
@@ -147,8 +168,8 @@ export default function Instrument() {
               <Bezel glow={glowStep / 20} />
             </group>
             <Cage />
-            <pointLight ref={practicalA} color={PALETTE.postColor} intensity={0} distance={1.5} decay={2} position={PRACTICALS[0]} />
-            <pointLight ref={practicalB} color={PALETTE.postColor} intensity={0} distance={1.5} decay={2} position={PRACTICALS[1]} />
+            <pointLight ref={practicalA} color={PALETTE.postColor} intensity={0} distance={1.2} decay={2} position={PRACTICALS[0]} />
+            <pointLight ref={practicalB} color={PALETTE.postColor} intensity={0} distance={1.2} decay={2} position={PRACTICALS[1]} />
             <group ref={outerGroup}>
               <OuterRing />
               <Jewels />

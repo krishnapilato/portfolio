@@ -80,8 +80,10 @@ export function decideTier(p: Probe): Tier {
 }
 
 /** Device pixel ratio range per tier; the PerformanceMonitor moves inside it. */
+// High stops at 1.5: the grade is soft (bloom, grain, depth of field), so
+// 2x buys nothing visible and costs 78% more pixels in every extra pass.
 export const DPR_RANGE: Record<Tier, [number, number]> = {
-  high: [1, 2],
+  high: [1, 1.5],
   mid: [1, 1.5],
   low: [0.75, 1],
 };

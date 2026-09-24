@@ -11,7 +11,6 @@ export type PostSettings = {
   vignetteOffset: number;
   vignetteDarkness: number;
   grain: number;
-  aberration: number;
   toneMapping: ToneMappingMode;
 };
 
@@ -25,6 +24,5 @@ export const DEFAULT_POST: PostSettings = {
   vignetteOffset: 0.35,
   vignetteDarkness: 0.55,
   grain: 0.035,
-  aberration: 0.0012,
   toneMapping: ToneMappingMode.AGX,
 };

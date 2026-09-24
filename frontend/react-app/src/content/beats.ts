@@ -4,12 +4,22 @@
  */
 export type Link = { label: string; href: string; external?: boolean; copy?: string; value?: string };
 
+/** One row of a definition list body: a term and its one-line description. */
+export type Row = { term: string; detail: string };
+
 export type BeatCopy = {
   id: string;
   kicker: string;
   title: string;
-  body: string;
+  /** Words in the title that are links (label → href), rendered inline. */
+  titleLinks?: Record<string, string>;
+  /** Prose, or a list of rows read as a list. */
+  body: string | Row[];
   meta?: string;
+  /** A line in the meta position that only makes sense in the film (not in the static article). */
+  hint?: string;
+  /** A link inside the meta line (label → href). */
+  metaLink?: Record<string, string>;
   links?: Link[];
   /** Short uppercase name for the readout, and the tick's accessible label. */
   readout: string;
@@ -23,8 +33,8 @@ export const EMAIL = "krishnak.pilato@gmail.com";
 export const PHONE_DISPLAY = "+39 338 296 5483";
 export const PHONE_HREF = "tel:+393382965483";
 
-/** Stated once, quietly, in the identity beat, and nowhere else. */
-export const ADOPTION_CLAUSE = "Born in Bangalore. Adopted to Italy at seven.";
+/** His own headline's phrasing of where he is from, stated once in the identity beat. */
+export const ORIGIN_CLAUSE = "Born in Bangalore, raised in Italy.";
 
 export const CONTACTS: Link[] = [
   { label: "Email", href: `mailto:${EMAIL}`, value: EMAIL, copy: EMAIL },
@@ -39,8 +49,8 @@ export const BEATS: BeatCopy[] = [
     id: "horizon",
     kicker: "Khova Krishna Pilato",
     title: "Straight and level.",
-    body: `Full Stack Java Developer, working in Milan. ${ADOPTION_CLAUSE} Two countries, two languages, one habit: taking something complicated and making it feel simple.`,
-    meta: "Scroll to begin",
+    body: `Full Stack Java Developer, working in Milan. ${ORIGIN_CLAUSE} Two countries, two languages, one habit: taking something complicated and making it feel simple.`,
+    hint: "Scroll to begin",
     readout: "Horizon",
     tickLabel: "Beat 1 of 10: Straight and level",
   },
@@ -48,8 +58,8 @@ export const BEATS: BeatCopy[] = [
     id: "instrument",
     kicker: "The instrument",
     title: "The horizon inside never moves.",
-    body: "An attitude indicator keeps its horizon level while the aircraft pitches and rolls around it. This site is built the same way: the world moves, the reference stays. Scroll, and watch the line.",
-    meta: "Built entirely in code. No models, no textures, nothing downloaded.",
+    body: "An attitude indicator keeps its horizon level while the aircraft pitches and rolls around it. This site is built the same way: the world moves, the reference stays.",
+    meta: "Every part of this instrument is generated in code.",
     readout: "The instrument",
     tickLabel: "Beat 2 of 10: The instrument",
   },
@@ -58,7 +68,7 @@ export const BEATS: BeatCopy[] = [
     kicker: "2022 — 2024",
     title: "Capgemini Engineering, Milan",
     body: "Kept an electricity and gas billing platform running on Java 8, Oracle and GWT. Then led development on a Bosch R&D IoT project in a fully remote Scrum team, owning core features across backend and frontend.",
-    meta: "Full Stack Developer · Energy, automotive IoT",
+    meta: "Full Stack Developer · Energy, automotive IoT · Diploma in Computer Science, ITIS A. Maserati, Voghera, 2021",
     readout: "Capgemini",
     tickLabel: "Beat 3 of 10: Capgemini Engineering",
   },
@@ -66,7 +76,7 @@ export const BEATS: BeatCopy[] = [
     id: "intesa",
     kicker: "2024 — 2025",
     title: "Intesa Sanpaolo, Milan",
-    body: "CRM features and performance work in Angular. Maintenance and evolution of the Custody application backend in Java, Spring Boot and MongoDB. In between, a summer of intensive English at EF Dublin, to C1.",
+    body: "CRM features and performance work in Angular. Maintenance and evolution of the Custody application backend in Java, Spring Boot and MongoDB.",
     meta: "Full Stack Developer · External consultant · Banking",
     readout: "Intesa Sanpaolo",
     tickLabel: "Beat 4 of 10: Intesa Sanpaolo",
@@ -75,7 +85,7 @@ export const BEATS: BeatCopy[] = [
     id: "fincons-seavision",
     kicker: "2025 — 2026",
     title: "Fincons Group, then SEA Vision",
-    body: "Insurance, in a critical delivery phase: responsive Angular interfaces integrated with Spring and Mule at Fincons Group, Milan. Then pharmaceutical packaging software at SEA Vision, Pavia: Angular 18 and Material CDK, reusable components, optimized real-time data views, compliant interfaces, delivered in sprints.",
+    body: "Insurance at Fincons Group, Milan: responsive Angular interfaces on Spring and Mule, in a critical delivery phase. Then pharmaceutical packaging software at SEA Vision, Pavia: Angular 18, Material CDK, real-time data views, delivered in sprints.",
     meta: "Frontend Developer · Insurance, pharma",
     readout: "Fincons · SEA Vision",
     tickLabel: "Beat 5 of 10: Fincons Group and SEA Vision",
@@ -93,8 +103,13 @@ export const BEATS: BeatCopy[] = [
     id: "skills",
     kicker: "Skills",
     title: "Backend, frontend, data, cloud.",
-    body: "Java 8 to 26, Spring Boot, Hibernate, REST, OAuth2, event-driven systems, Mule. Angular 10 to 22, React 19, TypeScript, SCSS, PrimeNG, Material CDK. PostgreSQL, MySQL, MongoDB, Oracle. Docker, AWS, Jenkins, GitHub Actions. JUnit, SonarQube, TDD. Flutter for mobile. Italian, native. English, C1.",
-    meta: "Diploma in Computer Science and Telecommunications · ITIS A. Maserati, Voghera · 2016 — 2021",
+    body: [
+      { term: "Backend", detail: "Java 8 to 26, Spring Boot, Hibernate, REST, OAuth2, event-driven systems, Mule" },
+      { term: "Frontend", detail: "Angular 10 to 22, React 19, TypeScript, SCSS, PrimeNG, Material CDK, Flutter" },
+      { term: "Data", detail: "PostgreSQL, MySQL, MongoDB, Oracle" },
+      { term: "Cloud & quality", detail: "Docker, AWS, Jenkins, GitHub Actions, JUnit, SonarQube, TDD" },
+    ],
+    meta: "English, native · Italian, fluent",
     readout: "Skills",
     tickLabel: "Beat 7 of 10: Skills",
   },
@@ -102,15 +117,16 @@ export const BEATS: BeatCopy[] = [
     id: "projects",
     kicker: "Projects",
     title: "BiMap. PixelPaper. This site.",
-    body: "BiMap: Italy's regions, provinces and municipalities on an interactive map, behind a role-based admin dashboard with JWT auth. Angular 22, Leaflet, Java 26, Spring Security, MySQL. PixelPaper: a privacy-first, offline document scanner in Flutter, with image enhancement, page reordering and PDF export. This portfolio: React 19 in front, a Spring Boot 4 API behind, Docker around it.",
-    meta: "Also tasky and clockify · source on GitHub",
-    links: [
-      { label: "BiMap", href: `${GITHUB}/bimap`, external: true },
-      { label: "PixelPaper", href: `${GITHUB}/pixelpaper`, external: true },
-      { label: "This site", href: `${GITHUB}/portfolio`, external: true },
-      { label: "tasky", href: `${GITHUB}/tasky`, external: true },
-      { label: "clockify", href: `${GITHUB}/clockify`, external: true },
-    ],
+    // The three names in the title are the links; the body carries none,
+    // so the words stay readable and the eye is not pulled six ways.
+    titleLinks: {
+      BiMap: `${GITHUB}?tab=repositories&q=bimap`,
+      PixelPaper: `${GITHUB}?tab=repositories&q=pixelpaper`,
+      "This site": `${GITHUB}/portfolio`,
+    },
+    body: "BiMap: Italy's regions, provinces and municipalities on an interactive map, behind a role-based admin dashboard with JWT auth. Angular 22, Leaflet, Java 26, Spring Security, MySQL. PixelPaper: a privacy-first, offline document scanner in Flutter, with image enhancement, page reordering and PDF export. This site: React 19 and three.js, every part generated in code; the repository also carries a Spring Boot 4 API.",
+    meta: "Also tasky and clockify · github.com/krishnapilato",
+    metaLink: { "github.com/krishnapilato": GITHUB },
     readout: "Projects",
     tickLabel: "Beat 8 of 10: Projects",
   },
@@ -126,9 +142,8 @@ export const BEATS: BeatCopy[] = [
   {
     id: "contact",
     kicker: "Contact",
-    title: "Trimmed. Hands off.",
-    body: "Trim doesn't steer the aircraft. It takes the load off the controls so the pilot can look outside and breathe. Good engineering feels the same. Based near Pavia, working in Milan, available to work abroad.",
-    meta: "Khova Krishna Pilato · Full Stack Java Developer",
+    title: "Trimmed, and level.",
+    body: "Trim doesn't steer the aircraft. It takes the load off the controls so the pilot can look outside. Good engineering feels the same. Based near Pavia, working in Milan, available to work abroad.",
     links: CONTACTS,
     readout: "Contact",
     tickLabel: "Beat 10 of 10: Contact",

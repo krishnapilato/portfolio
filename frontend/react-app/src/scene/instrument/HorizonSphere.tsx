@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { SphereGeometry } from "three";
 import { useTimeline } from "../../lib/store";
-import { makeDigitAtlas, makeHorizonMaterial } from "../../textures/horizon";
+import { makeHorizonMaterial } from "../../textures/horizon";
+import { getMaps } from "../../textures/library";
 
 type Props = {
   /** Sphere radius in scene units; the painting is angular, so it scales with it. */
@@ -24,18 +25,8 @@ export default function HorizonSphere({ radius = 1 }: Props) {
   );
   useEffect(() => () => geometry.dispose(), [geometry]);
 
-  const enamel = useMemo(() => {
-    const atlas = makeDigitAtlas();
-    const { material } = makeHorizonMaterial(atlas.texture);
-    return { atlas, material };
-  }, []);
-  useEffect(
-    () => () => {
-      enamel.material.dispose();
-      enamel.atlas.texture.dispose();
-    },
-    [enamel],
-  );
+  const enamel = useMemo(() => makeHorizonMaterial(getMaps(tier)["digits.field"]), [tier]);
+  useEffect(() => () => enamel.material.dispose(), [enamel]);
 
   return <mesh geometry={geometry} material={enamel.material} />;
 }

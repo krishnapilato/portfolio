@@ -49,15 +49,27 @@
   align-items: center;
   gap: 8px;
   height: 100%;
+  min-height: 44px;
+  margin: -6px 0;
   padding: 0 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+
+.tape:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
 }
 
 .tape__tick {
   position: relative;
-  width: 24px;
+  width: 6px;
   height: 24px;
-  margin: 0 -9px;
-  border-radius: 4px;
+  pointer-events: none;
 }
 
 .tape__tick::before {
@@ -75,35 +87,10 @@
     background 0.2s var(--ease);
 }
 
-.tape__tick[aria-current="step"]::before {
+.tape__tick[data-current="true"]::before {
   width: 2px;
   height: 12px;
   background: var(--chalk);
-}
-
-.tape__tick::after {
-  content: attr(data-label);
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 4px);
-  transform: translateX(-50%) translateY(2px);
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  background: var(--slate);
-  color: var(--chalk);
-  white-space: nowrap;
-  font-size: 0.62rem;
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 0.18s var(--ease),
-    transform 0.18s var(--ease);
-}
-
-.tape__tick:hover::after,
-.tape__tick:focus-visible::after {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
 }
 
 .tape__pointer {
@@ -158,7 +145,11 @@
 }
 
 .readout__label {
-  color: var(--gauge-dim);
+  color: var(--gauge);
+}
+
+.readout__short {
+  display: none;
 }
 
 .readout__value {
@@ -174,6 +165,12 @@
     justify-content: space-between;
     gap: 0.6rem;
     padding: 0 0.7rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+
+  .readout__attitude {
+    overflow: hidden;
   }
 
   .readout__name {
@@ -184,7 +181,19 @@
     display: inline;
   }
 
-  .tape__tick::after {
+}
+
+/* The narrowest phones: one-letter labels keep the whole reading inside the pill. */
+@media (max-width: 400px) {
+  .readout__long {
     display: none;
+  }
+
+  .readout__short {
+    display: inline;
+  }
+
+  .readout__value {
+    min-width: 2em;
   }
 }

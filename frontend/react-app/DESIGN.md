@@ -42,32 +42,43 @@ Every decision below answers "why am I making this decision?".
 | Readout name gives way to a beat counter on phones | An ellipsised name is noise; "04/10" is an instrument reading. |
 | Self-hosted Instrument Sans and IBM Plex Mono | System stacks render differently on every OS; a designed hierarchy is part of the calm. Preloaded, 60 KB in total. |
 | Visitor trim drag, mouse only, ±8°, springs back | The one interaction that lets a visitor test the object's claim with a hand; on touch the scroll already demonstrates it and a drag would fight the browser. |
+| Every generated map is built in a Web Worker before the scene mounts | Brushing the metal is seconds of per-pixel work; on the main thread it froze the page exactly when the visitor first scrolled. The scene suspends on the maps, and where a worker cannot draw the same code runs on the main thread. |
+| Programs compile asynchronously with the loop held | A frame that stalls on a shader link is a dropped frame at the worst moment; the curtain lifts only after every program exists and one frame has drawn. |
+| A frame-time governor steps the pixel ratio down, then the effects level | A device that cannot hold its frame rate gets a lighter film rather than a stuttering one, and never a heavier one again: a look that settles beats one that flickers. Textures and geometry stay at the tier, so a demotion never rebuilds them. |
+| The first beat's words are in the HTML, the stylesheet is inlined | The page paints its opening line before any script runs, and React takes over the same markup in place. |
+| The entry bundle carries no three.js: React, the store and the scroll driver only | The words and the readout need about 90 KB; the renderer's 450 KB arrive with the lazy scene chunk, never on the first paint's critical path. The attitude tracks are pure math for that reason. |
 | The readiness probe runs at frame priority 0 | A positive priority tells react-three-fiber that the subscriber renders the scene itself; on the tier without a post stack that would draw nothing. |
 | Render on demand | An idle page draws nothing; "trimmed" should also be true of the GPU. |
 | Three device tiers with adaptive pixel ratio | A mid phone must hold its frame rate in the orbit; the high tier gets depth of field, transmission glass, a reflective bench and shadows, the low tier gets none of the post stack and CSS grain instead. |
-| Reduced motion: cuts, not moves | Ten composed stills are still a film, and cuts carry no vestibular load. Lenis is not created; the camera lands on each pose. |
+| Reduced motion: cuts, not moves | Ten composed stills are still a film, and cuts carry no vestibular load. Lenis is not created; the camera sits on the current beat's pose and changes only at the beat boundary, while the words are away. |
+| Lenis runs its frame only while something eases | An idle page must not wake the main thread every vsync for the whole visit; the loop wakes on input and on a programmatic move and stops a few frames after the scroll settles. |
+| The beat index comes from the scroll, not the renderer | The readout, the keys and the URL work before the scene has loaded and without WebGL at all. |
+| No chromatic aberration | A macro lens on a precision instrument has none, and it is the stock WebGL-demo tell. Grain and vignette stay. |
+| Dust is sparse and never additive | Six hundred motes with normal blending read as air with a light in it; thousands with additive blending read as particles. |
 | J/K, arrows, page keys, Home/End step beats; Space and horizontal arrows stay native | Every key does what a video scrubber does; the browser's own contracts are not overridden. |
-| Deep links to each beat's hold point, `replaceState` only | A recruiter can link straight to projects; the back button never becomes a ten-step trap. |
+| Deep links to each beat's hold point, `replaceState` only; the hash mirrors the beat | A recruiter can link straight to projects, a reload lands where the visitor was, and the back button never becomes a ten-step trap. |
+| The readout tape is one slider, not ten buttons | Ten 14 px ticks are no target for a thumb and a focus ring around each would ring three; one 44 px control scrubs by hand, reads the tick under a hovering mouse, and steps with the arrow keys. |
+| Hidden beats stay in the accessibility tree; only the readable one takes focus and clicks | A screen reader gets the whole article in film order; a keyboard never lands on words that cannot be seen. |
 | Five contact channels, one list, Copy on email and telephone | Copying is what people do with an address; a mailto/tel link stays underneath so the action never silently fails. |
-| Adoption stated once, as a fact, in the identity beat | One quiet clause carries the distance travelled with dignity; anything more turns a portfolio into a biography. |
+| Origin stated once, in his own headline's words, in the identity beat | "Born in Bangalore, raised in Italy" is how he already introduces himself; anything more turns a portfolio into a biography. |
 | The 3D chunk behind a lazy boundary | The words paint with about 80 KB of JavaScript; the renderer arrives while the visitor reads the opening line, behind an honest OFF flag. |
-| React Compiler on, `useEffectEvent` for listeners, `inert` on hidden beats | Automatic memoisation keeps scroll-driven state from cascading; effects register once; hidden text stays in the accessibility tree but out of the tab order. |
+| React Compiler on, `useEffectEvent` for listeners | Automatic memoisation keeps scroll-driven state from cascading; effects register once. |
 
 ## Structure
 
-- `src/content/beats.ts` — the words. Ten beats, five contacts, one adoption clause.
+- `src/content/beats.ts` — the words. Ten beats, five contacts, one origin clause.
 - `src/scene/keyframes.ts` — the shot list: pose, look target, lens, hold, via points, frame, drift.
 - `src/scene/attitude.ts` — the attitude and lighting tracks as pure functions of beat time; the gimbal kinematics; the visitor trim spring.
 - `src/scene/CameraRig.tsx` — scroll to camera: camera time with eased holds, arc-length pose mapping, case-frame blending, view-offset composition, portrait re-framing, render-on-demand.
 - `src/scene/Instrument.tsx` — the assembly: stand, cradle, case, gimbals, sphere, jewels, practicals, trim drag.
 - `src/scene/instrument/*` — the parts, each procedural.
 - `src/scene/Stage.tsx`, `Post.tsx`, `Experience.tsx` — lights, environment, floor, dust; the post stack per tier; the canvas shell.
-- `src/textures/*` — brushed metal, engraving, enamel, digit atlas, crackle: canvas and shader recipes, all seeded.
+- `src/textures/*` — brushed metal, engraving, digit atlas, crackle, bench: canvas recipes, all seeded, built as one bundle in `maps.worker.ts` and uploaded by `library.ts`; `instrument.ts` and `horizon.ts` turn the maps into materials.
 - `src/ui/*` — the fixed text layer with spacer tracks, the readout, the loading curtain, the links.
 - `src/lib/*` — store, device tiers, beat phase math, scroll driver, interaction (keys, deep links, hold points).
 
 ## Testing
 
 - `?tier=high|mid|low` forces a tier for testing on other hardware.
-- `window.__timeline` exposes the store for diagnostics.
+- `window.__timeline` exposes the store, `window.__camera` the camera pose and film time, for diagnostics.
 - `npx tsc -b`, `npx eslint src`, `npm run build`.

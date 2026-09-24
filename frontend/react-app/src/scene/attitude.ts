@@ -1,5 +1,13 @@
-import { Euler, MathUtils, Quaternion } from "three";
 import { smooth } from "../lib/beats";
+
+/**
+ * Pure math, no three.js: the readout reads these tracks on the main
+ * thread before the renderer has loaded, and the entry bundle must not
+ * carry the engine for two numbers.
+ */
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+const clamp = (v: number, lo: number, hi: number) => (v < lo ? lo : v > hi ? hi : v);
+export const degToRad = (deg: number) => (deg * Math.PI) / 180;
 
 /**
  * The film's attitude track: what the aircraft (the skeleton case) does,
@@ -23,7 +31,7 @@ const KEYS: Key[] = [
   { at: 3.0, pitch: 12, roll: 0, yaw: 0 },
   { at: 3.5, pitch: 8, roll: -20, yaw: 0 }, // the first turn, seen in profile
   { at: 4.0, pitch: 8, roll: -20, yaw: 0 },
-  { at: 4.5, pitch: 5, roll: 12, yaw: 0 }, // over the top: roll through
+  { at: 4.5, pitch: 5, roll: -8, yaw: 0 }, // over the top: rolling out, no overshoot
   { at: 5.0, pitch: 5, roll: 0, yaw: 0 },
   { at: 5.45, pitch: 0, roll: 0, yaw: 0 }, // level flight, exactly
   { at: 7.0, pitch: 0, roll: 0, yaw: 0 },
@@ -36,16 +44,16 @@ const KEYS: Key[] = [
 ];
 
 export function attitudeAt(beatTime: number, out: Attitude): Attitude {
-  const t = MathUtils.clamp(beatTime, KEYS[0].at, KEYS[KEYS.length - 1].at);
+  const t = clamp(beatTime, KEYS[0].at, KEYS[KEYS.length - 1].at);
   let i = 0;
   while (i < KEYS.length - 2 && t > KEYS[i + 1].at) i++;
   const a = KEYS[i];
   const b = KEYS[i + 1];
   const span = b.at - a.at;
   const mix = span > 0 ? smooth((t - a.at) / span) : 1;
-  out.pitch = MathUtils.lerp(a.pitch, b.pitch, mix);
-  out.roll = MathUtils.lerp(a.roll, b.roll, mix);
-  out.yaw = MathUtils.lerp(a.yaw, b.yaw, mix);
+  out.pitch = lerp(a.pitch, b.pitch, mix);
+  out.roll = lerp(a.roll, b.roll, mix);
+  out.yaw = lerp(a.yaw, b.yaw, mix);
   return out;
 }
 
@@ -76,31 +84,20 @@ export const trim = {
   },
 };
 
-const euler = new Euler();
 
 /** Clamped attitude with the visitor trim added: what the case actually does. */
 export function effectiveAttitude(att: Attitude, withTrim = true): { pitch: number; roll: number } {
   return {
-    pitch: MathUtils.clamp(att.pitch + (withTrim ? trim.pitch : 0), -35, 35),
-    roll: MathUtils.clamp(att.roll + (withTrim ? trim.roll : 0), -45, 45),
+    pitch: clamp(att.pitch + (withTrim ? trim.pitch : 0), -35, 35),
+    roll: clamp(att.roll + (withTrim ? trim.roll : 0), -45, 45),
   };
 }
 
 /** Radians for the cradle: nose up is a negative rotation about +X (bezel at +Z). */
-export const cradleRotationX = (pitch: number) => MathUtils.degToRad(-pitch);
+export const cradleRotationX = (pitch: number) => degToRad(-pitch);
 /** Radians for the case inside the cradle: right wing down lowers +X. */
-export const caseRotationZ = (roll: number) => MathUtils.degToRad(-roll);
+export const caseRotationZ = (roll: number) => degToRad(-roll);
 
-/**
- * Case orientation in the world: pitch about X (the cradle), then roll
- * about Z (the case in the cradle). Used by the camera rig for the
- * pilot's-view beats.
- */
-export function caseQuaternion(att: Attitude, out: Quaternion, withTrim = true): Quaternion {
-  const e = effectiveAttitude(att, withTrim);
-  euler.set(cradleRotationX(e.pitch), 0, caseRotationZ(e.roll), "XYZ");
-  return out.setFromEuler(euler);
-}
 
 /**
  * The lighting track, also in beat time: the key reveals the instrument in
@@ -133,28 +130,28 @@ const LIGHT_KEYS: LightKey[] = [
   { at: 6.5, key: 20, rim: 24, post: 0, exposure: 1.05, bokeh: 3.0, warmth: 0, raker: 0 },
   { at: 7.5, key: 18, rim: 34, post: 0, exposure: 1.05, bokeh: 1.2, warmth: 0, raker: 0 },
   { at: 8.0, key: 18, rim: 34, post: 0, exposure: 1.05, bokeh: 1.2, warmth: 0, raker: 0 },
-  { at: 8.3, key: 14, rim: 46, post: 0, exposure: 1.05, bokeh: 1.0, warmth: 1, raker: 0 },
-  { at: 8.9, key: 14, rim: 46, post: 0, exposure: 1.05, bokeh: 1.0, warmth: 1, raker: 0 },
+  { at: 8.3, key: 20, rim: 30, post: 0, exposure: 1.05, bokeh: 1.0, warmth: 1, raker: 0 },
+  { at: 8.9, key: 20, rim: 30, post: 0, exposure: 1.05, bokeh: 1.0, warmth: 1, raker: 0 },
   { at: 9.3, key: 10, rim: 30, post: 0.6, exposure: 1.0, bokeh: 0.5, warmth: 0, raker: 0 },
   { at: 9.6, key: 6, rim: 12, post: 1.6, exposure: 0.95, bokeh: 0, warmth: 0, raker: 0 },
   { at: 10.0, key: 6, rim: 12, post: 1.6, exposure: 0.95, bokeh: 0, warmth: 0, raker: 0 },
 ];
 
 export function lightingAt(beatTime: number, out: Lighting): Lighting {
-  const t = MathUtils.clamp(beatTime, 0, 10);
+  const t = clamp(beatTime, 0, 10);
   let i = 0;
   while (i < LIGHT_KEYS.length - 2 && t > LIGHT_KEYS[i + 1].at) i++;
   const a = LIGHT_KEYS[i];
   const b = LIGHT_KEYS[i + 1];
   const span = b.at - a.at;
   const mix = span > 0 ? smooth((t - a.at) / span) : 1;
-  out.key = MathUtils.lerp(a.key, b.key, mix);
-  out.rim = MathUtils.lerp(a.rim, b.rim, mix);
-  out.post = MathUtils.lerp(a.post, b.post, mix);
-  out.exposure = MathUtils.lerp(a.exposure, b.exposure, mix);
-  out.bokeh = MathUtils.lerp(a.bokeh, b.bokeh, mix);
-  out.warmth = MathUtils.lerp(a.warmth, b.warmth, mix);
-  out.raker = MathUtils.lerp(a.raker, b.raker, mix);
+  out.key = lerp(a.key, b.key, mix);
+  out.rim = lerp(a.rim, b.rim, mix);
+  out.post = lerp(a.post, b.post, mix);
+  out.exposure = lerp(a.exposure, b.exposure, mix);
+  out.bokeh = lerp(a.bokeh, b.bokeh, mix);
+  out.warmth = lerp(a.warmth, b.warmth, mix);
+  out.raker = lerp(a.raker, b.raker, mix);
   return out;
 }
 
@@ -164,7 +161,7 @@ export function beatTimeAt(progress: number, ranges: { start: number; end: numbe
     const r = ranges[i];
     if (progress < r.end || i === ranges.length - 1) {
       const span = r.end - r.start;
-      const local = span > 0 ? MathUtils.clamp((progress - r.start) / span, 0, 1) : 1;
+      const local = span > 0 ? clamp((progress - r.start) / span, 0, 1) : 1;
       return i + local;
     }
   }

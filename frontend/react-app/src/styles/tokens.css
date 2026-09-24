@@ -15,7 +15,7 @@
   /* Ink — all pass AA on bench black */
   --chalk: #eef1f4; /* 17.4:1 */
   --gauge: #9aa4ae; /* 7.7:1 */
-  --gauge-dim: #6b7580; /* 4.6:1, decorative only */
+  --gauge-dim: #6b7580; /* 4.2:1: decorative only, never for words (aria-hidden marks, the "/10") */
 
   /* Accents */
   --orange: #f2a23a; /* 9.3:1 */
@@ -37,6 +37,9 @@
 
   /* Composition: the object lives right/top, the text left/bottom */
   --text-col: 42%;
+  /* The text layer's padding, also the bound on how tall a block may be */
+  --beat-top: calc(var(--gutter) + var(--safe-top));
+  --beat-bottom: calc(var(--gutter) + 4.2rem + var(--safe-bottom));
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);

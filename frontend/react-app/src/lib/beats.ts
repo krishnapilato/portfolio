@@ -83,8 +83,13 @@ export function phasesOf(beat: BeatTiming): Phases {
 export function cameraTime(beats: BeatTiming[], beat: number, local: number): number {
   const p = phasesOf(beats[beat]);
   const last = beats.length - 1;
-  const arriveShare = beat > 0 ? (beats[beat].arriveShare ?? 0.5) : 0;
-  const leaveShare = beat < last ? 1 - (beats[beat + 1].arriveShare ?? 0.5) : 0;
+  // A beat with no departure phase hands its whole move to the next beat's
+  // arrival (and a beat with no arrival takes it from the previous
+  // departure), so camera time is continuous across every boundary.
+  const prev = beat > 0 ? phasesOf(beats[beat - 1]) : null;
+  const next = beat < last ? phasesOf(beats[beat + 1]) : null;
+  const arriveShare = !prev ? 0 : prev.leave > 0 ? (beats[beat].arriveShare ?? 0.5) : 1;
+  const leaveShare = !next ? 0 : next.arrive > 0 ? 1 - (beats[beat + 1].arriveShare ?? 0.5) : 1;
   if (local < p.arrive && p.arrive > 0) {
     return beat - arriveShare + arriveShare * easeInOutCubic(local / p.arrive);
   }

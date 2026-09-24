@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
-import { AdditiveBlending, BufferGeometry, Color, Float32BufferAttribute, ShaderMaterial } from "three";
+import { BufferGeometry, Color, Float32BufferAttribute, NormalBlending, ShaderMaterial } from "three";
 import { rng } from "../textures/canvas";
 
 type Props = {
@@ -43,7 +43,9 @@ const fragment = /* glsl */ `
     float d = dot(c, c) * 4.0;
     float a = exp(-d * 3.2) * (1.0 - d);
     if (a < 0.01) discard;
-    gl_FragColor = vec4(uColor, a * uOpacity * vFade);
+    // Premultiplied, normal blending: motes occlude like dust, they never add up like sparks.
+    float alpha = a * uOpacity * vFade;
+    gl_FragColor = vec4(uColor * alpha, alpha);
   }
 `;
 
@@ -103,7 +105,8 @@ export default function Dust({
         uniforms={uniforms}
         transparent
         depthWrite={false}
-        blending={AdditiveBlending}
+        blending={NormalBlending}
+        premultipliedAlpha
       />
     </points>
   );

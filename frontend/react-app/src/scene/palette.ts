@@ -23,4 +23,9 @@ export const POST_LIGHT_POSITIONS: [number, number, number][] = [
 export const cameraState = {
   focusDistance: 3,
   bokeh: 1.6,
+  /** Diagnostics, mirrored each frame (read through window.__camera). */
+  position: [0, 0, 0] as [number, number, number],
+  target: [0, 0, 0] as [number, number, number],
+  fov: 32,
+  time: 0,
 };

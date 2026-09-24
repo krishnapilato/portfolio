@@ -4,8 +4,7 @@ import { CylinderGeometry, MathUtils, SphereGeometry } from "three";
 import { useTimeline } from "../../lib/store";
 import type { Tier } from "../../lib/store";
 import { getInstrumentMaterials, makeBezelFace, makeGlass } from "../../textures/instrument";
-import { drawBankScale } from "./bankScale";
-import { cylinderProfile, makeBar, makeLathe, makeRing, makeRingFace, mergeParts, ringFaceRadius } from "./geometry";
+import { cylinderProfile, makeBar, makeLathe, makeRing, makeRingFace, mergeParts } from "./geometry";
 import { BEZEL, BEZEL_Z, GLASS, LATHE_SEGMENTS, POST_LIGHT, SMALL_SEGMENTS, SYMBOL } from "./layout";
 
 type Props = ThreeElements["group"] & {
@@ -21,12 +20,11 @@ type Props = ThreeElements["group"] & {
  */
 export default function Bezel({ glow = 0, ...group }: Props) {
   const tier = useTimeline((s) => s.tier);
+  const quality = useTimeline((s) => s.quality);
   const materials = useMemo(() => getInstrumentMaterials(tier), [tier]);
-  const face = useMemo(
-    () => makeBezelFace(tier, (ctx, size) => drawBankScale(ctx, size, ringFaceRadius(BEZEL))),
-    [tier],
-  );
-  const glass = useMemo(() => makeGlass(tier), [tier]);
+  const face = useMemo(() => makeBezelFace(tier), [tier]);
+  // Refracting glass only at the high level: it is an extra scene pass.
+  const glass = useMemo(() => makeGlass(tier, quality === "high"), [tier, quality]);
   const g = useMemo(() => build(tier), [tier]);
   useEffect(() => () => face.dispose(), [face]);
   useEffect(() => () => glass.dispose(), [glass]);
@@ -41,7 +39,7 @@ export default function Bezel({ glow = 0, ...group }: Props) {
     <group {...group}>
       <group position={[0, 0, BEZEL_Z]}>
         <mesh geometry={g.body} material={materials.aluminiumRadial} />
-        <mesh geometry={g.face} material={face.material} />
+        <mesh geometry={g.face} material={face} />
         <mesh geometry={g.lamps}>
           <meshStandardMaterial
             color="#5a3d22"
@@ -51,7 +49,7 @@ export default function Bezel({ glow = 0, ...group }: Props) {
             metalness={0.2}
           />
         </mesh>
-        <mesh geometry={g.glass} material={glass.material} />
+        <mesh geometry={g.glass} material={glass} />
         <mesh geometry={g.symbol}>
           <meshStandardMaterial
             color={SYMBOL.color}

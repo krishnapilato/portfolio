@@ -1,24 +1,17 @@
-import { heightToNormal, makeCanvas, makeFbm, rng, toTexture } from "./canvas";
-
-export type BrushedCanvases = {
-  /** sRGB albedo. */
-  albedo: HTMLCanvasElement;
-  /** Greyscale roughness. */
-  rough: HTMLCanvasElement;
-  /** Greyscale height the normal map was derived from. */
-  height: HTMLCanvasElement;
-  /** Tangent-space normal map. */
-  normal: HTMLCanvasElement;
-};
+import { heightToNormal, makeCanvas, makeFbm, rng, type Surface } from "./canvas";
 
 export type BrushedSet = {
-  map: ReturnType<typeof toTexture>;
-  roughnessMap: ReturnType<typeof toTexture>;
-  normalMap: ReturnType<typeof toTexture>;
-  canvases: BrushedCanvases;
+  /** sRGB albedo. */
+  albedo: Surface;
+  /** Greyscale roughness. */
+  rough: Surface;
+  /** Greyscale height the normal map was derived from. */
+  height: Surface;
+  /** Tangent-space normal map. */
+  normal: Surface;
 };
 
-type BrushedOptions = {
+export type BrushedOptions = {
   size: number;
   /** "linear" for milled flats, "radial" for lathe-turned faces and rims. */
   direction?: "linear" | "radial";
@@ -31,7 +24,6 @@ type BrushedOptions = {
   /** Density of sparse handling scratches across the grain: 0 = none, 1 = well used. */
   scratches?: number;
   seed?: number;
-  anisotropy?: number;
 };
 
 /**
@@ -50,7 +42,6 @@ export function makeBrushed(options: BrushedOptions): BrushedSet {
     roughness = 0.38,
     scratches = 0.25,
     seed = 7,
-    anisotropy = 8,
   } = options;
   const random = rng(seed);
   const fbm = makeFbm(seed + 3, 3, 2);
@@ -105,12 +96,15 @@ export function makeBrushed(options: BrushedOptions): BrushedSet {
   }
   // Low-frequency waviness of the plate, so highlights swim instead of banding.
   const img = hctx.getImageData(0, 0, size, size);
+  const data = img.data;
+  const inv = 1 / size;
   for (let y = 0; y < size; y++) {
+    const v = y * inv;
     for (let x = 0; x < size; x++) {
-      const n = (fbm(x / size, y / size) - 0.5) * 22;
-      const i = (y * size + x) * 4;
-      const value = Math.min(255, Math.max(0, img.data[i] + n));
-      img.data[i] = img.data[i + 1] = img.data[i + 2] = value;
+      const n = (fbm(x * inv, v) - 0.5) * 22;
+      const i = (y * size + x) << 2;
+      const value = Math.min(255, Math.max(0, data[i] + n));
+      data[i] = data[i + 1] = data[i + 2] = value;
     }
   }
   hctx.putImageData(img, 0, 0);
@@ -137,10 +131,5 @@ export function makeBrushed(options: BrushedOptions): BrushedSet {
 
   const normal = heightToNormal(height, 1.4);
 
-  return {
-    map: toTexture(albedo, { color: true, anisotropy }),
-    roughnessMap: toTexture(rough, { anisotropy }),
-    normalMap: toTexture(normal, { anisotropy }),
-    canvases: { albedo, rough, height, normal },
-  };
+  return { albedo, rough, height, normal };
 }

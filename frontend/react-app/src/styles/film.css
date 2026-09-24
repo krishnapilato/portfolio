@@ -3,14 +3,24 @@
    fixed layer that never moves and only changes opacity.
    ============================================================ */
 
+/* The film's own box spans the whole scroll and would catch every pointer
+   before the stage below it; only the words and the readout take a hand. */
 .film {
   position: relative;
   z-index: 2;
+  pointer-events: none;
 }
 
+/* The tracks only give the document its length: the pointer goes through
+   them to the stage, where the instrument can be grabbed. */
+.tracks {
+  pointer-events: none;
+}
+
+/* svh, never dvh: the film's length must not change when a phone's toolbar
+   collapses mid-scroll, or the camera would jump back a beat. */
 .track {
   height: calc(var(--weight, 1) * 100svh);
-  height: calc(var(--weight, 1) * 100dvh);
 }
 
 .beats {
@@ -25,14 +35,22 @@
   inset: 0;
   display: grid;
   grid-template-columns: minmax(0, var(--text-col)) minmax(0, 1fr);
-  grid-template-rows: 1fr auto 1fr;
+  /* The middle row is `auto`, never `minmax(0, auto)`: a zero minimum
+     would let the grid starve the words when space is short (the tracks
+     share free space equally from zero). The block's own max-height, not
+     the row, keeps a tall block inside the viewport. */
+  grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
   padding:
-    calc(var(--gutter) + var(--safe-top))
+    var(--beat-top)
     calc(var(--gutter) + var(--safe-right))
-    calc(var(--gutter) + 4.2rem + var(--safe-bottom))
+    var(--beat-bottom)
     calc(var(--gutter) + var(--safe-left));
-  opacity: 0;
-  visibility: hidden;
+}
+
+/* Blocks that are not readable take no pointer: they stay in the tree for
+   readers and find-in-page, out of reach for a hand. */
+.beat[data-away="true"] .beat__block {
+  pointer-events: none;
 }
 
 /* The pilot's-view beats fill the frame with the dial, so their words get a
@@ -42,12 +60,14 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, rgba(11, 13, 16, 0.78) 0%, rgba(11, 13, 16, 0.55) 30%, rgba(11, 13, 16, 0) 52%);
+  opacity: var(--alpha, 0);
   pointer-events: none;
 }
 
-/* The cold open: the words start below the horizon line, which sits at 38%. */
+/* The cold open: the words start below the horizon line, which sits at 38%,
+   unless the viewport is too short for that, when they simply sit lower. */
 .beat[data-beat="horizon"] {
-  grid-template-rows: 46svh auto 1fr;
+  grid-template-rows: minmax(0, 46svh) auto minmax(0, 1fr);
 }
 
 /* The epilogue's list sits over the dial: a firmer scrim. */
@@ -63,16 +83,35 @@
   display: grid;
   gap: 0.75rem;
   pointer-events: auto;
+  opacity: 0;
   transform: translate3d(0, var(--rise, 0px), 0);
-  will-change: transform;
+  will-change: transform, opacity;
+  /* Never taller than the viewport allows; see .beat__block--scroll. */
+  max-height: calc(100svh - var(--beat-top) - var(--beat-bottom));
+}
+
+/* The last resort on a short viewport (a phone on its side, 200% zoom):
+   a block that measures taller than its room scrolls inside itself rather
+   than losing its last lines, and becomes a keyboard stop so it can. */
+.beat__block--scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.beat__block--scroll:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
 .beat__kicker {
   display: flex;
   align-items: baseline;
   gap: 0.7rem;
+  margin: 0;
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.74rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -102,11 +141,64 @@
   text-wrap: pretty;
 }
 
-.beat__meta {
+/* A list read as a list: the skills, one line per row. */
+.beat__rows {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.beat__row {
+  display: grid;
+  grid-template-columns: 7.6em minmax(0, 1fr);
+  gap: 0.2rem 0.8rem;
+  align-items: baseline;
+}
+
+.beat__row dt {
   font-family: var(--mono);
   font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gauge);
+}
+
+.beat__row dd {
+  margin: 0;
+  color: var(--chalk);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.beat__meta {
+  font-family: var(--mono);
+  font-size: 0.78rem;
   letter-spacing: 0.02em;
-  color: var(--gauge-dim);
+  color: var(--gauge);
+}
+
+/* Links set in the title carry their glyph at kicker size, so the title stays a title. */
+.beat__titlelink,
+.beat__metalink {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--orange);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.14em;
+  transition: text-decoration-color 0.2s var(--ease);
+}
+
+.beat__titlelink:hover,
+.beat__titlelink:focus-visible,
+.beat__metalink:hover,
+.beat__metalink:focus-visible {
+  text-decoration-color: var(--chalk);
+}
+
+.beat__titlelink .links__glyph {
+  font-size: 0.42em;
+  vertical-align: 0.9em;
+  margin-left: 0.15em;
 }
 
 /* Links ------------------------------------------------------ */
@@ -130,17 +222,17 @@
   min-height: 44px;
 }
 
-.links--compact .links__item {
-  min-height: 32px;
-}
-
+/* The whole row is the target: 44 px tall on every device. */
 .links__link {
   position: relative;
   display: inline-flex;
+  flex: 1 1 auto;
   flex-wrap: wrap;
   align-items: baseline;
+  align-content: center;
   gap: 0.2rem 0.5rem;
   min-width: 0;
+  min-height: 44px;
   padding: 0.2rem 0;
   color: var(--chalk);
 }
@@ -193,13 +285,13 @@
 
 .links__copy {
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gauge);
-  padding: 0.35rem 0.6rem;
+  padding: 0.35rem 0.7rem;
   min-width: 44px;
-  min-height: 32px;
+  min-height: 44px;
   border: 1px solid var(--hair);
   border-radius: 999px;
   transition:
@@ -230,11 +322,14 @@
     --text-col: 100%;
   }
 
+  :root {
+    --beat-bottom: calc(var(--gutter) + 3.6rem + var(--safe-bottom));
+  }
+
   .beat,
   .beat[data-beat="horizon"] {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 55svh 1fr;
-    padding-bottom: calc(var(--gutter) + 3.6rem + var(--safe-bottom));
+    grid-template-rows: minmax(0, 55svh) minmax(0, 1fr);
   }
 
   .beat[data-scrim="true"]::before {
@@ -261,21 +356,19 @@
     font-size: clamp(1.9rem, 1.2rem + 4.5vw, 2.8rem);
   }
 
-  .links__item {
-    min-height: 40px;
+  .beat__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.1rem;
   }
 
   /* The contact sheet is the tallest block: it takes three quarters of the
      height and the instrument sits above it, lit by its own post lights. */
   #contact {
-    grid-template-rows: 22svh 1fr;
+    grid-template-rows: minmax(0, 22svh) minmax(0, 1fr);
   }
 
   #contact .beat__block {
     gap: 0.55rem;
-    max-height: calc(78svh - var(--gutter) - 3.6rem - var(--safe-bottom));
-    overflow-y: auto;
-    overscroll-behavior: contain;
   }
 
   #contact .beat__body {
@@ -284,19 +377,15 @@
   }
 
   #contact .links {
-    gap: 0.1rem;
-  }
-
-  #contact .links__item {
-    min-height: 38px;
+    gap: 0;
   }
 }
 
 /* Landscape phones: short viewport, keep the column narrow and the type small. */
 
 @media (max-height: 480px) and (min-aspect-ratio: 9/10) {
-  .beat {
-    padding-bottom: calc(var(--gutter) + 3rem + var(--safe-bottom));
+  :root {
+    --beat-bottom: calc(var(--gutter) + 3rem + var(--safe-bottom));
   }
 
   .beat__block {
@@ -310,7 +399,11 @@
   }
 
   .beat__body {
-    font-size: 0.86rem;
+    font-size: 0.9rem;
     line-height: 1.45;
+  }
+
+  .beat__row dd {
+    font-size: 0.9rem;
   }
 }

@@ -1,11 +1,11 @@
 import { ContactShadows, Environment, Lightformer, MeshReflectorMaterial } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
-import { Color, RectAreaLight, SpotLight } from "three";
+import { useMemo, useRef } from "react";
+import { Color, Object3D, RectAreaLight, SpotLight } from "three";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 import { computeRanges } from "../lib/beats";
 import { useTimeline, type Tier } from "../lib/store";
-import { makeCanvas, makeFbm, toTexture } from "../textures/canvas";
+import { getMaps } from "../textures/library";
 import { beatTimeAt, lightingAt, type Lighting } from "./attitude";
 import Dust from "./Dust";
 import { KEYFRAMES } from "./keyframes";
@@ -20,39 +20,6 @@ const KEY_LOW_SUN = new Color("#ffc98a");
 const keyColor = new Color();
 const FLOOR_Y = -2.3;
 
-/** The bench: a matte surface whose roughness varies so any reflection breaks up. */
-function useBenchMaps(tier: Tier) {
-  return useMemo(() => {
-    const size = tier === "low" ? 512 : 1024;
-    const fbm = makeFbm(41, 4, 3);
-    const [rough, rctx] = makeCanvas(size);
-    const img = rctx.createImageData(size, size);
-    const cx = size / 2;
-    for (let y = 0; y < size; y++) {
-      for (let x = 0; x < size; x++) {
-        const n = fbm(x / size, y / size);
-        // Faint concentric turning marks about the centre.
-        const r = Math.hypot(x - cx, y - cx);
-        const rings = 0.012 * Math.sin(r * 0.9);
-        const v = Math.round(Math.min(1, Math.max(0, 0.62 + n * 0.18 + rings)) * 255);
-        const i = (y * size + x) * 4;
-        img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
-        img.data[i + 3] = 255;
-      }
-    }
-    rctx.putImageData(img, 0, 0);
-
-    // The floor's own vignette: the edge of the disc must never be seen.
-    const [alpha, actx] = makeCanvas(512, "#000");
-    const gradient = actx.createRadialGradient(256, 256, 256 * 0.35, 256, 256, 256);
-    gradient.addColorStop(0, "rgba(255,255,255,0)");
-    gradient.addColorStop(1, "rgba(255,255,255,1)");
-    actx.fillStyle = gradient;
-    actx.fillRect(0, 0, 512, 512);
-    return { roughnessMap: toTexture(rough, { repeat: 4, anisotropy: 4 }), alphaMap: toTexture(alpha) };
-  }, [tier]);
-}
-
 /**
  * Lights that follow the film. One logical key (a spot for the shadow and an
  * area light for the long softbox highlight) reveals the instrument in the
@@ -61,7 +28,7 @@ function useBenchMaps(tier: Tier) {
  * epilogue. Everything comes from the lighting track, so scrolling back
  * puts the lights out again in reverse, which reads as dawn.
  */
-function Lights({ tier }: { tier: Tier }) {
+function Lights({ tier, quality }: { tier: Tier; quality: Tier }) {
   const keySpot = useRef<SpotLight>(null);
   const keyArea = useRef<RectAreaLight>(null);
   const rim = useRef<SpotLight>(null);
@@ -69,7 +36,10 @@ function Lights({ tier }: { tier: Tier }) {
   const gl = useThree((s) => s.gl);
   const invalidate = useThree((s) => s.invalidate);
   const exposure = useRef(1.05);
-  const shadow = tier === "high" ? 1024 : tier === "mid" ? 512 : 0;
+  const shadow = quality === "high" ? 1024 : quality === "mid" ? 512 : 0;
+  // Spot targets must live in the scene graph, or their world matrices
+  // never update and every spot aims at the origin.
+  const targets = useMemo(() => ({ key: new Object3D(), rim: new Object3D(), raker: new Object3D() }), []);
 
   useFrame(() => {
     const t = useTimeline.getState();
@@ -96,16 +66,14 @@ function Lights({ tier }: { tier: Tier }) {
     }
   });
 
-  useEffect(() => {
-    keySpot.current?.target.position.set(0, 0, 0.2);
-    rim.current?.target.position.set(0, 0, 0.2);
-    raker.current?.target.position.set(0.3, -0.05, 0.9);
-  }, []);
-
   return (
     <>
+      <primitive object={targets.key} position={[0, 0, 0.2]} />
+      <primitive object={targets.rim} position={[0, 0, 0.2]} />
+      <primitive object={targets.raker} position={[0.3, -0.05, 0.9]} />
       <spotLight
         ref={keySpot}
+        target={targets.key}
         color={PALETTE.keyColor}
         intensity={18}
         position={[2.8, 2.6, 1.4]}
@@ -119,7 +87,7 @@ function Lights({ tier }: { tier: Tier }) {
         shadow-camera-near={0.5}
         shadow-camera-far={12}
       />
-      {tier !== "low" ? (
+      {quality !== "low" ? (
         <rectAreaLight
           ref={keyArea}
           args={[PALETTE.keyColor, 12, 1.2, 0.8]}
@@ -129,6 +97,7 @@ function Lights({ tier }: { tier: Tier }) {
       ) : null}
       <spotLight
         ref={rim}
+        target={targets.rim}
         color={PALETTE.rimColor}
         intensity={40}
         position={[-3.0, 1.8, -2.6]}
@@ -141,6 +110,7 @@ function Lights({ tier }: { tier: Tier }) {
           clean cool line before any key exists. */}
       <spotLight
         ref={raker}
+        target={targets.raker}
         color={PALETTE.rimColor}
         intensity={8}
         position={[-1.7, 0.35, 1.6]}
@@ -154,17 +124,17 @@ function Lights({ tier }: { tier: Tier }) {
   );
 }
 
-/** The bench surface: reflective on the high tier, matte elsewhere, always fading to black. */
-function Floor({ tier }: { tier: Tier }) {
-  const maps = useBenchMaps(tier);
+/** The bench surface: reflective at the high level, matte elsewhere, always fading to black. */
+function Floor({ tier, quality }: { tier: Tier; quality: Tier }) {
+  const maps = getMaps(tier);
   return (
     <>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, FLOOR_Y, 0]} receiveShadow>
         <circleGeometry args={[12, 64]} />
-        {tier === "high" ? (
+        {quality === "high" ? (
           <MeshReflectorMaterial
             color={PALETTE.surface}
-            roughnessMap={maps.roughnessMap}
+            roughnessMap={maps["bench.rough"]}
             roughness={1}
             metalness={0.1}
             mirror={0}
@@ -179,7 +149,7 @@ function Floor({ tier }: { tier: Tier }) {
         ) : (
           <meshStandardMaterial
             color={PALETTE.surface}
-            roughnessMap={maps.roughnessMap}
+            roughnessMap={maps["bench.rough"]}
             roughness={1}
             metalness={0.1}
             envMapIntensity={0.4}
@@ -188,7 +158,7 @@ function Floor({ tier }: { tier: Tier }) {
       </mesh>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, FLOOR_Y + 0.005, 0]}>
         <circleGeometry args={[12, 64]} />
-        <meshBasicMaterial color={PALETTE.background} transparent alphaMap={maps.alphaMap} depthWrite={false} />
+        <meshBasicMaterial color={PALETTE.background} transparent alphaMap={maps["bench.alpha"]} depthWrite={false} />
       </mesh>
     </>
   );
@@ -202,7 +172,9 @@ function Floor({ tier }: { tier: Tier }) {
  */
 export default function Stage() {
   const tier = useTimeline((s) => s.tier);
-  const dustCount = tier === "high" ? 1800 : tier === "mid" ? 800 : 300;
+  const quality = useTimeline((s) => s.quality);
+  // Few motes, never additive: air with a light in it, not particles.
+  const dustCount = quality === "high" ? 600 : quality === "mid" ? 250 : 0;
   return (
     <>
       <color attach="background" args={[PALETTE.background]} />
@@ -216,12 +188,14 @@ export default function Stage() {
         <Lightformer form="rect" intensity={0.5} color="#202328" scale={[6, 0.5, 1]} position={[0, -2.6, 0]} rotation={[Math.PI / 2, 0, 0]} />
         <Lightformer form="ring" intensity={0.4} color="#14181e" scale={6} position={[0, 6, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       </Environment>
-      <Lights tier={tier} />
-      <Floor tier={tier} />
-      {tier !== "low" ? (
+      <Lights tier={tier} quality={quality} />
+      <Floor tier={tier} quality={quality} />
+      {quality !== "low" ? (
         <ContactShadows position={[0, FLOOR_Y + 0.01, -1.9]} opacity={0.55} blur={2.4} scale={3} far={1.2} frames={1} resolution={512} />
       ) : null}
-      <Dust count={dustCount} extent={[3.5, 2.5, 3.5]} center={[0, 0, -0.3]} color={PALETTE.rimColor} size={2.6} opacity={0.32} />
+      {dustCount > 0 ? (
+        <Dust count={dustCount} extent={[3.5, 2.5, 3.5]} center={[0, 0, -0.3]} color={PALETTE.rimColor} size={2.6} opacity={0.2} />
+      ) : null}
     </>
   );
 }

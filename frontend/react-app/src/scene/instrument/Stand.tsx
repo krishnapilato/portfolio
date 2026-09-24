@@ -1,43 +1,10 @@
 import { useEffect, useMemo } from "react";
-import { BoxGeometry, CylinderGeometry, InstancedMesh, Matrix4, MeshPhysicalMaterial, MeshStandardMaterial, Vector2 } from "three";
+import { BoxGeometry, CylinderGeometry, InstancedMesh, Matrix4, MeshStandardMaterial, Vector2 } from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { useTimeline } from "../../lib/store";
-import { makeBrushed } from "../../textures/brushed";
-import { heightToNormal, makeCanvas, makeValueNoise, rng, toTexture } from "../../textures/canvas";
+import { makeFixtureMetal } from "../../textures/instrument";
+import { getMaps } from "../../textures/library";
 import { PALETTE } from "../palette";
-
-/** Crackle paint: Worley cells with a darkened bevel at every edge. */
-function makeCrackle(size: number) {
-  const random = rng(172);
-  const cells = 48;
-  const seeds: [number, number][] = [];
-  for (let i = 0; i < cells; i++) seeds.push([random() * size, random() * size]);
-  const [height, hctx] = makeCanvas(size, "#808080");
-  const img = hctx.createImageData(size, size);
-  const noise = makeValueNoise(9, 6);
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      let f1 = Infinity;
-      let f2 = Infinity;
-      for (const [sx, sy] of seeds) {
-        let dx = Math.abs(x - sx);
-        let dy = Math.abs(y - sy);
-        if (dx > size / 2) dx = size - dx;
-        if (dy > size / 2) dy = size - dy;
-        const d = dx * dx + dy * dy;
-        if (d < f1) { f2 = f1; f1 = d; } else if (d < f2) f2 = d;
-      }
-      const edge = Math.sqrt(f2) - Math.sqrt(f1);
-      const bevel = Math.min(1, Math.max(0, (edge - 1.5) / 6));
-      const v = Math.round((0.35 + 0.55 * bevel + (noise(x / size, y / size) - 0.5) * 0.08) * 255);
-      const i = (y * size + x) * 4;
-      img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
-      img.data[i + 3] = 255;
-    }
-  }
-  hctx.putImageData(img, 0, 0);
-  return heightToNormal(height, 0.5);
-}
 
 /**
  * The fixed part of the bench fixture: a painted pedestal on the floor, a
@@ -49,24 +16,12 @@ export default function Stand() {
   const tier = useTimeline((s) => s.tier);
 
   const built = useMemo(() => {
-    const size = tier === "low" ? 512 : 1024;
-    const brushed = makeBrushed({ size, direction: "linear", tint: "#b9bec4", grain: 0.55, roughness: 0.3, scratches: 0.35, seed: 31, anisotropy: tier === "high" ? 8 : 4 });
-    const metal = new MeshPhysicalMaterial({
-      color: "#b9bec4",
-      metalness: 1,
-      roughness: 1,
-      roughnessMap: brushed.roughnessMap,
-      normalMap: brushed.normalMap,
-      normalScale: new Vector2(0.35, 0.35),
-      anisotropy: tier === "low" ? 0 : 0.8,
-      envMapIntensity: 1,
-    });
-    const crackleNormal = toTexture(makeCrackle(tier === "low" ? 256 : 512), { repeat: 2 });
+    const metal = makeFixtureMetal(tier, "stand", 0.35);
     const paint = new MeshStandardMaterial({
       color: PALETTE.surface,
       roughness: 0.75,
       metalness: 0,
-      normalMap: crackleNormal,
+      normalMap: getMaps(tier)["stand.crackleNormal"],
       normalScale: new Vector2(0.5, 0.5),
     });
 
@@ -88,7 +43,7 @@ export default function Stand() {
       bolts.setMatrixAt(i, m);
     }
     bolts.instanceMatrix.needsUpdate = true;
-    return { metal, paint, body, pedestal, bolts, maps: [brushed.map, brushed.roughnessMap, brushed.normalMap, crackleNormal] };
+    return { metal, paint, body, pedestal, bolts };
   }, [tier]);
 
   useEffect(() => {
@@ -98,7 +53,6 @@ export default function Stand() {
       built.bolts.geometry.dispose();
       built.metal.dispose();
       built.paint.dispose();
-      for (const map of built.maps) map.dispose();
     };
   }, [built]);
 

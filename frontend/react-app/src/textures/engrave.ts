@@ -1,12 +1,10 @@
-import { heightToNormal, makeCanvas, toTexture, type Ctx2D } from "./canvas";
+import { ctxOf, makeCanvas, type Ctx2D, type Surface } from "./canvas";
 
 export type EngraveSet = {
   /** Greyscale: white = raised metal, black = groove floor. */
-  height: HTMLCanvasElement;
+  height: Surface;
   /** Alpha mask of the engraved marks, for tinting the paint fill. */
-  mask: HTMLCanvasElement;
-  normalMap: ReturnType<typeof toTexture>;
-  maskMap: ReturnType<typeof toTexture>;
+  mask: Surface;
 };
 
 export type Engraver = (ctx: Ctx2D, size: number) => void;
@@ -14,10 +12,11 @@ export type Engraver = (ctx: Ctx2D, size: number) => void;
 /**
  * Engraved marks (scales, ticks, lettering) as a height map plus a mask.
  * The caller draws whatever the plate says with plain canvas calls; this
- * turns the drawing into a normal map with a crisp machined lip and a mask
- * that the material uses to fill the grooves with paint.
+ * turns the drawing into a height field with a crisp machined lip (the
+ * caller derives the normal map, usually merged with the metal's own) and
+ * a mask that the material uses to fill the grooves with paint.
  */
-export function makeEngraving(size: number, draw: Engraver, depth = 3): EngraveSet {
+export function makeEngraving(size: number, draw: Engraver): EngraveSet {
   const [mask, mctx] = makeCanvas(size, "#000");
   mctx.fillStyle = "#fff";
   mctx.strokeStyle = "#fff";
@@ -36,15 +35,10 @@ export function makeEngraving(size: number, draw: Engraver, depth = 3): EngraveS
   hctx.globalAlpha = 1;
   hctx.globalCompositeOperation = "source-over";
 
-  return {
-    height,
-    mask,
-    normalMap: toTexture(heightToNormal(height, depth)),
-    maskMap: toTexture(mask),
-  };
+  return { height, mask };
 }
 
-function invert(source: HTMLCanvasElement) {
+function invert(source: Surface): Surface {
   const [canvas, ctx] = makeCanvas(source.width, "#fff");
   ctx.globalCompositeOperation = "difference";
   ctx.drawImage(source, 0, 0);
@@ -109,8 +103,8 @@ export function drawScale(
  * lettering reads as enamel in a machined groove rather than as a decal.
  */
 export function stampInk(
-  target: { albedo: HTMLCanvasElement; rough: HTMLCanvasElement },
-  mask: HTMLCanvasElement,
+  target: { albedo: Surface; rough: Surface },
+  mask: Surface,
   color = "#0c0d10",
   paintRoughness = 0.7,
 ) {
@@ -119,12 +113,12 @@ export function stampInk(
   tctx.globalCompositeOperation = "destination-in";
   tctx.drawImage(mask, 0, 0);
   tctx.globalCompositeOperation = "source-over";
-  target.albedo.getContext("2d")!.drawImage(tinted, 0, 0, target.albedo.width, target.albedo.height);
+  ctxOf(target.albedo).drawImage(tinted, 0, 0, target.albedo.width, target.albedo.height);
 
   const level = Math.round(paintRoughness * 255);
   const [matte, mctx] = makeCanvas(size, `rgb(${level},${level},${level})`);
   mctx.globalCompositeOperation = "destination-in";
   mctx.drawImage(mask, 0, 0);
   mctx.globalCompositeOperation = "source-over";
-  target.rough.getContext("2d")!.drawImage(matte, 0, 0, target.rough.width, target.rough.height);
+  ctxOf(target.rough).drawImage(matte, 0, 0, target.rough.width, target.rough.height);
 }

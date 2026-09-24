@@ -1,4 +1,28 @@
-import type { Keyframe } from "./CameraRig";
+import type { BeatTiming } from "../lib/beats";
+
+export type V3 = [number, number, number];
+
+/** One parked camera pose per beat; the rig travels between them. */
+export type Keyframe = BeatTiming & {
+  id: string;
+  position: V3;
+  target: V3;
+  /** Points the path passes through on the way to this pose. */
+  via?: V3[];
+  /** 35mm-equivalent focal length: the HORIZONTAL framing on a 36 mm frame. */
+  lensMm: number;
+  /** "case": the pose is in the aircraft's own frame and rides with it. */
+  frame?: "world" | "case";
+  /** Degrees of orbit around the target across the beat (continuous, not parked). */
+  drift?: number;
+  /** Extra vertical view offset for this beat, as a fraction of the height. */
+  viewOffsetY?: { landscape: number; portrait: number };
+  /** Overrides for viewports taller than wide. */
+  portrait?: { position?: V3; target?: V3; lensMm?: number };
+  /** The object reaches into the text column in this pose: scrim the words. */
+  scrim?: boolean;
+};
+
 
 const ORBIT_CENTRE: [number, number, number] = [0, 0.2, 0];
 const ORBIT_RADIUS = 3.6;
@@ -91,7 +115,9 @@ export const KEYFRAMES: Keyframe[] = [
     id: "skills",
     weight: 1,
     // Macro on the jewel bearing set into the outer ring's rim: the small
-    // machined part that lets everything move freely.
+    // machined part that lets everything move freely. The way in passes in
+    // front of the bezel, well clear of its rim.
+    via: [[1.9, 0.55, 2.4]],
     position: [2.45, 0.35, 0.6],
     target: [1.45, 0, 0],
     lensMm: 100,
@@ -101,6 +127,9 @@ export const KEYFRAMES: Keyframe[] = [
   {
     id: "projects",
     weight: 1,
+    // Around the front of the glass, low, never through it: the straight
+    // line from the jewel macro would cross the dial.
+    via: [[1.4, -1.6, 2.6]],
     position: [-2.3, -1.55, 2.9],
     target: [0, 0.1, 0],
     lensMm: 35,
@@ -114,9 +143,11 @@ export const KEYFRAMES: Keyframe[] = [
     position: [0, 0.9, 3.6],
     target: [0, 0.2, 0],
     lensMm: 28,
-    hold: 0.4,
+    // The orbit owns most of the move in; a short departure remains so the
+    // words can fade before the cut to the pilot's seat.
+    hold: 0.36,
     arriveShare: 0.92,
-    arriveFrac: 0.6,
+    arriveFrac: 0.52,
     scrim: true,
   },
   {

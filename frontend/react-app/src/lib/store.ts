@@ -14,6 +14,13 @@ export type TimelineState = {
   /** The scene has compiled its shaders and drawn its first frame. */
   ready: boolean;
   tier: Tier;
+  /**
+   * Effects level, starting equal to the tier and only ever stepping down:
+   * the frame-time governor drops the post stack, the reflective bench and
+   * the transmissive glass on a device that cannot hold its frame rate.
+   * Textures and geometry stay at the tier, so a demotion never rebuilds them.
+   */
+  quality: Tier;
   reducedMotion: boolean;
   /** Pointer in normalised device coordinates (-1..1), parked at 0 on touch. */
   pointerX: number;
@@ -40,6 +47,7 @@ export const useTimeline = create<TimelineState>()(
     beat: 0,
     ready: false,
     tier: "mid",
+    quality: "mid",
     reducedMotion: false,
     pointerX: 0,
     pointerY: 0,

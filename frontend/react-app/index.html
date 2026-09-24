@@ -56,7 +56,10 @@
     </style>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- The first beat's words are written here at build time, so the page
+         paints them before a byte of JavaScript runs; React then takes over
+         the same markup. -->
+    <div id="root"><!--first-beat--></div>
     <noscript>
       <!-- Replaced at build time with the full article (see vite.config.ts). -->
       <p style="padding: 3rem 1.5rem; font-family: system-ui, sans-serif">

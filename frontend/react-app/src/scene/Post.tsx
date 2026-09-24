@@ -1,7 +1,6 @@
 import {
   Bloom,
   BrightnessContrast,
-  ChromaticAberration,
   DepthOfField,
   EffectComposer,
   HueSaturation,
@@ -18,17 +17,18 @@ import { DEFAULT_POST, type PostSettings } from "../lib/grade";
 import type { Tier } from "../lib/store";
 import { cameraState } from "./palette";
 
-type Props = { tier: Tier; settings?: PostSettings };
+type Props = { quality: Tier; settings?: PostSettings };
 
 /**
  * The grade, in order: bloom lifts the practicals and the specular hits,
- * depth of field (desktop only: it is the most expensive pass) gives the
- * lens a focal plane, aberration and grain make it feel photographed rather
+ * depth of field (the high level only: it is the most expensive pass)
+ * gives the lens a focal plane, grain makes it feel photographed rather
  * than rendered, the vignette closes the frame, and AgX tone mapping keeps
- * the bright metal from clipping to white. Low tier keeps only what it
- * cannot do without: tone mapping and a vignette.
+ * the bright metal from clipping to white. No chromatic aberration: a
+ * macro lens on a precision instrument has none, and it is the stock
+ * WebGL-demo tell. The low level has no stack at all.
  */
-export default function Post({ tier, settings = DEFAULT_POST }: Props) {
+export default function Post({ quality, settings = DEFAULT_POST }: Props) {
   const dof = useRef<DepthOfFieldEffect>(null);
 
   // The focal plane follows the camera's aim and the aperture follows the
@@ -45,14 +45,6 @@ export default function Post({ tier, settings = DEFAULT_POST }: Props) {
     if (Math.abs(effect.bokehScale - cameraState.bokeh) > 1e-3) effect.bokehScale = cameraState.bokeh;
   });
 
-  if (tier === "low") {
-    return (
-      <EffectComposer multisampling={0} frameBufferType={HalfFloatType}>
-        <Vignette offset={settings.vignetteOffset} darkness={settings.vignetteDarkness} />
-        <ToneMapping mode={settings.toneMapping} />
-      </EffectComposer>
-    );
-  }
   return (
     <EffectComposer multisampling={0} frameBufferType={HalfFloatType}>
       <Bloom
@@ -63,22 +55,13 @@ export default function Post({ tier, settings = DEFAULT_POST }: Props) {
         radius={settings.bloomRadius}
         levels={5}
       />
-      {tier === "high" ? (
+      {quality === "high" ? (
         <DepthOfField
           ref={dof}
           worldFocusDistance={3}
           worldFocusRange={1}
           bokehScale={settings.dofBokehScale}
           resolutionScale={0.5}
-        />
-      ) : (
-        <></>
-      )}
-      {tier === "high" ? (
-        <ChromaticAberration
-          offset={[settings.aberration, settings.aberration]}
-          radialModulation
-          modulationOffset={0.35}
         />
       ) : (
         <></>

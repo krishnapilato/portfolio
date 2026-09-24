@@ -1,10 +1,11 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { BEATS } from "./content/beats";
+import { computeRanges } from "./lib/beats";
 import { decideTier, probeDevice } from "./lib/device";
-import { applyDeepLink, goToBeat, startEnvironmentSync, startKeyboardStepping, trackOf } from "./lib/interaction";
+import { applyDeepLink, focusBeatTitle, goToBeat, startEnvironmentSync, startHashMirror, startNavigation } from "./lib/interaction";
 import { startScroll } from "./lib/scroll";
 import { useTimeline } from "./lib/store";
-import { BEAT_IDS, KEYFRAMES } from "./scene/keyframes";
+import { KEYFRAMES } from "./scene/keyframes";
 import Beats, { type BeatContent } from "./ui/Beats";
 import Curtain from "./ui/Curtain";
 import Links from "./ui/Links";
@@ -21,13 +22,17 @@ const CONTENT: BeatContent[] = BEATS.map((beat, index) => ({
   arriveFrac: KEYFRAMES[index].arriveFrac,
   kicker: beat.kicker,
   title: beat.title,
+  titleLinks: beat.titleLinks,
   body: beat.body,
   meta: beat.meta,
+  metaLink: beat.metaLink,
+  hint: beat.hint,
   scrim: KEYFRAMES[index].frame === "case" || KEYFRAMES[index].scrim === true,
-  children: beat.links ? <Links links={beat.links} compact={beat.id !== "contact"} /> : undefined,
+  children: beat.links ? <Links links={beat.links} /> : undefined,
 }));
 
 const LABELS = BEATS.map((beat) => ({ id: beat.id, label: beat.readout, tickLabel: beat.tickLabel }));
+const RANGES = computeRanges(KEYFRAMES);
 
 export default function App() {
   // Decided once, before anything renders: which tier this device gets.
@@ -51,15 +56,18 @@ export default function App() {
   }, [ready, webgl, lost, boot.tier]);
 
   useEffect(() => {
-    useTimeline.getState().set({ tier: boot.tier, webgl: boot.webgl, reducedMotion: boot.reducedMotion });
+    useTimeline.getState().set({ tier: boot.tier, quality: boot.tier, webgl: boot.webgl, reducedMotion: boot.reducedMotion });
     const stopEnvironment = startEnvironmentSync();
-    const stopScroll = startScroll(boot.reducedMotion);
-    const stopKeys = startKeyboardStepping(BEAT_IDS);
-    applyDeepLink(BEAT_IDS);
+    const stopScroll = startScroll(boot.reducedMotion, RANGES);
+    const stopNavigation = startNavigation(KEYFRAMES);
+    // The deep link is read before the mirror starts writing the hash.
+    applyDeepLink();
+    const stopMirror = startHashMirror();
     return () => {
-      stopEnvironment();
+      stopMirror();
+      stopNavigation();
       stopScroll();
-      stopKeys();
+      stopEnvironment();
     };
   }, [boot]);
 
@@ -69,17 +77,19 @@ export default function App() {
         className="skip"
         href="#contact-title"
         onClick={(event) => {
-          const track = trackOf("contact");
-          if (!track) return;
+          if (!goToBeat("contact")) return;
           event.preventDefault();
-          goToBeat(track, "contact");
-          document.getElementById("contact-title")?.focus({ preventScroll: true });
+          // The heading takes focus once its block is readable, not before.
+          focusBeatTitle("contact");
         }}
       >
         Skip to contact
       </a>
 
-      {webgl && !lost ? (
+      {/* Gated on the probe, not the store default, so a browser without
+          WebGL never downloads the renderer. A lost context keeps the
+          scene mounted behind the curtain, so a restored one resumes. */}
+      {boot.webgl && webgl ? (
         <Suspense fallback={null}>
           <Scene />
         </Suspense>

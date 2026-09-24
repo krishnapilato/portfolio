@@ -1,3 +1,4 @@
+import { phasesOf, type BeatTiming } from "./beats";
 import { COARSE_POINTER, REDUCED_MOTION } from "./media";
 import { scrollTo, stopScrollMove } from "./scroll";
 import { useTimeline } from "./store";
@@ -53,13 +54,28 @@ export function startEnvironmentSync(): () => void {
   };
 }
 
+/** A beat as the navigation sees it: its id and its timing. */
+export type FilmBeat = BeatTiming & { id: string };
+
+// The film that stepping, deep links and the hash mirror navigate. It is
+// registered once by startNavigation so the callers (keys, readout ticks,
+// the skip link) only ever name a beat.
+let film: FilmBeat[] = [];
+
 /**
  * Keyboard stepping through the film. J/K, the vertical arrows and the
  * page keys go to the previous or next beat; Home and End go to the ends;
  * Escape stops a move in flight. Space and the horizontal arrows are left
  * to the browser, and text fields are never intercepted.
  */
-export function startKeyboardStepping(beatIds: string[]): () => void {
+export function startNavigation(beats: FilmBeat[]): () => void {
+  film = beats;
+  // The beat a key last asked for, while its move is still in flight, so
+  // two quick presses step two beats the way a scrubber would.
+  let pending = -1;
+  const settle = () => {
+    pending = -1;
+  };
   const onKey = (event: KeyboardEvent) => {
     if (event.metaKey || event.ctrlKey || event.altKey) return;
     const target = event.target as HTMLElement | null;
@@ -68,9 +84,10 @@ export function startKeyboardStepping(beatIds: string[]): () => void {
 
     if (event.key === "Escape") {
       stopScrollMove();
+      settle();
       return;
     }
-    const current = useTimeline.getState().beat;
+    const current = pending >= 0 ? pending : useTimeline.getState().beat;
     let next: number;
     switch (event.key) {
       case "ArrowDown":
@@ -89,19 +106,48 @@ export function startKeyboardStepping(beatIds: string[]): () => void {
         next = 0;
         break;
       case "End":
-        next = beatIds.length - 1;
+        next = film.length - 1;
         break;
       default:
         return;
     }
-    if (next < 0 || next >= beatIds.length) return;
-    const element = trackOf(beatIds[next]);
-    if (!element) return;
-    event.preventDefault();
-    goToBeat(element, beatIds[next]);
+    if (next < 0 || next >= film.length) return;
+    if (goToBeat(film[next].id)) {
+      pending = next;
+      event.preventDefault();
+    }
   };
   window.addEventListener("keydown", onKey);
-  return () => window.removeEventListener("keydown", onKey);
+  window.addEventListener("scrollend", settle, { passive: true });
+  return () => {
+    window.removeEventListener("keydown", onKey);
+    window.removeEventListener("scrollend", settle);
+    film = [];
+  };
+}
+
+/**
+ * Moves keyboard focus to a beat's heading as soon as its block is
+ * readable (a hidden block's heading cannot take focus), giving up quietly
+ * if the scroll never arrives.
+ */
+export function focusBeatTitle(id: string) {
+  const title = document.getElementById(`${id}-title`);
+  const block = title?.closest<HTMLElement>(".beat__block");
+  if (!title || !block) return;
+  const attempt = () => {
+    if (block.dataset.readable !== "true") return false;
+    title.focus({ preventScroll: true });
+    return true;
+  };
+  if (attempt()) return;
+  const stop = useTimeline.subscribe(
+    (s) => s.progress,
+    () => {
+      if (attempt()) stop();
+    },
+  );
+  window.setTimeout(stop, 5000);
 }
 
 /** The spacer track that gives a beat its scroll range. */
@@ -111,31 +157,48 @@ export function trackOf(id: string): HTMLElement | null {
 
 /**
  * The scroll position at which a beat is parked: the middle of its hold,
- * where the camera rests and the text is fully readable.
+ * where the camera rests and the text is fully readable. A beat's range is
+ * its whole track, except the last beat, whose range ends where the
+ * document stops scrolling.
  */
-export function holdPoint(element: HTMLElement, hold = 0.55, arriveFrac?: number): number {
+export function holdPoint(element: HTMLElement, timing: BeatTiming = { weight: 1 }): number {
   const top = element.getBoundingClientRect().top + window.scrollY;
-  const height = element.offsetHeight - window.innerHeight;
-  const arrive = arriveFrac ?? (1 - hold) / 2;
-  const middle = arrive + hold / 2;
-  return top + Math.max(0, height) * middle;
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  const span = Math.max(0, Math.min(element.offsetHeight, maxScroll - top));
+  const phases = phasesOf(timing);
+  return Math.round(top + span * (phases.arrive + phases.hold / 2));
 }
 
-/** Scrolls a beat into the parked position and mirrors it in the URL hash. */
-export function goToBeat(element: HTMLElement, id: string, timing?: { hold?: number; arriveFrac?: number }) {
-  const immediate = useTimeline.getState().reducedMotion;
-  const distance = Math.abs(holdPoint(element, timing?.hold, timing?.arriveFrac) - window.scrollY);
-  const beats = distance / Math.max(window.innerHeight, 1);
-  scrollTo(holdPoint(element, timing?.hold, timing?.arriveFrac), immediate, beats > 2 ? 2.4 : 1.2);
-  if (history.replaceState) history.replaceState(null, "", `#${id}`);
+/** Scrolls a beat into its parked position; false when the beat is unknown. */
+export function goToBeat(id: string, immediate = useTimeline.getState().reducedMotion): boolean {
+  const element = trackOf(id);
+  if (!element) return false;
+  const timing = film.find((b) => b.id === id);
+  const target = holdPoint(element, timing);
+  const beats = Math.abs(target - window.scrollY) / Math.max(window.innerHeight, 1);
+  scrollTo(target, immediate, beats > 2 ? 2.4 : 1.2);
+  return true;
 }
 
 /** On load, a #beat-id hash lands on that beat without animation. */
-export function applyDeepLink(beatIds: string[]) {
+export function applyDeepLink(): boolean {
   const id = decodeURIComponent(location.hash.replace(/^#/, ""));
-  if (!id || !beatIds.includes(id)) return false;
-  const element = trackOf(id);
-  if (!element) return false;
-  scrollTo(holdPoint(element), true);
-  return true;
+  if (!id || !film.some((b) => b.id === id)) return false;
+  return goToBeat(id, true);
+}
+
+/**
+ * Mirrors the current beat into the URL with replaceState, so a reload or
+ * a shared link lands where the visitor was and the back button never
+ * becomes a ten-step trap. The first beat is the bare URL.
+ */
+export function startHashMirror(): () => void {
+  const mirror = (beat: number) => {
+    const id = film[beat]?.id;
+    const wanted = beat > 0 && id ? `#${id}` : "";
+    if (location.hash === wanted) return;
+    history.replaceState(null, "", `${location.pathname}${location.search}${wanted}`);
+  };
+  mirror(useTimeline.getState().beat);
+  return useTimeline.subscribe((s) => s.beat, mirror);
 }
