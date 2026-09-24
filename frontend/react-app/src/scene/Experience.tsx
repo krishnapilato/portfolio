@@ -4,6 +4,7 @@ import { AgXToneMapping, PCFShadowMap } from "three";
 import { shallow } from "zustand/shallow";
 import { DPR_RANGE } from "../lib/device";
 import { useTimeline, type Tier } from "../lib/store";
+import { cameraState } from "./palette";
 import Post from "./Post";
 
 type Props = { children: ReactNode };
@@ -53,41 +54,56 @@ const LOWER: Record<Tier, Tier | null> = { high: "mid", mid: "low", low: null };
 
 /**
  * The frame-time governor. Frames are rendered on demand, so it measures
- * only consecutive frames (a gap is a pause, not a slow frame). When the
- * smoothed frame interval stays above ~24 ms for a stretch of frames the
- * pixel ratio steps down inside the tier's range, and when that is spent
- * the effects level drops a step (post stack, reflective bench, refracting
- * glass). It never steps back up: a film that settles is better than one
- * that flickers between two looks.
+ * only consecutive frames: a gap longer than a very slow frame is a pause,
+ * not a measurement. When the smoothed frame interval stays above ~22 ms
+ * for twenty frames the pixel ratio steps down inside the tier's range,
+ * and when that is spent the effects level drops a step (post stack,
+ * reflective bench, refracting glass). It acts within a second of the
+ * first slow scroll and never steps back up: a film that settles is
+ * better than one that flickers between two looks.
  */
 function Governor() {
   const setDpr = useThree((s) => s.setDpr);
+  const gl = useThree((s) => s.gl);
   const tier = useTimeline((s) => s.tier);
   const [min, max] = DPR_RANGE[tier];
   const state = useRef({ ema: 16, run: 0, dpr: max, last: 0 });
+
+  useEffect(() => {
+    // One line for anyone who opens the console asking why it looks like this.
+    const info = gl.getContext().getExtension("WEBGL_debug_renderer_info");
+    const renderer = info ? String(gl.getContext().getParameter(info.UNMASKED_RENDERER_WEBGL)) : "masked";
+    console.info(`[attitude] tier ${tier}, pixel ratio up to ${max}, renderer: ${renderer}`);
+  }, [gl, tier, max]);
 
   useFrame(() => {
     const s = state.current;
     const now = performance.now();
     const gap = now - s.last;
     s.last = now;
-    if (gap > 120) {
+    cameraState.frames++;
+    if (gap > 400) {
       s.run = 0;
       return;
     }
-    s.ema = s.ema * 0.9 + gap * 0.1;
+    s.ema = s.ema * 0.85 + gap * 0.15;
     s.run++;
-    if (s.run < 45 || s.ema <= 24) return;
+    cameraState.frameMs = s.ema;
+    if (s.run < 20 || s.ema <= 22) return;
     s.run = 0;
     s.ema = 16;
+    const t = useTimeline.getState();
     if (s.dpr > min + 1e-3) {
       s.dpr = Math.max(min, s.dpr - 0.25);
       setDpr(s.dpr);
+      console.info(`[attitude] frames are slow: pixel ratio ${s.dpr}`);
       return;
     }
-    const t = useTimeline.getState();
     const next = LOWER[t.quality];
-    if (next) t.set({ quality: next });
+    if (next) {
+      t.set({ quality: next });
+      console.info(`[attitude] frames are slow: effects level ${next}`);
+    }
   });
   return null;
 }

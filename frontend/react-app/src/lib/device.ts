@@ -5,10 +5,16 @@ type NavigatorExtras = Navigator & {
   connection?: { saveData?: boolean; effectiveType?: string };
 };
 
-/** Renderer strings that mark integrated / software / low-end GPUs. */
+/**
+ * Renderer strings. "Strong" is a discrete GPU or an Apple M-series chip:
+ * only those get the full effect stack. Every integrated laptop GPU (Intel
+ * HD, UHD, Iris and Xe; AMD's Ryzen "Radeon Graphics" and Vega) is "weak"
+ * here on purpose: they run the mid level well and the high level badly,
+ * and a laptop is where most visitors will watch this film.
+ */
 const WEAK_GPU =
-  /swiftshader|llvmpipe|software|mali-4|mali-t|mali-g5|adreno 3|adreno 4|adreno 5|powervr|intel.*hd graphics [2345]|intel.*uhd 6[0-2]|apple gpu/i;
-const STRONG_GPU = /rtx|radeon rx|geforce gtx 1[06]|geforce gtx 20|apple m[1-9]|adreno 7|adreno 8|mali-g7[1-9]|mali-g[89]|immortalis|xe graphics|arc a/i;
+  /swiftshader|llvmpipe|software|mesa|mali-4|mali-t|mali-g5|adreno 3|adreno 4|adreno 5|adreno 6|powervr|intel|iris|xe graphics|radeon\(tm\) graphics|radeon graphics|radeon vega|vega [0-9]|apple gpu/i;
+const STRONG_GPU = /rtx|geforce gtx|radeon rx|radeon pro|arc a|arc b|apple m[1-9]|adreno 7|adreno 8|mali-g7[1-9]|mali-g[89]|immortalis/i;
 
 export type Probe = {
   webgl: boolean;
@@ -64,17 +70,17 @@ export function probeDevice(): Probe {
  */
 export function decideTier(p: Probe): Tier {
   if (!p.webgl) return "low";
-  let score = 0;
-  if (STRONG_GPU.test(p.renderer)) score += 3;
-  if (WEAK_GPU.test(p.renderer)) score -= 3;
-  if (p.memory >= 8) score += 2;
-  else if (p.memory <= 2) score -= 2;
-  if (p.cores >= 8) score += 1;
-  else if (p.cores <= 4) score -= 1;
+  // A strong renderer is the only way up: cores and memory say nothing
+  // about a GPU, and they used to push every eight-core laptop to "high".
+  const strong = STRONG_GPU.test(p.renderer) && !WEAK_GPU.test(p.renderer);
+  let score = strong ? 3 : 0;
+  if (WEAK_GPU.test(p.renderer)) score -= 2;
+  if (p.memory <= 2) score -= 2;
+  if (p.cores <= 4) score -= 1;
   if (p.touch) score -= 1;
   if (p.width < 700) score -= 1;
   if (p.saveData) score -= 3;
-  if (score >= 3) return "high";
+  if (strong && score >= 2) return "high";
   if (score <= -3) return "low";
   return "mid";
 }
@@ -84,6 +90,6 @@ export function decideTier(p: Probe): Tier {
 // 2x buys nothing visible and costs 78% more pixels in every extra pass.
 export const DPR_RANGE: Record<Tier, [number, number]> = {
   high: [1, 1.5],
-  mid: [1, 1.5],
+  mid: [1, 1.25],
   low: [0.75, 1],
 };

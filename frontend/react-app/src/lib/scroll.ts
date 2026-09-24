@@ -43,7 +43,7 @@ export function startScroll(reducedMotion: boolean, ranges: BeatRange[]): () => 
     // scrolls itself; Lenis's own anchor handler would aim at a heading
     // inside the fixed text layer and land in the wrong place.
     lenis = new Lenis({
-      lerp: 0.1,
+      lerp: 0.13,
       wheelMultiplier: 0.9,
       smoothWheel: true,
       syncTouch: false,

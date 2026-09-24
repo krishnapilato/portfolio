@@ -28,4 +28,7 @@ export const cameraState = {
   target: [0, 0, 0] as [number, number, number],
   fov: 32,
   time: 0,
+  /** Rendered frames so far, and the governor's smoothed frame interval. */
+  frames: 0,
+  frameMs: 0,
 };

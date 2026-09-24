@@ -63,7 +63,7 @@ function poseParameters(curve: CatmullRomCurve3, poseIndices: number[], pointCou
  * into the cockpit and back out without a cut. Nothing here touches React
  * state.
  */
-export default function CameraRig({ keyframes, smoothTime = 0.32, parallax = 0.08 }: Props) {
+export default function CameraRig({ keyframes, smoothTime = 0.28, parallax = 0.08 }: Props) {
   const camera = useThree((s) => s.camera) as PerspectiveCamera;
   const invalidate = useThree((s) => s.invalidate);
   const size = useThree((s) => s.size);

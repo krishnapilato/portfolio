@@ -54,10 +54,10 @@ function Lights({ tier, quality }: { tier: Tier; quality: Tier }) {
       keyArea.current.color.copy(keyColor);
     }
     if (rim.current) rim.current.intensity = lighting.rim;
-    if (raker.current) {
-      raker.current.intensity = lighting.raker;
-      raker.current.visible = lighting.raker > 0.01;
-    }
+    // Intensity only, never `visible`: a light that leaves the scene
+    // changes every program's light count, and recompiling fifteen shaders
+    // mid-scroll is a hitch on every driver and a long one on Windows.
+    if (raker.current) raker.current.intensity = lighting.raker;
     cameraState.bokeh = lighting.bokeh;
     if (Math.abs(exposure.current - lighting.exposure) > 1e-3) {
       exposure.current = lighting.exposure;
