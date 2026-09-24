@@ -1,78 +1,83 @@
-import gsap from "gsap";
-import { useLayoutEffect, useRef } from "react";
-import "./App.css";
-import Ambient from "./components/Ambient";
-import Closing from "./components/Closing";
-import Hero from "./components/Hero";
-import Projects from "./components/Projects";
-import Prologue from "./components/Prologue";
-import SiteFooter from "./components/SiteFooter";
-import Story from "./components/Story";
-import Telemetry from "./components/Telemetry";
-import TopBar from "./components/TopBar";
-import {
-  prefersReducedMotion,
-  useGlobalLight,
-  useHotkey,
-  useLanguage,
-  useReveal,
-} from "./lib/hooks";
+import { useEffect, useState } from "react";
+import { BEATS } from "./content/beats";
+import { decideTier, probeDevice } from "./lib/device";
+import { applyDeepLink, startEnvironmentSync, startKeyboardStepping } from "./lib/interaction";
+import { startScroll } from "./lib/scroll";
+import { useTimeline } from "./lib/store";
+import CameraRig from "./scene/CameraRig";
+import Experience from "./scene/Experience";
+import Instrument from "./scene/Instrument";
+import { BEAT_IDS, KEYFRAMES } from "./scene/keyframes";
+import Stage from "./scene/Stage";
+import Beats, { type BeatContent } from "./ui/Beats";
+import Curtain from "./ui/Curtain";
+import Links from "./ui/Links";
+import Readout from "./ui/Readout";
+
+const CONTENT: BeatContent[] = BEATS.map((beat, index) => ({
+  id: beat.id,
+  weight: KEYFRAMES[index].weight,
+  hold: KEYFRAMES[index].hold,
+  arriveShare: KEYFRAMES[index].arriveShare,
+  arriveFrac: KEYFRAMES[index].arriveFrac,
+  kicker: beat.kicker,
+  title: beat.title,
+  body: beat.body,
+  meta: beat.meta,
+  children: beat.links ? <Links links={beat.links} compact={beat.id !== "contact"} /> : undefined,
+}));
+
+const LABELS = BEATS.map((beat) => ({ id: beat.id, label: beat.readout, tickLabel: beat.tickLabel }));
 
 export default function App() {
-  const { lang, copy, setLang, toggle } = useLanguage();
-  const shell = useRef<HTMLDivElement>(null);
-  const mounted = useRef(false);
+  // Decided once, before anything renders: which tier this device gets.
+  const [boot] = useState(() => {
+    const probe = probeDevice();
+    return { tier: decideTier(probe), webgl: probe.webgl, reducedMotion: probe.reducedMotion };
+  });
+  const webgl = useTimeline((s) => s.webgl);
+  const lost = useTimeline((s) => s.contextLost);
+  const ready = useTimeline((s) => s.ready);
 
-  useGlobalLight();
-  useReveal([lang]);
-  useHotkey("l", toggle);
+  // The stylesheet reads these: the canvas fades in on ready, and the low
+  // tier gets its grain and vignette from CSS instead of the GPU.
+  useEffect(() => {
+    document.documentElement.dataset.ready = String(ready && webgl && !lost);
+    document.documentElement.dataset.tier = boot.tier;
+  }, [ready, webgl, lost, boot.tier]);
 
-  // A short settle on language change, so the page reads as one continuous
-  // surface rather than a hard content swap.
-  useLayoutEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true;
-      return;
-    }
-    const target = shell.current;
-    if (!target || prefersReducedMotion()) return;
-    gsap.fromTo(
-      target,
-      { opacity: 0.4, y: 8 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: "power2.out",
-        clearProps: "transform,opacity",
-      },
-    );
-  }, [lang]);
+  useEffect(() => {
+    useTimeline.getState().set({ tier: boot.tier, webgl: boot.webgl, reducedMotion: boot.reducedMotion });
+    const stopEnvironment = startEnvironmentSync();
+    const stopScroll = startScroll(boot.reducedMotion);
+    const stopKeys = startKeyboardStepping(BEAT_IDS);
+    applyDeepLink(BEAT_IDS);
+    return () => {
+      stopEnvironment();
+      stopScroll();
+      stopKeys();
+    };
+  }, [boot]);
 
   return (
     <>
-      {/* Kept outside the animated shell: these are position:fixed layers and
-          a transform on an ancestor would re-anchor them to the document. */}
-      <Ambient />
+      <a className="skip" href="#contact">Skip to contact</a>
 
-      <div className="shell" ref={shell}>
-        <a className="skip" href="#story">
-          {copy.scrollCue}
-        </a>
+      {webgl && !lost ? (
+        <Experience>
+          <Stage />
+          <Instrument />
+          <CameraRig keyframes={KEYFRAMES} />
+        </Experience>
+      ) : null}
 
-        <TopBar copy={copy} lang={lang} onSelect={setLang} />
+      <Curtain />
 
-        <main className="content">
-          <Hero copy={copy} />
-          <Prologue copy={copy} />
-          <Story copy={copy} />
-          <Projects copy={copy} />
-          <Telemetry copy={copy} />
-          <Closing copy={copy} />
-        </main>
+      <main className="film">
+        <Beats beats={CONTENT} />
+      </main>
 
-        <SiteFooter copy={copy} />
-      </div>
+      <Readout labels={LABELS} />
     </>
   );
 }

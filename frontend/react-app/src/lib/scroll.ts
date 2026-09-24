@@ -58,14 +58,20 @@ export function startScroll(reducedMotion: boolean): () => void {
   };
 }
 
-/** Scrolls to an element or a pixel offset, eased unless motion is reduced. */
-export function scrollTo(target: HTMLElement | number, immediate = false) {
+/** Scrolls to a pixel offset, eased unless motion is reduced. */
+export function scrollTo(top: number, immediate = false, duration = 1.2) {
   if (lenis && !immediate) {
-    lenis.scrollTo(target, { duration: 1.6, lock: false });
+    lenis.scrollTo(top, { duration, lock: false });
     return;
   }
-  const top = typeof target === "number" ? target : target.getBoundingClientRect().top + window.scrollY;
   window.scrollTo({ top, behavior: immediate ? "instant" : "smooth" });
+}
+
+/** Halts a programmatic move where it is (Escape), without locking scrolling. */
+export function stopScrollMove() {
+  if (!lenis) return;
+  lenis.stop();
+  lenis.start();
 }
 
 export function stopScroll() { lenis?.stop(); }

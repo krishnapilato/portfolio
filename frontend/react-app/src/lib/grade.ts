@@ -16,15 +16,15 @@ export type PostSettings = {
 };
 
 export const DEFAULT_POST: PostSettings = {
-  bloomThreshold: 0.86,
-  bloomIntensity: 0.55,
-  bloomRadius: 0.62,
+  bloomThreshold: 1.1,
+  bloomIntensity: 0.45,
+  bloomRadius: 0.6,
   dofFocusDistance: 0.02,
-  dofFocalLength: 0.045,
-  dofBokehScale: 2.6,
-  vignetteOffset: 0.28,
-  vignetteDarkness: 0.62,
-  grain: 0.045,
-  aberration: 0.0007,
+  dofFocalLength: 0.02,
+  dofBokehScale: 1.6,
+  vignetteOffset: 0.35,
+  vignetteDarkness: 0.55,
+  grain: 0.035,
+  aberration: 0.0012,
   toneMapping: ToneMappingMode.AGX,
 };

@@ -1,5 +1,5 @@
 import { COARSE_POINTER, REDUCED_MOTION } from "./media";
-import { scrollTo } from "./scroll";
+import { scrollTo, stopScrollMove } from "./scroll";
 import { useTimeline } from "./store";
 
 /**
@@ -54,10 +54,10 @@ export function startEnvironmentSync(): () => void {
 }
 
 /**
- * Keyboard stepping through the film. Arrow keys, page keys and space go to
- * the previous or next beat; Home and End go to the ends. The browser's
- * own scrolling for these keys is replaced only when a beat exists to go
- * to, so nothing is trapped and text fields are never intercepted.
+ * Keyboard stepping through the film. J/K, the vertical arrows and the
+ * page keys go to the previous or next beat; Home and End go to the ends;
+ * Escape stops a move in flight. Space and the horizontal arrows are left
+ * to the browser, and text fields are never intercepted.
  */
 export function startKeyboardStepping(beatIds: string[]): () => void {
   const onKey = (event: KeyboardEvent) => {
@@ -66,18 +66,23 @@ export function startKeyboardStepping(beatIds: string[]): () => void {
     if (target?.isContentEditable) return;
     if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
 
+    if (event.key === "Escape") {
+      stopScrollMove();
+      return;
+    }
     const current = useTimeline.getState().beat;
     let next: number;
     switch (event.key) {
       case "ArrowDown":
       case "PageDown":
-      case "ArrowRight":
-      case " ":
-        next = event.shiftKey && event.key === " " ? current - 1 : current + 1;
+      case "j":
+      case "J":
+        next = current + 1;
         break;
       case "ArrowUp":
       case "PageUp":
-      case "ArrowLeft":
+      case "k":
+      case "K":
         next = current - 1;
         break;
       case "Home":
@@ -99,10 +104,24 @@ export function startKeyboardStepping(beatIds: string[]): () => void {
   return () => window.removeEventListener("keydown", onKey);
 }
 
+/**
+ * The scroll position at which a beat is parked: the middle of its hold,
+ * where the camera rests and the text is fully readable.
+ */
+export function holdPoint(element: HTMLElement, hold = 0.55, arriveFrac?: number): number {
+  const top = element.getBoundingClientRect().top + window.scrollY;
+  const height = element.offsetHeight - window.innerHeight;
+  const arrive = arriveFrac ?? (1 - hold) / 2;
+  const middle = arrive + hold / 2;
+  return top + Math.max(0, height) * middle;
+}
+
 /** Scrolls a beat into the parked position and mirrors it in the URL hash. */
-export function goToBeat(element: HTMLElement, id: string) {
+export function goToBeat(element: HTMLElement, id: string, timing?: { hold?: number; arriveFrac?: number }) {
   const immediate = useTimeline.getState().reducedMotion;
-  scrollTo(element, immediate);
+  const distance = Math.abs(holdPoint(element, timing?.hold, timing?.arriveFrac) - window.scrollY);
+  const beats = distance / Math.max(window.innerHeight, 1);
+  scrollTo(holdPoint(element, timing?.hold, timing?.arriveFrac), immediate, beats > 2 ? 2.4 : 1.2);
   if (history.replaceState) history.replaceState(null, "", `#${id}`);
 }
 
@@ -112,6 +131,6 @@ export function applyDeepLink(beatIds: string[]) {
   if (!id || !beatIds.includes(id)) return false;
   const element = document.getElementById(id);
   if (!element) return false;
-  scrollTo(element, true);
+  scrollTo(holdPoint(element), true);
   return true;
 }

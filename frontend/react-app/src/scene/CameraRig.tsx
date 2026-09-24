@@ -1,36 +1,40 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
-import { CatmullRomCurve3, MathUtils, PerspectiveCamera, Vector3 } from "three";
-import { computeRanges, fovFromLens, holdEase, localT, smooth } from "../lib/beats";
+import { useEffect, useMemo, useRef } from "react";
+import { CatmullRomCurve3, MathUtils, PerspectiveCamera, Quaternion, Vector3 } from "three";
+import { cameraTime, computeRanges, fovFromLens, localT, smooth, type BeatTiming } from "../lib/beats";
 import { useTimeline } from "../lib/store";
+import { attitudeAt, beatTimeAt, caseQuaternion, trim, type Attitude } from "./attitude";
+import { cameraState } from "./palette";
+
+type V3 = [number, number, number];
 
 /** One parked camera pose per beat; the rig travels between them. */
-export type Keyframe = {
+export type Keyframe = BeatTiming & {
   id: string;
-  weight: number;
-  position: [number, number, number];
-  target: [number, number, number];
+  position: V3;
+  target: V3;
+  /** Points the path passes through on the way to this pose. */
+  via?: V3[];
   /** 35mm-equivalent focal length: the HORIZONTAL framing on a 36 mm frame. */
   lensMm: number;
-  /** Dutch angle in degrees; kept small so nobody gets seasick. */
-  roll?: number;
-  /** Fraction of the beat's scroll range spent parked on this pose. */
-  hold?: number;
-  /**
-   * Overrides used when the viewport is taller than wide, so a phone can
-   * frame the object above or below its text block instead of behind it.
-   */
-  portrait?: {
-    position?: [number, number, number];
-    target?: [number, number, number];
-    lensMm?: number;
-  };
+  /** "case": the pose is in the aircraft's own frame and rides with it. */
+  frame?: "world" | "case";
+  /** Degrees of orbit around the target across the beat (continuous, not parked). */
+  drift?: number;
+  /** Extra vertical view offset for this beat, as a fraction of the height. */
+  viewOffsetY?: { landscape: number; portrait: number };
+  /** Overrides for viewports taller than wide. */
+  portrait?: { position?: V3; target?: V3; lensMm?: number };
 };
 
 /** Widest vertical field of view allowed before the rig dollies back instead. */
-const MAX_VFOV = 66;
+const MAX_VFOV = 62;
 /** Viewports narrower than this ratio use the portrait keyframe overrides. */
-const PORTRAIT_ASPECT = 0.9;
+const PORTRAIT_ASPECT = 1;
+/** Landscape: the object lives in the right 58%; ultrawide a little less; portrait: the top 55%. */
+const LANDSCAPE_SHIFT = 0.21;
+const ULTRAWIDE_SHIFT = 0.15;
+const PORTRAIT_SHIFT = 0.22;
 
 type Props = {
   keyframes: Keyframe[];
@@ -46,128 +50,217 @@ const parallaxOffset = new Vector3();
 const right = new Vector3();
 const up = new Vector3();
 const forward = new Vector3();
-const UP = new Vector3(0, 1, 0);
+const spin = new Vector3();
+const caseQuat = new Quaternion();
+const blendQuat = new Quaternion();
+const IDENTITY = new Quaternion();
+const WORLD_UP = new Vector3(0, 1, 0);
+const attitude: Attitude = { pitch: 0, roll: 0, yaw: 0 };
+
+/** Arc-length parameter (0..1) of every pose along a curve built through poses and via points. */
+function poseParameters(curve: CatmullRomCurve3, poseIndices: number[], pointCount: number) {
+  const divisions = Math.max(400, pointCount * 40);
+  const lengths = curve.getLengths(divisions);
+  const total = lengths[lengths.length - 1] || 1;
+  return poseIndices.map((index) => {
+    const t = pointCount > 1 ? index / (pointCount - 1) : 0;
+    const k = t * divisions;
+    const lo = Math.floor(k);
+    const hi = Math.min(lo + 1, divisions);
+    const length = MathUtils.lerp(lengths[lo], lengths[hi], k - lo);
+    return length / total;
+  });
+}
 
 /**
- * Scroll → camera. Progress is turned into a continuous "camera time" that
- * parks on each keyframe for the beat's hold and eases between them, then
- * position and aim are traced along Catmull-Rom splines through the poses,
- * so every move is an arc with mass rather than a straight line. A small
- * pointer parallax lets the visitor lean into the frame. Nothing here
- * touches React state; it runs entirely inside the render loop.
+ * Scroll → camera. Progress becomes a continuous "camera time" that parks
+ * on each keyframe for the beat's hold and eases through the segments
+ * between poses; position and aim follow Catmull-Rom splines through the
+ * poses and their via points, so every move is an arc with mass and the
+ * aviation orbit is simply a longer arc. Poses in the aircraft's frame are
+ * rotated by the case attitude, blended in and out so the camera can climb
+ * into the cockpit and back out without a cut. Nothing here touches React
+ * state.
  */
 export default function CameraRig({ keyframes, smoothTime = 0.42, parallax = 0.08 }: Props) {
   const camera = useThree((s) => s.camera) as PerspectiveCamera;
+  const invalidate = useThree((s) => s.invalidate);
+  const size = useThree((s) => s.size);
+  const aspect = size.width / Math.max(size.height, 1);
+  const portrait = aspect < PORTRAIT_ASPECT;
+
   const state = useRef({
     target: new Vector3(...keyframes[0].target),
+    up: new Vector3(0, 1, 0),
     fov: fovFromLens(keyframes[0].lensMm),
-    roll: 0,
     px: 0,
     py: 0,
+    offsetY: 0,
     initialised: false,
   });
 
-  const size = useThree((s) => s.size);
-  const portrait = size.width / Math.max(size.height, 1) < PORTRAIT_ASPECT;
-
-  const { ranges, positionCurve, targetCurve, lenses, last } = useMemo(() => {
+  const rig = useMemo(() => {
     const ranges = computeRanges(keyframes);
     const pick = (k: Keyframe) => (portrait && k.portrait ? { ...k, ...k.portrait } : k);
-    const positions = keyframes.map((k) => new Vector3(...pick(k).position));
-    const targets = keyframes.map((k) => new Vector3(...pick(k).target));
-    const lenses = keyframes.map((k) => pick(k).lensMm);
-    // A single keyframe cannot form a curve; duplicate it so evaluation is safe.
-    if (positions.length === 1) {
-      positions.push(positions[0].clone());
+    const points: Vector3[] = [];
+    const targets: Vector3[] = [];
+    const poseIndices: number[] = [];
+    keyframes.forEach((k, i) => {
+      const pose = pick(k);
+      if (i > 0 && k.via) for (const v of k.via) { points.push(new Vector3(...v)); targets.push(new Vector3(...pose.target)); }
+      poseIndices.push(points.length);
+      points.push(new Vector3(...pose.position));
+      targets.push(new Vector3(...pose.target));
+    });
+    if (points.length === 1) {
+      points.push(points[0].clone());
       targets.push(targets[0].clone());
-      lenses.push(lenses[0]);
     }
+    const positionCurve = new CatmullRomCurve3(points, false, "centripetal", 0.5);
+    const targetCurve = new CatmullRomCurve3(targets, false, "centripetal", 0.5);
+    const params = poseParameters(positionCurve, poseIndices, points.length);
     return {
       ranges,
-      positionCurve: new CatmullRomCurve3(positions, false, "centripetal", 0.5),
-      targetCurve: new CatmullRomCurve3(targets, false, "centripetal", 0.5),
-      lenses,
+      positionCurve,
+      targetCurve,
+      params,
+      lenses: keyframes.map((k) => pick(k).lensMm),
+      blends: keyframes.map((k) => (k.frame === "case" ? 1 : 0)),
+      drifts: keyframes.map((k) => k.drift ?? 0),
+      offsets: keyframes.map((k) => (portrait ? k.viewOffsetY?.portrait ?? 0 : k.viewOffsetY?.landscape ?? 0)),
       last: keyframes.length - 1,
     };
   }, [keyframes, portrait]);
+
+  // Composition: keep the object out of the text column without moving the
+  // look direction. A view offset shifts the projection, so every pose
+  // stays composed as designed and the text never overlaps the object.
+  useEffect(() => {
+    const { width, height } = size;
+    const shift = portrait ? 0 : aspect > 2.1 ? ULTRAWIDE_SHIFT : LANDSCAPE_SHIFT;
+    const base = portrait ? PORTRAIT_SHIFT : 0;
+    camera.setViewOffset(width, height, -width * shift, height * (base + state.current.offsetY), width, height);
+    camera.updateProjectionMatrix();
+    invalidate();
+    return () => camera.clearViewOffset();
+  }, [camera, size, portrait, aspect, invalidate]);
 
   useFrame((_, delta) => {
     const t = useTimeline.getState();
     const dt = Math.min(delta, 1 / 20);
     const s = state.current;
+    const { ranges, positionCurve, targetCurve, params, lenses, blends, drifts, offsets, last } = rig;
 
-    // Which beat, and how far through it.
+    // Which beat, how far through it, and where that puts the camera in time.
     let beat = last;
     for (let i = 0; i < ranges.length; i++) {
       if (t.progress < ranges[i].end) { beat = i; break; }
     }
-    const kf = keyframes[beat];
-    const eased = holdEase(localT(ranges[beat], t.progress), kf.hold ?? 0.55);
-    // Continuous camera time: parked at `beat`, drifting ±0.5 towards neighbours.
-    const time = MathUtils.clamp(beat - 0.5 + eased, 0, last);
-    const u = last > 0 ? time / last : 0;
+    const local = localT(ranges[beat], t.progress);
+    const time = MathUtils.clamp(cameraTime(keyframes, beat, local), 0, last);
+    const lo = Math.floor(time);
+    const hi = Math.min(lo + 1, last);
+    const frac = time - lo;
+    const u = MathUtils.lerp(params[lo], params[hi], frac);
 
     positionCurve.getPointAt(u, desiredPosition);
     targetCurve.getPointAt(u, desiredTarget);
-    const lo = Math.floor(time);
-    const hi = Math.min(lo + 1, last);
-    const mix = smooth(time - lo);
+    const mix = smooth(frac);
     const lens = MathUtils.lerp(lenses[lo], lenses[hi], mix);
-    const roll = MathUtils.degToRad(MathUtils.lerp(keyframes[lo].roll ?? 0, keyframes[hi].roll ?? 0, mix));
+
+    // Drift: a continuous small orbit around the target across the beat.
+    const drift = drifts[beat];
+    if (drift !== 0) {
+      const angle = MathUtils.degToRad(drift * (local - 0.5));
+      spin.subVectors(desiredPosition, desiredTarget).applyAxisAngle(WORLD_UP, angle);
+      desiredPosition.copy(desiredTarget).add(spin);
+    }
+
+    // Ride with the aircraft when the pose asks for it.
+    const blend = MathUtils.lerp(blends[lo], blends[hi], mix);
+    up.copy(WORLD_UP);
+    if (blend > 0) {
+      caseQuaternion(attitudeAt(beatTimeAt(t.progress, ranges), attitude), caseQuat);
+      blendQuat.copy(IDENTITY).slerp(caseQuat, blend);
+      desiredPosition.applyQuaternion(blendQuat);
+      desiredTarget.applyQuaternion(blendQuat);
+      up.applyQuaternion(blendQuat);
+    }
 
     // The lens defines the HORIZONTAL framing, so the same width of the
     // scene is visible on every screen. On tall screens the vertical fov
     // grows to keep that width; past MAX_VFOV the camera dollies back
     // instead, because a very wide lens would warp the object's edges.
-    const aspect = size.width / Math.max(size.height, 1);
     let fov = fovFromLens(lens, aspect);
     if (fov > MAX_VFOV) {
       const wanted = Math.tan(MathUtils.degToRad(fov / 2));
       const allowed = Math.tan(MathUtils.degToRad(MAX_VFOV / 2));
       forward.subVectors(desiredPosition, desiredTarget);
-      desiredPosition.copy(desiredTarget).addScaledVector(forward, wanted / allowed);
+      desiredPosition.copy(desiredTarget).addScaledVector(forward, Math.min(wanted / allowed, 1.6));
       fov = MAX_VFOV;
     }
 
-    // Pointer parallax in the camera's own frame, damped so it feels held, not jittery.
-    const amp = t.reducedMotion ? 0 : parallax;
+    // Per-beat vertical framing (the cold open sits its horizon high).
+    const offsetY = MathUtils.lerp(offsets[lo], offsets[hi], mix);
+    if (Math.abs(offsetY - s.offsetY) > 1e-3) {
+      s.offsetY = offsetY;
+      const shift = portrait ? 0 : aspect > 2.1 ? ULTRAWIDE_SHIFT : LANDSCAPE_SHIFT;
+      const base = portrait ? PORTRAIT_SHIFT : 0;
+      camera.setViewOffset(size.width, size.height, -size.width * shift, size.height * (base + offsetY), size.width, size.height);
+    }
+
+    // Pointer parallax in the camera's own frame, damped so it feels held.
+    const amp = t.reducedMotion || trim.active ? 0 : parallax;
     s.px = MathUtils.damp(s.px, t.pointerX * amp, 4, dt);
     s.py = MathUtils.damp(s.py, t.pointerY * amp, 4, dt);
 
+    let moving: boolean;
     if (t.reducedMotion || !s.initialised) {
       // Cuts, not moves: land on the pose immediately.
       camera.position.copy(desiredPosition);
       s.target.copy(desiredTarget);
+      s.up.copy(up);
       s.fov = fov;
-      s.roll = roll;
       s.initialised = true;
+      moving = true;
     } else {
       const lambda = 1 / Math.max(smoothTime, 0.01);
+      const before = camera.position.distanceToSquared(desiredPosition) + s.target.distanceToSquared(desiredTarget);
       camera.position.x = MathUtils.damp(camera.position.x, desiredPosition.x, lambda, dt);
       camera.position.y = MathUtils.damp(camera.position.y, desiredPosition.y, lambda, dt);
       camera.position.z = MathUtils.damp(camera.position.z, desiredPosition.z, lambda, dt);
       s.target.x = MathUtils.damp(s.target.x, desiredTarget.x, lambda * 1.15, dt);
       s.target.y = MathUtils.damp(s.target.y, desiredTarget.y, lambda * 1.15, dt);
       s.target.z = MathUtils.damp(s.target.z, desiredTarget.z, lambda * 1.15, dt);
+      s.up.x = MathUtils.damp(s.up.x, up.x, lambda, dt);
+      s.up.y = MathUtils.damp(s.up.y, up.y, lambda, dt);
+      s.up.z = MathUtils.damp(s.up.z, up.z, lambda, dt);
       s.fov = MathUtils.damp(s.fov, fov, lambda * 0.8, dt);
-      s.roll = MathUtils.damp(s.roll, roll, lambda * 0.8, dt);
+      moving =
+        before > 1e-7 ||
+        Math.abs(s.fov - fov) > 1e-3 ||
+        Math.abs(s.px - t.pointerX * amp) > 1e-4 ||
+        Math.abs(s.py - t.pointerY * amp) > 1e-4;
     }
 
-    // Build the camera frame from the aim, then apply parallax and roll.
+    // Build the camera frame from the aim, then apply the parallax offset.
     forward.subVectors(s.target, camera.position).normalize();
-    right.crossVectors(forward, UP).normalize();
+    right.crossVectors(forward, s.up).normalize();
     up.crossVectors(right, forward).normalize();
     parallaxOffset.copy(right).multiplyScalar(s.px).addScaledVector(up, s.py);
+    camera.up.copy(up);
     camera.position.add(parallaxOffset);
     camera.lookAt(s.target);
     camera.position.sub(parallaxOffset);
-    if (s.roll !== 0) camera.rotateZ(s.roll);
     if (Math.abs(camera.fov - s.fov) > 1e-3) {
       camera.fov = s.fov;
       camera.updateProjectionMatrix();
     }
+    cameraState.focusDistance = camera.position.distanceTo(s.target);
 
     if (t.beat !== beat) t.set({ beat });
+    // Render-on-demand: keep asking for frames until everything has settled.
+    if (moving || !trim.settled) invalidate();
   });
 
   return null;

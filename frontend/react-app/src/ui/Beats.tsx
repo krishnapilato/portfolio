@@ -1,13 +1,12 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
-import { computeRanges, localT } from "../lib/beats";
+import { computeRanges, localT, textAlpha, type BeatTiming } from "../lib/beats";
 import { useTimeline } from "../lib/store";
 
 export type BeatAlign = "left" | "right" | "center";
 export type BeatValign = "top" | "middle" | "bottom";
 
-export type BeatContent = {
+export type BeatContent = BeatTiming & {
   id: string;
-  weight: number;
   kicker: string;
   title: string;
   body: string;
@@ -17,8 +16,6 @@ export type BeatContent = {
   valign?: BeatValign;
   /** Extra content under the body: links, cards, a list. */
   children?: ReactNode;
-  /** Fraction of the range during which the block fades in and out. */
-  fade?: number;
 };
 
 type Props = { beats: BeatContent[] };
@@ -38,23 +35,16 @@ export default function Beats({ beats }: Props) {
     if (!container) return;
     const ranges = computeRanges(beats);
     const blocks = beats.map((b) => container.querySelector<HTMLElement>(`[data-beat="${b.id}"] .beat__block`));
-    const fades = beats.map((b) => b.fade ?? 0.18);
-    const last = beats.length - 1;
 
     const paint = (progress: number, reduced: boolean) => {
       for (let i = 0; i < blocks.length; i++) {
         const block = blocks[i];
         if (!block) continue;
-        const t = localT(ranges[i], progress);
-        const fade = fades[i];
-        let a = 1;
-        if (i > 0 && t < fade) a = t / fade;
-        if (i < last && t > 1 - fade) a = Math.min(a, (1 - t) / fade);
-        const eased = a * a * (3 - 2 * a);
         const away = progress < ranges[i].start || progress > ranges[i].end;
-        block.style.opacity = away ? "0" : String(eased);
-        block.style.setProperty("--rise", reduced ? "0px" : `${((1 - eased) * 14).toFixed(2)}px`);
-        block.style.visibility = away || eased <= 0.001 ? "hidden" : "visible";
+        const eased = away ? 0 : textAlpha(beats, i, localT(ranges[i], progress));
+        block.style.opacity = String(eased);
+        block.style.setProperty("--rise", reduced ? "0px" : `${((1 - eased) * 12).toFixed(2)}px`);
+        block.style.visibility = eased <= 0.001 ? "hidden" : "visible";
       }
     };
 

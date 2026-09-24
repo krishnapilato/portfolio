@@ -37,11 +37,18 @@ function Adaptive() {
 function Lifecycle() {
   const gl = useThree((s) => s.gl);
   const setFrameloop = useThree((s) => s.setFrameloop);
+  const invalidate = useThree((s) => s.invalidate);
   const hidden = useTimeline((s) => s.hidden);
 
+  // Render on demand: the rig, the instrument and the store ask for frames
+  // while anything moves; an idle page draws nothing, a hidden tab less.
   useEffect(() => {
-    setFrameloop(hidden ? "never" : "always");
+    setFrameloop(hidden ? "never" : "demand");
   }, [hidden, setFrameloop]);
+
+  useEffect(() => {
+    return useTimeline.subscribe((s) => s.progress, () => invalidate());
+  }, [invalidate]);
 
   useEffect(() => {
     const canvas = gl.domElement;
@@ -71,7 +78,8 @@ export default function Experience({ children }: Props) {
   return (
     <Canvas
       className="stage"
-      flat
+      flat={tier !== "low"}
+      frameloop="demand"
       dpr={DPR_RANGE[tier]}
       gl={{
         antialias: false,
@@ -89,7 +97,7 @@ export default function Experience({ children }: Props) {
         {children}
         <Preload all />
       </Suspense>
-      <Post tier={tier} />
+      {tier !== "low" ? <Post tier={tier} /> : null}
       <Ready />
     </Canvas>
   );
