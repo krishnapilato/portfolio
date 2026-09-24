@@ -16,7 +16,8 @@ export function drawBankScale(ctx: Ctx2D, size: number, uvRadius: number) {
   const tick = px(0.036);
   const majorTick = px(0.06);
   const font = `600 ${Math.round(px(0.046))}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
-  const label = (value: number) => (value === 0 ? null : String(Math.abs(value)));
+  // Marks only: real bank scales carry no numerals, and the sphere already says "instrument".
+  const label = () => null;
   const shared = { radius, tick, majorTick, width, font, label, labelOffset: px(0.02) };
   drawScale(ctx, size, { ...shared, from: -30, to: 30, step: 5, major: 10 });
   drawScale(ctx, size, { ...shared, from: -90, to: -60, step: 30, major: 30 });

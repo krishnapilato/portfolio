@@ -11,7 +11,8 @@ import { makeEngraving, stampInk, type Engraver } from "./engrave";
  */
 
 /** Brushed-metal map size per tier (the maps the macro beats magnify). */
-export const MAP_SIZE: Record<Tier, number> = { high: 2048, mid: 1024, low: 512 };
+// 1024 on the high tier too: 2048 quadruples the boot cost for streak density only visible at the macro.
+export const MAP_SIZE: Record<Tier, number> = { high: 1024, mid: 1024, low: 512 };
 /** Size of the secondary maps (crackle paint, glass smudges). */
 export const DETAIL_SIZE: Record<Tier, number> = { high: 1024, mid: 512, low: 256 };
 /** Texture anisotropic filtering per tier so grazing macro angles stay clean. */

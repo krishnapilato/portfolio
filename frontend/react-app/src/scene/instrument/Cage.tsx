@@ -5,15 +5,15 @@ import { useTimeline } from "../../lib/store";
 import type { Tier } from "../../lib/store";
 import { getInstrumentMaterials } from "../../textures/instrument";
 import { cylinderProfile, makeBar, makeLathe, makeRing, mergeParts } from "./geometry";
-import { HUB, LATHE_SEGMENTS, RIB, SMALL_SEGMENTS, SOCKET, SPIDER_ANGLES } from "./layout";
+import { HUB, LATHE_SEGMENTS, REAR_STUB, RIB, SMALL_SEGMENTS, SPIDER_ANGLES } from "./layout";
 
 type Props = ThreeElements["group"];
 
 /**
  * The skeleton case behind the bezel: four longitudinal ribs, the rear hoop
  * they end on, the three-arm spider and its hub that hold the bearing, and
- * the yoke under the two bottom ribs that carries the ball-joint socket.
- * Everything is one merged geometry, one draw call. Fixed to the case.
+ * the rear stub that turns in the cradle's roll boss. Everything is one
+ * merged geometry, one draw call. Fixed to the case.
  */
 export default function Cage(props: Props) {
   const tier = useTimeline((s) => s.tier);
@@ -62,22 +62,12 @@ function build(tier: Tier): BufferGeometry {
   hub.translate(0, 0, HUB.z);
   parts.push(hub);
 
-  // Yoke: from each bottom rib (225 and 315 degrees) down to the socket.
-  const ribY = -Math.SQRT1_2 * RIB.radius;
-  for (const side of [-1, 1]) {
-    const fromX = side * Math.SQRT1_2 * RIB.radius;
-    const dx = -fromX;
-    const dy = SOCKET.y - ribY;
-    const length = Math.hypot(dx, dy);
-    const arm = makeBar(length + 0.04, RIB.section, RIB.section, 0.006);
-    arm.rotateY(Math.PI / 2);
-    arm.rotateZ(Math.atan2(dy, dx));
-    arm.translate(fromX / 2, (ribY + SOCKET.y) / 2, 0);
-    parts.push(arm);
-  }
-  const socket = makeLathe(cylinderProfile(SOCKET.radius, SOCKET.height, 0.01), { segments: small });
-  socket.translate(0, SOCKET.y, 0);
-  parts.push(socket);
+  // Rear stub: the case's axle, turned in the cradle's roll boss behind
+  // the outer gimbal's bearing.
+  const stub = makeLathe(cylinderProfile(REAR_STUB.radius, REAR_STUB.length, 0.008), { segments: small });
+  stub.rotateX(Math.PI / 2);
+  stub.translate(0, 0, REAR_STUB.z);
+  parts.push(stub);
 
   return mergeParts(parts);
 }

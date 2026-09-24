@@ -32,14 +32,14 @@ export const KEYFRAMES: Keyframe[] = [
     // A macro on the band, to the right of the aircraft symbol. The camera
     // sits on the equatorial plane and looks level, so the horizon is a
     // straight line; a hair above the strut, so nothing crosses the lens.
-    position: [0.9, 0.05, 1.4],
-    target: [0.62, 0.03, 0.78],
+    position: [0.9, 0.06, 1.3],
+    target: [0.62, 0, 0.78],
     lensMm: 85,
     hold: 0.6,
     viewOffsetY: { landscape: 0.12, portrait: 0 },
-    // Portrait widens the lens, so the camera steps closer and further right
-    // to keep the aircraft symbol's bar out of the frame.
-    portrait: { position: [1.0, 0.05, 1.3], target: [0.72, 0.03, 0.69] },
+    // Portrait widens the lens, so the camera steps further right to keep
+    // the aircraft symbol's bar out of the frame.
+    portrait: { position: [1.0, 0.06, 1.35], target: [0.72, 0, 0.69] },
   },
   {
     id: "instrument",
@@ -105,6 +105,7 @@ export const KEYFRAMES: Keyframe[] = [
     target: [0, 0.1, 0],
     lensMm: 35,
     hold: 0.55,
+    scrim: true,
   },
   {
     id: "aviation",
@@ -116,6 +117,7 @@ export const KEYFRAMES: Keyframe[] = [
     hold: 0.4,
     arriveShare: 0.92,
     arriveFrac: 0.6,
+    scrim: true,
   },
   {
     id: "contact",

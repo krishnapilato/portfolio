@@ -8,12 +8,17 @@ import Post from "./Post";
 
 type Props = { children: ReactNode };
 
-/** Flags the first drawn frame so the DOM can lift its curtain honestly. */
+/**
+ * Flags the first frame so the DOM can lift its curtain honestly. Priority
+ * 0 on purpose: a positive priority would tell react-three-fiber that this
+ * subscriber renders the scene itself, and on the tier without a post
+ * stack nothing would ever be drawn.
+ */
 function Ready() {
   useFrame(() => {
     const t = useTimeline.getState();
     if (!t.ready) t.set({ ready: true });
-  }, 2);
+  });
   return null;
 }
 

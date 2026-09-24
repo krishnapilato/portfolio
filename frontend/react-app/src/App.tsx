@@ -23,7 +23,7 @@ const CONTENT: BeatContent[] = BEATS.map((beat, index) => ({
   title: beat.title,
   body: beat.body,
   meta: beat.meta,
-  scrim: KEYFRAMES[index].frame === "case",
+  scrim: KEYFRAMES[index].frame === "case" || KEYFRAMES[index].scrim === true,
   children: beat.links ? <Links links={beat.links} compact={beat.id !== "contact"} /> : undefined,
 }));
 

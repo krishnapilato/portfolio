@@ -45,6 +45,16 @@
   pointer-events: none;
 }
 
+/* The cold open: the words start below the horizon line, which sits at 38%. */
+.beat[data-beat="horizon"] {
+  grid-template-rows: 46svh auto 1fr;
+}
+
+/* The epilogue's list sits over the dial: a firmer scrim. */
+.beat[data-beat="contact"][data-scrim="true"]::before {
+  background: linear-gradient(90deg, rgba(11, 13, 16, 0.9) 0%, rgba(11, 13, 16, 0.72) 32%, rgba(11, 13, 16, 0) 56%);
+}
+
 .beat__block {
   position: relative;
   grid-column: 1;
@@ -220,7 +230,8 @@
     --text-col: 100%;
   }
 
-  .beat {
+  .beat,
+  .beat[data-beat="horizon"] {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: 55svh 1fr;
     padding-bottom: calc(var(--gutter) + 3.6rem + var(--safe-bottom));

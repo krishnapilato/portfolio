@@ -208,6 +208,9 @@ export default function Stage() {
       <color attach="background" args={[PALETTE.background]} />
       <fogExp2 attach="fog" args={[PALETTE.background, 0.075]} />
       <Environment resolution={256} frames={1} environmentIntensity={1}>
+        {/* A dim workshop level between the panels: metal flats reflect this
+            instead of black, so the aluminium reads as machined silver. */}
+        <color attach="background" args={["#2c3137"]} />
         <Lightformer form="rect" intensity={3} color={PALETTE.keyColor} scale={[3, 1, 1]} position={[3.0, 3.2, 1.8]} target={[0, 0, 0]} />
         <Lightformer form="rect" intensity={1.8} color={PALETTE.rimColor} scale={[0.3, 3, 1]} position={[-3.4, 2.0, -3.0]} target={[0, 0, 0]} />
         <Lightformer form="rect" intensity={0.5} color="#202328" scale={[6, 0.5, 1]} position={[0, -2.6, 0]} rotation={[Math.PI / 2, 0, 0]} />

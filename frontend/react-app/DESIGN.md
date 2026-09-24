@@ -31,6 +31,7 @@ Every decision below answers "why am I making this decision?".
 | Composition by view offset, not by moving the look target | The designed framing survives every aspect ratio: object in the right 58% on landscape, in the top 55% on portrait, text never over the object's centre. |
 | Lens defines horizontal framing; portrait widens the field to 62° then dollies back | The same width of the scene is visible on every screen; the object never crops and never shrinks to a dot. |
 | Cold open lit by a raking light | The rim sits behind the object and cannot reach its front; a small hard light skimming the band from the front-left gives the paint edge a clean line from frame one. |
+| A dim base level inside the environment map | Between three panels of light the environment is black, and metalness-1 flats can only reflect black; a faint workshop level makes the aluminium read as machined silver in every shot. |
 | Key = spot (shadow) + area light (specular) | A rect area light cannot cast shadows; the pair gives one shadow direction and the long graded highlight that makes brushed metal read as machined. |
 | Key warms to 2800 K in the aviation beat only | The one aviation image (low sun over a horizon) that needs no sky; being the only colour change, it registers. |
 | Post lights come up in the epilogue | A diegetic source inside the object: the instrument lights its own dial the way panel instruments do at night; scrolling up puts them out, which reads as dawn. |
@@ -41,6 +42,7 @@ Every decision below answers "why am I making this decision?".
 | Readout name gives way to a beat counter on phones | An ellipsised name is noise; "04/10" is an instrument reading. |
 | Self-hosted Instrument Sans and IBM Plex Mono | System stacks render differently on every OS; a designed hierarchy is part of the calm. Preloaded, 60 KB in total. |
 | Visitor trim drag, mouse only, ±8°, springs back | The one interaction that lets a visitor test the object's claim with a hand; on touch the scroll already demonstrates it and a drag would fight the browser. |
+| The readiness probe runs at frame priority 0 | A positive priority tells react-three-fiber that the subscriber renders the scene itself; on the tier without a post stack that would draw nothing. |
 | Render on demand | An idle page draws nothing; "trimmed" should also be true of the GPU. |
 | Three device tiers with adaptive pixel ratio | A mid phone must hold its frame rate in the orbit; the high tier gets depth of field, transmission glass, a reflective bench and shadows, the low tier gets none of the post stack and CSS grain instead. |
 | Reduced motion: cuts, not moves | Ten composed stills are still a film, and cuts carry no vestibular load. Lenis is not created; the camera lands on each pose. |

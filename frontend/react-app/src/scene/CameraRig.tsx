@@ -25,6 +25,8 @@ export type Keyframe = BeatTiming & {
   viewOffsetY?: { landscape: number; portrait: number };
   /** Overrides for viewports taller than wide. */
   portrait?: { position?: V3; target?: V3; lensMm?: number };
+  /** The object reaches into the text column in this pose: scrim the words. */
+  scrim?: boolean;
 };
 
 /** Widest vertical field of view allowed before the rig dollies back instead. */
