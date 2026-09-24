@@ -20,4 +20,13 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Scene files drive three.js imperatively inside the frame loop: the
+    // camera, materials and geometry are mutable scene-graph objects, not
+    // React state, so the compiler's immutability rule does not apply there.
+    files: ['src/scene/**/*.{ts,tsx}'],
+    rules: {
+      'react-hooks/immutability': 'off',
+    },
+  },
 ])
