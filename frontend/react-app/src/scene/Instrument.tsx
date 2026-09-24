@@ -1,6 +1,6 @@
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
-import { useEffect, useEffectEvent, useRef } from "react";
-import { Group, MathUtils, Mesh, MeshStandardMaterial, PointLight } from "three";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { Group, MathUtils, PointLight } from "three";
 import { computeRanges } from "../lib/beats";
 import { useTimeline } from "../lib/store";
 import {
@@ -19,6 +19,7 @@ import Cage from "./instrument/Cage";
 import Cradle from "./instrument/Cradle";
 import HorizonSphere from "./instrument/HorizonSphere";
 import InnerRing from "./instrument/InnerRing";
+import Jewels from "./instrument/Jewels";
 import OuterRing from "./instrument/OuterRing";
 import Stand from "./instrument/Stand";
 import { KEYFRAMES } from "./keyframes";
@@ -26,7 +27,7 @@ import { PALETTE } from "./palette";
 
 const RANGES = computeRanges(KEYFRAMES);
 const attitude: Attitude = { pitch: 0, roll: 0, yaw: 0 };
-const lighting: Lighting = { key: 18, rim: 32, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0 };
+const lighting: Lighting = { key: 18, rim: 32, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0, raker: 0 };
 /** Degrees of trim per pixel of drag, and the most a hand can add. */
 const TRIM_GAIN = 0.05;
 const TRIM_LIMIT = 8;
@@ -56,21 +57,10 @@ export default function Instrument() {
   const invalidate = useThree((s) => s.invalidate);
   const drag = useRef({ id: -1, x: 0, y: 0 });
   const last = useRef({ pitch: NaN, roll: NaN, post: NaN });
-  const postMaterials = useRef<MeshStandardMaterial[]>([]);
-
-  // The post lights glow from inside the object in the epilogue; the bezel
-  // marks its emissive meshes so the assembly can drive them per frame.
-  useEffect(() => {
-    const found: MeshStandardMaterial[] = [];
-    bezelGroup.current?.traverse((object) => {
-      const mesh = object as Mesh;
-      if (mesh.isMesh && mesh.userData.postLight) {
-        const material = mesh.material as MeshStandardMaterial;
-        if (material.emissive) found.push(material);
-      }
-    });
-    postMaterials.current = found;
-  }, []);
+  // The post lights glow from inside the object in the epilogue. The bezel
+  // takes the glow as a prop, so it is quantised to twenty steps: a handful
+  // of renders during the transition, none while the lights are steady.
+  const [glowStep, setGlowStep] = useState(0);
 
   useFrame((_, delta) => {
     const t = useTimeline.getState();
@@ -86,9 +76,10 @@ export default function Instrument() {
     if (innerGroup.current) innerGroup.current.rotation.x = -cradleRotationX(pitch);
 
     const glow = lighting.post;
-    for (const material of postMaterials.current) material.emissiveIntensity = (glow / 1.6) * 2.2;
     if (practicalA.current) practicalA.current.intensity = glow;
     if (practicalB.current) practicalB.current.intensity = glow;
+    const step = Math.round((glow / 1.6) * 20);
+    if (step !== glowStep) setGlowStep(step);
 
     const l = last.current;
     const changed =
@@ -153,13 +144,14 @@ export default function Instrument() {
         <Cradle>
           <group ref={caseGroup}>
             <group ref={bezelGroup}>
-              <Bezel />
+              <Bezel glow={glowStep / 20} />
             </group>
             <Cage />
             <pointLight ref={practicalA} color={PALETTE.postColor} intensity={0} distance={1.5} decay={2} position={PRACTICALS[0]} />
             <pointLight ref={practicalB} color={PALETTE.postColor} intensity={0} distance={1.5} decay={2} position={PRACTICALS[1]} />
             <group ref={outerGroup}>
               <OuterRing />
+              <Jewels />
               <group ref={innerGroup}>
                 <InnerRing />
                 <HorizonSphere />

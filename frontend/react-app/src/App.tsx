@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BEATS } from "./content/beats";
 import { decideTier, probeDevice } from "./lib/device";
-import { applyDeepLink, startEnvironmentSync, startKeyboardStepping } from "./lib/interaction";
+import { applyDeepLink, goToBeat, startEnvironmentSync, startKeyboardStepping, trackOf } from "./lib/interaction";
 import { startScroll } from "./lib/scroll";
 import { useTimeline } from "./lib/store";
 import CameraRig from "./scene/CameraRig";
@@ -24,6 +24,7 @@ const CONTENT: BeatContent[] = BEATS.map((beat, index) => ({
   title: beat.title,
   body: beat.body,
   meta: beat.meta,
+  scrim: KEYFRAMES[index].frame === "case",
   children: beat.links ? <Links links={beat.links} compact={beat.id !== "contact"} /> : undefined,
 }));
 
@@ -33,7 +34,11 @@ export default function App() {
   // Decided once, before anything renders: which tier this device gets.
   const [boot] = useState(() => {
     const probe = probeDevice();
-    return { tier: decideTier(probe), webgl: probe.webgl, reducedMotion: probe.reducedMotion };
+    // ?tier=high|mid|low forces a tier: for testing on hardware that is not
+    // the visitor's, never something a visitor needs.
+    const forced = new URLSearchParams(location.search).get("tier");
+    const tier = forced === "high" || forced === "mid" || forced === "low" ? forced : decideTier(probe);
+    return { tier, webgl: probe.webgl, reducedMotion: probe.reducedMotion };
   });
   const webgl = useTimeline((s) => s.webgl);
   const lost = useTimeline((s) => s.contextLost);
@@ -61,7 +66,18 @@ export default function App() {
 
   return (
     <>
-      <a className="skip" href="#contact">Skip to contact</a>
+      <a
+        className="skip"
+        href="#contact"
+        onClick={(event) => {
+          const track = trackOf("contact");
+          if (!track) return;
+          event.preventDefault();
+          goToBeat(track, "contact");
+        }}
+      >
+        Skip to contact
+      </a>
 
       {webgl && !lost ? (
         <Experience>

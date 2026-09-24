@@ -95,13 +95,18 @@ export function startKeyboardStepping(beatIds: string[]): () => void {
         return;
     }
     if (next < 0 || next >= beatIds.length) return;
-    const element = document.getElementById(beatIds[next]);
+    const element = trackOf(beatIds[next]);
     if (!element) return;
     event.preventDefault();
     goToBeat(element, beatIds[next]);
   };
   window.addEventListener("keydown", onKey);
   return () => window.removeEventListener("keydown", onKey);
+}
+
+/** The spacer track that gives a beat its scroll range. */
+export function trackOf(id: string): HTMLElement | null {
+  return document.querySelector<HTMLElement>(`[data-track="${id}"]`);
 }
 
 /**
@@ -129,7 +134,7 @@ export function goToBeat(element: HTMLElement, id: string, timing?: { hold?: num
 export function applyDeepLink(beatIds: string[]) {
   const id = decodeURIComponent(location.hash.replace(/^#/, ""));
   if (!id || !beatIds.includes(id)) return false;
-  const element = document.getElementById(id);
+  const element = trackOf(id);
   if (!element) return false;
   scrollTo(holdPoint(element), true);
   return true;

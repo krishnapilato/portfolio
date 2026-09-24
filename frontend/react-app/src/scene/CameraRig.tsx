@@ -107,22 +107,18 @@ export default function CameraRig({ keyframes, smoothTime = 0.42, parallax = 0.0
     const poseIndices: number[] = [];
     keyframes.forEach((k, i) => {
       const pose = pick(k);
-      if (i > 0 && k.via) for (const v of k.via) { points.push(new Vector3(...v)); targets.push(new Vector3(...pose.target)); }
+      if (i > 0 && k.via) for (const v of k.via) points.push(new Vector3(...v));
       poseIndices.push(points.length);
       points.push(new Vector3(...pose.position));
       targets.push(new Vector3(...pose.target));
     });
-    if (points.length === 1) {
-      points.push(points[0].clone());
-      targets.push(targets[0].clone());
-    }
+    if (points.length === 1) points.push(points[0].clone());
     const positionCurve = new CatmullRomCurve3(points, false, "centripetal", 0.5);
-    const targetCurve = new CatmullRomCurve3(targets, false, "centripetal", 0.5);
     const params = poseParameters(positionCurve, poseIndices, points.length);
     return {
       ranges,
       positionCurve,
-      targetCurve,
+      targets,
       params,
       lenses: keyframes.map((k) => pick(k).lensMm),
       blends: keyframes.map((k) => (k.frame === "case" ? 1 : 0)),
@@ -149,7 +145,7 @@ export default function CameraRig({ keyframes, smoothTime = 0.42, parallax = 0.0
     const t = useTimeline.getState();
     const dt = Math.min(delta, 1 / 20);
     const s = state.current;
-    const { ranges, positionCurve, targetCurve, params, lenses, blends, drifts, offsets, last } = rig;
+    const { ranges, positionCurve, targets, params, lenses, blends, drifts, offsets, last } = rig;
 
     // Which beat, how far through it, and where that puts the camera in time.
     let beat = last;
@@ -164,8 +160,11 @@ export default function CameraRig({ keyframes, smoothTime = 0.42, parallax = 0.0
     const u = MathUtils.lerp(params[lo], params[hi], frac);
 
     positionCurve.getPointAt(u, desiredPosition);
-    targetCurve.getPointAt(u, desiredTarget);
+    // The aim moves straight from pose to pose with the same easing as the
+    // dolly: a look target that swings along a curve would feel like a pan
+    // the director never called for.
     const mix = smooth(frac);
+    desiredTarget.lerpVectors(targets[lo], targets[hi], mix);
     const lens = MathUtils.lerp(lenses[lo], lenses[hi], mix);
 
     // Drift: a continuous small orbit around the target across the beat.

@@ -16,8 +16,8 @@ export type PostSettings = {
 };
 
 export const DEFAULT_POST: PostSettings = {
-  bloomThreshold: 1.1,
-  bloomIntensity: 0.45,
+  bloomThreshold: 1.3,
+  bloomIntensity: 0.32,
   bloomRadius: 0.6,
   dofFocusDistance: 0.02,
   dofFocalLength: 0.02,

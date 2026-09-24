@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, useTransition, ViewTransition } from "react";
+import { useEffect, useRef } from "react";
 import { computeRanges } from "../lib/beats";
-import { goToBeat } from "../lib/interaction";
+import { goToBeat, trackOf } from "../lib/interaction";
 import { useTimeline } from "../lib/store";
 import { attitudeAt, beatTimeAt, type Attitude } from "../scene/attitude";
 import { KEYFRAMES } from "../scene/keyframes";
@@ -30,18 +30,12 @@ export default function Readout({ labels }: Props) {
   const beat = useTimeline((s) => s.beat);
   const ready = useTimeline((s) => s.ready);
   const webgl = useTimeline((s) => s.webgl);
-  const [shown, setShown] = useState(beat);
-  const [, startTransition] = useTransition();
   const pointer = useRef<HTMLSpanElement>(null);
   const pitch = useRef<HTMLSpanElement>(null);
   const bank = useRef<HTMLSpanElement>(null);
 
-  // The name cross-fades through a view transition; everything numeric is
-  // written straight to the DOM from the store so it never re-renders.
-  useEffect(() => {
-    startTransition(() => setShown(beat));
-  }, [beat, startTransition]);
-
+  // The name follows the beat index; everything numeric is written straight
+  // to the DOM from the store so it never re-renders.
   useEffect(() => {
     const paint = (progress: number) => {
       if (pointer.current) pointer.current.style.setProperty("--p", progress.toFixed(4));
@@ -55,13 +49,14 @@ export default function Readout({ labels }: Props) {
     return useTimeline.subscribe((s) => s.progress, paint);
   }, []);
 
-  const current = labels[shown] ?? labels[0];
+  const current = labels[beat] ?? labels[0];
 
   return (
     <div className="readout" role="group" aria-label="Position in the story">
-      <ViewTransition default="readout-name">
-        <span className="readout__name" key={current.id}>{current.label}</span>
-      </ViewTransition>
+      <span className="readout__name">{current.label}</span>
+      <span className="readout__index" aria-hidden="true">
+        {String(beat + 1).padStart(2, "0")}<span className="readout__of">/{labels.length}</span>
+      </span>
 
       <div className="tape" data-off={!ready || !webgl}>
         <span className="tape__pointer" ref={pointer} aria-hidden="true" />
@@ -74,7 +69,7 @@ export default function Readout({ labels }: Props) {
             aria-current={index === beat ? "step" : undefined}
             data-label={item.label}
             onClick={() => {
-              const element = document.getElementById(item.id);
+              const element = trackOf(item.id);
               if (element) goToBeat(element, item.id);
             }}
           />

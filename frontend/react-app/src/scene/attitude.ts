@@ -114,26 +114,30 @@ export type Lighting = {
   bokeh: number;
   /** 0 = 4300 K studio key, 1 = 2800 K low sun (the aviation beat only). */
   warmth: number;
+  /** The cold open's raking light across the horizon band; gone once the key is up. */
+  raker: number;
 };
 
 type LightKey = { at: number } & Lighting;
 
 const LIGHT_KEYS: LightKey[] = [
-  { at: 0.0, key: 0, rim: 40, post: 0, exposure: 0.85, bokeh: 3.5, warmth: 0 },
-  { at: 0.6, key: 0, rim: 40, post: 0, exposure: 0.85, bokeh: 3.5, warmth: 0 },
-  { at: 1.5, key: 18, rim: 36, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0 },
-  { at: 2.5, key: 18, rim: 32, post: 0, exposure: 1.05, bokeh: 2.2, warmth: 0 },
-  { at: 3.5, key: 18, rim: 32, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0 },
-  { at: 4.5, key: 18, rim: 34, post: 0, exposure: 1.05, bokeh: 1.2, warmth: 0 },
-  { at: 5.5, key: 18, rim: 30, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0 },
-  { at: 6.5, key: 20, rim: 24, post: 0, exposure: 1.05, bokeh: 3.0, warmth: 0 },
-  { at: 7.5, key: 18, rim: 34, post: 0, exposure: 1.05, bokeh: 1.2, warmth: 0 },
-  { at: 8.0, key: 18, rim: 34, post: 0, exposure: 1.05, bokeh: 1.2, warmth: 0 },
-  { at: 8.3, key: 14, rim: 46, post: 0, exposure: 1.05, bokeh: 1.0, warmth: 1 },
-  { at: 8.9, key: 14, rim: 46, post: 0, exposure: 1.05, bokeh: 1.0, warmth: 1 },
-  { at: 9.3, key: 10, rim: 30, post: 0.6, exposure: 1.0, bokeh: 0.5, warmth: 0 },
-  { at: 9.6, key: 6, rim: 12, post: 1.6, exposure: 0.95, bokeh: 0, warmth: 0 },
-  { at: 10.0, key: 6, rim: 12, post: 1.6, exposure: 0.95, bokeh: 0, warmth: 0 },
+  // A whisper of key in the cold open: the rim sits behind the object and
+  // cannot reach the front, and the horizon band must read from frame one.
+  { at: 0.0, key: 3.5, rim: 40, post: 0, exposure: 0.9, bokeh: 3.5, warmth: 0, raker: 8 },
+  { at: 0.6, key: 3.5, rim: 40, post: 0, exposure: 0.9, bokeh: 3.5, warmth: 0, raker: 8 },
+  { at: 1.5, key: 18, rim: 36, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0, raker: 2.5 },
+  { at: 2.5, key: 18, rim: 32, post: 0, exposure: 1.05, bokeh: 2.2, warmth: 0, raker: 0 },
+  { at: 3.5, key: 18, rim: 32, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0, raker: 0 },
+  { at: 4.5, key: 18, rim: 34, post: 0, exposure: 1.05, bokeh: 1.2, warmth: 0, raker: 0 },
+  { at: 5.5, key: 18, rim: 30, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0, raker: 0 },
+  { at: 6.5, key: 20, rim: 24, post: 0, exposure: 1.05, bokeh: 3.0, warmth: 0, raker: 0 },
+  { at: 7.5, key: 18, rim: 34, post: 0, exposure: 1.05, bokeh: 1.2, warmth: 0, raker: 0 },
+  { at: 8.0, key: 18, rim: 34, post: 0, exposure: 1.05, bokeh: 1.2, warmth: 0, raker: 0 },
+  { at: 8.3, key: 14, rim: 46, post: 0, exposure: 1.05, bokeh: 1.0, warmth: 1, raker: 0 },
+  { at: 8.9, key: 14, rim: 46, post: 0, exposure: 1.05, bokeh: 1.0, warmth: 1, raker: 0 },
+  { at: 9.3, key: 10, rim: 30, post: 0.6, exposure: 1.0, bokeh: 0.5, warmth: 0, raker: 0 },
+  { at: 9.6, key: 6, rim: 12, post: 1.6, exposure: 0.95, bokeh: 0, warmth: 0, raker: 0 },
+  { at: 10.0, key: 6, rim: 12, post: 1.6, exposure: 0.95, bokeh: 0, warmth: 0, raker: 0 },
 ];
 
 export function lightingAt(beatTime: number, out: Lighting): Lighting {
@@ -150,6 +154,7 @@ export function lightingAt(beatTime: number, out: Lighting): Lighting {
   out.exposure = MathUtils.lerp(a.exposure, b.exposure, mix);
   out.bokeh = MathUtils.lerp(a.bokeh, b.bokeh, mix);
   out.warmth = MathUtils.lerp(a.warmth, b.warmth, mix);
+  out.raker = MathUtils.lerp(a.raker, b.raker, mix);
   return out;
 }
 

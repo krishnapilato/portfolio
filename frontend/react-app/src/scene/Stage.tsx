@@ -13,7 +13,7 @@ import { PALETTE, cameraState } from "./palette";
 
 RectAreaLightUniformsLib.init();
 
-const lighting: Lighting = { key: 18, rim: 32, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0 };
+const lighting: Lighting = { key: 18, rim: 32, post: 0, exposure: 1.05, bokeh: 1.6, warmth: 0, raker: 0 };
 const RANGES = computeRanges(KEYFRAMES);
 const KEY_STUDIO = new Color(PALETTE.keyColor);
 const KEY_LOW_SUN = new Color("#ffc98a");
@@ -33,7 +33,7 @@ function useBenchMaps(tier: Tier) {
         const n = fbm(x / size, y / size);
         // Faint concentric turning marks about the centre.
         const r = Math.hypot(x - cx, y - cx);
-        const rings = 0.06 * Math.sin(r * 0.9) * 0.5;
+        const rings = 0.012 * Math.sin(r * 0.9);
         const v = Math.round(Math.min(1, Math.max(0, 0.62 + n * 0.18 + rings)) * 255);
         const i = (y * size + x) * 4;
         img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
@@ -65,6 +65,7 @@ function Lights({ tier }: { tier: Tier }) {
   const keySpot = useRef<SpotLight>(null);
   const keyArea = useRef<RectAreaLight>(null);
   const rim = useRef<SpotLight>(null);
+  const raker = useRef<SpotLight>(null);
   const gl = useThree((s) => s.gl);
   const invalidate = useThree((s) => s.invalidate);
   const exposure = useRef(1.05);
@@ -83,6 +84,10 @@ function Lights({ tier }: { tier: Tier }) {
       keyArea.current.color.copy(keyColor);
     }
     if (rim.current) rim.current.intensity = lighting.rim;
+    if (raker.current) {
+      raker.current.intensity = lighting.raker;
+      raker.current.visible = lighting.raker > 0.01;
+    }
     cameraState.bokeh = lighting.bokeh;
     if (Math.abs(exposure.current - lighting.exposure) > 1e-3) {
       exposure.current = lighting.exposure;
@@ -94,6 +99,7 @@ function Lights({ tier }: { tier: Tier }) {
   useEffect(() => {
     keySpot.current?.target.position.set(0, 0, 0.2);
     rim.current?.target.position.set(0, 0, 0.2);
+    raker.current?.target.position.set(0.3, -0.05, 0.9);
   }, []);
 
   return (
@@ -129,6 +135,19 @@ function Lights({ tier }: { tier: Tier }) {
         angle={0.35}
         penumbra={0.6}
         decay={2}
+      />
+      {/* The cold open's raker: a small hard light skimming the horizon band
+          from the front-left, so the paint edge and the engraving catch a
+          clean cool line before any key exists. */}
+      <spotLight
+        ref={raker}
+        color={PALETTE.rimColor}
+        intensity={8}
+        position={[-1.7, 0.35, 1.6]}
+        angle={0.45}
+        penumbra={0.5}
+        decay={2}
+        distance={4}
       />
       <hemisphereLight args={[PALETTE.fillSky, PALETTE.background, 0.35]} />
     </>

@@ -29,19 +29,26 @@ export const KEYFRAMES: Keyframe[] = [
   {
     id: "horizon",
     weight: 0.8,
-    position: [0.05, 0.02, 1.62],
-    target: [0, 0, 1.0],
+    // A macro on the band, to the right of the aircraft symbol. The camera
+    // sits on the equatorial plane and looks level, so the horizon is a
+    // straight line; a hair above the strut, so nothing crosses the lens.
+    position: [0.9, 0.05, 1.4],
+    target: [0.62, 0.03, 0.78],
     lensMm: 85,
     hold: 0.6,
-    viewOffsetY: { landscape: 0.12, portrait: 0.2 },
-    portrait: { position: [0.05, 0.02, 1.7] },
+    viewOffsetY: { landscape: 0.12, portrait: 0 },
+    // Portrait widens the lens, so the camera steps closer and further right
+    // to keep the aircraft symbol's bar out of the frame.
+    portrait: { position: [1.0, 0.05, 1.3], target: [0.72, 0.03, 0.69] },
   },
   {
     id: "instrument",
     weight: 1,
-    position: [2.6, 1.4, 3.4],
+    // Far enough that the bezel and both fork arms clear the frame edge
+    // with the object composed in the right 58%.
+    position: [3.4, 1.8, 4.35],
     target: [0, 0, 0],
-    lensMm: 40,
+    lensMm: 35,
     hold: 0.5,
   },
   {
@@ -83,8 +90,10 @@ export const KEYFRAMES: Keyframe[] = [
   {
     id: "skills",
     weight: 1,
-    position: [1.62, 0.36, 1.05],
-    target: [1.43, 0, 0.02],
+    // Macro on the jewel bearing set into the outer ring's rim: the small
+    // machined part that lets everything move freely.
+    position: [2.45, 0.35, 0.6],
+    target: [1.45, 0, 0],
     lensMm: 100,
     hold: 0.55,
     drift: 20,
@@ -111,9 +120,11 @@ export const KEYFRAMES: Keyframe[] = [
   {
     id: "contact",
     weight: 2.1,
-    position: [0, 0, 2.8],
+    // The pilot's seat, a little further back than the chapter beats so the
+    // post lights' spill on the bezel is in frame.
+    position: [0, 0.15, 3.4],
     target: [0, 0, 0],
-    lensMm: 50,
+    lensMm: 40,
     hold: 0.65,
     frame: "case",
     viewOffsetY: { landscape: 0, portrait: 0.28 },

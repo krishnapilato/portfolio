@@ -1,7 +1,7 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerformanceMonitor, Preload } from "@react-three/drei";
 import { Suspense, useEffect, type ReactNode } from "react";
-import { MathUtils } from "three";
+import { AgXToneMapping, MathUtils } from "three";
 import { DPR_RANGE } from "../lib/device";
 import { useTimeline } from "../lib/store";
 import Post from "./Post";
@@ -90,6 +90,10 @@ export default function Experience({ children }: Props) {
       }}
       camera={{ fov: 32, near: 0.05, far: 80, position: [0, 1.2, 7] }}
       eventPrefix="client"
+      onCreated={({ gl }) => {
+        // Without a post stack the renderer tone-maps; AgX keeps the metal silver.
+        if (tier === "low") gl.toneMapping = AgXToneMapping;
+      }}
     >
       <Lifecycle />
       <Adaptive />

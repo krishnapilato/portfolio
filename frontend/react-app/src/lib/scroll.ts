@@ -21,16 +21,15 @@ export function readProgress(): number {
 export function startScroll(reducedMotion: boolean): () => void {
   const set = useTimeline.getState().set;
   let last = window.scrollY;
-  let frame = 0;
 
+  // Published synchronously from the scroll event: it is already one event
+  // per frame, and a second hop through requestAnimationFrame only lets the
+  // text fall a frame behind the picture on a busy main thread.
   const publish = () => {
-    frame = 0;
     const y = window.scrollY;
-    set({ progress: readProgress(), velocity: y - last });
+    const progress = readProgress();
+    if (progress !== useTimeline.getState().progress) set({ progress, velocity: y - last });
     last = y;
-  };
-  const schedule = () => {
-    if (!frame) frame = requestAnimationFrame(publish);
   };
 
   if (!reducedMotion) {
@@ -42,17 +41,19 @@ export function startScroll(reducedMotion: boolean): () => void {
       autoRaf: true,
       anchors: true,
     });
-    lenis.on("scroll", schedule);
-  } else {
-    window.addEventListener("scroll", schedule, { passive: true });
+    lenis.on("scroll", publish);
   }
-  window.addEventListener("resize", schedule, { passive: true });
+  // Native scroll events cover keyboard, scrollbar drags, find-in-page and
+  // reduced motion; with Lenis they simply agree with its own callback.
+  window.addEventListener("scroll", publish, { passive: true });
+  window.addEventListener("scrollend", publish, { passive: true });
+  window.addEventListener("resize", publish, { passive: true });
   publish();
 
   return () => {
-    window.removeEventListener("scroll", schedule);
-    window.removeEventListener("resize", schedule);
-    if (frame) cancelAnimationFrame(frame);
+    window.removeEventListener("scroll", publish);
+    window.removeEventListener("scrollend", publish);
+    window.removeEventListener("resize", publish);
     lenis?.destroy();
     lenis = null;
   };

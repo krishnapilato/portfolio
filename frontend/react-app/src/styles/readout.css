@@ -31,11 +31,17 @@
   text-overflow: ellipsis;
 }
 
-/* Beat-name swap: a view transition cross-fade. */
-::view-transition-old(readout-name),
-::view-transition-new(readout-name) {
-  animation-duration: 0.2s;
+/* On phones the name gives way to the beat number: the tape stays. */
+.readout__index {
+  display: none;
+  color: var(--chalk);
 }
+
+.readout__of {
+  color: var(--gauge-dim);
+}
+
+/* Beat-name swap: instant. It is an instrument reading, not a title card. */
 
 .tape {
   position: relative;
@@ -171,8 +177,11 @@
   }
 
   .readout__name {
-    min-width: 0;
-    max-width: 7.5em;
+    display: none;
+  }
+
+  .readout__index {
+    display: inline;
   }
 
   .tape__tick::after {
