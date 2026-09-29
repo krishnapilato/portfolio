@@ -1,5 +1,3 @@
-import gsap from "gsap";
-import { useLayoutEffect, useRef } from "react";
 import "./App.css";
 import Ambient from "./components/Ambient";
 import Closing from "./components/Closing";
@@ -10,44 +8,17 @@ import SiteFooter from "./components/SiteFooter";
 import Story from "./components/Story";
 import Telemetry from "./components/Telemetry";
 import TopBar from "./components/TopBar";
+import { COPY } from "./copy";
 import {
-  prefersReducedMotion,
   useGlobalLight,
-  useHotkey,
-  useLanguage,
   useReveal,
 } from "./lib/hooks";
 
 export default function App() {
-  const { lang, copy, setLang, toggle } = useLanguage();
-  const shell = useRef<HTMLDivElement>(null);
-  const mounted = useRef(false);
+  const copy = COPY;
 
   useGlobalLight();
-  useReveal([lang]);
-  useHotkey("l", toggle);
-
-  // A short settle on language change, so the page reads as one continuous
-  // surface rather than a hard content swap.
-  useLayoutEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true;
-      return;
-    }
-    const target = shell.current;
-    if (!target || prefersReducedMotion()) return;
-    gsap.fromTo(
-      target,
-      { opacity: 0.4, y: 8 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: "power2.out",
-        clearProps: "transform,opacity",
-      },
-    );
-  }, [lang]);
+  useReveal();
 
   return (
     <>
@@ -55,12 +26,12 @@ export default function App() {
           a transform on an ancestor would re-anchor them to the document. */}
       <Ambient />
 
-      <div className="shell" ref={shell}>
+      <div className="shell">
         <a className="skip" href="#story">
           {copy.scrollCue}
         </a>
 
-        <TopBar copy={copy} lang={lang} onSelect={setLang} />
+        <TopBar copy={copy} />
 
         <main className="content">
           <Hero copy={copy} />

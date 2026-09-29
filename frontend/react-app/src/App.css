@@ -339,47 +339,6 @@
   }
 }
 
-.langswitch {
-  position: relative;
-  display: flex;
-  padding: 3px;
-  border-radius: var(--radius-pill);
-  background: rgba(18, 20, 24, 0.05);
-}
-
-.langswitch__thumb {
-  position: absolute;
-  top: 3px;
-  bottom: 3px;
-  left: 3px;
-  width: calc(50% - 3px);
-  border-radius: var(--radius-pill);
-  background: var(--pearl);
-  box-shadow: 0 2px 8px -3px rgba(26, 32, 48, 0.35);
-  transition: transform 0.42s var(--ease);
-}
-
-.langswitch__thumb[data-lang="it"] {
-  transform: translateX(100%);
-}
-
-.langswitch__btn {
-  position: relative;
-  z-index: 1;
-  min-width: 2.6rem;
-  padding: 0.34rem 0.1rem;
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--mute);
-  transition: color 0.3s var(--ease);
-}
-
-.langswitch__btn[aria-pressed="true"] {
-  color: var(--ink);
-}
-
 /* ============================================================
    5. Hero
    ============================================================ */
@@ -1134,12 +1093,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.footer__hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-
 .footer > span:last-child {
   margin-left: auto;
 }
@@ -1235,10 +1188,6 @@ kbd {
 
   .tiles {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .footer__hint {
-    display: none;
   }
 
   .clocks {

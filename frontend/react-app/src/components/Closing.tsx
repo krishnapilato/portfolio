@@ -1,4 +1,4 @@
-import type { Copy } from "../i18n";
+import type { Copy } from "../copy";
 import { EMAIL, GITHUB, LINKEDIN } from "../links";
 
 export default function Closing({ copy }: { copy: Copy }) {

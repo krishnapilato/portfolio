@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import type { Copy } from "../i18n";
+import type { Copy } from "../copy";
 import { TELEMETRY_HISTORY, useTelemetry } from "../lib/hooks";
 
 const CEILING = 120;

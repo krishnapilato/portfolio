@@ -1,4 +1,4 @@
-import type { Copy } from "../i18n";
+import type { Copy } from "../copy";
 import { useTick } from "../lib/hooks";
 
 /** Launch target for the countdown. Change this one line to move the date. */

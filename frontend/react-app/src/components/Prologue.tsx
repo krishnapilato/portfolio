@@ -1,4 +1,4 @@
-import type { Copy } from "../i18n";
+import type { Copy } from "../copy";
 import { useTick } from "../lib/hooks";
 import Clock from "./Clock";
 

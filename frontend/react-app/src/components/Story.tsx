@@ -1,4 +1,4 @@
-import type { Copy } from "../i18n";
+import type { Copy } from "../copy";
 
 export default function Story({ copy }: { copy: Copy }) {
   return (

@@ -1,7 +1,5 @@
 import type { RefObject } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { Copy, Lang } from "../i18n";
-import { COPY, persistLang, resolveInitialLang } from "../i18n";
+import { useEffect, useState } from "react";
 
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 
@@ -17,28 +15,6 @@ export function useTick(): Date {
     return () => window.clearInterval(id);
   }, []);
   return now;
-}
-
-/** Language state, mirrored into <html lang>, the title and the meta description. */
-export function useLanguage() {
-  const [lang, setLang] = useState<Lang>(resolveInitialLang);
-  const copy: Copy = COPY[lang];
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-    document.title = copy.documentTitle;
-    document
-      .querySelector('meta[name="description"]')
-      ?.setAttribute("content", copy.metaDescription);
-    persistLang(lang);
-  }, [lang, copy]);
-
-  const toggle = useCallback(
-    () => setLang((current) => (current === "en" ? "it" : "en")),
-    [],
-  );
-
-  return { lang, copy, setLang, toggle };
 }
 
 /**
@@ -260,24 +236,4 @@ export function useTelemetry(ref: RefObject<HTMLElement | null>): Telemetry {
     timeZone,
     reducedMotion,
   };
-}
-
-/** Single-key shortcut, ignored while a field is focused or a modifier is held. */
-export function useHotkey(key: string, handler: () => void) {
-  const saved = useRef(handler);
-  saved.current = handler;
-
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.metaKey || event.ctrlKey || event.altKey) return;
-      const target = event.target as HTMLElement | null;
-      if (target?.isContentEditable) return;
-      if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
-      if (event.key.toLowerCase() !== key) return;
-      event.preventDefault();
-      saved.current();
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [key]);
 }

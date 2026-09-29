@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { Copy } from "../i18n";
+import type { Copy } from "../copy";
 
 export default function Projects({ copy }: { copy: Copy }) {
   return (

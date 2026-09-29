@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { useLayoutEffect, useRef } from "react";
-import type { Copy } from "../i18n";
+import type { Copy } from "../copy";
 import { CORE_STACK, EMAIL, GITHUB, LINKEDIN } from "../links";
 import Countdown from "./Countdown";
 
