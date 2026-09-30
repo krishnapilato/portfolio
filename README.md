@@ -1,20 +1,20 @@
 ## Portfolio
 
-![Java](https://badgen.net/badge/Java/25.0.2/blue?icon=java)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0--M3-brightgreen?style=flat&logo=spring-boot)
-![Angular](https://img.shields.io/badge/React-19.2.4-blue?style=flat&logo=react)
-![MySQL](https://img.shields.io/badge/MySQL-9.6.0-blue?style=flat&logo=mysql)
-![Version](https://img.shields.io/badge/Version-0.0.5-blue?style=flat)
+![Java](https://badgen.net/badge/Java/27/blue?icon=java)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.2.0--M2-brightgreen?style=flat&logo=spring-boot)
+![Angular](https://img.shields.io/badge/React-19.3.0-blue?style=flat&logo=react)
+![MySQL](https://img.shields.io/badge/MySQL-26.7.0-blue?style=flat&logo=mysql)
+![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=flat)
 [![CI](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
 
-Monorepo hosting a production-ready React 19 frontend and a Spring Boot 4 API. Clean UX, fast first paint, email contact flow, OpenAPI docs, and containerized local dev.
+Monorepo hosting a production-ready React 19.3 frontend and a Spring Boot 4 API. Clean UX, fast first paint, email contact flow, OpenAPI docs, and containerized local dev.
 
 - Live site: https://krishnapilato.github.io/portfolio
 
 ### Layout
 
-- `frontend/react-app` — React 19.2 portfolio app
-- `backend/java` — Spring Boot 4 API (JWT, OpenAPI, MySQL), Docker-compose for dev
+- `frontend/react-app` — React 19.3 portfolio app
+- `backend/java` — Spring Boot 4.2 API (JWT, OpenAPI, MySQL), Docker-compose for dev
 
 For deep details, see the module READMEs:
 - Frontend: `frontend/react-app/README.md`
@@ -34,7 +34,7 @@ git checkout dev
 
 ### Backend (Spring Boot API)
 
-Prereqs: JDK 24, MySQL 8+ (local) or Docker Desktop.
+Prereqs: JDK 27, MySQL 9+ (local) or Docker Desktop.
 
 Option A — native run against your DB:
 
@@ -57,7 +57,7 @@ Dev URLs:
 
 ### Frontend (React)
 
-Prereqs: Node 24+, npm 11+.
+Prereqs: Node 26+, npm 12+.
 
 Dev server:
 
