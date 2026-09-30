@@ -1,0 +1,5 @@
+[
+  { "fullName": "Khova Krishna Pilato", "email": "${SEED_ADMIN_EMAIL}", "role": "ADMIN", "password": "${SEED_ADMIN_PASSWORD}" },
+  { "fullName": "Ada Lovelace", "email": "ada@portfolio.local", "role": "USER", "password": "${SEED_DEMO_PASSWORD}" },
+  { "fullName": "Alan Turing", "email": "alan@portfolio.local", "role": "USER", "password": "${SEED_DEMO_PASSWORD}" }
+]

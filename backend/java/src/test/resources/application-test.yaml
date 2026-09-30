@@ -1,21 +1,26 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:portfolio;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:portfolio;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
     username: sa
-    password:
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
+    password: ""
   mail:
     host: localhost
-
+    port: 3025
 management:
-  health:
-    mail:
-      enabled: false
-
+  endpoint:
+    heapdump:
+      access: none
 app:
-  password-reset:
-    expiration-hours: 1
+  security:
+    secret: cG9ydGZvbGlvLXRlc3Qtc2VjcmV0LTAxMjM0NTY3ODlhYmNkZWZnaGlqa2xtbm9w
+    auth-requests-per-minute: 1000000
+  mail:
+    from: no-reply@test.local
+    poll-interval: PT24H
+  dashboard:
+    pulse-interval: PT24H
+  seed:
+    enabled: true
+SEED_ADMIN_EMAIL: admin@test.local
+SEED_ADMIN_PASSWORD: Admin-Passw0rd
+SEED_DEMO_PASSWORD: Demo-Passw0rd

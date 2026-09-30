@@ -1,0 +1,65 @@
+name: portfolio
+
+services:
+  mysql:
+    image: mysql:26.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD:?DB_PASSWORD must be set in .env}"
+      MYSQL_DATABASE: portfolio
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--host=127.0.0.1", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+      start_interval: 2s
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  mailpit:
+    image: axllent/mailpit:v1.31
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+      start_interval: 1s
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+  app:
+    build:
+      context: .
+      args:
+        GIT_COMMIT: "${GIT_COMMIT:-}"
+    env_file: .env
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      PORT: "8080"
+      DB_URL: jdbc:mysql://mysql:3306/portfolio
+      DB_USERNAME: root
+      MAIL_HOST: mailpit
+      MAIL_PORT: "1025"
+      MAIL_SMTP_AUTH: "false"
+      MAIL_STARTTLS: "false"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/actuator/health/liveness || exit 1"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 60s
+      start_interval: 2s
+
+volumes:
+  mysql-data:
