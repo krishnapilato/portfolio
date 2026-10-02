@@ -1,173 +1,99 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#06070a" />
-    <meta name="robots" content="noindex" />
-    <title th:text="${(status ?: 'Error') + ' ' + (title ?: (error ?: 'Unexpected response')) + ' – Portfolio Platform'}">Error – Portfolio Platform</title>
-    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" />
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-props/1.7.23/open-props.min.css" integrity="sha512-Fx+f7xzdf+d0j7T47BwsR/cn4WWRv4PXAg4eylNZSY1o7WVcoYEXFeov8mo1Hj49KodJuZ+3Lnwoh+aF2eABFw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-props/1.7.23/normalize.min.css" integrity="sha512-sZpuBaQWP4MyykLTndaIA1sTzegscrB8oACzs14dlJNj3WI951RAnqB8nmbFJiDzhDoUE+JmUXOSMh7+bbGR+Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.48.0/tabler-icons.min.css" integrity="sha512-FpfjSBRmQDu3MAAZrjj8j+RwvbASPc9f+gpd2pF/sHXPWPeTbd1OmXpC7CYt+Nnb6kD+Ed0fFH366YcAoV9LNA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Geist+Mono:wght@100..900&amp;display=swap" />
-    <link rel="stylesheet" th:href="@{/assets/app.css}" />
-    <script th:src="@{/assets/motion.js}" defer="defer"></script>
-    <script th:src="@{/assets/error.js}" defer="defer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" integrity="sha512-oJ8QbaQThQoJZ7oEv+29jfPM6CcP+zUxh3PKJs1vyOhx0UraUrE7PQgeItu3dOuCJyrzWpoYMsVjkkPEBzbUqw==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/SplitText.min.js" integrity="sha512-LFdAHEel9Gwq2HmgZUgnl3mLwXjC6nrfMU6IRLA2AOaKQaWgdrT8ZlmI2ZjVkgB32TeYyi7KdD80ihb9W6uH8Q==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrambleTextPlugin.min.js" integrity="sha512-LFsi0vwqzvktxcWcNkQlqn9xBJKcZLQ/kEVKCPCZTwbdecr2hg25864m0dR5RAnbc7NIMd3YOX8igZWMgXWuaQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/CustomEase.min.js" integrity="sha512-hOlMIjWmnBr7Fa6D6jD0RS7jcVFSTKyonOv4Yjncnw1j5ilx0yPTIfv1WTXYNb1xNYFTgEOzLG0g+u9w01AijQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="noindex" name="robots">
+    <title th:text="|${status} ${error} · Portfolio Platform|">404 Not Found · Portfolio Platform</title>
+    <link href="/favicon.svg" rel="icon" th:href="@{/favicon.svg}" type="image/svg+xml">
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+
+        body {
+            max-width: 44rem;
+            margin: 0 auto;
+            padding: 1.5rem 1.25rem 3rem;
+            font: 1.0625rem/1.6 system-ui, sans-serif;
+            background: light-dark(#f7f6f2, #141412);
+            color: light-dark(#1a1917, #ebe9e3);
+        }
+
+        a {
+            color: inherit;
+            text-underline-offset: .2em;
+        }
+
+        a:hover {
+            color: light-dark(#b4532a, #e08a62);
+        }
+
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: .5rem;
+        }
+
+        h1 {
+            margin: 4.5rem 0 1rem;
+            font: 400 clamp(2.5rem, 8vw, 4rem)/1.05 "Iowan Old Style", Georgia, serif;
+            letter-spacing: -.02em;
+        }
+
+        small {
+            color: light-dark(#6f6b63, #9a968c);
+        }
+
+        code {
+            overflow-wrap: anywhere;
+        }
+    </style>
 </head>
-<body class="page page--error"
-      th:with="code=${status ?: '?'},
-               tone=${status == null ? 'server' : (status == 401 or status == 403 ? 'auth' : (status >= 500 ? 'server' : 'client'))},
-               heading=${title ?: (error ?: 'Unexpected response')},
-               advice=${hint ?: 'Something unexpected happened. Head back home and try again.'},
-               detail=${message != null and !#strings.isEmpty(message) and message != 'No message available' and message != error ? message : null}"
-      th:data-tone="${tone}">
-<a class="skip-link" href="#main">Skip to error details</a>
-
-<div class="backdrop" aria-hidden="true">
-    <div class="backdrop__grid" data-grid=""></div>
-    <div class="backdrop__beam" data-beam=""></div>
-    <div class="backdrop__glow backdrop__glow--a" data-glow=""></div>
-    <div class="backdrop__glow backdrop__glow--b" data-glow=""></div>
-    <div class="backdrop__noise"></div>
-</div>
-
-<header class="topbar" data-intro="" data-nav="">
-    <div class="container topbar__inner">
-        <a class="brand" th:href="@{/}">
-            <svg class="brand__mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-                <defs>
-                    <linearGradient id="brand-gradient" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#c4b5fd" />
-                        <stop offset="0.5" stop-color="#6366f1" />
-                        <stop offset="1" stop-color="#22d3ee" />
-                    </linearGradient>
-                </defs>
-                <path d="M12 1.5 22.5 12 12 22.5 1.5 12Z" fill="url(#brand-gradient)" />
-                <path d="M12 7.5 16.5 12 12 16.5 7.5 12Z" fill="#06070a" />
-            </svg>
-            <span class="brand__name">portfolio</span>
-            <span class="sr-only"> – home</span>
-        </a>
-        <span class="topbar__slash" aria-hidden="true">/</span>
-        <span class="crumb" aria-hidden="true" th:text="${'error ' + code}">error</span>
-        <nav class="topbar__nav" aria-label="Primary">
-            <ul class="topbar__links" role="list">
-                <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/swagger-ui.html}">Docs</a></li>
-                <li>
-                    <a href="https://krishnapilato.github.io/portfolio" target="_blank" rel="noopener noreferrer">
-                        Portal<i class="ti ti-arrow-up-right" aria-hidden="true"></i><span class="sr-only"> (opens in a new tab)</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <div class="topbar__tools">
-            <a class="icon-link" href="https://github.com/krishnapilato/portfolio" target="_blank" rel="noopener noreferrer">
-                <svg class="gh" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" /></svg>
-                <span class="sr-only">Source on GitHub (opens in a new tab)</span>
-            </a>
-            <div class="motion" data-tooltip-host="">
-                <button class="motion-toggle" type="button" aria-pressed="false" aria-describedby="motion-tip" data-motion-toggle="">
-                    <i class="ti ti-sparkles" aria-hidden="true"></i>
-                    <span>Cinematic</span>
-                    <span class="switch" aria-hidden="true"></span>
-                </button>
-                <div class="tooltip" role="tooltip" id="motion-tip">
-                    <strong>Cinematic motion: <span data-motion-state="">Off</span></strong>
-                    Turns on the full GSAP choreography. Switch it off for soft fades only.
-                    <span class="tooltip__note" data-motion-system="">Your choice is remembered in this browser.</span>
-                </div>
-            </div>
-        </div>
-    </div>
+<body oncontextmenu="return false;" style="user-select: none;">
+<header>
+    <b>
+        <svg aria-hidden="true" height="12" viewBox="0 0 32 32" width="12">
+            <rect fill="currentColor" height="32" rx="7" width="32"/>
+            <circle cx="22" cy="22" fill="#d0643a" r="5"/>
+        </svg>
+        Portfolio Platform</b>
+    <small th:text="|${status} · ${error}|">404 · Not Found</small>
 </header>
 
-<main id="main" class="container fault" tabindex="-1">
-    <p class="fault__code" aria-hidden="true" data-intro="" data-code-glyph="" th:data-code="${code}" th:text="${code}">500</p>
-
-    <p class="reason" data-intro="" data-reason="">
-        <span th:if="${status != null}" th:text="${'HTTP ' + status}">HTTP 500</span>
-        <span class="reason__sep" aria-hidden="true" th:if="${status != null and error != null and error != 'None'}">·</span>
-        <span th:if="${error != null and error != 'None'}" th:text="${error}">Internal Server Error</span>
-    </p>
-
-    <h1 class="fault__title" data-intro="" data-fault-title="">
-        <span class="sr-only" th:text="${heading}">Something went wrong</span>
-        <span aria-hidden="true" data-scramble="" th:text="${heading}">Something went wrong</span>
-    </h1>
-
-    <p class="fault__hint" data-intro="" data-hint="" th:text="${advice}">An unexpected error occurred on our side. Quote the request id if you report it.</p>
-
-    <nav class="hero__actions fault__actions" aria-label="Where to go next" data-intro="" data-actions="">
-        <a class="btn btn--primary" data-magnetic="" th:href="@{/}">
-            <i class="ti ti-home" aria-hidden="true"></i>
-            <span>Back home</span>
-        </a>
-        <a class="btn btn--ghost" data-magnetic="" th:href="@{/swagger-ui.html}">
-            <i class="ti ti-book-2" aria-hidden="true"></i>
-            <span>API docs</span>
-        </a>
-    </nav>
-
-    <section class="surface diag" data-intro="" data-diag="" aria-labelledby="diag-title"
-             th:if="${path != null or requestId != null or timestamp != null or detail != null}">
-        <header class="diag__head">
-            <span class="card__icon" aria-hidden="true"><i class="ti ti-terminal-2"></i></span>
-            <h2 id="diag-title" class="diag__title">Diagnostics</h2>
-            <p class="card__meta">quote these when reporting</p>
-        </header>
-        <dl class="diag__list">
-            <div class="diag__row" th:if="${path != null}">
-                <dt>Path</dt>
-                <dd><code th:text="${path}">/</code></dd>
-            </div>
-            <div class="diag__row" th:if="${requestId != null}">
-                <dt>Request ID</dt>
-                <dd>
-                    <code id="request-id" th:text="${requestId}">00000000-0000-0000-0000-000000000000</code>
-                    <button class="copy" type="button" data-copy="" data-copy-source="#request-id" th:data-copy-value="${requestId}">
-                        <i class="ti ti-copy" aria-hidden="true" data-copy-icon=""></i>
-                        <span data-copy-label="">Copy</span><span class="sr-only"> request ID</span>
-                    </button>
-                </dd>
-            </div>
-            <div class="diag__row" th:if="${timestamp != null}">
-                <dt>Time</dt>
-                <dd><time data-local-time="" th:datetime="${#dates.formatISO(timestamp)}" th:text="${#dates.format(timestamp, 'yyyy-MM-dd HH:mm:ss')}">2026-01-01 00:00:00</time></dd>
-            </div>
-            <div class="diag__row" th:if="${detail != null}">
-                <dt>Details</dt>
-                <dd class="diag__detail" th:text="${detail}">No static resource.</dd>
-            </div>
-        </dl>
-    </section>
-    <p class="sr-only" aria-live="polite" data-copy-status=""></p>
+<main th:switch="${status}">
+    <th:block th:case="404">
+        <h1>Page not found</h1>
+        <p>Nothing lives at <code th:text="${path}">/missing</code>. The link may be out of date, or the address
+            mistyped.</p>
+    </th:block>
+    <th:block th:case="401">
+        <h1>Sign-in required</h1>
+        <p>This address is private, or it does not exist; without signing in there is no telling which.
+            API clients get an access token from <code>POST /api/v1/auth/login</code> and send it as a bearer token.</p>
+    </th:block>
+    <th:block th:case="403">
+        <h1>Not allowed</h1>
+        <p>You are signed in, but this account does not have access here.</p>
+    </th:block>
+    <th:block th:case="405">
+        <h1>Method not allowed</h1>
+        <p>This address exists, but it does not accept that kind of request.</p>
+    </th:block>
+    <th:block th:case="429">
+        <h1>Too many requests</h1>
+        <p>That was a lot in a short time. Wait a minute, then try again.</p>
+    </th:block>
+    <th:block th:case="*">
+        <h1 th:text="${status >= 500} ? 'Something broke' : ${error}">Something broke</h1>
+        <p th:text="${status >= 500} ? 'The server ran into an error it did not expect. If it keeps happening, mention the request id below.' : 'The request could not be processed as it was sent.'">
+            The server ran into an error it did not expect.</p>
+    </th:block>
 </main>
 
-<footer class="footer" data-intro="" data-footer="">
-    <div class="container footer__inner">
-        <p class="footer__brand">
-            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
-                <path d="M12 1.5 22.5 12 12 22.5 1.5 12Z" fill="url(#brand-gradient)" />
-                <path d="M12 7.5 16.5 12 12 16.5 7.5 12Z" fill="#06070a" />
-            </svg>
-            <span>© <span th:text="${#dates.year(#dates.createNow())}">2026</span> Khova Krishna Pilato</span>
-        </p>
-        <a href="https://github.com/krishnapilato/portfolio" target="_blank" rel="noopener noreferrer">
-            <svg class="gh" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" /></svg>
-            <span>krishnapilato/portfolio</span>
-            <span class="sr-only">(opens in a new tab)</span>
-        </a>
-    </div>
-</footer>
+<p><a href="/" th:href="@{/}">← Back to the index</a></p>
+<p th:if="${requestId}"><small>Request id <code
+    th:text="${requestId}">0192f3a7-5c1e-7b2d-9a40-3f6c2e8d1b07</code></small></p>
 </body>
 </html>

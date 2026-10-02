@@ -12,15 +12,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 
 public interface MailRepository extends JpaRepository<MailMessage, Long> {
 
+    // A lock timeout of -2 makes Hibernate add SKIP LOCKED: rows another instance is sending are passed over.
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints(@QueryHint(name = "jakarta.persistence.lock.timeout", value = "-2"))
     @Query("select m from MailMessage m where m.status = :status and m.scheduledAt <= :now order by m.scheduledAt")
     List<MailMessage> lockDue(MailStatus status, Instant now, Limit limit);
+
+    // Attachments go with their message through the ON DELETE CASCADE foreign key.
+    @Modifying
+    @Query("delete from MailMessage m where m.status in :statuses and m.updatedAt < :before")
+    int deleteByStatusInAndUpdatedAtBefore(Collection<MailStatus> statuses, Instant before);
 
     Page<MailMessage> findByStatus(MailStatus status, Pageable pageable);
 

@@ -1,12 +1,14 @@
 package com.personal.portfolio.security;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import com.personal.portfolio.platform.AppProperties;
 import com.personal.portfolio.platform.CorrelationFilter;
 import com.personal.portfolio.platform.KeyRing;
-import com.personal.portfolio.user.AccountStatus;
 import com.personal.portfolio.user.Role;
 import com.personal.portfolio.user.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import java.security.MessageDigest;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.List;
@@ -24,6 +26,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,11 +36,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -53,7 +54,6 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
@@ -78,56 +78,73 @@ class SecurityConfig {
     private static final String PERMISSIONS_POLICY = "camera=(), microphone=(), geolocation=()";
     private static final String CONTENT_SECURITY_POLICY = String.join("; ",
             "default-src 'self'",
-            "script-src 'self' https://cdnjs.cloudflare.com",
-            "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com",
-            "font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com",
+            "script-src 'self'",
+            "style-src 'self' 'unsafe-inline'",
             "img-src 'self' data:",
-            "connect-src 'self'",
+            "object-src 'none'",
             "frame-ancestors 'none'",
             "base-uri 'self'",
             "form-action 'self'");
 
+    // The scrape password is a long random secret, not a human password: a constant-time comparison is enough,
+    // and unlike bcrypt it costs an anonymous caller nothing to be told no.
+    static AuthenticationManager scraper(String password) {
+        var expected = password.getBytes(UTF_8);
+        return authentication -> {
+            var presented = String.valueOf(authentication.getCredentials()).getBytes(UTF_8);
+            if (password.isBlank() || !SCRAPER.equals(authentication.getName())
+                    || !MessageDigest.isEqual(presented, expected)) {
+                throw new BadCredentialsException("Invalid scrape credentials");
+            }
+            return UsernamePasswordAuthenticationToken.authenticated(SCRAPER, null,
+                    AuthorityUtils.createAuthorityList("ROLE_" + METRICS));
+        };
+    }
+
+    // Sign-in endpoints must work even when the client still sends an old, expired token.
+    private static BearerTokenResolver ignoringAuthEndpoints() {
+        var header = new DefaultBearerTokenResolver();
+        return request -> AUTH_ENDPOINTS.matches(request) ? null : header.resolve(request);
+    }
+
+    // API clients get the usual WWW-Authenticate: Bearer challenge; browsers also get the HTML error page.
+    private static AuthenticationEntryPoint bearerChallenge() {
+        var bearer = new BearerTokenAuthenticationEntryPoint();
+        var browser = new MediaTypeRequestMatcher(MediaType.TEXT_HTML);
+        browser.setIgnoredMediaTypes(Set.of(MediaType.ALL));
+        return (request, response, exception) -> {
+            bearer.commence(request, response, exception);
+            if (browser.matches(request)) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+        };
+    }
+
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    SecurityFilterChain scrapeFilterChain(HttpSecurity http, AppProperties properties, PasswordEncoder passwordEncoder,
-            Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter) {
+    SecurityFilterChain scrapeFilterChain(HttpSecurity http, AppProperties properties) {
         return http
                 .securityMatcher(EndpointRequest.to("prometheus"))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(requests -> requests.anyRequest().hasAnyRole(METRICS, ADMIN))
-                .userDetailsService(scrapers(properties.security().scrapePassword(), passwordEncoder))
+                .authenticationManager(scraper(properties.security().scrapePassword()))
                 .httpBasic(Customizer.withDefaults())
-                .oauth2ResourceServer(resourceServer -> resourceServer
-                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter))
-                        .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()))
+                .authorizeHttpRequests(requests -> requests.anyRequest().hasRole(METRICS))
                 .build();
-    }
-
-    static UserDetailsService scrapers(String password, PasswordEncoder passwordEncoder) {
-        var scrapers = new InMemoryUserDetailsManager();
-        if (!password.isBlank()) {
-            scrapers.createUser(User.withUsername(SCRAPER)
-                    .password(Objects.requireNonNull(passwordEncoder.encode(password)))
-                    .roles(METRICS)
-                    .build());
-        }
-        return scrapers;
     }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
-            Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter) {
+                                            Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter) {
         return http
+                // Bearer tokens travel in a header, never in cookies, so there is nothing for CSRF to abuse.
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/error", "/favicon.svg", "/favicon.ico", "/assets/**", "/system/**",
-                                "/swagger-ui.html",
-                                "/swagger-ui/**", "/v3/api-docs/**", "/.well-known/**").permitAll()
-                        .requestMatchers(EndpointRequest.toLinks(),
-                                EndpointRequest.to(HealthEndpoint.class, InfoEndpoint.class)).permitAll()
+                        .requestMatchers("/", "/error", "/favicon.svg", "/favicon.ico",
+                                "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(EndpointRequest.to(HealthEndpoint.class, InfoEndpoint.class)).permitAll()
                         .requestMatchers(AUTH_ENDPOINTS).permitAll()
                         .requestMatchers("/api/*/users/**", "/api/*/mail/**").hasRole(ADMIN)
                         .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ADMIN)
@@ -148,30 +165,9 @@ class SecurityConfig {
                 .build();
     }
 
-    private static BearerTokenResolver ignoringAuthEndpoints() {
-        var header = new DefaultBearerTokenResolver();
-        return request -> AUTH_ENDPOINTS.matches(request) ? null : header.resolve(request);
-    }
-
-    private static AuthenticationEntryPoint bearerChallenge() {
-        var bearer = new BearerTokenAuthenticationEntryPoint();
-        var browser = new MediaTypeRequestMatcher(MediaType.TEXT_HTML);
-        browser.setIgnoredMediaTypes(Set.of(MediaType.ALL));
-        return (request, response, exception) -> {
-            bearer.commence(request, response, exception);
-            if (browser.matches(request)) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            }
-        };
-    }
-
     @Bean
     PasswordEncoder passwordEncoder() {
-        var encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        if (encoder instanceof DelegatingPasswordEncoder delegating) {
-            delegating.setDefaultPasswordEncoderForMatches(new BCryptPasswordEncoder());
-        }
-        return encoder;
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
@@ -192,13 +188,16 @@ class SecurityConfig {
         return decoder;
     }
 
+    // A valid signature only proves who the caller is. Role, status and "signed out everywhere" are read
+    // from the database on every request, so they take effect immediately instead of when the token expires.
     @Bean
     Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter(UserRepository users) {
         return jwt -> users.findById(AccessTokens.userId(jwt))
-                .filter(user -> user.getStatus() == AccountStatus.ACTIVE)
+                .filter(user -> user.acceptsTokenOfSession(AccessTokens.sessionVersion(jwt)))
                 .map(user -> new JwtAuthenticationToken(jwt,
-                        AuthorityUtils.createAuthorityList("ROLE_" + user.getRole().name()), jwt.getSubject()))
-                .orElseThrow(() -> new InvalidBearerTokenException("The account is no longer active"));
+                        AuthorityUtils.createAuthorityList("ROLE_" + user.getRole().name()),
+                        Objects.requireNonNull(jwt.getSubject())))
+                .orElseThrow(() -> new InvalidBearerTokenException("The token is no longer valid"));
     }
 
     @Bean

@@ -52,14 +52,16 @@ class AccountTests extends AuthTestSupport {
         var email = uniqueEmail("rename");
         var owner = activeUser(email);
         var before = reload(email).getUpdatedAt();
+        letTheClockPass(before);
 
         var renamed = patch(owner.getId(), Map.of("fullName", "  Grace Brewster Hopper "));
 
         assertThat(renamed).hasStatusOk().bodyJson().extractingPath("$.fullName").isEqualTo("Grace Brewster Hopper");
         var stored = reload(email);
         assertThat(stored.getFullName()).isEqualTo("Grace Brewster Hopper");
-        assertThat(stored.getUpdatedAt()).isAfterOrEqualTo(before);
+        assertThat(stored.getUpdatedAt()).isAfter(before);
         assertThat(Instant.parse(body(renamed).get("updatedAt").asString()))
+                .isAfter(before)
                 .isCloseTo(stored.getUpdatedAt(), within(1, ChronoUnit.MILLIS));
     }
 
@@ -92,11 +94,13 @@ class AccountTests extends AuthTestSupport {
         var owner = activeUser(email);
         var laptop = login(email, PASSWORD);
         var phone = login(email, PASSWORD);
-        var started = Instant.now();
+        var started = clock.instant();
 
         var changed = changePassword(owner.getId(), PASSWORD, NEW_PASSWORD);
 
         assertThat(changed).hasStatus(HttpStatus.NO_CONTENT);
+        assertThat(getWithBearer(ME, laptop.accessToken())).hasStatus(HttpStatus.UNAUTHORIZED);
+        assertThat(getWithBearer(ME, phone.accessToken())).hasStatus(HttpStatus.UNAUTHORIZED);
         assertProblem(post(REFRESH, refreshToken(laptop.refreshToken())), HttpStatus.BAD_REQUEST, "invalid-token");
         assertProblem(post(REFRESH, refreshToken(phone.refreshToken())), HttpStatus.BAD_REQUEST, "invalid-token");
         assertProblem(post(LOGIN, credentials(email, PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
@@ -134,6 +138,21 @@ class AccountTests extends AuthTestSupport {
         assertThat(mailsTo(email, CHANGED_SUBJECT)).isEmpty();
     }
 
+    @Test
+    void locksTheAccountAfterRepeatedWrongCurrentPasswords() {
+        var email = uniqueEmail("guessing");
+        var owner = activeUser(email);
+
+        for (var attempt = 0; attempt < properties.security().maxFailedLogins(); attempt++) {
+            assertProblem(changePassword(owner.getId(), "Not-The-Passw0rd", NEW_PASSWORD),
+                    HttpStatus.BAD_REQUEST, "wrong-password");
+        }
+
+        assertProblem(changePassword(owner.getId(), PASSWORD, NEW_PASSWORD), HttpStatus.LOCKED, "temporarily-locked");
+        assertProblem(post(LOGIN, credentials(email, PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
+        assertThat(mailsTo(email, CHANGED_SUBJECT)).isEmpty();
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {"short1A", "no-upper-case-1", "NO-LOWER-CASE-1", "No-Digits-Here"})
     void rejectsWeakNewPasswords(String weak) {
@@ -159,6 +178,9 @@ class AccountTests extends AuthTestSupport {
 
         assertThat(mvc.delete().uri(SESSIONS_PATH).with(user(owner.getId()))).hasStatus(HttpStatus.NO_CONTENT);
 
+        assertThat(getWithBearer(ME, first.accessToken())).hasStatus(HttpStatus.UNAUTHORIZED);
+        assertThat(getWithBearer(ME, second.accessToken())).hasStatus(HttpStatus.UNAUTHORIZED);
+        assertThat(getWithBearer(ME, unrelated.accessToken())).hasStatusOk();
         assertProblem(post(REFRESH, refreshToken(first.refreshToken())), HttpStatus.BAD_REQUEST, "invalid-token");
         assertProblem(post(REFRESH, refreshToken(second.refreshToken())), HttpStatus.BAD_REQUEST, "invalid-token");
         assertThat(post(REFRESH, refreshToken(unrelated.refreshToken()))).hasStatusOk();

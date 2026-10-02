@@ -41,11 +41,10 @@ class SecurityTests extends IntegrationTest {
     private static final String USERS = "/api/v1/users";
     private static final String CONTENT_SECURITY_POLICY = String.join("; ",
             "default-src 'self'",
-            "script-src 'self' https://cdnjs.cloudflare.com",
-            "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com",
-            "font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com",
+            "script-src 'self'",
+            "style-src 'self' 'unsafe-inline'",
             "img-src 'self' data:",
-            "connect-src 'self'",
+            "object-src 'none'",
             "frame-ancestors 'none'",
             "base-uri 'self'",
             "form-action 'self'");
@@ -104,9 +103,15 @@ class SecurityTests extends IntegrationTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/", "/actuator", "/actuator/health", "/actuator/info", "/v3/api-docs", "/favicon.svg"})
+    @ValueSource(strings = {"/", "/actuator/health", "/actuator/info", "/v3/api-docs", "/favicon.svg"})
     void keepsPublicPagesOpenToAnonymousVisitors(String path) {
         assertThat(mvc.get().uri(path)).hasStatusOk();
+    }
+
+    @Test
+    void showsTheActuatorIndexToAdministratorsOnly() {
+        assertThat(mvc.get().uri("/actuator")).hasStatus(HttpStatus.UNAUTHORIZED);
+        assertThat(mvc.get().uri("/actuator").with(admin())).hasStatusOk();
     }
 
     @Test
@@ -209,6 +214,22 @@ class SecurityTests extends IntegrationTest {
     }
 
     @Test
+    void rejectsSignedTokensThatBelongToNoSession() {
+        var member = account(Role.USER);
+        var security = properties.security();
+        var now = Instant.now();
+        var withoutSession = JwtClaimsSet.builder()
+                .issuer(security.issuer())
+                .audience(List.of(security.audience()))
+                .subject(Long.toString(member.getId()))
+                .issuedAt(now)
+                .expiresAt(now.plus(Duration.ofMinutes(15)))
+                .build();
+
+        assertThat(withBearer(ME, sign(encoder, withoutSession))).hasStatus(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
     void createsNoHttpSession() {
         var result = withBearer(ME, accessTokens.issue(account(Role.USER)).value());
 
@@ -284,15 +305,15 @@ class SecurityTests extends IntegrationTest {
     }
 
     @Test
-    void hashesNewPasswordsWithBcryptAndStillVerifiesLegacyHashes() {
+    void hashesNewPasswordsWithBcryptAndFlagsWeakerHashesForUpgrade() {
         var hash = passwordEncoder.encode("Some-Passw0rd");
-        var legacy = new BCryptPasswordEncoder().encode("Some-Passw0rd");
+        var weaker = "{bcrypt}" + new BCryptPasswordEncoder(4).encode("Some-Passw0rd");
 
         assertThat(hash).startsWith("{bcrypt}$2");
         assertThat(passwordEncoder.matches("Some-Passw0rd", hash)).isTrue();
-        assertThat(passwordEncoder.matches("Some-Passw0rd", legacy)).isTrue();
-        assertThat(passwordEncoder.matches("other-Passw0rd", legacy)).isFalse();
-        assertThat(passwordEncoder.upgradeEncoding(legacy)).isTrue();
+        assertThat(passwordEncoder.matches("other-Passw0rd", hash)).isFalse();
+        assertThat(passwordEncoder.matches("Some-Passw0rd", weaker)).isTrue();
+        assertThat(passwordEncoder.upgradeEncoding(weaker)).isTrue();
         assertThat(passwordEncoder.upgradeEncoding(hash)).isFalse();
     }
 
@@ -335,6 +356,7 @@ class SecurityTests extends IntegrationTest {
                 .issuedAt(issuedAt)
                 .expiresAt(issuedAt.plus(Duration.ofMinutes(15)))
                 .claim("roles", List.of(Role.USER.name()))
+                .claim("session_version", 0)
                 .build();
     }
 

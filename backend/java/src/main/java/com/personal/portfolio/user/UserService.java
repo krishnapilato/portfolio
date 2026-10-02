@@ -33,12 +33,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 class UserService {
 
-    private static final Set<String> SORTABLE =
-            Set.of("createdAt", "updatedAt", "fullName", "email", "lastLoginAt", "status", "role");
+    private static final Set<String> SORTABLE = Set.of("createdAt", "updatedAt", "fullName", "email", "lastLoginAt", "status", "role");
 
     private final UserRepository users;
     private final TokenVault vault;
     private final PasswordEncoder passwordEncoder;
+
+    private static void requireOther(long id, long actorId) {
+        if (id == actorId) throw new ApiException(new SelfManagement());
+    }
 
     Page<UserView> search(Criteria criteria, Pageable pageable) {
         var sorted = Pageables.restrict(pageable, SORTABLE);
@@ -59,12 +62,9 @@ class UserService {
     @Transactional
     UserView create(CreateUser request, long actorId) {
         var email = User.normalizeEmail(request.email());
-        if (users.existsByEmail(email)) {
-            throw new ApiException(new EmailTaken(email));
-        }
+        if (users.existsByEmail(email)) throw new ApiException(new EmailTaken(email));
         var passwordHash = Objects.requireNonNull(passwordEncoder.encode(request.password()));
-        var user = users.save(
-                User.register(request.fullName(), email, passwordHash, request.role(), AccountStatus.ACTIVE));
+        var user = users.save(User.register(request.fullName(), email, passwordHash, request.role(), AccountStatus.ACTIVE));
         log.info("Admin {} created user {} with role {}", actorId, user.getId(), user.getRole());
         return UserView.of(user);
     }
@@ -80,9 +80,7 @@ class UserService {
             user.assignRole(role);
         }
         var fullName = request.fullName();
-        if (fullName != null) {
-            user.rename(fullName);
-        }
+        if (fullName != null) user.rename(fullName);
         return flushed(user);
     }
 
@@ -90,15 +88,13 @@ class UserService {
     UserView changeStatus(long id, AccountStatus target, long actorId) {
         requireOther(id, actorId);
         var user = find(id);
-        if (target != AccountStatus.ACTIVE) {
-            keepAnAdministrator(user);
-        }
+        if (target != AccountStatus.ACTIVE) keepAnAdministrator(user);
         var previous = user.getStatus();
         user.transitionTo(target);
         if (previous != target) {
             var revoked = previous == AccountStatus.ACTIVE ? vault.revoke(user, TokenPurpose.REFRESH) : 0;
             log.info("Admin {} moved user {} from {} to {} ({} refresh tokens revoked)",
-                    actorId, id, previous, target, revoked);
+                actorId, id, previous, target, revoked);
         }
         return flushed(user);
     }
@@ -123,14 +119,8 @@ class UserService {
 
     private void keepAnAdministrator(User user) {
         if (user.getRole() == Role.ADMIN && user.getStatus() == AccountStatus.ACTIVE
-                && users.findByRoleAndStatus(Role.ADMIN, AccountStatus.ACTIVE).size() < 2) {
+            && users.findByRoleAndStatus(Role.ADMIN, AccountStatus.ACTIVE).size() < 2) {
             throw new ApiException(new LastAdministrator());
-        }
-    }
-
-    private static void requireOther(long id, long actorId) {
-        if (id == actorId) {
-            throw new ApiException(new SelfManagement());
         }
     }
 
@@ -139,9 +129,7 @@ class UserService {
         private static final Pattern LIKE_METACHARACTER = Pattern.compile("[!%_]");
 
         @Nullable String pattern() {
-            if (q == null || q.isBlank()) {
-                return null;
-            }
+            if (q == null || q.isBlank()) return null;
             return "%" + LIKE_METACHARACTER.matcher(q.strip().toLowerCase(Locale.ROOT)).replaceAll("!$0") + "%";
         }
     }

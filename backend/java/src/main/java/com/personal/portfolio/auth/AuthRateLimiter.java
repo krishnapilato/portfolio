@@ -11,11 +11,14 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/// Allows each client address a fixed number of requests per minute on the public auth endpoints.
+/// The address is the TCP peer, or a forwarded one only when it comes from a trusted proxy.
 @Component
 @RequiredArgsConstructor
 class AuthRateLimiter implements HandlerInterceptor, WebMvcConfigurer {
@@ -33,7 +36,7 @@ class AuthRateLimiter implements HandlerInterceptor, WebMvcConfigurer {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
         var resetAt = window(clock.instant());
         if (requests.merge(request.getRemoteAddr(), 1, Integer::sum) > properties.security().authRequestsPerMinute()) {
             throw new ApiException(new RateLimited(resetAt));

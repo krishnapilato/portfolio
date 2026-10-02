@@ -17,22 +17,31 @@ import jakarta.mail.Address;
 import jakarta.mail.Message.RecipientType;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailSendException;
 
+@ExtendWith(OutputCaptureExtension.class)
 class MailDispatcherTests extends OutboxIntegrationTest {
 
     private static final DispatchReport NOTHING = new DispatchReport(0, 0);
 
     @Autowired
     private MeterRegistry meters;
+
+    @Autowired
+    private JdbcTemplate jdbc;
 
     @Autowired
     private AppProperties properties;
@@ -66,6 +75,7 @@ class MailDispatcherTests extends OutboxIntegrationTest {
         assertThat(delivered.getSentAt()).isNotNull().isAfterOrEqualTo(delivered.getScheduledAt());
         assertThat(delivered.getAttempts()).isZero();
         assertThat(delivered.getLastError()).isNull();
+        assertThat(delivered.getBody()).isEmpty();
         var captor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(mailSender).send(captor.capture());
         var mime = captor.getValue();
@@ -91,7 +101,7 @@ class MailDispatcherTests extends OutboxIntegrationTest {
     }
 
     @Test
-    void retriesTransientFailuresThenReschedulesWithBackoff() {
+    void reschedulesAFailedDeliveryWithBackoffInsteadOfRetryingRightAway() {
         willThrow(new MailSendException("421 service not available")).given(mailSender).send(any(MimeMessage.class));
         var failedBefore = dispatched("failed");
         var message = enqueue(Envelope.html(address(), "Flaky", "<p>Retry</p>"), clock.instant());
@@ -102,9 +112,9 @@ class MailDispatcherTests extends OutboxIntegrationTest {
 
         var finishedAt = clock.instant();
         assertThat(report).isEqualTo(new DispatchReport(0, 1));
-        verify(mailSender, times(3)).send(any(MimeMessage.class));
-        assertThat(Duration.between(startedAt, finishedAt)).isGreaterThanOrEqualTo(Duration.ofMillis(400));
+        verify(mailSender).send(any(MimeMessage.class));
         var rescheduled = reload(message.getId());
+        assertThat(rescheduled.getBody()).isEqualTo("<p>Retry</p>");
         assertThat(rescheduled.getStatus()).isEqualTo(MailStatus.PENDING);
         assertThat(rescheduled.getAttempts()).isEqualTo(1);
         assertThat(rescheduled.getLastError()).isEqualTo("421 service not available");
@@ -169,7 +179,7 @@ class MailDispatcherTests extends OutboxIntegrationTest {
 
         assertThat(dispatcher.dispatch()).isEqualTo(new DispatchReport(1, 1));
 
-        verify(mailSender, times(4)).send(any(MimeMessage.class));
+        verify(mailSender, times(2)).send(any(MimeMessage.class));
         assertThat(reload(accepted.getId()).getStatus()).isEqualTo(MailStatus.SENT);
         assertThat(reload(rejected.getId())).satisfies(message -> {
             assertThat(message.getStatus()).isEqualTo(MailStatus.PENDING);
@@ -179,6 +189,28 @@ class MailDispatcherTests extends OutboxIntegrationTest {
         assertThat(dispatched("sent")).isEqualTo(sentBefore + 1);
         assertThat(dispatched("failed")).isEqualTo(failedBefore + 1);
         withdraw(rejected.getId());
+    }
+
+    @Test
+    void purgesFinishedMessagesOnlyOnceTheRetentionHasPassed(CapturedOutput output) {
+        var later = clock.instant().plus(Duration.ofHours(1));
+        var waiting = enqueue(Envelope.html(address(), "Waiting", "<p>Later</p>"), later);
+        var dropped = enqueue(new Envelope(List.of(address()), List.of(), List.of(), null, "Dropped", "<p>Never</p>",
+                true, List.of(new Attachment("note.txt", "text/plain", "x".getBytes(UTF_8)))), later);
+        withdraw(dropped.getId());
+
+        assertThat(dispatcher.purge()).isZero();
+        assertThat(messages.existsById(dropped.getId())).isTrue();
+        assertThat(output.getOut()).doesNotContain("Purged");
+
+        var longAgo = clock.instant().minus(properties.mail().retention()).minus(Duration.ofDays(1));
+        jdbc.update("update mail_messages set updated_at = ? where id = ?", Timestamp.from(longAgo), dropped.getId());
+
+        assertThat(dispatcher.purge()).isEqualTo(1);
+        assertThat(output.getOut()).contains("Purged 1 finished outbox message(s)");
+        assertThat(messages.existsById(dropped.getId())).isFalse();
+        assertThat(messages.existsById(waiting.getId())).isTrue();
+        withdraw(waiting.getId());
     }
 
     private double dispatched(String outcome) {

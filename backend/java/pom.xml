@@ -15,7 +15,7 @@
     <artifactId>portfolio</artifactId>
     <version>1.0.0</version>
     <name>Portfolio Platform</name>
-    <description>Authentication, user management and transactional email for krishnapilato.github.io</description>
+    <description>A Spring Boot base for new projects: accounts, sign-in and transactional email</description>
 
     <properties>
         <java.version>27</java.version>
@@ -32,7 +32,6 @@
         <pitest-junit5.version>1.2.3</pitest-junit5.version>
         <mutation.threshold>90</mutation.threshold>
         <mockito.agent>${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</mockito.agent>
-        <argLine></argLine>
     </properties>
 
     <dependencies>

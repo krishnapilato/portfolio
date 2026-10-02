@@ -13,8 +13,8 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.EnumSource.Mode;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -239,7 +239,7 @@ class UserTests {
     }
 
     @Test
-    void changePasswordReplacesTheHashAndClearsTheLockout() {
+    void changePasswordReplacesTheHashClearsTheLockoutAndEndsSessions() {
         var user = user(AccountStatus.ACTIVE);
         failLogins(user, MAX_ATTEMPTS, NOW);
         failLogins(user, 2, NOW);
@@ -252,6 +252,41 @@ class UserTests {
         assertThat(user.isLockedOut(NOW)).isFalse();
         assertThat(user.getEmail()).isEqualTo("grace@example.test");
         assertThat(user.getStatus()).isEqualTo(AccountStatus.ACTIVE);
+        assertThat(user.getSessionVersion()).isEqualTo(1);
+        assertThat(user.acceptsTokenOfSession(0)).isFalse();
+        assertThat(user.acceptsTokenOfSession(1)).isTrue();
+    }
+
+    @Test
+    void endingSessionsInvalidatesEveryTokenOfTheCurrentSession() {
+        var user = user(AccountStatus.ACTIVE);
+        assertThat(user.acceptsTokenOfSession(0)).isTrue();
+
+        user.endSessions();
+        user.endSessions();
+
+        assertThat(user.getSessionVersion()).isEqualTo(2);
+        assertThat(user.acceptsTokenOfSession(0)).isFalse();
+        assertThat(user.acceptsTokenOfSession(1)).isFalse();
+        assertThat(user.acceptsTokenOfSession(2)).isTrue();
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = AccountStatus.class, names = "ACTIVE", mode = Mode.EXCLUDE)
+    void rejectsEveryTokenOfAnAccountThatIsNotActive(AccountStatus status) {
+        assertThat(user(status).acceptsTokenOfSession(0)).isFalse();
+    }
+
+    @Test
+    void upgradingTheHashKeepsSessionsAndFailedAttempts() {
+        var user = user(AccountStatus.ACTIVE);
+        failLogins(user, 2, NOW);
+
+        user.upgradePasswordHash("{argon2}upgraded");
+
+        assertThat(user.getPasswordHash()).isEqualTo("{argon2}upgraded");
+        assertThat(user.getFailedLogins()).isEqualTo(2);
+        assertThat(user.getSessionVersion()).isZero();
     }
 
     private static User user(AccountStatus status) {

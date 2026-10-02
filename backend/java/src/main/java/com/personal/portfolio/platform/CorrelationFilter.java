@@ -27,12 +27,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class CorrelationFilter extends OncePerRequestFilter {
 
     public static final String HEADER = "X-Request-Id";
-    static final String ATTRIBUTE = CorrelationFilter.class.getName() + ".id";
+    // Name of the log MDC key and of the request attribute that templates/error.html shows.
+    static final String ATTRIBUTE = "requestId";
     static final ScopedValue<String> REQUEST_ID = ScopedValue.newInstance();
 
-    private static final String MDC_KEY = "requestId";
+    // A client-supplied id is reused only if it is short and plain, so it is safe to log and echo back.
     private static final Pattern ACCEPTED = Pattern.compile("[A-Za-z0-9._-]{8,64}");
-    private static final List<String> QUIET_PATHS = List.of("/actuator", "/assets", "/system/pulse", "/favicon.svg");
+    // Probes and scrapes hit these every few seconds: they are logged only when they fail.
+    private static final List<String> QUIET_PATHS = List.of("/actuator/", "/favicon");
 
     private final Clock clock;
 
@@ -46,7 +48,7 @@ public class CorrelationFilter extends OncePerRequestFilter {
         var id = resolve(request.getHeader(HEADER));
         response.setHeader(HEADER, id);
         request.setAttribute(ATTRIBUTE, id);
-        MDC.put(MDC_KEY, id);
+        MDC.put(ATTRIBUTE, id);
         var started = System.nanoTime();
         try {
             ScopedValue.where(REQUEST_ID, id).call(() -> {
@@ -59,11 +61,12 @@ public class CorrelationFilter extends OncePerRequestFilter {
             throw new ServletException(e);
         } finally {
             var path = request.getRequestURI();
-            if (QUIET_PATHS.stream().noneMatch(path::startsWith)) {
-                log.info("{} {} -> {} ({} ms)", request.getMethod(), path, response.getStatus(),
+            var status = response.getStatus();
+            if (status >= 400 || QUIET_PATHS.stream().noneMatch(path::startsWith)) {
+                log.info("{} {} -> {} ({} ms)", request.getMethod(), path, status,
                         TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started));
             }
-            MDC.remove(MDC_KEY);
+            MDC.remove(ATTRIBUTE);
         }
     }
 

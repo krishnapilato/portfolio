@@ -11,10 +11,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
-import java.util.stream.Gatherer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -27,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.json.JsonMapper;
 
+/// Creates the users listed in seed/users.json on startup. The file holds only ${...} placeholders,
+/// so real emails and passwords come from the environment; users that already exist are left alone.
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -46,10 +45,10 @@ class UserSeeder implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments arguments) throws IOException {
         var seeds = read();
+        var emails = new HashSet<String>();
         var fresh = seeds.stream()
                 .map(seed -> seed.resolve(environment::resolveRequiredPlaceholders))
-                .gather(distinctBy(SeedUser::email))
-                .filter(seed -> !users.existsByEmail(seed.email()))
+                .filter(seed -> emails.add(seed.email()) && !users.existsByEmail(seed.email()))
                 .map(this::register)
                 .toList();
         users.saveAll(fresh);
@@ -69,13 +68,6 @@ class UserSeeder implements ApplicationRunner {
         }
         var passwordHash = Objects.requireNonNull(passwordEncoder.encode(seed.password()));
         return User.register(seed.fullName(), seed.email(), passwordHash, seed.role(), AccountStatus.ACTIVE);
-    }
-
-    private static <T, K> Gatherer<T, ?, T> distinctBy(Function<? super T, ? extends K> key) {
-        return Gatherer.<T, Set<K>, T>ofSequential(
-                HashSet::new,
-                Gatherer.Integrator.ofGreedy((seen, element, downstream) ->
-                        !seen.add(key.apply(element)) || downstream.push(element)));
     }
 
     record SeedUser(String fullName, String email, Role role, @StrongPassword String password) {

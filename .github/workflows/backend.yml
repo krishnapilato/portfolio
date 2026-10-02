@@ -42,9 +42,6 @@ jobs:
           cache: maven
           cache-dependency-path: backend/java/pom.xml
 
-      - name: Check the launcher targets JDK 25
-        run: javac --release 25 -Xlint:all -Werror -d "$RUNNER_TEMP/launch" launch.java
-
       - name: Build, test and enforce quality gates
         run: sh ./mvnw -B -ntp verify
 
@@ -107,9 +104,6 @@ jobs:
           context: backend/java
           push: false
           tags: portfolio:${{ github.sha }}
-          build-args: |
-            AOT_REQUIRED=true
-            GIT_COMMIT=${{ github.sha }}
           labels: org.opencontainers.image.revision=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

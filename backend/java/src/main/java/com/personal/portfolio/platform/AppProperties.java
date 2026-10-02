@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.net.URI;
 import java.time.Duration;
 import java.util.List;
@@ -36,7 +37,8 @@ public record AppProperties(
             @DefaultValue("15m") Duration lockout,
             @DefaultValue("2m") Duration emailCooldown,
             @DefaultValue("30") @Min(1) int authRequestsPerMinute,
-            @DefaultValue("") String scrapePassword) {}
+            @DefaultValue("") @Pattern(regexp = "|.{24,}", message = "must be empty or at least 24 characters")
+                    String scrapePassword) {}
 
     public record Mail(
             @NotBlank @Email String from,
@@ -46,7 +48,8 @@ public record AppProperties(
             @DefaultValue("5") @Min(1) int maxAttempts,
             @DefaultValue("30s") Duration initialBackoff,
             @DefaultValue("1h") Duration maxBackoff,
-            @DefaultValue("15m") Duration staleAfter) {}
+            @DefaultValue("15m") Duration staleAfter,
+            @DefaultValue("30d") Duration retention) {}
 
     public record Seed(
             @DefaultValue("false") boolean enabled,

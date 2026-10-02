@@ -8,8 +8,9 @@ spring:
     port: 3025
 management:
   endpoint:
-    heapdump:
-      access: none
+    health:
+      cache:
+        time-to-live: 0s
 app:
   security:
     secret: cG9ydGZvbGlvLXRlc3Qtc2VjcmV0LTAxMjM0NTY3ODlhYmNkZWZnaGlqa2xtbm9w
@@ -17,8 +18,6 @@ app:
   mail:
     from: no-reply@test.local
     poll-interval: PT24H
-  dashboard:
-    pulse-interval: PT24H
   seed:
     enabled: true
 SEED_ADMIN_EMAIL: admin@test.local

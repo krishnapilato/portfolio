@@ -57,7 +57,9 @@ class AccessTokensTests {
         assertThat(jwt.getClaimAsStringList("roles")).containsExactly("USER");
         assertThat(jwt.getClaimAsString("email")).isEqualTo("ada@example.test");
         assertThat(jwt.getClaimAsString("name")).isEqualTo("Ada Lovelace");
-        assertThat(jwt.getClaims()).containsOnlyKeys("iss", "aud", "sub", "iat", "exp", "jti", "email", "name", "roles");
+        assertThat(jwt.getClaims()).containsOnlyKeys("iss", "aud", "sub", "iat", "exp", "jti", "email", "name", "roles",
+                "session_version");
+        assertThat(AccessTokens.sessionVersion(jwt)).isZero();
     }
 
     @Test

@@ -15,14 +15,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
+    // Sign-in locks the row, so parallel guesses against one account are counted one after another.
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<User> findForUpdateByEmail(String email);
+
     boolean existsByEmail(String email);
 
     @Query("""
-            select u from User u
-            where (:query is null or lower(u.fullName) like :query escape '!' or u.email like :query escape '!')
-              and (:role is null or u.role = :role)
-              and (:status is null or u.status = :status)
-            """)
+        select u from User u
+        where (:query is null or lower(u.fullName) like :query escape '!' or u.email like :query escape '!')
+          and (:role is null or u.role = :role)
+          and (:status is null or u.status = :status)
+        """)
     Page<User> search(@Nullable String query, @Nullable Role role, @Nullable AccountStatus status, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

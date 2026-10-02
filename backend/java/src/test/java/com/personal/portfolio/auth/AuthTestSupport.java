@@ -11,6 +11,7 @@ import com.personal.portfolio.user.AccountStatus;
 import com.personal.portfolio.user.Role;
 import com.personal.portfolio.user.User;
 import com.personal.portfolio.user.UserRepository;
+import java.time.Clock;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
@@ -66,6 +67,9 @@ abstract class AuthTestSupport extends IntegrationTest {
 
     @Autowired
     KeyRing keyRing;
+
+    @Autowired
+    Clock clock;
 
     static String uniqueEmail(String prefix) {
         return prefix + "-" + UUID.randomUUID() + "@auth.test";

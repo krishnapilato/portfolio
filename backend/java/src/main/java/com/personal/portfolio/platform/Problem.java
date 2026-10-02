@@ -6,6 +6,8 @@ import com.personal.portfolio.user.AccountStatus;
 import java.time.Instant;
 import java.util.Set;
 
+/// Every business error the API can return. The interface is sealed, so the switch in ProblemHandler
+/// is exhaustive: a new problem without a decided HTTP response does not compile.
 public sealed interface Problem {
 
     record NotFound(String resource, Object key) implements Problem {}

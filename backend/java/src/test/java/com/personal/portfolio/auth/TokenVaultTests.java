@@ -52,7 +52,7 @@ class TokenVaultTests extends AuthTestSupport {
     void issuesOpaqueTokensAndStoresOnlyTheirFingerprint(TokenPurpose purpose) {
         var owner = activeUser(uniqueEmail("issue"));
         var ttl = purpose.ttl(properties.security());
-        var before = Instant.now();
+        var before = clock.instant();
 
         var issued = vault.issue(owner, purpose);
 
@@ -143,7 +143,7 @@ class TokenVaultTests extends AuthTestSupport {
     void claimingATokenSucceedsExactlyOnce() {
         var issued = vault.issue(activeUser(uniqueEmail("claim")), TokenPurpose.REFRESH);
         var id = stored(issued, TokenPurpose.REFRESH).orElseThrow().getId();
-        var claimedAt = Instant.now();
+        var claimedAt = clock.instant();
 
         assertThat(inTransaction(() -> tokens.claim(id, claimedAt))).isEqualTo(1);
         assertThat(inTransaction(() -> tokens.claim(id, claimedAt.plusSeconds(1)))).isZero();
@@ -155,7 +155,7 @@ class TokenVaultTests extends AuthTestSupport {
     @Test
     void redeemingAnAlreadyClaimedRefreshTokenRevokesItsFamilyAsReuse() {
         var owner = activeUser(uniqueEmail("claimed"));
-        var started = Instant.now();
+        var started = clock.instant();
         var issued = vault.issue(owner, TokenPurpose.REFRESH);
         var family = family(issued);
         var sibling = sibling(owner, issued);
@@ -232,7 +232,7 @@ class TokenVaultTests extends AuthTestSupport {
         var owner = activeUser(uniqueEmail("cooled"));
         var security = properties.security();
         var ttl = purpose.ttl(security);
-        var cooledDown = Instant.now().minus(security.emailCooldown());
+        var cooledDown = clock.instant().minus(security.emailCooldown());
         save(owner, purpose, "cooled-" + UUID.randomUUID(), null, cooledDown.plus(ttl));
 
         assertThat(vault.issuedRecently(owner, purpose)).isFalse();

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.IntStream;
@@ -24,6 +25,16 @@ class PlatformConfigTests {
     @Test
     void tellsTimeInUtc() {
         assertThat(config.clock().getZone()).isEqualTo(ZoneOffset.UTC);
+    }
+
+    @Test
+    void tellsTimeInWholeMicrosecondsLikeTheDatabaseStoresIt() {
+        var clock = config.clock();
+
+        for (var sample = 0; sample < 100; sample++) {
+            var now = clock.instant();
+            assertThat(now).isEqualTo(now.truncatedTo(ChronoUnit.MICROS));
+        }
     }
 
     @Test
@@ -74,7 +85,8 @@ class PlatformConfigTests {
         });
         assertThat(openApi.getSecurity()).singleElement().satisfies(requirement ->
                 assertThat(requirement).containsOnlyKeys("bearer-jwt"));
-        assertThat(openApi.getServers()).isNullOrEmpty();
+        assertThat(openApi.getServers()).singleElement().satisfies(server ->
+                assertThat(server.getUrl()).isEqualTo("/"));
     }
 
     @Test

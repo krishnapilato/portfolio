@@ -4,8 +4,10 @@ logs/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .env
+.env.*
+*.env
 !.env.example
-*.aot
+.claude/
 .apt_generated
 .classpath
 .factorypath

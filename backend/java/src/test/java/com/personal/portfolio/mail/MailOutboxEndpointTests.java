@@ -69,14 +69,14 @@ class MailOutboxEndpointTests extends OutboxIntegrationTest {
     }
 
     @Test
-    void healthHidesOutboxDetailsFromAnonymousCallers() {
+    void healthShowsAnonymousCallersOnlyTheOverallStatus() {
         drainOutbox();
 
         var result = mvc.get().uri(HEALTH).exchange();
 
         assertThat(result).hasStatusOk();
-        assertThat(result).bodyJson().extractingPath("$.components.mailOutbox.status").isEqualTo("UP");
-        assertThat(result).bodyJson().doesNotHavePath("$.components.mailOutbox.details");
+        assertThat(result).bodyJson().extractingPath("$.status").isEqualTo("UP");
+        assertThat(result).bodyJson().doesNotHavePath("$.components");
     }
 
     @Test

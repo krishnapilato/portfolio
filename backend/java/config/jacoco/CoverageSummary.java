@@ -27,14 +27,14 @@ void main(String... args) throws Exception {
         if (counters.item(i) instanceof Element counter && counter.getTagName().equals("counter")) {
             var type = counter.getAttribute("type");
             byType.put(type, new Counter(type, Long.parseLong(counter.getAttribute("covered")),
-                    Long.parseLong(counter.getAttribute("missed"))));
+                Long.parseLong(counter.getAttribute("missed"))));
         }
     }
     IO.println("[coverage] JaCoCo totals (gate: LINE, BRANCH, INSTRUCTION >= %.0f%%)".formatted(minimum * 100));
     Stream.of("INSTRUCTION", "BRANCH", "LINE", "METHOD", "CLASS")
-            .map(byType::get)
-            .filter(Objects::nonNull)
-            .forEach(counter -> IO.println("[coverage]   %-12s %6.1f%%  %s  (%d of %d covered)".formatted(
-                    counter.type(), counter.ratio() * 100, counter.ratio() >= minimum ? "PASS" : "FAIL",
-                    counter.covered(), counter.covered() + counter.missed())));
+        .map(byType::get)
+        .filter(Objects::nonNull)
+        .forEach(counter -> IO.println("[coverage]   %-12s %6.1f%%  %s  (%d of %d covered)".formatted(
+            counter.type(), counter.ratio() * 100, counter.ratio() >= minimum ? "PASS" : "FAIL",
+            counter.covered(), counter.covered() + counter.missed())));
 }

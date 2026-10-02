@@ -1,65 +1,48 @@
+# Local stack: MySQL, Mailpit (an SMTP server with a web inbox, so no real email is sent) and the app.
+# Every port is bound to 127.0.0.1, so none of them is reachable from the network.
 name: portfolio
 
 services:
   mysql:
     image: mysql:26.7
     environment:
-      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD:?DB_PASSWORD must be set in .env}"
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
       MYSQL_DATABASE: portfolio
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "--host=127.0.0.1", "--silent"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 60s
-      start_interval: 2s
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "127.0.0.1:3307:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent" ]
+      interval: 5s
+      retries: 30
 
   mailpit:
     image: axllent/mailpit:v1.31
-    healthcheck:
-      test: ["CMD", "/mailpit", "readyz"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 10s
-      start_interval: 1s
     ports:
-      - "8025:8025"
-      - "1025:1025"
+      - "127.0.0.1:8025:8025" # web inbox
+      - "127.0.0.1:1025:1025" # SMTP
 
   app:
-    build:
-      context: .
-      args:
-        GIT_COMMIT: "${GIT_COMMIT:-}"
+    build: .
     env_file: .env
     environment:
-      SPRING_PROFILES_ACTIVE: prod
-      PORT: "8080"
       DB_URL: jdbc:mysql://mysql:3306/portfolio
       DB_USERNAME: root
       MAIL_HOST: mailpit
       MAIL_PORT: "1025"
-      MAIL_SMTP_AUTH: "false"
       MAIL_STARTTLS: "false"
     depends_on:
       mysql:
         condition: service_healthy
       mailpit:
-        condition: service_healthy
+        condition: service_started
     ports:
-      - "8080:8080"
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/actuator/health/liveness || exit 1"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 60s
-      start_interval: 2s
+      - "127.0.0.1:8080:8080"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
 
 volumes:
   mysql-data:

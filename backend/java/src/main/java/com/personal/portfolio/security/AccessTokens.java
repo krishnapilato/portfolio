@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 public class AccessTokens {
 
     private static final String ROLES_CLAIM = "roles";
+    private static final String SESSION_CLAIM = "session_version";
 
     private static final JwsHeader HEADER = JwsHeader.with(MacAlgorithm.HS256).build();
 
@@ -43,6 +44,7 @@ public class AccessTokens {
                 .claim("email", user.getEmail())
                 .claim("name", user.getFullName())
                 .claim(ROLES_CLAIM, List.of(user.getRole().name()))
+                .claim(SESSION_CLAIM, user.getSessionVersion())
                 .build();
         var token = encoder.encode(JwtEncoderParameters.from(HEADER, claims));
         return new AccessToken(token.getTokenValue(), expiresAt);
@@ -50,6 +52,11 @@ public class AccessTokens {
 
     public static long userId(Jwt jwt) {
         return Long.parseLong(jwt.getSubject());
+    }
+
+    // A token without the claim belongs to no session, so it can never match.
+    public static int sessionVersion(Jwt jwt) {
+        return jwt.getClaims().get(SESSION_CLAIM) instanceof Number version ? version.intValue() : -1;
     }
 
     public record AccessToken(String value, Instant expiresAt) {

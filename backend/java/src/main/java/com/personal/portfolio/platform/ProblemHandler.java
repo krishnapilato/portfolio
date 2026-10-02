@@ -58,6 +58,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/// Turns exceptions into RFC 9457 problem details with a stable type, the request id and a timestamp.
+/// Unexpected errors are logged in full but answered with a generic message.
 @Slf4j
 @RequiredArgsConstructor
 @RestControllerAdvice(annotations = RestController.class)
@@ -142,7 +144,7 @@ class ProblemHandler extends ResponseEntityExceptionHandler {
             case EmailTaken(var email) -> problem(exception, CONFLICT, "Email already registered",
                     "An account for %s already exists".formatted(email));
             case InvalidCredentials() -> problem(exception, UNAUTHORIZED, "Invalid credentials",
-                    "The email or password is incorrect");
+                    "The email or password is incorrect, or the account is locked after too many failed attempts");
             case AccountUnavailable(var status) -> problem(exception, FORBIDDEN, "Account unavailable",
                     "The account is %s".formatted(label(status)));
             case TemporarilyLocked(var until) -> problem(exception, LOCKED, "Account temporarily locked",

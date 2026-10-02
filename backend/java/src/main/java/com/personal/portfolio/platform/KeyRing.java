@@ -11,6 +11,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.HKDFParameterSpec;
 import org.springframework.stereotype.Component;
 
+/// Derives every key the service needs from the single APP_SECRET with HKDF, one key per purpose,
+/// so the JWT signing key and the token pepper never share bytes.
 @Component
 public final class KeyRing {
 

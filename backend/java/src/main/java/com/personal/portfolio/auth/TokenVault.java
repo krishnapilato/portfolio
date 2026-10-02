@@ -21,6 +21,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/// Issues and redeems one-time tokens (email verification, password reset) and refresh tokens.
+/// Only an HMAC fingerprint of each token is stored, so the table is useless to whoever steals it.
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -56,6 +58,7 @@ public class TokenVault {
         if (token.isExpired(now)) {
             throw invalid(purpose);
         }
+        // "update ... where consumed_at is null": of two concurrent redeems, exactly one wins.
         if (tokens.claim(token.getId(), now) == 0) {
             throw alreadyRedeemed(token);
         }
@@ -102,6 +105,8 @@ public class TokenVault {
         };
     }
 
+    // A used refresh token coming back means two parties hold the chain, and one of them stole it:
+    // end the whole family, so both must sign in again.
     private ApiException reuseDetected(UserToken replayed) {
         var userId = replayed.getUser().getId();
         var family = Objects.requireNonNull(replayed.getFamily());

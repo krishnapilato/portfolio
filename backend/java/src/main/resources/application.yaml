@@ -2,6 +2,7 @@ spring:
   application:
     name: portfolio
   config:
+    # Secrets live in a git-ignored .env file; real environment variables override it.
     import: optional:file:${DOTENV_FILE:.env}[.properties]
   profiles:
     default: dev
@@ -21,7 +22,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: validate # Flyway owns the schema; Hibernate only checks that the entities match it
     properties:
       hibernate:
         jdbc:
@@ -43,6 +44,15 @@ spring:
           writetimeout: 5000
           starttls:
             enable: ${MAIL_STARTTLS:false}
+            required: ${MAIL_STARTTLS:false} # once TLS is on, never fall back to plain text
+          ssl:
+            checkserveridentity: true
+  jackson:
+    factory:
+      constraints:
+        read:
+          max-document-length: 1000000 # no real request comes close to 1 MB of JSON
+          max-string-length: 200000
   mvc:
     apiversion:
       supported: 1
@@ -56,27 +66,33 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 25MB
-  web:
-    error:
-      include-message: always
 server:
   port: ${PORT:8080}
-  forward-headers-strategy: framework
+  # X-Forwarded-* headers count only when they come from a proxy matching TRUSTED_PROXIES (a regex).
+  # The default trusts no one, so a client cannot fake its address to slip past the sign-in rate limit.
+  forward-headers-strategy: native
+  tomcat:
+    remoteip:
+      internal-proxies: ${TRUSTED_PROXIES:}
   compression:
     enabled: true
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "*" # every endpoint is exposed, but only health and info are public (see SecurityConfig)
   endpoint:
     health:
       show-details: when-authorized
-      show-components: always
+      show-components: when-authorized
       roles: ADMIN
+      cache:
+        time-to-live: 5s
       group:
         readiness:
           include: readinessState,db
+    heapdump:
+      access: none # a heap dump holds every secret in memory
     env:
       show-values: never
       roles: ADMIN
@@ -84,17 +100,11 @@ management:
       show-values: never
       roles: ADMIN
   info:
-    java:
-      enabled: true
-    os:
-      enabled: true
-    process:
-      enabled: true
     env:
       enabled: true
   health:
     mail:
-      enabled: false
+      enabled: false # SMTP trouble shows up in the mail outbox health instead
   httpexchanges:
     recording:
       include: time-taken,request-headers,response-headers,principal,remote-address
@@ -107,13 +117,12 @@ management:
 info:
   app:
     name: Portfolio Platform
-    description: Authentication, user management and transactional email for krishnapilato.github.io
-    java: ${java.specification.version}
+    description: "A Spring Boot base for new projects: accounts, sign-in and transactional email"
 logging:
   pattern:
     correlation: "[%X{requestId:-}] "
 app:
-  frontend-url: ${APP_FRONTEND_URL:http://localhost:5173/portfolio}
+  frontend-url: ${APP_FRONTEND_URL:http://localhost:5173}
   cors:
     allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:5173}
   security:
@@ -125,15 +134,13 @@ app:
     poll-interval: ${MAIL_POLL_INTERVAL:PT5S}
   seed:
     enabled: ${SEED_ENABLED:false}
-  dashboard:
-    pulse-interval: PT3S
-springdoc:
+springdoc: # the API docs are public on purpose: they are part of what this service shows off
+  api-docs:
+    enabled: true
   swagger-ui:
     enabled: true
     operations-sorter: method
     tags-sorter: alpha
-  api-docs:
-    enabled: true
 ---
 spring:
   config:
@@ -141,14 +148,6 @@ spring:
       on-profile: dev
   thymeleaf:
     cache: false
-management:
-  endpoint:
-    heapdump:
-      access: read-only
-    env:
-      show-values: when-authorized
-    configprops:
-      show-values: when-authorized
 logging:
   level:
     com.personal.portfolio: DEBUG
@@ -157,16 +156,13 @@ spring:
   config:
     activate:
       on-profile: prod
-  web:
-    resources:
-      chain:
-        strategy:
-          content:
-            enabled: true
-      cache:
-        cachecontrol:
-          max-age: 365d
-          cache-public: true
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: ${MAIL_STARTTLS:true}
+            required: ${MAIL_STARTTLS:true}
 logging:
   structured:
     format:
@@ -175,9 +171,3 @@ logging:
       service:
         name: ${spring.application.name}
         environment: prod
-management:
-  info:
-    os:
-      enabled: false
-    process:
-      enabled: false

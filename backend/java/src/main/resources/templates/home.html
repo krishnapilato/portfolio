@@ -1,478 +1,211 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#06070a" />
-    <meta name="description" content="Live health, runtime, traffic and mail outbox of the Portfolio Platform service, streamed from the running JVM." />
-    <title>Portfolio Platform – Live system</title>
-    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}" />
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-props/1.7.23/open-props.min.css" integrity="sha512-Fx+f7xzdf+d0j7T47BwsR/cn4WWRv4PXAg4eylNZSY1o7WVcoYEXFeov8mo1Hj49KodJuZ+3Lnwoh+aF2eABFw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-props/1.7.23/normalize.min.css" integrity="sha512-sZpuBaQWP4MyykLTndaIA1sTzegscrB8oACzs14dlJNj3WI951RAnqB8nmbFJiDzhDoUE+JmUXOSMh7+bbGR+Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.48.0/tabler-icons.min.css" integrity="sha512-FpfjSBRmQDu3MAAZrjj8j+RwvbASPc9f+gpd2pF/sHXPWPeTbd1OmXpC7CYt+Nnb6kD+Ed0fFH366YcAoV9LNA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Geist+Mono:wght@100..900&amp;display=swap" />
-    <link rel="stylesheet" th:href="@{/assets/app.css}" />
-    <script th:src="@{/assets/motion.js}" defer="defer"></script>
-    <script th:src="@{/assets/home.js}" defer="defer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js" integrity="sha512-oJ8QbaQThQoJZ7oEv+29jfPM6CcP+zUxh3PKJs1vyOhx0UraUrE7PQgeItu3dOuCJyrzWpoYMsVjkkPEBzbUqw==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/SplitText.min.js" integrity="sha512-LFdAHEel9Gwq2HmgZUgnl3mLwXjC6nrfMU6IRLA2AOaKQaWgdrT8ZlmI2ZjVkgB32TeYyi7KdD80ihb9W6uH8Q==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrambleTextPlugin.min.js" integrity="sha512-LFsi0vwqzvktxcWcNkQlqn9xBJKcZLQ/kEVKCPCZTwbdecr2hg25864m0dR5RAnbc7NIMd3YOX8igZWMgXWuaQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/CustomEase.min.js" integrity="sha512-hOlMIjWmnBr7Fa6D6jD0RS7jcVFSTKyonOv4Yjncnw1j5ilx0yPTIfv1WTXYNb1xNYFTgEOzLG0g+u9w01AijQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js" integrity="sha512-OaIE7ud4P04EhnBuhEcm0wQSceIxbi2pV03oBLS/+F6ampfxsnxcIxOp7H2eF9G7N0kEht0VAzOLG+dTLSo17Q==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/DrawSVGPlugin.min.js" integrity="sha512-egrFtAMXB/E3deN7qNirS2hUrVU9Y5HK12Fea4yzjtfZ5gVYPlsH+r3IxsQ4oOR2wfOAfeUv5pCIoSg58R1YoA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer="defer"></script>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta
+        content="A Spring Boot base for new projects: accounts, sign-in and transactional email, built and tested properly."
+        name="description">
+    <title>Portfolio Platform</title>
+    <link href="/favicon.svg" rel="icon" th:href="@{/favicon.svg}" type="image/svg+xml">
+    <style>
+        :root {
+            color-scheme: light dark;
+            --muted: light-dark(#6f6b63, #9a968c);
+            --line: #8883;
+        }
+
+        body {
+            max-width: 44rem;
+            margin: 0 auto;
+            padding: 1.5rem 1.25rem 3rem;
+            font: 1.0625rem/1.6 system-ui, sans-serif;
+            background: light-dark(#f7f6f2, #141412);
+            color: light-dark(#1a1917, #ebe9e3);
+        }
+
+        a {
+            color: inherit;
+            text-underline-offset: .2em;
+        }
+
+        a:hover {
+            color: light-dark(#b4532a, #e08a62);
+        }
+
+        header, footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: .5rem;
+        }
+
+        h1 {
+            margin: 4.5rem 0 1rem;
+            font: 400 clamp(2.5rem, 8vw, 4rem)/1.05 "Iowan Old Style", Georgia, serif;
+            letter-spacing: -.02em;
+        }
+
+        h2 {
+            margin: 3.5rem 0 .5rem;
+            font-size: .75rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        h2, small, footer, td + td, dd {
+            color: var(--muted);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: .6rem 1rem .6rem 0;
+            border-top: 1px solid var(--line);
+            vertical-align: top;
+        }
+
+        td:first-child {
+            white-space: nowrap;
+        }
+
+        @media (max-width: 40rem) {
+            td {
+                display: block;
+            }
+
+            td + td {
+                padding-top: 0;
+                border: 0;
+            }
+        }
+
+        dt {
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 4.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--line);
+            font-size: .875rem;
+        }
+
+        .ok {
+            color: #2f8a55;
+        }
+
+        .warn {
+            color: #c08a1a;
+        }
+
+        .bad {
+            color: #c2452c;
+        }
+    </style>
 </head>
-<body class="page page--home"
-      th:with="status=${snapshot.status()},
-               word=${status == 'UP' ? 'Operational' : (status == 'DOWN' ? 'Down' : (status == 'OUT_OF_SERVICE' ? 'Out of service' : (status == 'UNKNOWN' ? 'Unknown' : status)))}"
-      th:data-health="${snapshot.status()}"
-      th:data-pulse-url="@{/system/pulse}"
-      th:data-snapshot-url="@{/system/snapshot}"
-      th:data-captured-at="${snapshot.capturedAt()}"
-      th:data-requests="${snapshot.traffic().requests()}">
-<a class="skip-link" href="#main">Skip to content</a>
-
-<div class="backdrop" aria-hidden="true">
-    <div class="backdrop__grid" data-grid=""></div>
-    <div class="backdrop__beam" data-beam=""></div>
-    <div class="backdrop__glow backdrop__glow--a" data-glow=""></div>
-    <div class="backdrop__glow backdrop__glow--b" data-glow=""></div>
-    <div class="backdrop__noise"></div>
-</div>
-
-<header class="topbar" data-intro="" data-nav="">
-    <div class="container topbar__inner">
-        <a class="brand" th:href="@{/}">
-            <svg class="brand__mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-                <defs>
-                    <linearGradient id="brand-gradient" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#c4b5fd" />
-                        <stop offset="0.5" stop-color="#6366f1" />
-                        <stop offset="1" stop-color="#22d3ee" />
-                    </linearGradient>
-                </defs>
-                <path d="M12 1.5 22.5 12 12 22.5 1.5 12Z" fill="url(#brand-gradient)" />
-                <path d="M12 7.5 16.5 12 12 16.5 7.5 12Z" fill="#06070a" />
-            </svg>
-            <span class="brand__name">portfolio</span>
-            <span class="sr-only"> – home</span>
-        </a>
-        <span class="topbar__slash" aria-hidden="true">/</span>
-        <p class="status" data-status="" th:data-state="${status}">
-            <span class="dot dot--live" aria-hidden="true"></span>
-            <span class="sr-only">Service status: </span>
-            <span class="status__label" data-status-label="" th:text="${snapshot.status()}">UP</span>
-        </p>
-        <nav class="topbar__nav" aria-label="Primary">
-            <ul class="topbar__links" role="list">
-                <li><a th:href="@{/swagger-ui.html}">Docs</a></li>
-                <li><a th:href="@{/actuator}">Actuator</a></li>
-                <li>
-                    <a href="https://krishnapilato.github.io/portfolio" target="_blank" rel="noopener noreferrer">
-                        Portal<i class="ti ti-arrow-up-right" aria-hidden="true"></i><span class="sr-only"> (opens in a new tab)</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <div class="topbar__tools">
-            <a class="icon-link" href="https://github.com/krishnapilato/portfolio" target="_blank" rel="noopener noreferrer">
-                <svg class="gh" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" /></svg>
-                <span class="sr-only">Source on GitHub (opens in a new tab)</span>
-            </a>
-            <div class="motion" data-tooltip-host="">
-                <button class="motion-toggle" type="button" aria-pressed="false" aria-describedby="motion-tip" data-motion-toggle="">
-                    <i class="ti ti-sparkles" aria-hidden="true"></i>
-                    <span>Cinematic</span>
-                    <span class="switch" aria-hidden="true"></span>
-                </button>
-                <div class="tooltip" role="tooltip" id="motion-tip">
-                    <strong>Cinematic motion: <span data-motion-state="">Off</span></strong>
-                    Turns on the full GSAP choreography. Switch it off for soft fades and counting numbers only.
-                    <span class="tooltip__note" data-motion-system="">Your choice is remembered in this browser.</span>
-                </div>
-            </div>
-        </div>
-    </div>
+<body oncontextmenu="return false;" style="user-select: none;">
+<header>
+    <b>
+        <svg aria-hidden="true" height="12" viewBox="0 0 32 32" width="12">
+            <rect fill="currentColor" height="32" rx="7" width="32"/>
+            <circle cx="22" cy="22" fill="#d0643a" r="5"/>
+        </svg>
+        Portfolio Platform</b>
+    <small><span th:text="|v${version}|">v1.0.0</span>
+        <th:block th:if="${commit}"> · <a href="#"
+                                          th:href="|https://github.com/krishnapilato/portfolio/commit/${commit}|"
+                                          th:text="${commit}">3f2a9c1</a></th:block>
+    </small>
 </header>
 
-<main id="main" tabindex="-1">
-    <section class="container hero" aria-labelledby="hero-title">
-        <p class="badge" data-intro="" data-badge="">
-            <span class="dot dot--live" aria-hidden="true" data-status-dot="" th:data-state="${status}"></span>
-            <span class="badge__strong">Live</span>
-            <span class="badge__sep" aria-hidden="true">·</span>
-            <span>Java 27</span>
-            <span class="badge__sep" aria-hidden="true">·</span>
-            <span>Spring Boot 4.2</span>
-        </p>
-        <h1 id="hero-title" class="hero__title" data-intro="" data-title="">Portfolio Platform</h1>
-        <p class="hero__lead" data-intro="" data-lead="">
-            <span class="sr-only">Authentication, user management and transactional email for krishnapilato.github.io, streamed live from the running service.</span>
-            <span aria-hidden="true" data-lead-visual="">Authentication, user management and transactional email for krishnapilato.github.io, streamed live from the running service.</span>
-        </p>
-        <div class="hero__actions" data-intro="" data-actions="">
-            <a class="btn btn--primary" data-magnetic="" th:href="@{/swagger-ui.html}">
-                <span>Explore the API</span>
-                <i class="ti ti-arrow-right" aria-hidden="true"></i>
-            </a>
-            <a class="btn btn--ghost" data-magnetic="" th:href="@{/actuator}">
-                <i class="ti ti-activity-heartbeat" aria-hidden="true"></i>
-                <span>Actuator</span>
-            </a>
-        </div>
-        <p class="endpoint" data-intro="" data-stream="" data-state="idle">
-            <span class="endpoint__method">GET</span>
-            <span class="endpoint__path">/system/pulse</span>
-            <span aria-hidden="true">·</span>
-            <span class="endpoint__state"><span class="dot" aria-hidden="true"></span><span data-stream-label="">snapshot</span></span>
-        </p>
-    </section>
+<main>
+    <h1>The boring parts,<br><i>done properly.</i></h1>
+    <p>
+        A Spring Boot service that already takes care of accounts, sign-in and transactional email.
+        It is tested, observable and ready to deploy, so the next project can start with the part
+        that is actually new.
+    </p>
+    <p th:with="state=${status == 'UP'} ? 'ok' : (${status == 'DOWN'} ? 'bad' : 'warn')">
+        <span aria-hidden="true" class="ok" th:class="${state}">●</span>
+        <th:block th:switch="${status}">
+            <th:block th:case="'UP'">Running normally</th:block>
+            <th:block th:case="'DOWN'">Running with problems</th:block>
+            <th:block th:case="'OUT_OF_SERVICE'">Out of service</th:block>
+            <th:block th:case="*">Status unknown</th:block>
+        </th:block>
+        <small th:text="|· up ${uptime}|">· up 4 h 12 min</small>
+    </p>
 
-    <section class="container section" aria-labelledby="live-title">
-        <header class="section-head" data-intro="" data-section-head="">
-            <div>
-                <h2 id="live-title" class="section-head__title">Live system</h2>
-                <p class="section-head__text">Read from the running JVM and pushed to this page every few seconds.</p>
-            </div>
-            <div class="section-head__aside">
-                <span>Updated <time data-captured=""
-                                    th:datetime="${snapshot.capturedAt()}"
-                                    th:text="${#strings.substring(snapshot.capturedAt().toString(), 11, 19) + ' UTC'}">00:00:00 UTC</time></span>
-                <button class="pause" type="button" data-pause="">
-                    <i class="ti ti-player-pause" aria-hidden="true" data-pause-icon=""></i>
-                    <span data-pause-label="">Pause updates</span>
-                </button>
-            </div>
-        </header>
-        <p class="sr-only" aria-live="polite" data-announcer=""></p>
+    <h2>Index</h2>
+    <table>
+        <tr>
+            <td><a href="/swagger-ui.html" th:href="@{/swagger-ui.html}">API reference</a></td>
+            <td>Every endpoint, with a console to try them out.</td>
+        </tr>
+        <tr>
+            <td><a href="/v3/api-docs" th:href="@{/v3/api-docs}">OpenAPI document</a></td>
+            <td>The contract as JSON, ready for client generators.</td>
+        </tr>
+        <tr>
+            <td><a href="/actuator/health" th:href="@{/actuator/health}">Health</a></td>
+            <td>Liveness and readiness, the way orchestrators expect them.</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/krishnapilato/portfolio">Source code</a></td>
+            <td>Code, tests and the reasoning behind them.</td>
+        </tr>
+    </table>
 
-        <div class="bento" data-spotlight="">
-            <article class="surface card card--health" data-intro="" data-card="" aria-labelledby="health-title"
-                     th:with="components=${snapshot.components()},
-                              total=${#maps.size(components)},
-                              passing=${components.values().?[#this == 'UP'].size()}">
-                <header class="card__head">
-                    <span class="card__icon" aria-hidden="true"><i class="ti ti-heart-rate-monitor"></i></span>
-                    <h3 id="health-title" class="card__title">Health</h3>
-                    <p class="card__meta">/actuator/health</p>
-                </header>
-                <div class="health">
-                    <span class="health__orb" aria-hidden="true" data-status-orb="" th:data-state="${status}"><span class="dot"></span></span>
-                    <div>
-                        <p class="health__word" data-status-word="" th:text="${word}">Operational</p>
-                        <p class="health__sub">
-                            <b data-bind="health.passing" data-format="integer" th:data-value="${passing}" th:text="${passing}">0</b> of <b data-bind="health.total" data-format="integer" data-static="" th:data-value="${total}" th:text="${total}">0</b> checks passing
-                        </p>
-                    </div>
-                </div>
-                <ul class="checks" role="list" data-checks="">
-                    <li class="check"
-                        th:each="component : ${components}"
-                        th:data-component="${component.key}"
-                        th:data-state="${component.value}">
-                        <span class="dot" aria-hidden="true"></span>
-                        <span class="check__name" data-check-name="" th:text="${component.key}">db</span>
-                        <span class="check__state" data-check-state="" th:title="${component.value}"><span aria-hidden="true" data-check-short="" th:text="${component.value == 'OUT_OF_SERVICE' ? 'OOS' : component.value}">UP</span><span class="sr-only" data-check-long="" th:text="${#strings.toLowerCase(#strings.replace(component.value, '_', ' '))}">up</span></span>
-                    </li>
-                </ul>
-                <p class="checks__empty" data-checks-empty="" th:hidden="${total > 0}">No health checks reported yet.</p>
-                <template data-check-template="">
-                    <li class="check">
-                        <span class="dot" aria-hidden="true"></span>
-                        <span class="check__name" data-check-name=""></span>
-                        <span class="check__state" data-check-state=""><span aria-hidden="true" data-check-short=""></span><span class="sr-only" data-check-long=""></span></span>
-                    </li>
-                </template>
-                <div class="beats-wrap">
-                    <ol class="beats" aria-hidden="true" data-beats="">
-                        <li class="beat" th:each="slot : ${#numbers.sequence(1, 39)}"></li>
-                        <li class="beat" th:data-state="${status}"></li>
-                    </ol>
-                    <p class="beats__legend" aria-hidden="true"><span>2 min ago</span><span>now</span></p>
-                </div>
-            </article>
+    <h2>Start here</h2>
+    <table>
+        <tr>
+            <td><code>POST /api/v1/auth/register</code></td>
+            <td>Create an account. A verification link is emailed.</td>
+        </tr>
+        <tr>
+            <td><code>POST /api/v1/auth/login</code></td>
+            <td>Trade email and password for an access and a refresh token.</td>
+        </tr>
+        <tr>
+            <td><code>POST /api/v1/auth/refresh</code></td>
+            <td>Swap the refresh token for a new pair.</td>
+        </tr>
+        <tr>
+            <td><code>GET /api/v1/me</code></td>
+            <td>Your profile, with the access token as a bearer token.</td>
+        </tr>
+    </table>
 
-            <article class="surface card card--cpu" data-intro="" data-card="" aria-labelledby="cpu-title"
-                     th:with="runtime=${snapshot.runtime()}, cpu=${runtime.cpu() >= 0 ? runtime.cpu() : null}">
-                <header class="card__head">
-                    <span class="card__icon" aria-hidden="true"><i class="ti ti-cpu"></i></span>
-                    <h3 id="cpu-title" class="card__title">CPU</h3>
-                    <p class="card__meta">process</p>
-                </header>
-                <div class="gauge">
-                    <p class="num" data-bind="runtime.cpu" data-format="percent" th:data-value="${cpu}"><span data-n="" th:text="${cpu == null ? '—' : #numbers.formatDecimal(cpu * 100, 1, 'COMMA', 1, 'POINT')}">0.0</span><span class="unit" data-u="" th:text="${cpu == null ? '' : '%'}">%</span></p>
-                    <svg class="ring" viewBox="0 0 80 80" width="76" height="76" aria-hidden="true" focusable="false"
-                         data-fill="runtime.cpu"
-                         th:data-value="${cpu}"
-                         th:style="${'--fill: ' + #numbers.formatDecimal(cpu == null ? 0 : (cpu > 1 ? 1 : cpu), 1, 'NONE', 4, 'POINT')}">
-                        <defs>
-                            <linearGradient id="ring-gradient" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
-                                <stop offset="0" stop-color="#a78bfa" />
-                                <stop offset="0.5" stop-color="#6366f1" />
-                                <stop offset="1" stop-color="#22d3ee" />
-                            </linearGradient>
-                        </defs>
-                        <circle class="ring__track" cx="40" cy="40" r="32" pathLength="100" />
-                        <circle class="ring__fill" cx="40" cy="40" r="32" pathLength="100" />
-                    </svg>
-                </div>
-                <p class="card__foot">
-                    <span><b data-bind="runtime.threads" data-format="integer" th:data-value="${runtime.threads()}" th:text="${#numbers.formatInteger(runtime.threads(), 1, 'COMMA')}">0</b> live threads</span>
-                    <span><b data-bind="runtime.processors" data-format="integer" data-static="" th:data-value="${runtime.processors()}" th:text="${#numbers.formatInteger(runtime.processors(), 1, 'COMMA')}">0</b> cores</span>
-                </p>
-            </article>
-
-            <article class="surface card card--heap" data-intro="" data-card="" aria-labelledby="heap-title"
-                     th:with="runtime=${snapshot.runtime()},
-                              used=${runtime.heapUsed()},
-                              heapMax=${runtime.heapMax() > 0 ? runtime.heapMax() : null},
-                              heapRatio=${heapMax != null ? 1.0 * used / heapMax : null}">
-                <header class="card__head">
-                    <span class="card__icon" aria-hidden="true"><i class="ti ti-stack-2"></i></span>
-                    <h3 id="heap-title" class="card__title">Heap</h3>
-                    <p class="card__meta" data-bind="heap.ratio" data-format="percent" th:data-value="${heapRatio}"><span data-n="" th:text="${heapRatio == null ? '—' : #numbers.formatDecimal(heapRatio * 100, 1, 'COMMA', 1, 'POINT')}">0.0</span><span data-u="" th:text="${heapRatio == null ? '' : '%'}">%</span></p>
-                </header>
-                <p class="num" data-bind="runtime.heapUsed" data-format="bytes" th:data-value="${used}"><span data-n="" th:text="${used >= 1073741824 ? #numbers.formatDecimal(used / 1073741824.0, 1, 'COMMA', 2, 'POINT') : #numbers.formatDecimal(used / 1048576.0, 1, 'COMMA', 0, 'POINT')}">0</span><span class="unit" data-u="" th:text="${used >= 1073741824 ? 'GiB' : 'MiB'}">MiB</span></p>
-                <p class="card__foot">
-                    <span>of <b data-bind="runtime.heapMax" data-format="bytes" data-static="" th:data-value="${heapMax}"><span data-n="" th:text="${heapMax == null ? '—' : (heapMax >= 1073741824 ? #numbers.formatDecimal(heapMax / 1073741824.0, 1, 'COMMA', 2, 'POINT') : #numbers.formatDecimal(heapMax / 1048576.0, 1, 'COMMA', 0, 'POINT'))}">0</span> <span data-u="" th:text="${heapMax == null ? '' : (heapMax >= 1073741824 ? 'GiB' : 'MiB')}">GiB</span></b> max</span>
-                </p>
-                <span class="bar" aria-hidden="true"><span class="bar__fill" data-fill="heap.ratio" th:data-value="${heapRatio}" th:style="${'--fill: ' + #numbers.formatDecimal(heapRatio == null ? 0 : heapRatio, 1, 'NONE', 4, 'POINT')}"></span></span>
-            </article>
-
-            <article class="surface card card--uptime" data-intro="" data-card="" aria-labelledby="uptime-title"
-                     th:with="up=${snapshot.runtime().uptimeSeconds()}">
-                <header class="card__head">
-                    <span class="card__icon" aria-hidden="true"><i class="ti ti-clock-hour-4"></i></span>
-                    <h3 id="uptime-title" class="card__title">Uptime</h3>
-                    <p class="card__meta">jvm</p>
-                </header>
-                <p class="num" data-bind="runtime.uptimeSeconds" data-format="duration" data-tick="" th:data-value="${up}"
-                   th:text="${(up >= 86400 ? (up / 86400) + 'd ' : '') + #numbers.formatInteger(up % 86400 / 3600, 2) + ':' + #numbers.formatInteger(up % 3600 / 60, 2) + ':' + #numbers.formatInteger(up % 60, 2)}">00:00:00</p>
-                <p class="card__foot"><span data-started="">Since the process started</span></p>
-            </article>
-
-            <article class="surface card card--users" data-intro="" data-card="" aria-labelledby="users-title"
-                     th:with="domain=${snapshot.domain()},
-                              activeRatio=${domain.users() > 0 ? 1.0 * domain.activeUsers() / domain.users() : 0.0}">
-                <header class="card__head">
-                    <span class="card__icon" aria-hidden="true"><i class="ti ti-users"></i></span>
-                    <h3 id="users-title" class="card__title">Users</h3>
-                    <p class="card__meta" data-bind="domain.activeRatio" data-format="percent0" th:data-value="${activeRatio}"><span data-n="" th:text="${#numbers.formatDecimal(activeRatio * 100, 1, 'COMMA', 0, 'POINT')}">0</span><span data-u="">%</span></p>
-                </header>
-                <p class="num" data-bind="domain.users" data-format="integer" th:data-value="${domain.users()}" th:text="${#numbers.formatInteger(domain.users(), 1, 'COMMA')}">0</p>
-                <p class="card__foot">
-                    <span><b data-bind="domain.activeUsers" data-format="integer" th:data-value="${domain.activeUsers()}" th:text="${#numbers.formatInteger(domain.activeUsers(), 1, 'COMMA')}">0</b> active accounts</span>
-                </p>
-                <span class="bar" aria-hidden="true"><span class="bar__fill" data-fill="domain.activeRatio" th:data-value="${activeRatio}" th:style="${'--fill: ' + #numbers.formatDecimal(activeRatio, 1, 'NONE', 4, 'POINT')}"></span></span>
-            </article>
-
-            <article class="surface card card--traffic" data-intro="" data-card="" aria-labelledby="traffic-title"
-                     th:with="traffic=${snapshot.traffic()},
-                              up=${snapshot.runtime().uptimeSeconds()},
-                              average=${up > 0 ? 1.0 * traffic.requests() / up : 0.0},
-                              errorRate=${traffic.requests() > 0 ? 1.0 * traffic.serverErrors() / traffic.requests() : 0.0}">
-                <header class="card__head">
-                    <span class="card__icon" aria-hidden="true"><i class="ti ti-arrows-exchange"></i></span>
-                    <h3 id="traffic-title" class="card__title">Traffic</h3>
-                    <p class="card__meta">http</p>
-                </header>
-                <div class="traffic">
-                    <div class="card__body">
-                        <p class="num" data-bind="traffic.requests" data-format="integer" th:data-value="${traffic.requests()}" th:text="${#numbers.formatInteger(traffic.requests(), 1, 'COMMA')}">0</p>
-                        <p class="card__foot" style="margin: 0;">requests served since start</p>
-                    </div>
-                    <dl class="stats">
-                        <div class="stat">
-                            <dt>Throughput</dt>
-                            <dd>
-                                <span class="num num--sm" data-bind="traffic.rate" data-format="rate" th:data-value="${average}"><span data-n="" th:text="${average >= 100 ? #numbers.formatDecimal(average, 1, 'COMMA', 0, 'POINT') : (average >= 10 ? #numbers.formatDecimal(average, 1, 'COMMA', 1, 'POINT') : #numbers.formatDecimal(average, 1, 'COMMA', 2, 'POINT'))}">0.00</span><span class="unit" data-u="">req/s</span></span>
-                                <span class="stat__note" data-rate-note="">avg since start</span>
-                            </dd>
-                        </div>
-                        <div class="stat">
-                            <dt>Mean latency</dt>
-                            <dd>
-                                <span class="num num--sm" data-bind="traffic.meanLatencyMs" data-format="ms" th:data-value="${traffic.meanLatencyMs()}"><span data-n="" th:text="${#numbers.formatDecimal(traffic.meanLatencyMs(), 1, 'COMMA', 1, 'POINT')}">0.0</span><span class="unit" data-u="">ms</span></span>
-                                <span class="stat__note">per request</span>
-                            </dd>
-                        </div>
-                        <div class="stat">
-                            <dt>Server errors</dt>
-                            <dd>
-                                <span class="num num--sm" data-bind="traffic.serverErrors" data-format="integer" th:data-value="${traffic.serverErrors()}" th:text="${#numbers.formatInteger(traffic.serverErrors(), 1, 'COMMA')}">0</span>
-                                <span class="stat__note"><span data-bind="traffic.errorRate" data-format="percent2" th:data-value="${errorRate}" th:text="${#numbers.formatDecimal(errorRate * 100, 1, 'COMMA', 2, 'POINT') + '%'}">0.00%</span> 5xx</span>
-                            </dd>
-                        </div>
-                    </dl>
-                </div>
-                <div class="spark" data-spark="" th:data-average="${average}">
-                    <svg class="spark__svg" viewBox="0 0 400 76" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-                        <defs>
-                            <linearGradient id="spark-stroke" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0" stop-color="#a78bfa" />
-                                <stop offset="0.5" stop-color="#6366f1" />
-                                <stop offset="1" stop-color="#22d3ee" />
-                            </linearGradient>
-                            <linearGradient id="spark-fill" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0" stop-color="#6366f1" stop-opacity="0.32" />
-                                <stop offset="1" stop-color="#6366f1" stop-opacity="0" />
-                            </linearGradient>
-                        </defs>
-                        <g class="spark__grid">
-                            <line x1="0" y1="0.5" x2="400" y2="0.5" />
-                            <line x1="0" y1="38" x2="400" y2="38" />
-                            <line x1="0" y1="75.5" x2="400" y2="75.5" />
-                        </g>
-                        <path class="spark__area" d="" data-spark-area="" />
-                        <path class="spark__avg" d="M0 38 H400" data-spark-avg="" />
-                        <path class="spark__line" d="" data-spark-line="" />
-                    </svg>
-                    <span class="spark__dot" data-spark-dot="" hidden="hidden" style="left: 100%; top: 50%;"></span>
-                    <p class="spark__legend" aria-hidden="true"><span class="spark__legend-key">avg since start</span><span>req/s · last 90 s</span></p>
-                </div>
-            </article>
-
-            <article class="surface card card--mail" data-intro="" data-card="" aria-labelledby="mail-title"
-                     th:with="domain=${snapshot.domain()},
-                              mailTotal=${domain.mailSent() + domain.mailPending() + domain.mailFailed()}">
-                <header class="card__head">
-                    <span class="card__icon" aria-hidden="true"><i class="ti ti-mail-forward"></i></span>
-                    <h3 id="mail-title" class="card__title">Mail outbox</h3>
-                    <p class="card__meta">smtp</p>
-                </header>
-                <p class="num" data-bind="domain.mailSent" data-format="integer" th:data-value="${domain.mailSent()}"><span data-n="" th:text="${#numbers.formatInteger(domain.mailSent(), 1, 'COMMA')}">0</span><span class="unit">sent</span></p>
-                <div class="segments" aria-hidden="true" data-segments="" th:classappend="${mailTotal == 0 ? 'is-empty' : ''}">
-                    <span class="segment segment--sent" data-fill="domain.mailSent" data-var="--share" th:data-value="${domain.mailSent()}" th:style="${'--share: ' + domain.mailSent()}"></span>
-                    <span class="segment segment--pending" data-fill="domain.mailPending" data-var="--share" th:data-value="${domain.mailPending()}" th:style="${'--share: ' + domain.mailPending()}"></span>
-                    <span class="segment segment--failed" data-fill="domain.mailFailed" data-var="--share" th:data-value="${domain.mailFailed()}" th:style="${'--share: ' + domain.mailFailed()}"></span>
-                </div>
-                <dl class="legend">
-                    <div class="legend--sent">
-                        <dt>Sent</dt>
-                        <dd class="num num--sm" data-bind="domain.mailSent" data-format="integer" th:data-value="${domain.mailSent()}" th:text="${#numbers.formatInteger(domain.mailSent(), 1, 'COMMA')}">0</dd>
-                    </div>
-                    <div class="legend--pending">
-                        <dt>Queued</dt>
-                        <dd class="num num--sm" data-bind="domain.mailPending" data-format="integer" th:data-value="${domain.mailPending()}" th:text="${#numbers.formatInteger(domain.mailPending(), 1, 'COMMA')}">0</dd>
-                    </div>
-                    <div class="legend--failed">
-                        <dt>Failed</dt>
-                        <dd class="num num--sm" data-bind="domain.mailFailed" data-format="integer" th:data-value="${domain.mailFailed()}" th:text="${#numbers.formatInteger(domain.mailFailed(), 1, 'COMMA')}">0</dd>
-                    </div>
-                </dl>
-                <p class="card__foot" data-mail-note="" th:text="${mailTotal == 0 ? 'Outbox empty, nothing waiting to send' : #numbers.formatInteger(mailTotal, 1, 'COMMA') + ' messages through the outbox'}">Outbox empty, nothing waiting to send</p>
-            </article>
-
-            <article class="surface card card--build" data-intro="" data-card="" aria-labelledby="build-title"
-                     th:with="build=${snapshot.build()}, runtime=${snapshot.runtime()}, commit=${build.commit()}">
-                <header class="card__head">
-                    <span class="card__icon" aria-hidden="true"><i class="ti ti-package"></i></span>
-                    <h3 id="build-title" class="card__title">Build</h3>
-                    <p class="card__meta">maven</p>
-                </header>
-                <p class="version">
-                    <span class="num" data-text="version" th:text="${'v' + build.version()}">v1.0.0</span>
-                    <span class="version__tag" data-text="channel" th:text="${commit == null ? 'local' : 'release'}">release</span>
-                </p>
-                <dl class="facts">
-                    <div>
-                        <dt>Commit</dt>
-                        <dd data-text="commit" th:text="${commit == null ? 'local build' : (#strings.length(commit) > 7 ? #strings.substring(commit, 0, 7) : commit)}">local build</dd>
-                    </div>
-                    <div>
-                        <dt>Java</dt>
-                        <dd data-text="java" th:text="${runtime.java()}">27</dd>
-                    </div>
-                    <div>
-                        <dt>Vendor</dt>
-                        <dd data-text="vendor" th:text="${runtime.vendor()}" th:title="${runtime.vendor()}">Vendor</dd>
-                    </div>
-                    <div>
-                        <dt>Built</dt>
-                        <dd><time data-text="built"
-                                  th:datetime="${build.time()}"
-                                  th:text="${build.time() == null ? '—' : #strings.replace(#strings.substring(build.time().toString(), 0, 16), 'T', ' ') + ' UTC'}">—</time></dd>
-                    </div>
-                </dl>
-            </article>
-        </div>
-    </section>
-
-    <section class="container section section--explore" aria-labelledby="explore-title">
-        <header class="section-head" data-reveal="">
-            <div>
-                <h2 id="explore-title" class="section-head__title">Explore</h2>
-                <p class="section-head__text">Jump into the API, the operational endpoints or the client that runs on top of them.</p>
-            </div>
-        </header>
-        <ul class="links" role="list" data-spotlight="">
-            <li data-reveal="">
-                <a class="surface link-card" data-magnetic-card="" th:href="@{/swagger-ui.html}">
-                    <span class="link-card__icon" aria-hidden="true"><i class="ti ti-book-2"></i></span>
-                    <span class="link-card__title">API Docs</span>
-                    <span class="link-card__text">Browse every endpoint, read the contracts and try requests live in Swagger UI.</span>
-                    <span class="link-card__foot"><span>/swagger-ui.html</span><span class="link-card__arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span></span>
-                </a>
-            </li>
-            <li data-reveal="">
-                <a class="surface link-card" data-magnetic-card="" th:href="@{/actuator}">
-                    <span class="link-card__icon" aria-hidden="true"><i class="ti ti-activity-heartbeat"></i></span>
-                    <span class="link-card__title">Actuator</span>
-                    <span class="link-card__text">Health groups, metrics, the Prometheus scrape, the audit trail and the mail outbox.</span>
-                    <span class="link-card__foot"><span>/actuator</span><span class="link-card__arrow" aria-hidden="true"><i class="ti ti-arrow-right"></i></span></span>
-                </a>
-            </li>
-            <li data-reveal="">
-                <a class="surface link-card link-card--external" data-magnetic-card="" href="https://krishnapilato.github.io/portfolio" target="_blank" rel="noopener noreferrer">
-                    <span class="link-card__icon" aria-hidden="true"><i class="ti ti-world"></i></span>
-                    <span class="link-card__title">Client Portal<span class="sr-only"> (opens in a new tab)</span></span>
-                    <span class="link-card__text">The public portfolio site that signs in and sends mail through this service.</span>
-                    <span class="link-card__foot"><span>krishnapilato.github.io</span><span class="link-card__arrow" aria-hidden="true"><i class="ti ti-arrow-up-right"></i></span></span>
-                </a>
-            </li>
-        </ul>
-    </section>
-
-    <section class="container section stack" aria-labelledby="stack-title">
-        <h2 id="stack-title" class="eyebrow" data-reveal="">Built with</h2>
-        <div class="marquee" data-marquee="" data-reveal="">
-            <ul class="marquee__track" role="list" data-marquee-track="">
-                <li class="marquee__item">Java 27</li>
-                <li class="marquee__item">Spring Boot 4.2</li>
-                <li class="marquee__item">Virtual threads</li>
-                <li class="marquee__item">ScopedValue</li>
-                <li class="marquee__item">Stream Gatherers</li>
-                <li class="marquee__item">Spring Security 7</li>
-                <li class="marquee__item">JWT HS256 + HKDF</li>
-                <li class="marquee__item">Hibernate 7</li>
-                <li class="marquee__item">Flyway</li>
-                <li class="marquee__item">MySQL 26.7</li>
-                <li class="marquee__item">Micrometer</li>
-                <li class="marquee__item">Transactional outbox</li>
-                <li class="marquee__item">GSAP</li>
-            </ul>
-        </div>
-    </section>
+    <h2>Inside</h2>
+    <dl>
+        <dt>Accounts</dt>
+        <dd>Sign-up with email verification, roles, lockout after repeated failures, and admin tools that refuse to
+            remove the last administrator.
+        </dd>
+        <dt>Sessions</dt>
+        <dd>Short-lived access tokens. Refresh tokens rotate on every use, and replaying an old one revokes the whole
+            chain.
+        </dd>
+        <dt>Email</dt>
+        <dd>A transactional outbox: messages are saved with the change that caused them, then delivered with retries,
+            safely across instances.
+        </dd>
+        <dt>Operations</dt>
+        <dd>Health groups, Prometheus metrics and structured logs where every line carries its request id.</dd>
+        <dt>Quality</dt>
+        <dd>The build fails on any compiler warning, and the tests are graded by mutation testing, not just coverage.
+        </dd>
+    </dl>
 </main>
 
-<footer class="footer">
-    <div class="container footer__inner">
-        <p class="footer__brand">
-            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
-                <path d="M12 1.5 22.5 12 12 22.5 1.5 12Z" fill="url(#brand-gradient)" />
-                <path d="M12 7.5 16.5 12 12 16.5 7.5 12Z" fill="#06070a" />
-            </svg>
-            <span>© <span th:text="${#dates.year(#dates.createNow())}">2026</span> Khova Krishna Pilato</span>
-        </p>
-        <a href="https://github.com/krishnapilato/portfolio" target="_blank" rel="noopener noreferrer">
-            <svg class="gh" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" /></svg>
-            <span>krishnapilato/portfolio</span>
-            <span class="sr-only">(opens in a new tab)</span>
-        </a>
-    </div>
+<footer>
+    <span>Khova Krishna Pilato · MIT License</span>
+    <span
+        th:text="${built} ? |${runtime} · built ${built}| : ${runtime}">Java 27 · Spring Boot 4.2.0 · built 1 Oct 2026</span>
 </footer>
 </body>
 </html>

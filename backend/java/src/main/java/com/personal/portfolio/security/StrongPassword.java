@@ -21,6 +21,7 @@ import java.lang.annotation.Target;
 import java.nio.charset.StandardCharsets;
 import org.jspecify.annotations.Nullable;
 
+/// Policy for new passwords. The 72-byte cap matters: bcrypt silently ignores everything after it.
 @NotBlank
 @Size(min = 10, max = StrongPassword.BCRYPT_LIMIT)
 @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")

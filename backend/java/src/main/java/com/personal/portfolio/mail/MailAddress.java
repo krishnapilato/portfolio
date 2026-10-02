@@ -16,7 +16,9 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-@Email(regexp = "[^\\s\",;]+")
+// Printable ASCII without quotes, commas or semicolons: one value is always exactly one plain address,
+// with nothing that could add a recipient or bend a mail header.
+@Email(regexp = "[!-~&&[^\",;]]+")
 @Size(max = 254)
 @ReportAsSingleViolation
 @Constraint(validatedBy = {})

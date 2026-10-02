@@ -15,66 +15,55 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 @AutoConfigureMetrics
 @TestPropertySource(properties = "app.security.scrape-password=" + PrometheusEndpointTests.SCRAPE_PASSWORD)
 class PrometheusEndpointTests extends IntegrationTest {
 
-    private static final String SCRAPER = "prometheus";
-    static final String SCRAPE_PASSWORD = "Scrape-Passw0rd";
+    static final String SCRAPE_PASSWORD = "scrape-secret-0123456789abcdef";
 
     @Autowired
     private ApplicationEventPublisher events;
 
     @Test
-    void requiresAnAdministrator() {
+    void acceptsOnlyTheScraperCredentials() {
         assertThat(mvc.get().uri("/actuator/prometheus")).hasStatus(HttpStatus.UNAUTHORIZED);
-        assertThat(mvc.get().uri("/actuator/prometheus").with(user(1))).hasStatus(HttpStatus.FORBIDDEN);
-    }
-
-    @Test
-    void letsTheMetricsScraperInWithBasicAuthentication() {
-        assertThat(mvc.get().uri("/actuator/prometheus").with(httpBasic(SCRAPER, SCRAPE_PASSWORD)))
+        assertThat(mvc.get().uri("/actuator/prometheus").with(admin())).hasStatus(HttpStatus.FORBIDDEN);
+        assertThat(mvc.get().uri("/actuator/prometheus").with(httpBasic("prometheus", "Wrong-Passw0rd")))
+                .hasStatus(HttpStatus.UNAUTHORIZED);
+        assertThat(mvc.get().uri("/actuator/prometheus").with(scraper()))
                 .hasStatusOk()
                 .bodyText()
                 .contains("jvm_memory_used_bytes{");
     }
 
     @Test
-    void rejectsTheMetricsScraperWithAWrongPassword() {
-        assertThat(mvc.get().uri("/actuator/prometheus").with(httpBasic(SCRAPER, "Wrong-Passw0rd")))
-                .hasStatus(HttpStatus.UNAUTHORIZED);
-    }
-
-    @Test
     void keepsTheMetricsScraperOutOfEveryOtherEndpoint() {
-        assertThat(mvc.get().uri("/actuator/env").with(httpBasic(SCRAPER, SCRAPE_PASSWORD)))
-                .hasStatus(HttpStatus.UNAUTHORIZED);
-        assertThat(mvc.get().uri("/api/v1/users").with(httpBasic(SCRAPER, SCRAPE_PASSWORD)))
-                .hasStatus(HttpStatus.UNAUTHORIZED);
+        assertThat(mvc.get().uri("/actuator/env").with(scraper())).hasStatus(HttpStatus.UNAUTHORIZED);
+        assertThat(mvc.get().uri("/api/v1/users").with(scraper())).hasStatus(HttpStatus.UNAUTHORIZED);
     }
 
     @Test
-    void isAdvertisedAmongTheEndpointLinks() {
-        assertThat(mvc.get().uri("/actuator"))
+    void isAdvertisedToAdministratorsAmongTheEndpointLinks() {
+        assertThat(mvc.get().uri("/actuator").with(admin()))
                 .hasStatusOk()
                 .bodyJson()
                 .hasPath("$._links.prometheus.href");
     }
 
     @Test
-    void exposesJvmHttpAndApplicationMetricsForScraping() {
-        assertThat(mvc.get().uri("/system/snapshot")).hasStatusOk();
+    void exposesJvmHttpAndApplicationMetrics() {
+        assertThat(mvc.get().uri("/")).hasStatusOk();
 
-        assertThat(mvc.get().uri("/actuator/prometheus").with(admin()))
+        assertThat(mvc.get().uri("/actuator/prometheus").with(scraper()))
                 .hasStatusOk()
                 .hasContentTypeCompatibleWith(MediaType.TEXT_PLAIN)
                 .bodyText()
                 .contains("jvm_memory_used_bytes{")
                 .contains("application=\"portfolio\"")
                 .contains("http_server_requests_seconds_bucket{")
-                .contains("uri=\"/system/snapshot\"")
-                .contains("portfolio_dashboard_subscribers{")
+                .contains("uri=\"/\"")
                 .contains("portfolio_mail_dispatched_total{");
     }
 
@@ -84,9 +73,13 @@ class PrometheusEndpointTests extends IntegrationTest {
 
         events.publishEvent(new AuditApplicationEvent("prometheus-probe", type, Map.of()));
 
-        assertThat(mvc.get().uri("/actuator/prometheus").with(admin()))
+        assertThat(mvc.get().uri("/actuator/prometheus").with(scraper()))
                 .hasStatusOk()
                 .bodyText()
                 .containsPattern(Pattern.compile("portfolio_audit_events_total[{][^}]*type=\"" + type + "\"[^}]*[}] 1[.]0"));
+    }
+
+    private static RequestPostProcessor scraper() {
+        return httpBasic("prometheus", SCRAPE_PASSWORD);
     }
 }

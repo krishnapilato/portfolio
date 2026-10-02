@@ -5,31 +5,51 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 class ScrapersTests {
 
-    private final PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private static final String SECRET = "a-long-random-scrape-secret-0123";
 
     @Test
-    void registersThePrometheusScraperWithTheMetricsRoleWhenAPasswordIsConfigured() {
-        var scraper = SecurityConfig.scrapers("Scrape-Secret-1", encoder).loadUserByUsername("prometheus");
+    void grantsOnlyTheMetricsRoleToThePrometheusScraper() {
+        var authentication = SecurityConfig.scraper(SECRET).authenticate(basic("prometheus", SECRET));
 
-        assertThat(scraper.getAuthorities()).extracting(GrantedAuthority::getAuthority).containsExactly("ROLE_METRICS");
-        assertThat(encoder.matches("Scrape-Secret-1", scraper.getPassword())).isTrue();
-        assertThat(scraper.getPassword()).doesNotContain("Scrape-Secret-1");
+        assertThat(authentication.isAuthenticated()).isTrue();
+        assertThat(authentication.getName()).isEqualTo("prometheus");
+        assertThat(authentication.getCredentials()).isNull();
+        assertThat(authentication.getAuthorities()).extracting(GrantedAuthority::getAuthority)
+                .containsExactly("ROLE_METRICS");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "prometheus, a-long-random-scrape-secret-012",
+            "prometheus, a-long-random-scrape-secret-01234",
+            "prometheus, A-LONG-RANDOM-SCRAPE-SECRET-0123",
+            "grafana, a-long-random-scrape-secret-0123"})
+    void rejectsAnyOtherUserOrPassword(String user, String password) {
+        var scraper = SecurityConfig.scraper(SECRET);
+
+        assertThatThrownBy(() -> scraper.authenticate(basic(user, password)))
+                .isInstanceOf(BadCredentialsException.class);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"", "   "})
-    void disablesBasicScrapingWhenNoPasswordIsConfigured(String password) {
-        var scrapers = SecurityConfig.scrapers(password, encoder);
+    void turnsScrapingOffWhenNoPasswordIsConfigured(String password) {
+        var scraper = SecurityConfig.scraper(password);
 
-        assertThatThrownBy(() -> scrapers.loadUserByUsername("prometheus"))
-                .isInstanceOf(UsernameNotFoundException.class);
+        assertThatThrownBy(() -> scraper.authenticate(basic("prometheus", password)))
+                .isInstanceOf(BadCredentialsException.class);
+    }
+
+    private static Authentication basic(String user, String password) {
+        return UsernamePasswordAuthenticationToken.unauthenticated(user, password);
     }
 }

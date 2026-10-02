@@ -2,7 +2,7 @@ import type { Copy } from "../copy";
 import { useTick } from "../lib/hooks";
 
 /** Launch target for the countdown. Change this one line to move the date. */
-export const LAUNCH_DATE = new Date("2026-10-01T09:00:00+02:00");
+export const LAUNCH_DATE = new Date("2026-10-18T09:00:00+02:00");
 
 type Remaining = {
   days: number;

@@ -338,6 +338,7 @@ class UserAdminTests extends IntegrationTest {
     @Test
     void patchRenamesAndReassignsTheRole() {
         var user = reload(persist("Grace Hopper", email("patch"), Role.USER, AccountStatus.ACTIVE).getId());
+        letTheClockPass(user.getUpdatedAt());
 
         var renamed = patch(user.getId(), Map.of("fullName", "  Rear Admiral Hopper  "), admin());
         assertThat(renamed).hasStatusOk();

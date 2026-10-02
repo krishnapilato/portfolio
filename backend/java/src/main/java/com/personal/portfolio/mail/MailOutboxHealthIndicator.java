@@ -8,6 +8,8 @@ import org.springframework.boot.health.contributor.Health;
 import org.springframework.boot.health.contributor.Status;
 import org.springframework.stereotype.Component;
 
+/// Reports DOWN when a due message has waited longer than app.mail.stale-after,
+/// which means the dispatcher or the mail server is stuck.
 @Component
 class MailOutboxHealthIndicator extends AbstractHealthIndicator {
 

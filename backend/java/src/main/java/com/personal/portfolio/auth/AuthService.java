@@ -46,9 +46,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+// A failed sign-in must still be saved, so API errors do not roll the transaction back.
 @Transactional(noRollbackFor = ApiException.class)
 class AuthService {
 
+    // Compared against when the account is unknown, so every sign-in costs exactly one bcrypt check.
     private static final String DUMMY_HASH = "{bcrypt}$2a$10$bZnvbD8FRlEUTeMBXsnQv.9gz43xgORVvvl6MX27q/ox3BgPqMNQC";
 
     private final UserRepository users;
@@ -91,20 +93,24 @@ class AuthService {
     }
 
     public TokenPair login(Credentials credentials) {
-        var email = User.normalizeEmail(credentials.email());
-        var user = users.findByEmail(email).orElseThrow(() -> rejectUnknown(email, credentials.password()));
         var now = clock.instant();
-        if (user.isLockedOut(now)) {
-            throw new ApiException(new TemporarilyLocked(lockedUntil(user)));
-        }
-        if (!passwordEncoder.matches(credentials.password(), user.getPasswordHash())) {
-            throw rejectPassword(user, now);
+        var email = User.normalizeEmail(credentials.email());
+        var account = users.findForUpdateByEmail(email);
+        // Unknown, locked and real accounts all get one bcrypt check and the same 401,
+        // so neither the answer nor its timing reveals which emails are registered.
+        var passwordMatches = passwordEncoder.matches(credentials.password(),
+                account.map(User::getPasswordHash).orElse(DUMMY_HASH));
+        var user = account.filter(found -> !found.isLockedOut(now))
+                .orElseThrow(() -> rejected(email, account.isPresent() ? "locked" : "unknown-account"));
+        if (!passwordMatches) {
+            recordFailure(user, now);
+            throw rejected(email, "bad-credentials");
         }
         if (user.getStatus() != AccountStatus.ACTIVE) {
             throw new ApiException(new AccountUnavailable(user.getStatus()));
         }
         if (passwordEncoder.upgradeEncoding(user.getPasswordHash())) {
-            user.changePassword(hash(credentials.password()));
+            user.upgradePasswordHash(hash(credentials.password()));
         }
         user.recordSuccessfulLogin(now);
         audit(AuditType.AUTHENTICATION_SUCCESS, user);
@@ -158,7 +164,14 @@ class AuthService {
 
     public void changePassword(long userId, PasswordChange change) {
         var user = find(userId);
+        var now = clock.instant();
+        // The current password is all that stands between a stolen access token and a stolen account,
+        // so guessing it is limited exactly like guessing at sign-in.
+        if (user.isLockedOut(now)) {
+            throw new ApiException(new TemporarilyLocked(lockedUntil(user)));
+        }
         if (!passwordEncoder.matches(change.currentPassword(), user.getPasswordHash())) {
+            recordFailure(user, now);
             throw new ApiException(new WrongPassword());
         }
         user.changePassword(hash(change.newPassword()));
@@ -169,25 +182,24 @@ class AuthService {
     }
 
     public void endSessions(long userId) {
-        vault.revoke(find(userId), TokenPurpose.REFRESH);
+        var user = find(userId);
+        user.endSessions();
+        vault.revoke(user, TokenPurpose.REFRESH);
     }
 
-    private ApiException rejectUnknown(String email, String rawPassword) {
-        passwordEncoder.matches(rawPassword, DUMMY_HASH);
-        audit(AuditType.AUTHENTICATION_FAILURE, email, Map.of("reason", "unknown-account"));
+    private ApiException rejected(String email, String reason) {
+        audit(AuditType.AUTHENTICATION_FAILURE, email, Map.of("reason", reason));
         return new ApiException(new InvalidCredentials());
     }
 
-    private ApiException rejectPassword(User user, Instant now) {
+    private void recordFailure(User user, Instant now) {
         var security = properties.security();
         user.recordFailedLogin(now, security.maxFailedLogins(), security.lockout());
-        audit(AuditType.AUTHENTICATION_FAILURE, user.getEmail(), Map.of("reason", "bad-credentials"));
         if (user.isLockedOut(now)) {
             var until = lockedUntil(user);
             audit(AuditType.ACCOUNT_LOCKED, Long.toString(user.getId()), Map.of("until", until));
             log.warn("User {} locked out until {}", user.getId(), until);
         }
-        return new ApiException(new InvalidCredentials());
     }
 
     private TokenPair tokenPair(User user, IssuedToken refresh) {
@@ -211,7 +223,7 @@ class AuthService {
 
     private void notifyPasswordChanged(User user) {
         notifier.notify(new PasswordChanged(user.getEmail(), user.getFullName(), clock.instant()));
-        log.info("Password of user {} changed; all refresh tokens revoked", user.getId());
+        log.info("Password of user {} changed; all sessions revoked", user.getId());
     }
 
     private URI frontendLink(String page, IssuedToken token) {

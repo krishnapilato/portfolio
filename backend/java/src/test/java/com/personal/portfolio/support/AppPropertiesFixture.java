@@ -49,7 +49,7 @@ public final class AppPropertiesFixture {
                         Duration.ofHours(24), Duration.ofHours(1), 5, Duration.ofMinutes(15), Duration.ofMinutes(2),
                         30, ""),
                 new AppProperties.Mail(MAIL_FROM, MAIL_SENDER, 25, 8, 5, Duration.ofSeconds(30), Duration.ofHours(1),
-                        STALE_AFTER),
+                        STALE_AFTER, Duration.ofDays(30)),
                 seed);
     }
 }

@@ -53,6 +53,10 @@ public class User {
 
     private @Nullable Instant lastLoginAt;
 
+    // Every access token carries this number. Bumping it (new password, "sign out everywhere") makes all
+    // tokens issued before unusable at once, without keeping a list of revoked tokens.
+    private int sessionVersion;
+
     @CreationTimestamp
     private Instant createdAt;
 
@@ -74,12 +78,10 @@ public class User {
     }
 
     public void transitionTo(AccountStatus target) {
-        if (status == target) {
-            return;
-        }
-        if (!status.canTransitionTo(target)) {
+        if (status == target) return;
+        if (!status.canTransitionTo(target))
             throw new ApiException(new IllegalTransition(status, target));
-        }
+
         status = target;
         if (target == AccountStatus.ACTIVE) {
             failedLogins = 0;
@@ -88,13 +90,15 @@ public class User {
     }
 
     public void verifyEmail() {
-        if (status == AccountStatus.PENDING) {
-            transitionTo(AccountStatus.ACTIVE);
-        }
+        if (status == AccountStatus.PENDING) transitionTo(AccountStatus.ACTIVE);
     }
 
     public boolean isLockedOut(Instant now) {
         return lockedUntil != null && now.isBefore(lockedUntil);
+    }
+
+    public boolean acceptsTokenOfSession(int tokenSessionVersion) {
+        return status == AccountStatus.ACTIVE && tokenSessionVersion == sessionVersion;
     }
 
     public void recordFailedLogin(Instant now, int maxAttempts, Duration lockout) {
@@ -115,6 +119,15 @@ public class User {
         this.passwordHash = passwordHash;
         failedLogins = 0;
         lockedUntil = null;
+        endSessions();
+    }
+
+    public void upgradePasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public void endSessions() {
+        sessionVersion++;
     }
 
     public void rename(String fullName) {

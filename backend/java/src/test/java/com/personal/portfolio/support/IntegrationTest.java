@@ -6,6 +6,8 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import com.personal.portfolio.user.Role;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Properties;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +39,14 @@ public abstract class IntegrationTest {
     @BeforeEach
     protected void stubMimeMessages() {
         given(mailSender.createMimeMessage()).willAnswer(_ -> new MimeMessage(MAIL_SESSION));
+    }
+
+    // The system clock can tick coarsely and timestamps are stored in whole microseconds;
+    // waiting for the next one keeps "updated after" assertions deterministic.
+    protected static void letTheClockPass(Instant instant) {
+        while (!Instant.now().truncatedTo(ChronoUnit.MICROS).isAfter(instant)) {
+            Thread.onSpinWait();
+        }
     }
 
     protected static RequestPostProcessor admin() {

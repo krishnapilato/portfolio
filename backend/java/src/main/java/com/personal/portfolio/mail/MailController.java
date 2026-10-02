@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springdoc.core.annotations.ParameterObject;
@@ -24,7 +24,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +42,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 class MailController {
 
     private static final int MAX_ATTACHMENTS = 5;
+    private static final int MAX_FILENAME = 255;
     private static final String UNNAMED_ATTACHMENT = "attachment";
+    // Upload names and types come from the client and end up in MIME headers: keep only a plain base name
+    // (no directories, no control characters) and a simple type/subtype.
+    private static final Pattern UNSAFE_FILENAME = Pattern.compile("(?s)^.*[/\\\\]|\\p{Cntrl}");
+    private static final Pattern MEDIA_TYPE = Pattern.compile("[\\w.+-]{1,63}/[\\w.+-]{1,63}");
 
     private final MailService mail;
 
@@ -106,14 +110,21 @@ class MailController {
     }
 
     private static Attachment attachment(MultipartFile file) {
-        var filename = Optional.ofNullable(StringUtils.getFilename(file.getOriginalFilename()))
-                .filter(StringUtils::hasText)
-                .orElse(UNNAMED_ATTACHMENT);
-        var contentType = Objects.requireNonNullElse(file.getContentType(), MediaType.APPLICATION_OCTET_STREAM_VALUE);
         try {
-            return new Attachment(filename, contentType, file.getBytes());
+            return new Attachment(filename(file), contentType(file), file.getBytes());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    private static String filename(MultipartFile file) {
+        var original = Objects.requireNonNullElse(file.getOriginalFilename(), "");
+        var name = UNSAFE_FILENAME.matcher(original).replaceAll("").strip();
+        return name.isEmpty() ? UNNAMED_ATTACHMENT : name.substring(0, Math.min(name.length(), MAX_FILENAME));
+    }
+
+    private static String contentType(MultipartFile file) {
+        var type = Objects.requireNonNullElse(file.getContentType(), "");
+        return MEDIA_TYPE.matcher(type).matches() ? type : MediaType.APPLICATION_OCTET_STREAM_VALUE;
     }
 }

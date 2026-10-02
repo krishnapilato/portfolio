@@ -32,7 +32,7 @@ class AppPropertiesTests {
                     "portfolio-api", Duration.ofMinutes(15), Duration.ofDays(30), Duration.ofHours(24),
                     Duration.ofHours(1), 5, Duration.ofMinutes(15), Duration.ofMinutes(2), 30, ""));
             assertThat(properties.mail()).isEqualTo(new AppProperties.Mail("no-reply@example.test", "Portfolio", 25, 8,
-                    5, Duration.ofSeconds(30), Duration.ofHours(1), Duration.ofMinutes(15)));
+                    5, Duration.ofSeconds(30), Duration.ofHours(1), Duration.ofMinutes(15), Duration.ofDays(30)));
             assertThat(properties.seed().enabled()).isFalse();
             assertThat(properties.seed().users().getFilename()).isEqualTo("users.json");
             assertThat(properties.seed().users().exists()).isTrue();
@@ -47,7 +47,7 @@ class AppPropertiesTests {
                         "app.security.max-failed-logins=3",
                         "app.security.email-cooldown=5m",
                         "app.security.auth-requests-per-minute=60",
-                        "app.security.scrape-password=Scrape-Passw0rd",
+                        "app.security.scrape-password=scrape-secret-0123456789abcdef",
                         "app.mail.batch-size=50",
                         "app.mail.initial-backoff=PT10S",
                         "app.seed.enabled=true")
@@ -59,7 +59,7 @@ class AppPropertiesTests {
                     assertThat(properties.security().maxFailedLogins()).isEqualTo(3);
                     assertThat(properties.security().emailCooldown()).isEqualTo(Duration.ofMinutes(5));
                     assertThat(properties.security().authRequestsPerMinute()).isEqualTo(60);
-                    assertThat(properties.security().scrapePassword()).isEqualTo("Scrape-Passw0rd");
+                    assertThat(properties.security().scrapePassword()).isEqualTo("scrape-secret-0123456789abcdef");
                     assertThat(properties.mail().batchSize()).isEqualTo(50);
                     assertThat(properties.mail().initialBackoff()).isEqualTo(Duration.ofSeconds(10));
                     assertThat(properties.seed().enabled()).isTrue();
@@ -76,6 +76,7 @@ class AppPropertiesTests {
             app.mail.batch-size=0              | mail.batchSize
             app.mail.concurrency=0             | mail.concurrency
             app.mail.max-attempts=0            | mail.maxAttempts
+            app.security.scrape-password=change-me | security.scrapePassword
             """)
     void refusesToStartWithInvalidSettings(String property, String field) {
         runner.withPropertyValues(property).run(context -> assertThat(context)

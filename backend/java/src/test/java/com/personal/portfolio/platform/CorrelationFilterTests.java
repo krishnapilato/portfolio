@@ -39,7 +39,7 @@ class CorrelationFilterTests extends IntegrationTest {
     @ValueSource(strings = {"client-trace-0001", "abcdefgh", "01999a4e-3c1b-7d2e-8f00-123456789abc",
             "Trace.ID_with-every.allowed_char-0123456789-ABCDEFGHIJKLMNOPQRST"})
     void echoesAWellFormedInboundRequestId(String inbound) {
-        assertThat(mvc.get().uri("/system/snapshot").header(HEADER, inbound))
+        assertThat(mvc.get().uri("/").header(HEADER, inbound))
                 .hasStatusOk()
                 .hasHeader(HEADER, inbound);
     }
@@ -48,14 +48,14 @@ class CorrelationFilterTests extends IntegrationTest {
     @ValueSource(strings = {"short", "has spaces inside", "semi;colon-0001", "quote\"injection", "café-latte-01",
             "a-sixty-five-character-request-id-is-one-character-too-long-00001"})
     void replacesAMalformedInboundRequestIdWithAVersion7Uuid(String inbound) {
-        var response = mvc.get().uri("/system/snapshot").header(HEADER, inbound).exchange().getResponse();
+        var response = mvc.get().uri("/").header(HEADER, inbound).exchange().getResponse();
 
         assertThat(response.getHeader(HEADER)).isNotEqualTo(inbound).satisfies(id -> assertVersion7(id));
     }
 
     @Test
     void generatesAVersion7UuidWhenNoRequestIdIsSent() {
-        var response = mvc.get().uri("/system/snapshot").exchange().getResponse();
+        var response = mvc.get().uri("/").exchange().getResponse();
 
         assertVersion7(response.getHeader(HEADER));
     }
@@ -63,15 +63,13 @@ class CorrelationFilterTests extends IntegrationTest {
     @ParameterizedTest(name = "{0} {1} -> {2}")
     @CsvSource({
             "GET, /, 200",
-            "GET, /system/snapshot, 200",
-            "GET, /assets/app.css, 200",
             "GET, /favicon.svg, 200",
             "GET, /actuator/health, 200",
             "GET, /actuator/metrics, 401",
             "GET, /api/v1/users, 401",
             "GET, /missing-page, 401",
             "POST, /api/v1/auth/login, 400",
-            "DELETE, /system/snapshot, 405"})
+            "DELETE, /, 405"})
     void stampsEveryResponseWithARequestId(String method, String path, int status) {
         var response = mvc.method(HttpMethod.valueOf(method)).uri(path)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,22 +106,74 @@ class CorrelationFilterTests extends IntegrationTest {
     void logsOneAccessLineForApplicationRequests(CapturedOutput output) {
         var id = "access-log-" + UUID.randomUUID();
 
-        assertThat(mvc.get().uri("/system/snapshot").header(HEADER, id)).hasStatusOk();
+        assertThat(mvc.get().uri("/").header(HEADER, id)).hasStatusOk();
 
         assertThat(output.getOut().lines().filter(line -> line.contains(id)))
                 .singleElement()
                 .asString()
-                .contains("GET /system/snapshot -> 200 (");
+                .contains("GET / -> 200 (");
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/actuator/health", "/assets/app.css", "/favicon.svg"})
+    @ValueSource(strings = {"/actuator/health", "/favicon.svg"})
     void keepsInfrastructureRequestsOutOfTheAccessLog(String path, CapturedOutput output) {
         var id = "quiet-path-" + UUID.randomUUID();
 
         assertThat(mvc.get().uri(path).header(HEADER, id)).hasStatusOk();
 
         assertThat(output.getOut()).doesNotContain(id);
+    }
+
+    @Test
+    void logsFailedRequestsEvenOnQuietPaths(CapturedOutput output) {
+        var id = "quiet-failure-" + UUID.randomUUID();
+
+        assertThat(mvc.get().uri("/actuator/env").header(HEADER, id)).hasStatus(HttpStatus.UNAUTHORIZED);
+
+        assertThat(output.getOut().lines().filter(line -> line.contains(id)))
+                .singleElement()
+                .asString()
+                .contains("GET /actuator/env -> 401 (");
+    }
+
+    @ParameterizedTest(name = "{0} -> {1} logged: {2}")
+    @CsvSource({
+            "/api/v1/me, 200, true",
+            "/api/v1/me, 500, true",
+            "/actuator/health, 200, false",
+            "/actuator/health, 503, true",
+            "/favicon.svg, 200, false",
+            "/favicon.svg, 404, true"})
+    void writesOneAccessLineUnlessAQuietPathSucceeded(String path, int status, boolean logged, CapturedOutput output)
+            throws Exception {
+        var id = "unit-log-" + UUID.randomUUID();
+        var request = new MockHttpServletRequest("GET", path);
+        request.addHeader(HEADER, id);
+
+        filter.doFilter(request, new MockHttpServletResponse(),
+                (_, response) -> ((MockHttpServletResponse) response).setStatus(status));
+
+        assertThat(output.getOut().contains(id)).isEqualTo(logged);
+    }
+
+    @ParameterizedTest(name = "{0} -> {1} logged: {2}")
+    @CsvSource({
+            "/api/v1/me, 200, true",
+            "/actuator/health, 200, false",
+            "/actuator/health, 503, true"})
+    void decidesTheAccessLineTheSameWayWhenTheChainFails(String path, int status, boolean logged,
+            CapturedOutput output) {
+        var id = "chain-failure-" + UUID.randomUUID();
+        var request = new MockHttpServletRequest("GET", path);
+        request.addHeader(HEADER, id);
+
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> filter.doFilter(request, new MockHttpServletResponse(), (_, response) -> {
+                    ((MockHttpServletResponse) response).setStatus(status);
+                    throw new IllegalStateException("handler exploded");
+                }));
+
+        assertThat(output.getOut().contains(id)).isEqualTo(logged);
     }
 
     @Test

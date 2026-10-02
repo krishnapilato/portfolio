@@ -9,15 +9,15 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.net.http.HttpResponse;
 import java.util.UUID;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -57,11 +57,11 @@ class ErrorPageTests extends IntegrationTest {
                 assertThat(MediaType.parseMediaType(type).isCompatibleWith(MediaType.TEXT_HTML)).isTrue());
         assertThat(response.headers().firstValue(CorrelationFilter.HEADER)).contains(requestId);
         assertThat(response.body())
-                .contains("<title>404 Page not found – Portfolio Platform</title>")
-                .contains("The page you are looking for does not exist or has moved.")
-                .contains("<code id=\"request-id\">" + requestId + "</code>")
+                .contains("<title>404 Not Found · Portfolio Platform</title>")
+                .contains("Page not found")
+                .contains("<code>" + requestId + "</code>")
                 .contains("<code>/missing-page</code>")
-                .contains("HTTP 404");
+                .doesNotContain("<script");
     }
 
     @Test
@@ -74,20 +74,20 @@ class ErrorPageTests extends IntegrationTest {
         assertThat(response.headers().firstValue(CorrelationFilter.HEADER)).contains(requestId);
         var body = json.readTree(response.body());
         assertThat(body.path("status").asInt()).isEqualTo(404);
-        assertThat(text(body, "requestId")).isEqualTo(requestId);
-        assertThat(text(body, "title")).isEqualTo("Page not found");
-        assertThat(text(body, "hint")).isEqualTo("The page you are looking for does not exist or has moved.");
+        assertThat(text(body, "error")).isEqualTo("Not Found");
         assertThat(text(body, "path")).isEqualTo("/missing-page");
         assertThat(text(body, "timestamp")).isNotBlank();
+        assertThat(body.has("message")).isFalse();
+        assertThat(body.has("trace")).isFalse();
     }
 
     @Test
     void generatesARequestIdForTheErrorPageWhenNoneWasSent() throws Exception {
-        var response = send("/missing-page", MediaType.APPLICATION_JSON_VALUE, null, adminBearer());
+        var response = send("/missing-page", MediaType.TEXT_HTML_VALUE, null, adminBearer());
 
         var header = response.headers().firstValue(CorrelationFilter.HEADER).orElseThrow();
         assertThat(UUID.fromString(header).version()).isEqualTo(7);
-        assertThat(text(json.readTree(response.body()), "requestId")).isEqualTo(header);
+        assertThat(response.body()).contains("<code>" + header + "</code>");
     }
 
     @Test
@@ -100,8 +100,8 @@ class ErrorPageTests extends IntegrationTest {
         assertThat(response.headers().firstValue(HttpHeaders.WWW_AUTHENTICATE)).hasValueSatisfying(challenge ->
                 assertThat(challenge).startsWith("Bearer"));
         assertThat(response.body())
-                .contains("Authentication required")
-                .contains("<code id=\"request-id\">" + requestId + "</code>");
+                .contains("Sign-in required")
+                .contains("<code>" + requestId + "</code>");
     }
 
     @Test
@@ -115,21 +115,21 @@ class ErrorPageTests extends IntegrationTest {
 
     @Test
     void rendersNotFoundForPublicPathsWithoutSigningIn() throws Exception {
-        var response = send("/system/missing-page", MediaType.TEXT_HTML_VALUE, null, null);
+        var response = send("/favicon.ico", MediaType.TEXT_HTML_VALUE, null, null);
 
         assertThat(response.statusCode()).isEqualTo(404);
-        assertThat(response.body()).contains("Page not found").contains("<code>/system/missing-page</code>");
+        assertThat(response.body()).contains("Page not found").contains("<code>/favicon.ico</code>");
     }
 
     @Test
-    void explainsUnsupportedApiVersionsInTheErrorBody() throws Exception {
+    void rejectsUnsupportedApiVersions() throws Exception {
         var response = send("/api/v2/users", MediaType.APPLICATION_JSON_VALUE, "api-version-0001", adminBearer());
 
         assertThat(response.statusCode()).isEqualTo(400);
+        assertThat(response.headers().firstValue(CorrelationFilter.HEADER)).contains("api-version-0001");
         var body = json.readTree(response.body());
         assertThat(body.path("status").asInt()).isEqualTo(400);
-        assertThat(text(body, "requestId")).isEqualTo("api-version-0001");
-        assertThat(text(body, "title")).isEqualTo("Request not processed");
+        assertThat(text(body, "path")).isEqualTo("/api/v2/users");
     }
 
     private HttpResponse<String> send(String path, String accept, @Nullable String requestId, @Nullable String token)

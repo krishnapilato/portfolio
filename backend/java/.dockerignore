@@ -1,8 +1,11 @@
 target
 .env
-.idea
-logs
-*.iml
+.env.*
+*.env
 .git
-*.md
+.idea
+.claude
+*.iml
+logs
 docs
+*.md

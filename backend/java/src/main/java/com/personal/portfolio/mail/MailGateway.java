@@ -9,12 +9,12 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.MailPreparationException;
-import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.resilience.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
+// No retries here on purpose: the outbox retries with backoff, and retrying inside one attempt
+// could send the same message twice when the server accepted it but the reply was lost.
 @Component
 @RequiredArgsConstructor
 class MailGateway {
@@ -22,7 +22,6 @@ class MailGateway {
     private final JavaMailSender sender;
     private final AppProperties properties;
 
-    @Retryable(includes = MailSendException.class, maxRetries = 2, delay = 200, jitter = 50, multiplier = 2.0)
     public void send(Envelope envelope) {
         sender.send(mime(envelope));
     }

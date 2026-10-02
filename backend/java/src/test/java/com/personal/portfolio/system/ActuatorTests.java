@@ -14,17 +14,14 @@ import org.springframework.http.MediaType;
 class ActuatorTests extends IntegrationTest {
 
     @Test
-    void publishesAggregateHealthToAnonymousVisitors() {
+    void publishesOnlyTheOverallHealthToAnonymousVisitors() {
         assertThat(mvc.get().uri("/actuator/health"))
                 .hasStatusOk()
                 .bodyJson()
                 .isLenientlyEqualTo("""
-                        {"status": "UP", "components": {"db": {"status": "UP"}, "ping": {"status": "UP"}}}
+                        {"status": "UP"}
                         """)
-                .hasPath("$.components.mailOutbox.status")
-                .hasPath("$.components.diskSpace.status")
-                .doesNotHavePath("$.components.db.details")
-                .doesNotHavePath("$.components.mailOutbox.details");
+                .doesNotHavePath("$.components");
     }
 
     @Test
@@ -38,11 +35,11 @@ class ActuatorTests extends IntegrationTest {
     }
 
     @Test
-    void keepsHealthDetailsFromOrdinaryUsers() {
+    void keepsHealthComponentsFromOrdinaryUsers() {
         assertThat(mvc.get().uri("/actuator/health").with(user(1)))
                 .hasStatusOk()
                 .bodyJson()
-                .doesNotHavePath("$.components.db.details");
+                .doesNotHavePath("$.components");
     }
 
     @ParameterizedTest
@@ -73,24 +70,22 @@ class ActuatorTests extends IntegrationTest {
                 .bodyJson()
                 .isLenientlyEqualTo("""
                         {
-                          "app": {
-                            "name": "Portfolio Platform",
-                            "java": "%s"
-                          },
+                          "app": {"name": "Portfolio Platform"},
                           "build": {"artifact": "portfolio", "group": "com.personal"}
                         }
-                        """.formatted(Runtime.version().feature()))
+                        """)
+                .hasPath("$.app.description")
                 .hasPath("$.build.version")
                 .hasPath("$.build.time")
-                .hasPath("$.java.version")
-                .hasPath("$.java.vendor")
-                .hasPath("$.os.name")
-                .hasPath("$.process.pid");
+                .doesNotHavePath("$.java")
+                .doesNotHavePath("$.os")
+                .doesNotHavePath("$.process");
     }
 
     @Test
-    void listsTheEndpointLinksPublicly() {
-        assertThat(mvc.get().uri("/actuator"))
+    void listsTheEndpointLinksToAdministratorsOnly() {
+        assertThat(mvc.get().uri("/actuator")).hasStatus(HttpStatus.UNAUTHORIZED);
+        assertThat(mvc.get().uri("/actuator").with(admin()))
                 .hasStatusOk()
                 .bodyJson()
                 .hasPath("$._links.self.href")
@@ -118,8 +113,7 @@ class ActuatorTests extends IntegrationTest {
                 .hasStatusOk()
                 .bodyJson()
                 .hasPathSatisfying("$.names", names -> assertThat(names).asArray().contains(
-                        "jvm.memory.used", "http.server.requests", "portfolio.dashboard.subscribers",
-                        "portfolio.mail.dispatched"));
+                        "jvm.memory.used", "http.server.requests", "portfolio.mail.dispatched"));
         assertThat(mvc.get().uri("/actuator/metrics/jvm.memory.used").param("tag", "area:heap").with(admin()))
                 .hasStatusOk()
                 .bodyJson()
@@ -162,28 +156,29 @@ class ActuatorTests extends IntegrationTest {
     void recordsHttpExchangesForAdministrators() {
         var marker = UUID.randomUUID().toString();
 
-        assertThat(mvc.get().uri("/system/snapshot?marker={marker}", marker)).hasStatusOk();
+        assertThat(mvc.get().uri("/?marker={marker}", marker)).hasStatusOk();
 
         assertThat(mvc.get().uri("/actuator/httpexchanges").with(admin()))
                 .hasStatusOk()
                 .bodyJson()
                 .hasPathSatisfying("$.exchanges[*].request.uri", uris -> assertThat(uris).asArray()
-                        .anySatisfy(uri -> assertThat(uri).asString().endsWith("/system/snapshot?marker=" + marker)));
+                        .anySatisfy(uri -> assertThat(uri).asString().endsWith("/?marker=" + marker)));
     }
 
     @Test
-    void schedulesTheDashboardPulseAndTheMailDispatcher() {
+    void schedulesTheOutboxAndItsHousekeeping() {
         assertThat(mvc.get().uri("/actuator/scheduledtasks").with(admin()))
                 .hasStatusOk()
                 .bodyJson()
-                .hasPathSatisfying("$.fixedRate[*].runnable.target", targets -> assertThat(targets).asArray()
-                        .contains("com.personal.portfolio.system.PulseBroadcaster.broadcast"))
                 .hasPathSatisfying("$.fixedDelay[*].runnable.target", targets -> assertThat(targets).asArray()
-                        .contains("com.personal.portfolio.mail.MailDispatcher.dispatch"));
+                        .contains("com.personal.portfolio.mail.MailDispatcher.dispatch"))
+                .hasPathSatisfying("$.cron[*].runnable.target", targets -> assertThat(targets).asArray()
+                        .contains("com.personal.portfolio.mail.MailDispatcher.purge",
+                                "com.personal.portfolio.auth.TokenVault.purgeExpired"));
     }
 
     @Test
-    void hidesTheHeapDumpInTests() {
+    void neverExposesTheHeapDump() {
         assertThat(mvc.get().uri("/actuator/heapdump").with(admin())).hasStatus(HttpStatus.NOT_FOUND);
     }
 }

@@ -42,10 +42,7 @@ class UserController {
     private final UserService users;
 
     @GetMapping
-    Page<UserView> search(
-            @Valid @ParameterObject Criteria criteria,
-            @ParameterObject @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
-                    Pageable pageable) {
+    Page<UserView> search(@Valid @ParameterObject Criteria criteria, @ParameterObject @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return users.search(criteria, pageable);
     }
 
@@ -63,9 +60,9 @@ class UserController {
     ResponseEntity<UserView> create(@Valid @RequestBody CreateUser request, @AuthenticationPrincipal Jwt actor) {
         var user = users.create(request, AccessTokens.userId(actor));
         var location = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .path("/{id}")
-                .buildAndExpand(user.id())
-                .toUri();
+            .path("/{id}")
+            .buildAndExpand(user.id())
+            .toUri();
         return ResponseEntity.created(location).body(user);
     }
 
@@ -75,8 +72,7 @@ class UserController {
     }
 
     @PutMapping("/{id}/status")
-    UserView changeStatus(
-            @PathVariable long id, @Valid @RequestBody StatusChange request, @AuthenticationPrincipal Jwt actor) {
+    UserView changeStatus(@PathVariable long id, @Valid @RequestBody StatusChange request, @AuthenticationPrincipal Jwt actor) {
         return users.changeStatus(id, request.status(), AccessTokens.userId(actor));
     }
 

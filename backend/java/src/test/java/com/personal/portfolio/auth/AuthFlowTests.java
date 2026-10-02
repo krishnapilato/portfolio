@@ -63,7 +63,7 @@ class AuthFlowTests extends AuthTestSupport {
         assertThat(reload(email).getStatus()).isEqualTo(AccountStatus.ACTIVE);
         assertProblem(post(VERIFY, Map.of("token", token)), HttpStatus.BAD_REQUEST, "invalid-token");
 
-        var before = Instant.now();
+        var before = clock.instant();
         var login = post(LOGIN, credentials(email.toUpperCase(Locale.ROOT), PASSWORD));
         assertThat(login).hasStatusOk();
         var pair = body(login);
@@ -112,7 +112,7 @@ class AuthFlowTests extends AuthTestSupport {
     void rotatesRefreshTokensAndRevokesTheWholeFamilyWhenAnOldOneIsReplayed() {
         var email = uniqueEmail("rotation");
         var owner = activeUser(email);
-        var started = Instant.now();
+        var started = clock.instant();
         var original = login(email, PASSWORD);
         var parallel = login(email, PASSWORD);
 
@@ -274,30 +274,42 @@ class AuthFlowTests extends AuthTestSupport {
     }
 
     @Test
-    void locksTheAccountAfterTheMaximumNumberOfFailedLogins() {
+    void locksTheAccountAfterTheMaximumNumberOfFailedLoginsWithoutRevealingIt() {
         var email = uniqueEmail("brute");
         var owner = activeUser(email);
         var security = properties.security();
-        var started = Instant.now();
+        var started = clock.instant();
 
         for (var attempt = 0; attempt < security.maxFailedLogins(); attempt++) {
             assertProblem(post(LOGIN, credentials(email, WRONG_PASSWORD)), HttpStatus.UNAUTHORIZED,
                     "invalid-credentials");
         }
-        var locked = post(LOGIN, credentials(email, PASSWORD));
 
-        assertProblem(locked, HttpStatus.LOCKED, "temporarily-locked");
-        var lockedUntil = Instant.parse(body(locked).get("lockedUntil").asString());
+        assertProblem(post(LOGIN, credentials(email, PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
+        var lockedUntil = Objects.requireNonNull(reload(email).getLockedUntil());
         assertThat(lockedUntil).isBetween(started.plus(security.lockout()), Instant.now().plus(security.lockout()));
-        assertThat(Long.parseLong(Objects.requireNonNull(locked.getResponse().getHeader(HttpHeaders.RETRY_AFTER))))
-                .isBetween(1L, security.lockout().toSeconds());
-        assertThat(reload(email).getLockedUntil()).isCloseTo(lockedUntil, within(1, ChronoUnit.MILLIS));
         assertThat(reload(email).getFailedLogins()).isZero();
-        assertThat(audits.find(email, started, "AUTHENTICATION_FAILURE")).hasSize(security.maxFailedLogins());
+        assertThat(audits.find(email, started, "AUTHENTICATION_FAILURE"))
+                .hasSize(security.maxFailedLogins() + 1)
+                .filteredOn(event -> "locked".equals(event.getData().get("reason")))
+                .hasSize(1);
         assertThat(audits.find(Long.toString(owner.getId()), started, "ACCOUNT_LOCKED")).singleElement()
                 .satisfies(event -> assertThat(event.getData()).containsKey("until"));
-        assertProblem(post(LOGIN, credentials(email, WRONG_PASSWORD)), HttpStatus.LOCKED, "temporarily-locked");
-        assertThat(reload(email).getLockedUntil()).isCloseTo(lockedUntil, within(1, ChronoUnit.MILLIS));
+        assertProblem(post(LOGIN, credentials(email, WRONG_PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
+        assertThat(reload(email).getLockedUntil()).isEqualTo(lockedUntil);
+    }
+
+    @Test
+    void answersUnknownLockedAndWrongPasswordLoginsIdentically() {
+        var email = uniqueEmail("same-answer");
+        activeUser(email);
+
+        var unknown = body(post(LOGIN, credentials(uniqueEmail("nobody"), PASSWORD)));
+        var wrong = body(post(LOGIN, credentials(email, WRONG_PASSWORD)));
+
+        assertThat(unknown.get("detail")).isEqualTo(wrong.get("detail"));
+        assertThat(unknown.get("type")).isEqualTo(wrong.get("type"));
+        assertThat(unknown.get("status")).isEqualTo(wrong.get("status"));
     }
 
     @Test
@@ -308,7 +320,7 @@ class AuthFlowTests extends AuthTestSupport {
             assertProblem(post(LOGIN, credentials(email, WRONG_PASSWORD)), HttpStatus.UNAUTHORIZED,
                     "invalid-credentials");
         }
-        assertProblem(post(LOGIN, credentials(email, PASSWORD)), HttpStatus.LOCKED, "temporarily-locked");
+        assertProblem(post(LOGIN, credentials(email, PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
 
         assertThat(post(FORGOT, Map.of("email", email))).hasStatus(HttpStatus.ACCEPTED);
         var token = tokenIn(lastMail(email, RESET_SUBJECT));
@@ -348,7 +360,7 @@ class AuthFlowTests extends AuthTestSupport {
     @Test
     void recordsAnAuditTrailWithoutSecrets() {
         var email = uniqueEmail("audit");
-        var started = Instant.now();
+        var started = clock.instant();
         var verification = register(email);
         assertThat(post(VERIFY, Map.of("token", verification))).hasStatusOk();
         assertProblem(post(LOGIN, credentials(email, WRONG_PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
@@ -374,7 +386,7 @@ class AuthFlowTests extends AuthTestSupport {
     @Test
     void auditsSignInAttemptsForUnknownAccountsByTheirEmail() {
         var email = uniqueEmail("unknown-audit");
-        var started = Instant.now();
+        var started = clock.instant();
 
         assertProblem(post(LOGIN, credentials(email, PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
 
@@ -442,18 +454,18 @@ class AuthFlowTests extends AuthTestSupport {
     }
 
     @Test
-    void upgradesLegacyUnprefixedBcryptHashesOnLogin() {
-        var email = uniqueEmail("legacy");
-        var legacyHash = new BCryptPasswordEncoder().encode(PASSWORD);
-        users.save(User.register("Legacy User", email, Objects.requireNonNull(legacyHash), Role.USER,
-                AccountStatus.ACTIVE));
+    void upgradesOutdatedHashesOnLoginWithoutEndingSessions() {
+        var email = uniqueEmail("weak-hash");
+        var weakHash = "{bcrypt}" + new BCryptPasswordEncoder(4).encode(PASSWORD);
+        users.save(User.register("Weak Hash", email, weakHash, Role.USER, AccountStatus.ACTIVE));
 
         assertThat(post(LOGIN, credentials(email, PASSWORD))).hasStatusOk();
 
         var upgraded = reload(email).getPasswordHash();
-        assertThat(upgraded).startsWith("{bcrypt}$2").isNotEqualTo(legacyHash);
+        assertThat(upgraded).startsWith("{bcrypt}$2").isNotEqualTo(weakHash);
         assertThat(passwordEncoder.matches(PASSWORD, upgraded)).isTrue();
         assertThat(passwordEncoder.upgradeEncoding(upgraded)).isFalse();
+        assertThat(reload(email).getSessionVersion()).isZero();
         assertThat(post(LOGIN, credentials(email, PASSWORD))).hasStatusOk();
         assertThat(reload(email).getPasswordHash()).isEqualTo(upgraded);
     }

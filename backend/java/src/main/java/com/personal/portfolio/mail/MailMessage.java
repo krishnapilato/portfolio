@@ -109,9 +109,11 @@ public class MailMessage {
         return Collections.unmodifiableList(attachments);
     }
 
+    // Once delivered, the body is never read again, and it may hold one-time links: keep no copy of it.
     public void markSent(Instant now) {
         status = MailStatus.SENT;
         sentAt = now;
+        body = "";
     }
 
     public void markFailed(String error, Instant now, int maxAttempts, Duration initialBackoff, Duration maxBackoff) {
