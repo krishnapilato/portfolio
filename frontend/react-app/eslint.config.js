@@ -6,7 +6,12 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'dist-ssr']),
+  {
+    files: ['scripts/**/*.mjs'],
+    extends: [js.configs.recommended],
+    languageOptions: { ecmaVersion: 2023, globals: globals.node },
+  },
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -18,15 +23,6 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
-    },
-  },
-  {
-    // Scene files drive three.js imperatively inside the frame loop: the
-    // camera, materials and geometry are mutable scene-graph objects, not
-    // React state, so the compiler's immutability rule does not apply there.
-    files: ['src/scene/**/*.{ts,tsx}'],
-    rules: {
-      'react-hooks/immutability': 'off',
     },
   },
 ])

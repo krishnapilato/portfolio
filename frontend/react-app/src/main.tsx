@@ -1,22 +1,16 @@
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "lenis/dist/lenis.css";
-import "./styles/tokens.css";
-import "./styles/base.css";
-import "./styles/film.css";
-import "./styles/readout.css";
-import App from "./App.tsx";
-import { useTimeline } from "./lib/store";
-import { cameraState } from "./scene/palette";
+import { createRoot, hydrateRoot } from "react-dom/client";
+import App from "./App";
+import "./styles/index.css";
 
-document.documentElement.classList.add("js");
-// Diagnostics hook for the screenshot rig and the browser console.
-const diagnostics = window as unknown as { __timeline: typeof useTimeline; __camera: typeof cameraState };
-diagnostics.__timeline = useTimeline;
-diagnostics.__camera = cameraState;
-
-createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root")!;
+const app = (
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>
 );
+
+// The production HTML already holds the whole page (prerendered at build
+// time), so React adopts it in place; the dev server starts from empty.
+if (root.firstElementChild) hydrateRoot(root, app);
+else createRoot(root).render(app);
