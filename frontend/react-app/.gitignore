@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Private build-check terms (see scripts/check-dist.mjs); never commit
+.private-terms

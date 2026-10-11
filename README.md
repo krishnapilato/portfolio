@@ -7,13 +7,13 @@
 ![Version](https://img.shields.io/badge/Version-0.0.5-blue?style=flat)
 [![CI](https://github.com/krishnapilato/portfolio/actions/workflows/github-actions.yml/badge.svg)](https://github.com/krishnapilato/portfolio/actions)
 
-Monorepo hosting a scroll-driven cinematic React 19 frontend (a procedurally machined attitude indicator, ten beats of story, no models or textures downloaded) and a Spring Boot 4 API. See `frontend/react-app/DESIGN.md` for the concept and decision log.
+Monorepo hosting the portfolio frontend, FAIR COPY (React 19 and GSAP: the portfolio set as a small printed book, where every complicated thing is lifted out of the sentence into a footnote), and a Spring Boot 4 API. See `frontend/react-app/DESIGN.md` for the concept and decision log.
 
 - Live site: https://krishnapilato.github.io/portfolio
 
 ### Layout
 
-- `frontend/react-app` — React 19.3 portfolio film (react-three-fiber, Vite 8)
+- `frontend/react-app` — React 19.3 portfolio (GSAP 3, Vite 8, prerendered)
 - `backend/java` — Spring Boot 4 API (JWT, OpenAPI, MySQL), Docker-compose for dev
 
 For deep details, see the module READMEs:
@@ -59,13 +59,22 @@ Dev URLs:
 
 Prereqs: Node 22+, npm 10+.
 
-Dev server:
+Dev server (opens at http://localhost:5173/portfolio/):
 
 ```cmd
 cd frontend\react-app
-npm install --legacy-peer-deps
-npm run dev -- --host
+npm ci
+npm run dev
 ```
+
+Production build and preview (http://localhost:4173/portfolio/):
+
+```cmd
+npm run build
+npm run preview
+```
+
+No animation? The site follows the system's reduced-motion setting. On Windows: Settings → Accessibility → Visual effects → Animation effects.
 
 ---
 

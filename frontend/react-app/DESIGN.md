@@ -1,85 +1,173 @@
-# ATTITUDE — design notes and decision log
+# FAIR COPY — design notes and decision log
 
-The portfolio is a short film, not a page. One machined gyroscopic attitude
-indicator sits in a bench test fixture in a dark workshop; across ten scroll
-beats the case pitches and rolls like an aircraft, the camera flies around
-it, and the horizon inside never moves. Scrolling up plays the film
-backwards.
+## The idea
 
-Why this object: an attitude indicator's only job is to hold a true
-reference while everything around it moves, which is straight-and-level
-flight, and it is also what the owner does as an engineer: take something
-complicated and make it feel light. Trim, the idea he wrote about, is the
-epilogue: the controls go light, the instrument lights its own dial.
+A fair copy is the clean version an editor makes from a crowded draft. This
+portfolio is set as a small printed book in which every complicated thing
+(a stack, a system, a method) is lifted out of the sentence and into a
+numbered footnote, so the body reads plainly and the detail stays exact
+underneath it. It is Khova's own sentence turned into an object: "taking
+something complicated and making it feel simple."
 
-Every decision below answers "why am I making this decision?".
+What each part means:
 
-## Decisions
+1. **Simplifying moves the complexity; it does not delete it.** A recruiter
+   reads the plain sentences, an engineer reads the notes, and both are
+   right.
+2. **Two countries, two languages, one habit.** The second page is a
+   two-column parallel text that closes into one sentence, which is the
+   habit it describes.
+3. **The career is a fold-out of pages** under one long footnote rule,
+   printed in pencil only as far as today. After today the rule continues
+   in non-repro blue, the printer's colour for marks that never print: open,
+   not written yet.
+4. **Every movement is something settling into the place where it is
+   easiest to read.** Lines settle onto baselines, jargon steps down into
+   notes, notes come into register under their sentence. Nothing flies,
+   bounces or scrambles.
 
-| Decision | Why |
-|---|---|
-| One theme, dark, no toggle | The hero is brushed metal, enamel and glass sculpted by a key and a rim; highlights, bloom, depth of field and a paint-white horizon exist only against darkness. |
-| English only | A single language keeps every text block one DOM node, which the opacity timeline and the hash logic depend on. |
-| No navbar, no footer, no menu | Orientation is a diegetic readout (name, tick tape with a sliding pointer, live PITCH/BANK); a person who reads instruments is given one to read. |
-| Everything procedural: no models, textures, HDRIs or images | The object exists nowhere else, nothing is fetched, and the bundle carries geometry recipes instead of assets. |
-| Real gimbal chain | Fixed stand, pitching cradle, rolling case; the roll gimbal counter-rotates roll, the pitch gimbal counter-rotates pitch, so the sphere is level in both axes and the rings visibly do their job in profile. |
-| No yaw | A real attitude indicator cannot show heading; yawing the object shows nothing the instrument can show. |
-| Pitch clamped ±35°, roll ±45° | No Euler ambiguity is reachable and the horizon is always in frame as an anchor. |
-| Scroll is the timeline; every visual is a pure function of progress | Reversible by construction: scrolling up is the same film backwards, with no one-way triggers. |
-| Camera: Catmull-Rom path through poses and via points, eased holds | Every move is an arc with mass; holds park the camera so the words can be read; the aviation orbit is simply a longer arc. |
-| Pilot's-view beats ride with the case | The bezel stays fixed in frame while the horizon moves: the visitor learns how a pilot reads the instrument. |
-| Composition by view offset, not by moving the look target | The designed framing survives every aspect ratio: object in the right 58% on landscape, in the top 55% on portrait, text never over the object's centre. |
-| Lens defines horizontal framing; portrait widens the field to 62° then dollies back | The same width of the scene is visible on every screen; the object never crops and never shrinks to a dot. |
-| Cold open lit by a raking light | The rim sits behind the object and cannot reach its front; a small hard light skimming the band from the front-left gives the paint edge a clean line from frame one. |
-| A dim base level inside the environment map | Between three panels of light the environment is black, and metalness-1 flats can only reflect black; a faint workshop level makes the aluminium read as machined silver in every shot. |
-| Key = spot (shadow) + area light (specular) | A rect area light cannot cast shadows; the pair gives one shadow direction and the long graded highlight that makes brushed metal read as machined. |
-| Key warms to 2800 K in the aviation beat only | The one aviation image (low sun over a horizon) that needs no sky; being the only colour change, it registers. |
-| Post lights come up in the epilogue | A diegetic source inside the object: the instrument lights its own dial the way panel instruments do at night; scrolling up puts them out, which reads as dawn. |
-| AgX tone mapping, bloom threshold above every diffuse value | Hot speculars stay silver and the amber practicals stay amber; only speculars and the post lights bloom, never paint or text. |
-| Text in a fixed layer with spacer tracks | A sticky stage is pushed away during the last viewport of every section, which is exactly when the text must rest; a fixed layer never moves and only changes opacity. |
-| One readable block at a time; in over the last 40% of the arrival, out over the first 30% of the departure | Eye-scanning calm: no two blocks are ever visible at once, and words never move with the camera. |
-| Scrims on the pilot's-view beats | Those beats fill the frame with the dial by design; the words get a layer of air instead of the object being pushed away. |
-| Readout name gives way to a beat counter on phones | An ellipsised name is noise; "04/10" is an instrument reading. |
-| Self-hosted Instrument Sans and IBM Plex Mono | System stacks render differently on every OS; a designed hierarchy is part of the calm. Preloaded, 60 KB in total. |
-| Visitor trim drag, mouse only, ±8°, springs back | The one interaction that lets a visitor test the object's claim with a hand; on touch the scroll already demonstrates it and a drag would fight the browser. |
-| Every generated map is built in a Web Worker before the scene mounts | Brushing the metal is seconds of per-pixel work; on the main thread it froze the page exactly when the visitor first scrolled. The scene suspends on the maps, and where a worker cannot draw the same code runs on the main thread. |
-| Programs compile asynchronously with the loop held | A frame that stalls on a shader link is a dropped frame at the worst moment; the curtain lifts only after every program exists and one frame has drawn. |
-| A frame-time governor steps the pixel ratio down, then the effects level | A device that cannot hold its frame rate gets a lighter film rather than a stuttering one, and never a heavier one again: a look that settles beats one that flickers. Textures and geometry stay at the tier, so a demotion never rebuilds them. |
-| The first beat's words are in the HTML, the stylesheet is inlined | The page paints its opening line before any script runs, and React takes over the same markup in place. |
-| The entry bundle carries no three.js: React, the store and the scroll driver only | The words and the readout need about 90 KB; the renderer's 450 KB arrive with the lazy scene chunk, never on the first paint's critical path. The attitude tracks are pure math for that reason. |
-| The readiness probe runs at frame priority 0 | A positive priority tells react-three-fiber that the subscriber renders the scene itself; on the tier without a post stack that would draw nothing. |
-| Render on demand | An idle page draws nothing; "trimmed" should also be true of the GPU. |
-| Only a discrete GPU or an Apple M chip gets the high tier | Every integrated laptop GPU (Intel Xe, Ryzen Radeon) runs the mid level well and the high level badly, and cores or memory say nothing about a GPU. Lights never toggle visibility either: a changed light count recompiles every shader mid-scroll. |
-| Three device tiers with adaptive pixel ratio | A mid phone must hold its frame rate in the orbit; the high tier gets depth of field, transmission glass, a reflective bench and shadows, the low tier gets none of the post stack and CSS grain instead. |
-| Reduced motion: cuts, not moves | Ten composed stills are still a film, and cuts carry no vestibular load. Lenis is not created; the camera sits on the current beat's pose and changes only at the beat boundary, while the words are away. |
-| Lenis runs its frame only while something eases | An idle page must not wake the main thread every vsync for the whole visit; the loop wakes on input and on a programmatic move and stops a few frames after the scroll settles. |
-| The beat index comes from the scroll, not the renderer | The readout, the keys and the URL work before the scene has loaded and without WebGL at all. |
-| No chromatic aberration | A macro lens on a precision instrument has none, and it is the stock WebGL-demo tell. Grain and vignette stay. |
-| Dust is sparse and never additive | Six hundred motes with normal blending read as air with a light in it; thousands with additive blending read as particles. |
-| J/K, arrows, page keys, Home/End step beats; Space and horizontal arrows stay native | Every key does what a video scrubber does; the browser's own contracts are not overridden. |
-| Deep links to each beat's hold point, `replaceState` only; the hash mirrors the beat | A recruiter can link straight to projects, a reload lands where the visitor was, and the back button never becomes a ten-step trap. |
-| The readout tape is one slider, not ten buttons | Ten 14 px ticks are no target for a thumb and a focus ring around each would ring three; one 44 px control scrubs by hand, reads the tick under a hovering mouse, and steps with the arrow keys. |
-| Hidden beats stay in the accessibility tree; only the readable one takes focus and clicks | A screen reader gets the whole article in film order; a keyboard never lands on words that cannot be seen. |
-| Five contact channels, one list, Copy on email and telephone | Copying is what people do with an address; a mailto/tel link stays underneath so the action never silently fails. |
-| Origin stated once, in his own headline's words, in the identity beat | "Born in Bangalore, raised in Italy" is how he already introduces himself; anything more turns a portfolio into a biography. |
-| The 3D chunk behind a lazy boundary | The words paint with about 80 KB of JavaScript; the renderer arrives while the visitor reads the opening line, behind an honest OFF flag. |
-| React Compiler on, `useEffectEvent` for listeners | Automatic memoisation keeps scroll-driven state from cascading; effects register once. |
+## How it looks
 
-## Structure
+- **Paper and ink.** Warm paper `#F4F1EA`, ink `#17171C`, one light theme.
+  A fair copy is ink on paper, and paper needs no glow, blur or shadow to
+  look finished.
+- **One accent, the copy-editor's blue pencil `#2A4A9A`** (7.3:1 on the
+  paper): footnote numbers, rules, the one underlined phrase per page,
+  focus rings, links on hover. Its printer's twin, non-repro blue
+  `#9DB8E2`, is used only for lines that mean "not printed yet" and never
+  carries text.
+- **Two voices.** Newsreader (a reading serif with optical sizes) for the
+  plain voice; IBM Plex Mono for the notes, labels and folios, the voice of
+  the complicated original. Both are subset and self-hosted, with fallbacks
+  sized to their metrics so the font swap moves nothing.
+- **Book parts that work.** Folios on every page; Contents on the title
+  page and an Index near the end whose page numbers are real links;
+  numbered notes under their sentences; crop marks around each project
+  plate (ready for press, which means shipped); a colophon at the end. No
+  navbar, no footer: orientation is book design.
 
-- `src/content/beats.ts` — the words. Ten beats, five contacts, one origin clause.
-- `src/scene/keyframes.ts` — the shot list: pose, look target, lens, hold, via points, frame, drift.
-- `src/scene/attitude.ts` — the attitude and lighting tracks as pure functions of beat time; the gimbal kinematics; the visitor trim spring.
-- `src/scene/CameraRig.tsx` — scroll to camera: camera time with eased holds, arc-length pose mapping, case-frame blending, view-offset composition, portrait re-framing, render-on-demand.
-- `src/scene/Instrument.tsx` — the assembly: stand, cradle, case, gimbals, sphere, jewels, practicals, trim drag.
-- `src/scene/instrument/*` — the parts, each procedural.
-- `src/scene/Stage.tsx`, `Post.tsx`, `Experience.tsx` — lights, environment, floor, dust; the post stack per tier; the canvas shell.
-- `src/textures/*` — brushed metal, engraving, digit atlas, crackle, bench: canvas recipes, all seeded, built as one bundle in `maps.worker.ts` and uploaded by `library.ts`; `instrument.ts` and `horizon.ts` turn the maps into materials.
-- `src/ui/*` — the fixed text layer with spacer tracks, the readout, the loading curtain, the links.
-- `src/lib/*` — store, device tiers, beat phase math, scroll driver, interaction (keys, deep links, hold points).
+## How it moves
 
-## Testing
+GSAP does all of it (ScrollTrigger, SplitText, DrawSVG, CustomEase). Native
+scroll only: no smooth-scroll library, no snapping, no scroll capture.
 
-- `?tier=high|mid|low` forces a tier for testing on other hardware.
-- `window.__timeline` exposes the store, `window.__camera` the camera pose and film time, for diagnostics.
-- `npx tsc -b`, `npx eslint src`, `npm run build`.
+- **Set, don't throw.** Text is set line by line: each line rises out of
+  its own mask onto its baseline with one decelerating ease ("settle").
+  Lines are split for the reveal only; screen readers read the original
+  sentences. Reveals play when text reaches the reading line and un-set
+  when you scroll back above it.
+- **The edit.** A crowded draft becomes its fair copy under the reader's
+  hand, scrubbed by the scroll. It happens in two beats so it can be read
+  while it happens. First the editor marks the jargon (it turns pencil blue
+  and faint) and lifts it out word by word into its numbered note, leaving
+  gaps in the sentence. Then the plain words close the gaps and the page
+  closes up around the shorter sentence. Scrolling back up puts the
+  complexity back. Words are paired by index; `validate.ts` fails the build
+  if the counts drift.
+- **The pencil.** One phrase per page is underlined, drawn left to right.
+  Straight rules are HTML elements scaled, not SVG strokes.
+- **Registration.** Every parallax layer (ghost years, plate numerals,
+  notes under a sentence) is offset in proportion to its distance from the
+  middle of the screen and lines up exactly with its own text where you
+  read it, which is "in register" in print terms.
+- **Sideways is time.** On a wide screen the career pages travel sideways
+  while you scroll down. The footnote rule under them is printed only up
+  to the middle of the screen and never past today; faint years ride on a
+  slower layer.
+- **Cuts.** Contents and Index links jump instantly, finish any scrubbing,
+  move focus to the target heading and mark the arrival with the pencil.
+  Nothing races through scrubbed scenes.
+
+## Page by page
+
+| Folio | Page | What moves, and why |
+|---|---|---|
+| 1 | Title page | The name is printed by the HTML and never animated (it is the first paint). The three headline lines are set, the present tense ("Building in Java.") gets the pencil, the Contents follow. On the way out the past leaves first and the present stays longest. |
+| 2 | One habit | A sticky stage. Two columns travelling at two speeds come into register; the divider retracts; the two halves become one sentence; the line that divided them returns as the pencil under "feel simple". Scrubbed. |
+| 3 | In plain words | The first and largest edit, taught slowly, with a margin label that changes from Draft to Fair copy. Every tool he uses goes into one note. |
+| 4–12 | Experience | Wide screens: the sideways fold-out, plain sentences above the long rule and the detail below it; five small edits; the Dublin course is a half-width tipped-in leaf; the last page is after today, on non-repro blue. Phones: the same pages in a column with a pencil spine printed to today. |
+| 13–15 | Work | Three plates, each drawing completed by the scroll as its words settle: BiMap's tree of regions, provinces and municipalities; PixelPaper straightening, enhancing and collating pages (3·1·2 becomes 1·2·3), each a feature of the app; this site as a book spread. |
+| 16 | Away from the desk | Aviation, as plain content in one place, built from the same parts as "In plain words", with one small edit. |
+| 17 | Index | Still. Four columns of terms with the pages they appear on, all links. |
+| 18 | Correspondence | Five ruled rows with Copy buttons for email and telephone; the colophon; the last rule is drawn to 40% in non-repro blue. |
+
+## Modes
+
+The same media conditions decide every section, so the page is always in
+one mode (`src/motion/media.ts`):
+
+- **wide** (at least 760 × 540, motion allowed): sticky stages, the
+  sideways passage, registration parallax.
+- **narrow** (phones upright): the same scenes in a column, scrubbed edits,
+  a spine instead of the long rule.
+- **short** (under 540 px tall, phones on their side): no sticky stages;
+  One habit plays as a toggle when it reaches the middle.
+- **still** (reduced motion): every final state, nothing travels, nothing
+  scrubs. What is further down the page fades in once as it arrives
+  (opacity only); anything already on screen is never hidden.
+- **No JavaScript**: the prerendered page is the complete fair copy.
+
+An inline head script marks `<html class="motion">` before the first paint,
+so text awaiting its reveal is hidden from the start and nothing flashes. A
+3-second safety timer shows the finished copy if the script never arrives;
+a script that was only slow still gets the motion as long as the reader has
+not started scrolling.
+
+## Performance
+
+- Prerendered HTML with the stylesheet inlined; two font preloads; no
+  images, no third-party requests.
+- Transforms and opacity only while scrolling. Layout is read when
+  ScrollTrigger refreshes, never while scrubbing; `will-change` is set on
+  the passage track only while it is active.
+- CSS `position: sticky` stages instead of pinning, so there is no pin
+  spacer and no layout shift; heights are in CSS from the first paint.
+- React and GSAP ship in their own chunks so the app code stays small.
+
+## Accessibility
+
+- One `h1` (the name), one `h2` per page, `h3` per career page and plate;
+  every page is a labelled section inside one `main`.
+- The drafts are `aria-hidden`; the fair copy is the text. Footnote
+  references are hidden from screen readers because each note sits directly
+  under its sentence.
+- Skip links (to Correspondence, and past the Experience passage), visible
+  focus everywhere, and anything that takes focus inside the passage is
+  brought to the middle first.
+- Copy buttons announce through a polite live region and select the text
+  if the clipboard is refused.
+- Text contrast on the paper: ink 15.8:1, notes 8.7:1, labels and folios 5.7:1, pencil 7.3:1.
+- Reduced motion, forced colours and print (the fair copy as a clean
+  document) are all handled.
+
+## Decision log
+
+| # | Decision | Why |
+|---|---|---|
+| 1 | FAIR COPY over a flight-themed concept | The flight concept was aviation-literal at every level; aviation belongs in the content, never the design language. |
+| 2 | One light theme, no toggle | Ink on paper is the concept and the most comfortable long read. |
+| 3 | Accent is the copy-editor's blue pencil, never red | Blue pencil reads as care, not error; non-repro blue is its twin for "not printed yet". |
+| 4 | Newsreader for prose, IBM Plex Mono for notes | The plain voice is a reading serif; the complicated original is code. |
+| 5 | Instanced font subsets with metric-matched fallbacks | Keeps the optical sizes at a fraction of the size, and the swap moves nothing. |
+| 6 | The name is never animated | It is the first paint, and a printed title page already carries the name. |
+| 7 | SplitText lines only, `aria: "none"` | Words are never broken, and screen readers read whole sentences. |
+| 8 | Edits are scrubbed and reverse on the way back up | The owner asked for the edit to follow the scroll both ways: scrolling back up is "undo". (The first spec played edits once.) |
+| 9 | The edit has two beats: lift out, then close up | When both happened at once the middle of the edit was a crowd of words; in two beats the gaps show what was removed. |
+| 10 | Jargon is marked pencil blue and faint before it moves | The editor marks before cutting, and while it travels the plain sentence is what you read. |
+| 11 | The fair copy keeps its own height inside the edit cell | The page can then measure the space the edit frees and close up around it, instead of leaving a hole. |
+| 12 | Experience is sideways on wide screens, a column on phones | A fold-out reads sideways on a desk; a thumb reads down, and a landscape phone cannot hold a page in a sticky frame. |
+| 13 | The long rule is the footnote rule, printed only to today | One line separating plain words from detail across the whole career is the concept in a single stroke. |
+| 14 | Years run in a low band, small enough that neighbours never touch | They are a running date, not a headline, and must never sit under the text being read. |
+| 15 | Sticky stages, not ScrollTrigger pins | No pin spacers, no refresh-order bugs, no layout shift, robust under mobile URL bars. |
+| 16 | No snap, no smooth-scroll library | Snap moves the page without the reader's hand; scrub smoothing gives the softness. |
+| 17 | One registration law for every parallax layer | Depth is offset while you travel and aligned exactly where you read. |
+| 18 | In-page jumps are instant cuts with focus | No racing through scrubbed scenes; keyboard users land where they asked. |
+| 19 | Straight rules are scaled HTML; DrawSVG only for plate drawings | Composited transforms are cheap on integrated GPUs. |
+| 20 | No navbar or footer; Contents, Index and colophon instead | Orientation is book design, not a menu bar. |
+| 21 | Aviation is one plain chapter, "Away from the desk" | Content, not design language; the build fails if it leaks into other pages or headings. |
+| 22 | Origin appears only as "Born in Bangalore, raised in Italy." and in the title headline | His own words, nothing more. |
+| 23 | Reduced motion gets calm fades, not a frozen page | Movement stops completely; arrival is still marked, by opacity alone. |
+| 24 | A slow script does not cost the visit its motion | The safety timer guards against a script that never arrives, not one that is merely late. |
+| 25 | The build reads its own output (`check-dist.mjs`) | Wrong contacts, stray aviation or a private subject fail the build instead of shipping. The private list stays out of the repository. |
+| 26 | External links open in the same tab | A book does not spawn tabs, and the back button restores the scroll position. |
+| 27 | A print stylesheet prints the fair copy as a clean document | The concept is a printed book; printing it should work. |
