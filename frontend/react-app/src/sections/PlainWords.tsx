@@ -31,21 +31,17 @@ export default function PlainWords() {
     const h2 = q(".chapter")[0];
     setLines(h2, "display", { trigger: at(h2, "top 82%") });
     const label = q(".prose__label")[0];
-    gsap.fromTo(
-      label.firstElementChild,
-      { yPercent: 105, visibility: "visible" },
-      { yPercent: 0, duration: 0.6, ease: "settle", delay: 0.2, scrollTrigger: { ...at(h2, "top 82%"), toggleActions: "play none none reverse" } },
-    );
-    gsap.set(label, { visibility: "visible" });
+    // The margin label fades in as a token; its words belong to the edit's swap.
+    setToken(label, { trigger: at(h2, "top 82%"), delay: 0.2 });
     setDraft(q(".edit__draft")[0], { trigger: at(edit) });
     buildEdit(edit, {
       scope: root,
       label,
       notesRule: q(".prose__rule")[0],
       closeUp: { targets: q(".prose__body, .prose__foot, .prose__folio"), direction: -1 },
-      scrollTrigger: { trigger: edit, start: mode === "wide" ? "top 58%" : "top 62%", end: mode === "wide" ? "top 18%" : "top 22%" },
+      scrollTrigger: { trigger: edit, start: mode === "wide" ? "top 66%" : "top 64%", end: mode === "wide" ? "top 12%" : "top 18%" },
     });
-    drawMark(edit.querySelector(".edit__fair .mark"), { trigger: { trigger: edit, start: mode === "wide" ? "top 18%" : "top 22%" }, delay: 0.5 });
+    drawMark(edit.querySelector(".edit__fair .mark"), { trigger: { trigger: edit, start: mode === "wide" ? "top 12%" : "top 18%" }, delay: 0.5 });
     setLines(q(".prose__body"), "body", { trigger: at(q(".prose__body")[0]) });
     const side = q(".sidenote")[0];
     setLines(side, "note", { trigger: at(side), delay: 0.2 });

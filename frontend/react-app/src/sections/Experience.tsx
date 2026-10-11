@@ -27,25 +27,26 @@ export default function Experience() {
     const leaves = q(".leaf") as HTMLElement[];
     const edits = q(".edit") as HTMLElement[];
     const scopeOf = (el: Element) => el.closest(".leaf") as HTMLElement;
-    if (mode === "still") {
-      edits.forEach((edit) => settleEdit(edit, scopeOf(edit)));
-      return;
-    }
-
     if (mode === "wide") return buildPassage(root, q, leaves, safe);
 
-    // Narrow and short: a column with a spine.
+    // Every other mode is a column with a spine, printed from the first
+    // page to today and non-repro blue after.
     const track = q(".xp__track")[0] as HTMLElement;
     const atm = q("#atm")[0] as HTMLElement;
     const measure = () => {
-      const first = leaves[0];
-      const top = first.offsetTop;
+      const top = leaves[0].offsetTop;
       const today = atm.offsetTop + atm.offsetHeight;
       gsap.set(q(".xp__spine-printed"), { top, height: today - top });
       gsap.set(q(".xp__spine-wash"), { top: today, height: Math.max(0, track.offsetHeight - today) });
     };
     ScrollTrigger.addEventListener("refreshInit", measure);
     measure();
+    const forget = () => ScrollTrigger.removeEventListener("refreshInit", measure);
+
+    if (mode === "still") {
+      edits.forEach((edit) => settleEdit(edit, scopeOf(edit)));
+      return forget;
+    }
     gsap.fromTo(
       q(".xp__spine-printed"),
       { scaleY: 0 },
@@ -66,7 +67,8 @@ export default function Experience() {
       });
     });
     if (mode === "narrow") {
-      q(".xp__year").forEach((year) => {
+      // Each year drifts across its page a little slower than the page.
+      q(".leaf__year").forEach((year) => {
         registration(year, -0.15);
         gsap.fromTo(year, { x: "8vw" }, {
           x: "-8vw",
@@ -75,7 +77,7 @@ export default function Experience() {
         });
       });
     }
-    return () => ScrollTrigger.removeEventListener("refreshInit", measure);
+    return forget;
   });
 
   return (
@@ -248,7 +250,10 @@ function buildPassage(root: HTMLElement, q: (s: string) => Element[], leaves: HT
         scrollTrigger: { trigger: leaf, containerAnimation: passage, start: "center 82%", end: "center 52%" },
       });
     }
-    // Notes come into register under their sentence as the page reaches the middle.
+    // Notes come into register under their sentence as the page reaches
+    // the middle. The opening page is already in the middle when the
+    // passage starts, so its aside stays put.
+    if (leaf.classList.contains("leaf--opening")) continue;
     gsap.fromTo(leaf.querySelector(".leaf__below"), { x: 56 }, {
       x: -56,
       ease: "none",

@@ -41,10 +41,11 @@ export type EditOptions = {
 
 /**
  * The edit: a crowded draft becomes its fair copy under the reader's hand.
- * The plain words close the gaps and settle where the fair copy sets them;
- * each jargon group is picked up (it dims), carried down into its numbered
- * note, scaled to the note face, and set there. Complexity is moved, not
- * deleted, and scrolling back up brings it back into the sentence.
+ * Each jargon group is picked up (it dims), carried down into its numbered
+ * note, scaled to the note face, and set there; then the plain words close
+ * the gaps it left and settle where the fair copy sets them. Complexity is
+ * moved, not deleted, and scrolling back up brings it back into the
+ * sentence.
  *
  * Every distance is a function measured from layout at refresh time, so
  * resizes, font swaps and the sideways passage never break the pairing.
@@ -74,7 +75,8 @@ export function buildEdit(root: HTMLElement, options: EditOptions) {
   const closeUp = options.closeUp?.targets.filter(Boolean) ?? [];
   const direction = options.closeUp?.direction ?? -1;
   const gap = () => Math.max(0, draft.offsetHeight - fair.offsetHeight);
-  const movesWith = (el: Element) => (closeUp.some((t) => t.contains(el)) ? direction * gap() : 0);
+  const ridesCloseUp = (el: Element) => closeUp.some((t) => t.contains(el));
+  const movesWith = (el: Element) => (ridesCloseUp(el) ? direction * gap() : 0);
 
   const paired =
     plainOld.length === plainNew.length && jargonOld.every((g, i) => g.length === jargonNew[i].length && g.length > 0);
@@ -110,36 +112,25 @@ export function buildEdit(root: HTMLElement, options: EditOptions) {
     return tl;
   }
 
-  // The editor picks the jargon up.
-  tl.to(jargonOld.flat(), { color: "#44434b", duration: 0.12, ease: "power1.out" }, 0);
-  if (options.label) {
-    const [from, to] = Array.from(options.label.children);
-    tl.fromTo(from, { yPercent: 0 }, { yPercent: -105, duration: 0.12, ease: "settle" }, 0.44).fromTo(
-      to,
-      { yPercent: 105, visibility: "visible" },
-      { yPercent: 0, duration: 0.12, ease: "settle" },
-      0.44,
-    );
-  }
-  // Note numbers open their places before the words arrive.
-  tl.to(noteNumbers, { opacity: 1, duration: 0.12, ease: "power1.out" }, 0.5);
+  // Two beats, so the edit can be read while it happens. First the
+  // complexity is lifted out: the editor picks the jargon up (it takes the
+  // pencil's colour and goes faint) and carries it down into its notes,
+  // leaving gaps in the sentence. Then the sentence closes up.
+  const LIFT = 0.06;
+  const CLOSE = 0.48;
+  const BEAT = 0.36;
+
+  tl.to(jargonOld.flat(), { color: "#2a4a9a", opacity: 0.42, duration: 0.14, ease: "power1.out" }, 0);
+  // Note numbers open their places as the words arrive.
+  tl.to(noteNumbers, { opacity: 1, duration: 0.12, ease: "power1.out" }, 0.3);
   if (options.notesRule) {
-    tl.fromTo(options.notesRule, { scaleX: 0, visibility: "visible" }, { scaleX: 1, transformOrigin: "0% 50%", duration: 0.25, ease: "pencil" }, 0.5);
+    tl.fromTo(options.notesRule, { scaleX: 0, visibility: "visible" }, { scaleX: 1, transformOrigin: "0% 50%", duration: 0.25, ease: "pencil" }, 0.26);
   }
 
-  // Plain words close the gap.
-  tl.to(
-    plainOld,
-    {
-      x: (i) => delta(plainOld[i], plainNew[i]).x,
-      y: (i) => delta(plainOld[i], plainNew[i]).y,
-      duration: 0.72,
-      ease: "power2.inOut",
-    },
-    0.1,
-  );
-
-  // Jargon travels into its note and takes the note face.
+  // Beat one: the jargon streams out in reading order, each word into its
+  // note, taking the note face as it lands.
+  const count = jargonOld.flat().length;
+  const TRAVEL = 0.24;
   let k = 0;
   jargonOld.forEach((group, gi) => {
     group.forEach((word, wi) => {
@@ -147,23 +138,37 @@ export function buildEdit(root: HTMLElement, options: EditOptions) {
       // The note face is smaller: scale by the font-size ratio, and centre
       // the scaled box on the note word's box so the two lines of text meet.
       const scale = () => fontSize(target) / Math.max(1, fontSize(word));
-      tl.to(
-        word,
-        {
-          x: () => delta(word, target).x,
-          y: () => delta(word, target).y + (target.offsetHeight - word.offsetHeight * scale()) / 2 + movesWith(target),
-          scale,
-          transformOrigin: "0 0",
-          duration: 0.62,
-          ease: "power2.inOut",
-        },
-        0.14 + Math.min(0.12, 0.004 * k++),
-      );
+      const landY = () => delta(word, target).y + (target.offsetHeight - word.offsetHeight * scale()) / 2;
+      const at = LIFT + (count > 1 ? ((CLOSE - LIFT - TRAVEL) * k++) / (count - 1) : 0);
+      tl.to(word, { x: () => delta(word, target).x, y: landY, scale, transformOrigin: "0 0", duration: TRAVEL, ease: "power2.inOut" }, at);
+      // If its note closes up with the page, it rides along in beat two.
+      if (ridesCloseUp(target)) tl.to(word, { y: () => landY() + movesWith(target), duration: BEAT, ease: "power2.inOut" }, CLOSE);
     });
   });
 
-  // Close up the space the jargon leaves behind.
-  if (closeUp.length) tl.to(closeUp, { y: () => direction * gap(), duration: 0.62, ease: "power2.inOut" }, 0.14);
+  if (options.label) {
+    const [from, to] = Array.from(options.label.children);
+    tl.fromTo(from, { yPercent: 0 }, { yPercent: -105, duration: 0.12, ease: "settle" }, CLOSE).fromTo(
+      to,
+      { yPercent: 105, visibility: "visible" },
+      { yPercent: 0, duration: 0.12, ease: "settle" },
+      CLOSE,
+    );
+  }
+
+  // Beat two: the plain words close the gaps together, line by line as a
+  // block of type would, and the page closes up around the shorter sentence.
+  tl.to(
+    plainOld,
+    {
+      x: (i) => delta(plainOld[i], plainNew[i]).x,
+      y: (i) => delta(plainOld[i], plainNew[i]).y,
+      duration: BEAT,
+      ease: "power2.inOut",
+    },
+    CLOSE,
+  );
+  if (closeUp.length) tl.to(closeUp, { y: () => direction * gap(), duration: BEAT, ease: "power2.inOut" }, CLOSE);
 
   // The fair copy takes over where the draft has landed.
   tl.to([...plainOld, ...jargonOld.flat()], { opacity: 0, duration: 0.1 }, 0.86).to(allNew, { opacity: 1, duration: 0.1 }, 0.86);

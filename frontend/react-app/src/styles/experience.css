@@ -18,7 +18,9 @@
   display: none;
 }
 
+/* The years' own layer is for the sideways passage only. */
 .xp__years {
+  display: none;
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -26,8 +28,15 @@
 
 .xp__year {
   position: absolute;
-  left: var(--margin);
-  top: 0;
+}
+
+/* In a column, each page carries its year, faint, behind its heading. */
+.leaf__year {
+  position: absolute;
+  z-index: -1;
+  top: var(--s5);
+  right: 0;
+  font-size: min(30vw, 9rem);
 }
 
 .xp__track {
@@ -43,6 +52,7 @@
 
 .leaf {
   position: relative;
+  isolation: isolate;
   display: grid;
   gap: var(--s4);
   padding-block: var(--s8);
@@ -152,7 +162,7 @@
 }
 
 @media (max-height: 539.98px) {
-  .xp__years {
+  .leaf__year {
     display: none;
   }
   .leaf {
@@ -193,9 +203,22 @@
     left: var(--margin);
   }
 
+  /* Years sit low on the page, under the notes, small enough that two
+     neighbours never touch: a running date, not a headline. */
+  html.motion .xp__years {
+    display: block;
+  }
+
+  html.motion .leaf__year {
+    display: none;
+  }
+
   html.motion .xp__year {
     left: 0;
-    top: 12svh;
+    right: auto;
+    top: auto;
+    bottom: max(4svh, 16px);
+    font-size: min(9vw, 17svh);
   }
 
   html.motion .xp__track {

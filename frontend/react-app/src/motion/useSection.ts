@@ -1,6 +1,7 @@
 import type { RefObject } from "react";
 import { fontsReady } from "./fonts";
 import { gsap, setupGsap, useGSAP } from "./gsap";
+import { calmReveal } from "./calm";
 import { MEDIA, resolveMode, type Mode } from "./media";
 
 /** Wraps a function so GSAP objects it creates later still belong to the section. */
@@ -15,7 +16,8 @@ export const sectionsBuilt = () => Promise.all(settled).then(() => undefined);
 
 /**
  * The only way a section animates. It waits for the fonts, resolves the
- * mode (wide, narrow, short, still) and builds inside a GSAP context that
+ * mode (wide, narrow, short, still; still with reduced motion also gets
+ * the calm fades) and builds inside a GSAP context that
  * matchMedia reverts and rebuilds when the mode changes, and that React
  * reverts on unmount. Everything a build creates, directly or through
  * `safe`, is cleaned up with it.
@@ -36,6 +38,7 @@ export function useSection(scope: RefObject<HTMLElement | null>, build: Build) {
           const run = safe(() => {
             if (!alive || !scope.current) return;
             cleanup = build({ root: scope.current, mode, fine: conditions.fine, safe });
+            if (mode === "still" && conditions.reduce) calmReveal(scope.current);
           });
           settled.push(fontsReady().then(() => run()));
           return () => {

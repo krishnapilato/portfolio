@@ -46,10 +46,13 @@
   justify-self: end;
 }
 
-/* The edit cell: the draft over its fair copy. */
+/* The edit cell: the draft over its fair copy. Each keeps its own height
+   (the fair copy is not stretched to the draft), so the close-up can
+   measure the space the edit frees. */
 .edit {
   position: relative;
   display: grid;
+  align-items: start;
 }
 
 .edit > * {

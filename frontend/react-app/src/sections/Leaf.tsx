@@ -6,12 +6,19 @@ import { Prose } from "../ui/text";
 
 /**
  * One page of the fold-out: the plain sentence above the long footnote
- * rule, the detail below it, the folio at the foot.
+ * rule, the detail below it, the folio at the foot. In the column layouts
+ * the page carries its own faint year; in the sideways passage the years
+ * run on their own slower layer instead.
  */
 export default function Leaf({ leaf }: { leaf: LeafCopy }) {
   const notes = leaf.edit?.notes ?? leaf.notes ?? [];
   return (
     <li className={`leaf${leaf.tipped ? " leaf--tipped" : ""}`} id={leaf.id}>
+      {leaf.year ? (
+        <span className="ghost leaf__year" aria-hidden="true">
+          {leaf.year}
+        </span>
+      ) : null}
       <div className="leaf__above">
         <p className="label leaf__label" data-reveal="">
           {leaf.label}

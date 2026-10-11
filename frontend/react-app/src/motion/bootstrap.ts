@@ -5,15 +5,14 @@ import { MEDIA, motionWindow } from "./media";
 import { sectionsBuilt } from "./useSection";
 
 /**
- * Starts the book once every section has built: cancels the no-JS safety
- * timer, follows the reduced-motion preference live, refreshes every
- * trigger once the fonts are in, and honours a #page hash.
+ * Starts the book once every section has built: follows the reduced-motion
+ * preference live, refreshes every trigger once the fonts are in, and
+ * honours a #page hash.
  */
 export function useBootstrap() {
   useEffect(() => {
     setupGsap();
     const w = motionWindow();
-    if (w.__motionTimer) window.clearTimeout(w.__motionTimer);
     const html = document.documentElement;
 
     const reduce = window.matchMedia(MEDIA.reduce);
