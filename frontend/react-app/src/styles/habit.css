@@ -1,0 +1,86 @@
+/* ---------- Folio 2: one habit ---------- */
+
+.habit {
+  padding-block: var(--pad-section);
+}
+
+.habit__stage {
+  position: relative;
+}
+
+.habit__inner {
+  position: relative;
+  justify-items: center;
+}
+
+.habit__draft {
+  display: none;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  column-gap: var(--s6);
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.habit__col--a {
+  text-align: right;
+}
+
+.habit__line,
+.habit__sentence {
+  font-size: var(--fs-headline);
+  font-weight: 300;
+  line-height: 1.06;
+  letter-spacing: -0.012em;
+}
+
+.dw {
+  display: inline-block;
+}
+
+.habit__dnote {
+  margin-top: var(--s3);
+}
+
+.habit__divider {
+  display: block;
+  align-self: stretch;
+  width: var(--rw);
+  min-height: 22svh;
+  background: var(--pencil);
+}
+
+.habit__fair {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.habit__sentence {
+  max-width: 22em;
+}
+
+.habit__notes {
+  margin-top: var(--s6);
+}
+
+.habit__folio {
+  position: absolute;
+  right: 0;
+  bottom: calc(-1 * var(--s8));
+  margin-right: var(--margin);
+}
+
+@media (max-width: 767.98px) {
+  .habit__draft {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--s5);
+  }
+  .habit__col--a {
+    text-align: left;
+  }
+  .habit__divider {
+    width: 100%;
+    min-height: 0;
+    height: var(--rw);
+  }
+}

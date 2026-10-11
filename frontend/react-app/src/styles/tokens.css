@@ -1,0 +1,92 @@
+/* ============================================================
+   FAIR COPY — tokens
+   One light theme: a fair copy is ink on paper, and paper needs no glow,
+   blur or shadow to look finished.
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  /* Ground and ink (WCAG ratios against --paper) */
+  --paper: #f4f1ea;
+  --leaf: #ebe6db;
+  --ink: #17171c; /* 15.8:1 */
+  --ink-2: #44434b; /* 8.7:1, notes and secondary text */
+  --quiet: #625f58; /* 5.7:1, labels, dates, folios */
+  --pencil: #2a4a9a; /* 7.3:1, the one accent: the copy-editor's blue pencil */
+  --wash: #9db8e2; /* non-repro blue: marks that never print; never text */
+  --rule: #cfc8ba; /* hairlines; decorative */
+  --numeral: #ded7c9; /* ghost numerals; decorative */
+  --select: #c9d8f0;
+
+  --rw: 1px; /* rule weight */
+
+  --serif: "Newsreader", "Newsreader Fallback", Georgia, serif;
+  --mono: "IBM Plex Mono", "IBM Plex Mono Fallback", "Courier New", monospace;
+
+  /* Type scale: rem inside clamp() so 200% zoom still reflows */
+  --fs-name: min(clamp(3rem, 1.3rem + 6.2vw, 9.5rem), 19svh);
+  --fs-headline: min(clamp(1.75rem, 1.05rem + 2.9vw, 4rem), 10svh);
+  --fs-h2: clamp(2rem, 1.3rem + 3vw, 4.75rem);
+  --fs-h3: clamp(1.375rem, 1.1rem + 1.1vw, 2.125rem);
+  --fs-plain: max(1.125rem, min(clamp(1.25rem, 0.95rem + 1.1vw, 2rem), 4.6svh));
+  --fs-body: clamp(1.0625rem, 0.99rem + 0.3vw, 1.25rem);
+  --fs-contact: clamp(1.25rem, 0.95rem + 1.4vw, 2.25rem);
+  --fs-note: clamp(0.8125rem, 0.77rem + 0.18vw, 0.9375rem);
+  --fs-label: clamp(0.75rem, 0.72rem + 0.1vw, 0.8125rem);
+  --fs-ghost: clamp(8rem, 2rem + 24vw, 26rem);
+
+  /* Spacing */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+  --s8: 64px;
+  --s9: 96px;
+  --s10: 128px;
+  --pad-section: clamp(64px, 12svh, 160px);
+
+  /* Grid */
+  --cols: 12;
+  --gutter: clamp(16px, 1.6vw, 32px);
+  --margin: max(48px, 5vw, env(safe-area-inset-left), env(safe-area-inset-right));
+  --content: 1440px;
+
+  /* Easing for the few CSS transitions (links, buttons) */
+  --settle: cubic-bezier(0.16, 0.84, 0.3, 1);
+}
+
+@media (min-resolution: 2dppx) {
+  :root {
+    --rw: 1.5px;
+  }
+}
+
+@media (max-width: 1279.98px) {
+  :root {
+    --cols: 8;
+    --gutter: 20px;
+    --margin: max(32px, 5vw, env(safe-area-inset-left), env(safe-area-inset-right));
+  }
+}
+
+@media (max-width: 767.98px) {
+  :root {
+    --cols: 4;
+    --gutter: 16px;
+    --margin: max(20px, env(safe-area-inset-left), env(safe-area-inset-right));
+  }
+}
+
+/* Landscape phones: a short, wide page. */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --cols: 8;
+    --gutter: 16px;
+    --margin: max(24px, env(safe-area-inset-left), env(safe-area-inset-right));
+    --pad-section: 56px;
+  }
+}

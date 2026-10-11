@@ -1,0 +1,176 @@
+/* ---------- Folio 18: Correspondence ---------- */
+
+.cx {
+  padding-block: var(--pad-section) max(var(--pad-section), env(safe-area-inset-bottom));
+}
+
+.cx__lead {
+  margin-top: var(--s5);
+  margin-bottom: var(--s7);
+}
+
+.cx__rows {
+  display: grid;
+}
+
+.cx__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 7fr) minmax(0, 2fr);
+  align-items: center;
+  column-gap: var(--gutter);
+  min-height: 56px;
+  padding-block: var(--s3);
+}
+
+.cx__rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  background: var(--rule);
+  transition: background-color 0.3s var(--settle);
+}
+
+.cx__row:hover .cx__rule,
+.cx__row:focus-within .cx__rule,
+.cx__row:has(.copy[data-copied="true"]) .cx__rule {
+  background: var(--pencil);
+}
+
+.cx__label {
+  grid-column: 1;
+}
+
+.cx__link {
+  grid-column: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: 44px;
+  max-width: 100%;
+}
+
+.cx__value {
+  font-size: var(--fs-contact);
+  font-weight: 360;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.cx__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: var(--rw);
+  background: var(--pencil);
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+  transition: transform 0.3s var(--settle);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cx__link:hover {
+    color: var(--pencil);
+  }
+  .cx__link:hover::after {
+    transform: scaleX(1);
+    transform-origin: 0 50%;
+  }
+}
+
+.cx__link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+}
+
+.copy {
+  grid-column: 3;
+  justify-self: end;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0 var(--s4);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--quiet);
+  transition: color 0.2s var(--settle), border-color 0.2s var(--settle), background-color 0.2s var(--settle);
+}
+
+.copy__labels {
+  display: inline-grid;
+  overflow: clip;
+  vertical-align: middle;
+}
+
+.copy__label {
+  grid-area: 1 / 1;
+}
+
+.copy__label + .copy__label {
+  visibility: hidden;
+}
+
+html:not(.motion) .copy[data-copied="true"] .copy__label:first-child {
+  visibility: hidden;
+}
+
+html:not(.motion) .copy[data-copied="true"] .copy__label + .copy__label {
+  visibility: visible;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .copy:hover {
+    color: var(--pencil);
+    border-color: var(--pencil);
+  }
+}
+
+.copy:active,
+.copy[data-copied="true"] {
+  color: var(--pencil);
+  border-color: var(--pencil);
+  background: var(--leaf);
+}
+
+.cx__colophon {
+  margin-top: var(--s8);
+  max-width: 60ch;
+}
+
+.cx__end {
+  margin-top: var(--s5);
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0.4);
+}
+
+.cx__folio {
+  display: block;
+  margin-top: var(--s5);
+  text-align: right;
+}
+
+@media (max-width: 767.98px) {
+  .cx__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: var(--s1);
+    padding-block: var(--s4);
+  }
+  .cx__label {
+    grid-column: 1 / -1;
+  }
+  .cx__link {
+    grid-column: 1;
+  }
+  .copy {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}

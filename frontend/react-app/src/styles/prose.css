@@ -1,0 +1,121 @@
+/* ---------- Folios 3 and 16: prose pages (In plain words, Away from the desk) ---------- */
+
+.prose {
+  padding-block: var(--pad-section);
+}
+
+.prose__grid {
+  row-gap: var(--s6);
+  align-items: start;
+}
+
+.prose__margin {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  padding-top: calc(var(--fs-h2) * 1.35);
+}
+
+.prose__main {
+  grid-column: 3 / span 7;
+  grid-row: 1;
+  display: grid;
+  gap: var(--s6);
+}
+
+.sidenote {
+  grid-column: 10 / span 3;
+  grid-row: 1;
+  align-self: start;
+  margin-top: calc(var(--fs-h2) * 1.35);
+  max-width: 28ch;
+}
+
+.prose__foot {
+  grid-column: 3 / span 7;
+  display: grid;
+  gap: var(--s4);
+  margin-top: var(--s5);
+}
+
+.prose__rule {
+  width: 64px;
+}
+
+.prose__folio {
+  grid-column: -2 / -1;
+  justify-self: end;
+}
+
+/* The edit cell: the draft over its fair copy. */
+.edit {
+  position: relative;
+  display: grid;
+}
+
+.edit > * {
+  grid-area: 1 / 1;
+}
+
+.edit__draft {
+  display: none;
+}
+
+.jargon {
+  color: var(--ink);
+}
+
+.edit__fair .ref {
+  display: inline-block;
+}
+
+/* Draft / Fair copy: a label that swaps behind a mask. */
+.swap {
+  display: inline-grid;
+  overflow: clip;
+}
+
+.swap > * {
+  grid-area: 1 / 1;
+}
+
+/* Without motion the page is already the fair copy. */
+html:not(.motion) .swap > :first-child {
+  visibility: hidden;
+}
+
+.away__lead {
+  color: var(--ink);
+}
+
+@media (max-width: 1279.98px) {
+  .prose__margin {
+    grid-column: 1 / -1;
+    padding-top: 0;
+  }
+  .prose__main {
+    grid-column: 1 / span 6;
+    grid-row: 2;
+  }
+  .away .prose__main {
+    grid-row: 1;
+  }
+  .sidenote {
+    grid-column: 7 / span 2;
+    grid-row: 2;
+  }
+  .prose__foot {
+    grid-column: 1 / span 6;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .prose__main,
+  .prose__foot,
+  .sidenote {
+    grid-column: 1 / -1;
+  }
+  .sidenote {
+    grid-row: auto;
+    margin-top: 0;
+  }
+}

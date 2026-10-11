@@ -1,0 +1,162 @@
+/* ---------- Folios 13–15: Work, three plates ---------- */
+
+.work {
+  padding-top: var(--pad-section);
+}
+
+.work__head {
+  display: grid;
+  gap: var(--s5);
+  margin-bottom: var(--s8);
+}
+
+.plate {
+  position: relative;
+  padding-block: var(--s9);
+}
+
+.plate__grid {
+  align-items: center;
+  row-gap: var(--s7);
+}
+
+.plate__figure {
+  position: relative;
+  isolation: isolate;
+  grid-column: 1 / span 6;
+  aspect-ratio: 4 / 3;
+}
+
+.plate__text {
+  grid-column: 8 / span 5;
+  display: grid;
+  gap: var(--s4);
+  align-content: start;
+}
+
+.plate__title {
+  font-size: var(--fs-h2);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.012em;
+  margin-bottom: var(--s2);
+}
+
+.plate__rule {
+  width: 48px;
+  margin-top: var(--s3);
+}
+
+.plate__source a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--mono);
+  font-size: var(--fs-note);
+}
+
+.plate__folio {
+  justify-self: end;
+}
+
+.plate__numeral {
+  position: absolute;
+  z-index: -1;
+  top: -0.42em;
+  left: -0.06em;
+}
+
+.plate__caption {
+  position: absolute;
+  top: calc(100% + var(--s3));
+  left: 0;
+  right: 0;
+}
+
+/* Crop marks: the plate is ready for press. */
+.crop i {
+  position: absolute;
+  display: block;
+  background: var(--pencil);
+}
+
+.crop [class$="-h"] {
+  width: 14px;
+  height: var(--rw);
+}
+
+.crop [class$="-v"] {
+  width: var(--rw);
+  height: 14px;
+}
+
+.crop__tl-h { top: 0; left: -22px; }
+.crop__tl-v { top: -22px; left: 0; }
+.crop__tr-h { top: 0; right: -22px; }
+.crop__tr-v { top: -22px; right: 0; }
+.crop__bl-h { bottom: 0; left: -22px; }
+.crop__bl-v { bottom: -22px; left: 0; }
+.crop__br-h { bottom: 0; right: -22px; }
+.crop__br-v { bottom: -22px; right: 0; }
+
+/* The drawings. */
+.fig {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.fig path,
+.fig line,
+.fig rect,
+.fig polygon {
+  fill: none;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+}
+
+.fig__ink { stroke: var(--ink); }
+.fig__ink2 { stroke: var(--ink-2); }
+.fig__rule2 { stroke: var(--rule); }
+.fig__pencil { stroke: var(--pencil); }
+.fig__wash { stroke: var(--wash); }
+.fig__dot { fill: var(--pencil); }
+.fig .fig__page { fill: var(--paper); stroke: var(--ink); }
+.fig .fig__ghost { stroke: var(--wash); }
+.fig__text { stroke: var(--ink-2); }
+.fig .fig__tile rect { fill: var(--paper); stroke: var(--ink-2); }
+.fig__tile line { stroke: var(--ink-2); }
+
+.work__also {
+  padding-block: var(--s7) var(--pad-section);
+}
+
+@media (min-width: 768px) {
+  .plate {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1279.98px) {
+  .plate__figure {
+    grid-column: 1 / span 4;
+  }
+  .plate__text {
+    grid-column: 5 / span 4;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .plate__figure,
+  .plate__text {
+    grid-column: 1 / -1;
+  }
+  .plate__figure {
+    margin-inline: 22px;
+    margin-bottom: var(--s6);
+  }
+}

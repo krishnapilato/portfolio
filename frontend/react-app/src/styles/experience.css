@@ -1,0 +1,365 @@
+/* ---------- Folios 4–12: Experience ----------
+   Default (no JavaScript, reduced motion, phones): a column of pages with
+   a pencil spine. On a wide screen with motion: a sticky stage and a track
+   of pages that travels sideways. */
+
+.xp {
+  position: relative;
+  padding-block: var(--pad-section);
+  overflow-x: clip;
+}
+
+.xp__stage {
+  position: relative;
+}
+
+.xp__label,
+.xp__rule {
+  display: none;
+}
+
+.xp__years {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.xp__year {
+  position: absolute;
+  left: var(--margin);
+  top: 0;
+}
+
+.xp__track {
+  position: relative;
+  max-width: var(--content);
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+
+.xp__leaves {
+  position: relative;
+}
+
+.leaf {
+  position: relative;
+  display: grid;
+  gap: var(--s4);
+  padding-block: var(--s8);
+  padding-left: calc(var(--s6) + 4px);
+  padding-right: 40px;
+}
+
+.leaf__above {
+  display: grid;
+  gap: var(--s2);
+  max-width: min(32em, 100%);
+}
+
+.leaf__title {
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  line-height: 1.12;
+  margin-top: var(--s1);
+}
+
+.leaf--opening .chapter {
+  margin-bottom: var(--s3);
+}
+
+.leaf__role {
+  font-family: var(--mono);
+  font-size: var(--fs-note);
+  line-height: 1.45;
+  color: var(--quiet);
+  margin-bottom: var(--s3);
+}
+
+.leaf__below {
+  display: grid;
+  gap: var(--s3);
+}
+
+.leaf__below::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: var(--rw);
+  background: var(--pencil);
+}
+
+.leaf--tipped .leaf__below::before,
+.leaf--next .leaf__below::before {
+  background: var(--wash);
+}
+
+.leaf__hang {
+  display: none;
+}
+
+.leaf__folio {
+  position: absolute;
+  right: 0;
+  bottom: var(--s6);
+}
+
+.leaf--tipped .leaf__above {
+  background: var(--leaf);
+  padding: var(--s5);
+  margin-left: var(--s5);
+  max-width: min(26em, 100%);
+}
+
+.leaf__next a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--mono);
+  font-size: var(--fs-note);
+}
+
+/* The spine: printed up to today, non-repro blue after. */
+.xp__spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--margin);
+  width: var(--rw);
+}
+
+.xp__spine-printed,
+.xp__spine-wash {
+  position: absolute;
+  left: 0;
+  width: var(--rw);
+}
+
+.xp__spine-printed {
+  top: 0;
+  bottom: 0;
+  background: var(--pencil);
+}
+
+.xp__spine-wash {
+  height: 0;
+  background: var(--wash);
+}
+
+.wash {
+  display: block;
+  height: var(--rw);
+  background: var(--wash);
+}
+
+@media (max-height: 539.98px) {
+  .xp__years {
+    display: none;
+  }
+  .leaf {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
+    column-gap: var(--s6);
+    padding-block: var(--s6);
+  }
+  .leaf__above,
+  .leaf__below {
+    grid-column: 2;
+  }
+  .leaf__label {
+    grid-column: 1;
+  }
+}
+
+/* ---------- the sideways passage ---------- */
+
+@media (min-width: 760px) and (min-height: 540px) and (prefers-reduced-motion: no-preference) {
+  html.motion .xp {
+    --L: clamp(560px, 46vw, 1200px);
+    height: calc(100svh + var(--margin) + 7.625 * var(--L) - 50vw);
+    padding-block: 0;
+  }
+
+  html.motion .xp__stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: clip;
+  }
+
+  html.motion .xp__label {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: max(5svh, 24px);
+    left: var(--margin);
+  }
+
+  html.motion .xp__year {
+    left: 0;
+    top: 12svh;
+  }
+
+  html.motion .xp__track {
+    max-width: none;
+    width: max-content;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  html.motion .xp__spine {
+    display: none;
+  }
+
+  html.motion .xp__leaves {
+    display: flex;
+    height: 100%;
+    padding-left: var(--margin);
+    padding-right: calc((100vw - 0.75 * var(--L)) / 2);
+  }
+
+  html.motion .leaf {
+    display: block;
+    flex: none;
+    width: var(--L);
+    height: 100%;
+    padding: 0;
+  }
+
+  html.motion .leaf--opening,
+  html.motion .leaf--next {
+    width: calc(0.75 * var(--L));
+  }
+
+  html.motion .leaf--tipped {
+    width: calc(0.5 * var(--L));
+  }
+
+  /* The fold between two pages. */
+  html.motion .leaf + .leaf::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background: var(--rule);
+  }
+
+  html.motion .leaf__above {
+    position: absolute;
+    left: var(--s7);
+    right: var(--s7);
+    bottom: calc(40% + 20px);
+    max-width: min(26em, 100%);
+  }
+
+  html.motion .leaf--opening .leaf__above {
+    left: 0;
+  }
+
+  /* On a page, the fair copy sits on the rule. */
+  html.motion .leaf .edit {
+    align-items: end;
+  }
+
+  html.motion .leaf__below {
+    position: absolute;
+    left: var(--s7);
+    right: var(--s7);
+    top: calc(60% + 20px);
+  }
+
+  html.motion .leaf--opening .leaf__below {
+    left: 0;
+  }
+
+  html.motion .leaf__below::before {
+    display: none;
+  }
+
+  html.motion .leaf__folio {
+    right: var(--s7);
+    bottom: max(6svh, 28px);
+  }
+
+  html.motion .leaf--tipped .leaf__above {
+    top: calc(60% + 24px);
+    bottom: auto;
+    left: var(--s4);
+    right: var(--s4);
+    margin: 0;
+  }
+
+  html.motion .leaf--tipped .leaf__below {
+    top: 60%;
+    left: 50%;
+    right: auto;
+  }
+
+  html.motion .leaf__hang {
+    display: block;
+    width: var(--rw);
+    height: 24px;
+    background: var(--pencil);
+  }
+
+  html.motion .xp__rule {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 60%;
+    height: var(--rw);
+  }
+
+  html.motion .xp__printed,
+  html.motion .xp__wash {
+    position: absolute;
+    top: 0;
+    height: var(--rw);
+  }
+
+  html.motion .xp__printed {
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+
+  html.motion .xp__today {
+    position: absolute;
+    top: 0;
+  }
+
+  html.motion .xp__tick {
+    display: block;
+    width: var(--rw);
+    height: 12px;
+    background: var(--pencil);
+  }
+
+  html.motion .xp__today-label {
+    display: block;
+    margin-top: var(--s2);
+    transform: translateX(-50%);
+  }
+}
+
+@media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) and (min-height: 540px) and (prefers-reduced-motion: no-preference) {
+  html.motion .xp {
+    --L: 80vw;
+  }
+}
+
+@media (min-width: 760px) and (max-width: 1279.98px) and (orientation: landscape) and (min-height: 540px) and (prefers-reduced-motion: no-preference) {
+  html.motion .xp {
+    --L: max(560px, 60vw);
+  }
+}
+
+.xp__today-label,
+.xp__today {
+  display: none;
+}
+
+html.is-passage .xp__today {
+  display: block;
+}

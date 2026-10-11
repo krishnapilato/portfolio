@@ -1,0 +1,93 @@
+/* ---------- Folio 17: the Index (still on purpose) ---------- */
+
+.ix {
+  padding-block: var(--pad-section);
+}
+
+.ix__lead {
+  margin-top: var(--s5);
+  margin-bottom: var(--s8);
+}
+
+.ix__cols {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: var(--s7);
+}
+
+.ix__col + .ix__col {
+  border-left: 1px solid var(--rule);
+  padding-left: var(--gutter);
+}
+
+.ix__title {
+  margin-bottom: var(--s4);
+}
+
+.ix__entry {
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  padding-block: 2px;
+}
+
+.ix__sub {
+  padding-left: 1em;
+}
+
+.ix__pages {
+  font-family: var(--mono);
+  font-size: var(--fs-note);
+  color: var(--quiet);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A page number is a link with a 44 px target around a small numeral. */
+.ix__folio {
+  position: relative;
+  color: var(--pencil);
+  font-weight: 500;
+}
+
+.ix__folio::before {
+  content: "";
+  position: absolute;
+  inset: -14px -8px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ix__folio:hover {
+    text-decoration: underline;
+    text-decoration-thickness: var(--rw);
+    text-underline-offset: 0.2em;
+  }
+}
+
+.ix__folio-n {
+  display: block;
+  margin-top: var(--s8);
+  text-align: right;
+}
+
+@media (max-width: 1279.98px) {
+  .ix__cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ix__col:nth-child(odd) {
+    border-left: 0;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .ix__cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ix__col + .ix__col {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .ix__entry {
+    padding-block: 6px;
+  }
+}

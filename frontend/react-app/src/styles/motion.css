@@ -1,0 +1,70 @@
+/* ============================================================
+   Motion states. Everything here applies only under html.motion, which
+   the inline head script sets before the first paint when motion is
+   allowed, and removes if the app has not started within 3 s. Without
+   it (no JavaScript, reduced motion, a failed boot) the page is the
+   finished fair copy.
+   ============================================================ */
+
+/* Text awaiting its reveal is hidden with visibility only, never with a
+   transform or an opacity that GSAP could mistake for an end state. */
+html.motion [data-reveal],
+html.motion [data-rule],
+html.motion .hl,
+html.motion .mark__rule,
+html.motion .crop i,
+html.motion .edit__draft,
+html.motion .edit__fair,
+html.motion [data-edit-note],
+html.motion .habit__draft,
+html.motion .habit__fair,
+html.motion .fig,
+html.motion .prose__label,
+html.motion .swap > * + * {
+  visibility: hidden;
+}
+
+/* The edit: draft and fair copy share one cell, so nothing below moves. */
+html.motion .edit__draft {
+  display: block;
+}
+
+/* Contents rows rise from behind their own line. */
+html.motion .contents__item {
+  overflow: clip;
+}
+
+/* ---------- One habit: a sticky stage on any screen tall enough ---------- */
+
+@media (prefers-reduced-motion: no-preference) and (min-height: 540px) {
+  html.motion .habit {
+    height: 190svh;
+    padding-block: 0;
+  }
+  html.motion .habit__stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    display: grid;
+    align-items: center;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 760px) and (min-height: 540px) {
+  html.motion .habit {
+    height: 220svh;
+  }
+}
+
+html.motion .habit__inner {
+  display: grid;
+}
+
+html.motion .habit__draft,
+html.motion .habit__fair {
+  grid-area: 1 / 1;
+}
+
+html.motion .habit__draft {
+  display: grid;
+}
