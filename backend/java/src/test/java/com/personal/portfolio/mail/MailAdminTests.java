@@ -1,5 +1,6 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -14,14 +15,6 @@ import com.personal.portfolio.mail.MailPayloads.ComposeRequest;
 import com.personal.portfolio.mail.MailPayloads.MailView;
 import com.personal.portfolio.mail.MailPayloads.OutboxStats;
 import com.personal.portfolio.platform.CorrelationFilter;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -55,11 +48,11 @@ class MailAdminTests extends OutboxIntegrationTest {
         var before = clock.instant();
 
         var result = mvc.post().uri(MESSAGES).with(admin())
-                .header(CorrelationFilter.HEADER, requestId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(new ComposeRequest(List.of(recipient), List.of("cc-" + recipient), null,
-                        "support@example.test", "Welcome aboard", "<p>Hello</p>", true, null)))
-                .exchange();
+            .header(CorrelationFilter.HEADER, requestId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJson(new ComposeRequest(List.of(recipient), List.of("cc-" + recipient), null,
+                "support@example.test", "Welcome aboard", "<p>Hello</p>", true, null)))
+            .exchange();
 
         assertThat(result).hasStatus(HttpStatus.ACCEPTED);
         var view = track(read(result, MailView.class));
@@ -78,10 +71,10 @@ class MailAdminTests extends OutboxIntegrationTest {
         assertThat(view.scheduledAt()).isBetween(before, clock.instant());
         assertThat(reload(view.id()).getRequestId()).isEqualTo(requestId);
         assertThat(mvc.get().uri(MESSAGES + "/{id}", view.id()).with(admin()))
-                .hasStatusOk()
-                .bodyJson()
-                .extractingPath("$.subject")
-                .isEqualTo("Welcome aboard");
+            .hasStatusOk()
+            .bodyJson()
+            .extractingPath("$.subject")
+            .isEqualTo("Welcome aboard");
     }
 
     @Test
@@ -97,35 +90,35 @@ class MailAdminTests extends OutboxIntegrationTest {
     @Test
     void multipartComposeStoresEveryAttachment() {
         var csv = "id,name\n1,Ada\n".getBytes(UTF_8);
-        var png = new byte[] {(byte) 0x89, 'P', 'N', 'G', '\r', '\n'};
+        var png = new byte[]{(byte) 0x89, 'P', 'N', 'G', '\r', '\n'};
         var pdf = "%PDF-1.7".getBytes(UTF_8);
         var request = new ComposeRequest(List.of(address()), null, List.of(address()), null, "Quarterly report",
-                "See the attached files", false, null);
+            "See the attached files", false, null);
 
         var result = mvc.post().uri(MESSAGES).multipart()
-                .file(new MockMultipartFile("message", "", MediaType.APPLICATION_JSON_VALUE, toJson(request).getBytes(UTF_8)))
-                .file(new MockMultipartFile("attachments", "report.csv", "text/csv", csv))
-                .file(new MockMultipartFile("attachments", "logo.png", MediaType.IMAGE_PNG_VALUE, png))
-                .file(new MockMultipartFile("attachments", "empty.txt", MediaType.TEXT_PLAIN_VALUE, new byte[0]))
-                .file(new MockMultipartFile("attachments", "", null, pdf))
-                .with(admin())
-                .exchange();
+            .file(new MockMultipartFile("message", "", MediaType.APPLICATION_JSON_VALUE, toJson(request).getBytes(UTF_8)))
+            .file(new MockMultipartFile("attachments", "report.csv", "text/csv", csv))
+            .file(new MockMultipartFile("attachments", "logo.png", MediaType.IMAGE_PNG_VALUE, png))
+            .file(new MockMultipartFile("attachments", "empty.txt", MediaType.TEXT_PLAIN_VALUE, new byte[0]))
+            .file(new MockMultipartFile("attachments", "", null, pdf))
+            .with(admin())
+            .exchange();
 
         assertThat(result).hasStatus(HttpStatus.ACCEPTED).containsHeader(HttpHeaders.LOCATION);
         var view = track(read(result, MailView.class));
         assertThat(view.status()).isEqualTo(MailStatus.PENDING);
         assertThat(view.attachments()).containsExactly(
-                new AttachmentView("report.csv", "text/csv", csv.length),
-                new AttachmentView("logo.png", MediaType.IMAGE_PNG_VALUE, png.length),
-                new AttachmentView("attachment", MediaType.APPLICATION_OCTET_STREAM_VALUE, pdf.length));
+            new AttachmentView("report.csv", "text/csv", csv.length),
+            new AttachmentView("logo.png", MediaType.IMAGE_PNG_VALUE, png.length),
+            new AttachmentView("attachment", MediaType.APPLICATION_OCTET_STREAM_VALUE, pdf.length));
         assertThat(inTransaction(() -> reload(view.id()).envelope().attachments()))
-                .extracting(Attachment::filename, Attachment::content)
-                .containsExactly(tuple("report.csv", csv), tuple("logo.png", png), tuple("attachment", pdf));
+            .extracting(Attachment::filename, Attachment::content)
+            .containsExactly(tuple("report.csv", csv), tuple("logo.png", png), tuple("attachment", pdf));
         assertThat(read(mvc.get().uri(MESSAGES + "/{id}", view.id()).with(admin()).exchange(), MailView.class)
-                .attachments()).isEqualTo(view.attachments());
+            .attachments()).isEqualTo(view.attachments());
         assertThat(page(mvc.get().uri(MESSAGES).with(admin()).queryParam("size", "1").exchange()).content())
-                .singleElement()
-                .satisfies(listed -> assertThat(listed.attachments()).isEqualTo(view.attachments()));
+            .singleElement()
+            .satisfies(listed -> assertThat(listed.attachments()).isEqualTo(view.attachments()));
     }
 
     @Test
@@ -133,17 +126,17 @@ class MailAdminTests extends OutboxIntegrationTest {
         var stored = messages.count();
         var request = new ComposeRequest(List.of(address()), null, null, null, "Too many", "Files", false, null);
         var builder = mvc.post().uri(MESSAGES).multipart()
-                .file(new MockMultipartFile("message", "", MediaType.APPLICATION_JSON_VALUE, toJson(request).getBytes(UTF_8)));
+            .file(new MockMultipartFile("message", "", MediaType.APPLICATION_JSON_VALUE, toJson(request).getBytes(UTF_8)));
         for (var index = 0; index < 6; index++) {
             builder.file(new MockMultipartFile("attachments", "file-" + index + ".txt", MediaType.TEXT_PLAIN_VALUE,
-                    ("file " + index).getBytes(UTF_8)));
+                ("file " + index).getBytes(UTF_8)));
         }
 
         var result = builder.with(admin()).exchange();
         assertThat(result).hasStatus(HttpStatus.BAD_REQUEST);
         assertThat(result).bodyJson().extractingPath("$.type").isEqualTo("urn:problem:validation-failed");
         assertThat(result).bodyJson().extractingPath("$.errors").asMap()
-                .containsOnly(entry("attachments", "size must be between 0 and 5"));
+            .containsOnly(entry("attachments", "size must be between 0 and 5"));
         assertThat(messages.count()).isEqualTo(stored);
     }
 
@@ -152,7 +145,7 @@ class MailAdminTests extends OutboxIntegrationTest {
         var stored = messages.count();
 
         var result = composeMultipart(new ComposeRequest(List.of("Ada Lovelace <ada@example.test>"), null, null, null,
-                "Invalid", "Body", false, null));
+            "Invalid", "Body", false, null));
 
         assertThat(result).hasStatus(HttpStatus.BAD_REQUEST);
         assertThat(messages.count()).isEqualTo(stored);
@@ -161,42 +154,42 @@ class MailAdminTests extends OutboxIntegrationTest {
     @Test
     void multipartComposeReportsFieldErrorsLikeTheJsonVariant() {
         var result = composeMultipart(new ComposeRequest(List.of("Ada Lovelace <ada@example.test>"), null, null, null,
-                "Invalid", "Body", false, null));
+            "Invalid", "Body", false, null));
 
         assertThat(result).hasStatus(HttpStatus.BAD_REQUEST).hasContentType(MediaType.APPLICATION_PROBLEM_JSON);
         assertThat(result).bodyJson().extractingPath("$.type").isEqualTo("urn:problem:validation-failed");
         assertThat(result).bodyJson().extractingPath("$.title").isEqualTo("Validation failed");
         assertThat(result).bodyJson().extractingPath("$.errors").asMap()
-                .containsOnly(entry("to[0]", "must be a plain e-mail address"));
+            .containsOnly(entry("to[0]", "must be a plain e-mail address"));
     }
 
     static Stream<Arguments> invalidCompositions() {
         var one = List.of("ada@example.test");
         var eleven = IntStream.rangeClosed(1, 11).mapToObj(index -> "user" + index + "@example.test").toList();
         return Stream.of(
-                arguments(named("eleven recipients", request(eleven, null, null, null, "Subject", "Body", null)), "to"),
-                arguments(named("no recipients", request(List.of(), null, null, null, "Subject", "Body", null)), "to"),
-                arguments(named("invalid recipient", request(List.of("not-an-email"), null, null, null, "Subject",
-                        "Body", null)), "to[0]"),
-                arguments(named("eleven cc", request(one, eleven, null, null, "Subject", "Body", null)), "cc"),
-                arguments(named("eleven bcc", request(one, null, eleven, null, "Subject", "Body", null)), "bcc"),
-                arguments(named("invalid reply-to", request(one, null, null, "reply-to", "Subject", "Body", null)),
-                        "replyTo"),
-                arguments(named("blank subject", request(one, null, null, null, " ", "Body", null)), "subject"),
-                arguments(named("subject too long", request(one, null, null, null, "s".repeat(201), "Body", null)),
-                        "subject"),
-                arguments(named("blank body", request(one, null, null, null, "Subject", "", null)), "body"),
-                arguments(named("sendAt in the past", request(one, null, null, null, "Subject", "Body", PAST)),
-                        "sendAt"));
+            arguments(named("eleven recipients", request(eleven, null, null, null, "Subject", "Body", null)), "to"),
+            arguments(named("no recipients", request(List.of(), null, null, null, "Subject", "Body", null)), "to"),
+            arguments(named("invalid recipient", request(List.of("not-an-email"), null, null, null, "Subject",
+                "Body", null)), "to[0]"),
+            arguments(named("eleven cc", request(one, eleven, null, null, "Subject", "Body", null)), "cc"),
+            arguments(named("eleven bcc", request(one, null, eleven, null, "Subject", "Body", null)), "bcc"),
+            arguments(named("invalid reply-to", request(one, null, null, "reply-to", "Subject", "Body", null)),
+                "replyTo"),
+            arguments(named("blank subject", request(one, null, null, null, " ", "Body", null)), "subject"),
+            arguments(named("subject too long", request(one, null, null, null, "s".repeat(201), "Body", null)),
+                "subject"),
+            arguments(named("blank body", request(one, null, null, null, "Subject", "", null)), "body"),
+            arguments(named("sendAt in the past", request(one, null, null, null, "Subject", "Body", PAST)),
+                "sendAt"));
     }
 
     @ParameterizedTest
     @MethodSource("invalidCompositions")
     void composeRejectsInvalidRequests(ComposeRequest request, String field) {
         var result = mvc.post().uri(MESSAGES).with(admin())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(request))
-                .exchange();
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJson(request))
+            .exchange();
 
         assertThat(result).hasStatus(HttpStatus.BAD_REQUEST);
         assertThat(result).bodyJson().extractingPath("$.type").isEqualTo("urn:problem:validation-failed");
@@ -205,15 +198,15 @@ class MailAdminTests extends OutboxIntegrationTest {
 
     static Stream<String> nonPlainAddresses() {
         return Stream.of(
-                "\"ada,lovelace\"@example.test",
-                "\"ada lovelace\"@example.test",
-                "\"ada\"@example.test",
-                "ada lovelace@example.test",
-                "ada@example.test,alan@example.test",
-                "ada@example.test;alan@example.test",
-                "Ada Lovelace <ada@example.test>",
-                "ada@example.test ",
-                "a".repeat(64) + "@" + ("b".repeat(60) + ".").repeat(4) + "test");
+            "\"ada,lovelace\"@example.test",
+            "\"ada lovelace\"@example.test",
+            "\"ada\"@example.test",
+            "ada lovelace@example.test",
+            "ada@example.test,alan@example.test",
+            "ada@example.test;alan@example.test",
+            "Ada Lovelace <ada@example.test>",
+            "ada@example.test ",
+            "a".repeat(64) + "@" + ("b".repeat(60) + ".").repeat(4) + "test");
     }
 
     @ParameterizedTest
@@ -225,9 +218,9 @@ class MailAdminTests extends OutboxIntegrationTest {
         assertRejected(request(plain, null, List.of(address), null, "Subject", "Body", null), "bcc[0]");
         assertRejected(request(plain, null, null, address, "Subject", "Body", null), "replyTo");
         var bulk = mvc.post().uri(MESSAGES + "/bulk").with(admin())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(new BulkRequest(List.of("ada@example.test", address), "Subject", "Body", false, null)))
-                .exchange();
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJson(new BulkRequest(List.of("ada@example.test", address), "Subject", "Body", false, null)))
+            .exchange();
         assertThat(bulk).hasStatus(HttpStatus.BAD_REQUEST);
         assertThat(bulk).bodyJson().extractingPath("$.errors").asMap().containsKey("recipients[1]");
     }
@@ -239,10 +232,10 @@ class MailAdminTests extends OutboxIntegrationTest {
         var third = address();
 
         var result = mvc.post().uri(MESSAGES + "/bulk").with(admin())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(new BulkRequest(List.of(first, second, first, third), "Newsletter", "<h1>News</h1>",
-                        true, null)))
-                .exchange();
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJson(new BulkRequest(List.of(first, second, first, third), "Newsletter", "<h1>News</h1>",
+                true, null)))
+            .exchange();
 
         assertThat(result).hasStatus(HttpStatus.ACCEPTED).doesNotContainHeader(HttpHeaders.LOCATION);
         var receipt = read(result, BulkReceipt.class);
@@ -250,12 +243,12 @@ class MailAdminTests extends OutboxIntegrationTest {
         assertThat(receipt.queued()).isEqualTo(3);
         assertThat(receipt.ids()).hasSize(3).doesNotHaveDuplicates();
         assertThat(receipt.ids().stream().map(this::reload).toList())
-                .extracting(MailMessage::getRecipients, MailMessage::getSubject, MailMessage::isHtml,
-                        MailMessage::getStatus)
-                .containsExactly(
-                        tuple(List.of(first), "Newsletter", true, MailStatus.PENDING),
-                        tuple(List.of(second), "Newsletter", true, MailStatus.PENDING),
-                        tuple(List.of(third), "Newsletter", true, MailStatus.PENDING));
+            .extracting(MailMessage::getRecipients, MailMessage::getSubject, MailMessage::isHtml,
+                MailMessage::getStatus)
+            .containsExactly(
+                tuple(List.of(first), "Newsletter", true, MailStatus.PENDING),
+                tuple(List.of(second), "Newsletter", true, MailStatus.PENDING),
+                tuple(List.of(third), "Newsletter", true, MailStatus.PENDING));
     }
 
     @Test
@@ -264,9 +257,9 @@ class MailAdminTests extends OutboxIntegrationTest {
 
         for (var recipients : List.of(List.<String>of(), tooMany)) {
             var result = mvc.post().uri(MESSAGES + "/bulk").with(admin())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(toJson(new BulkRequest(recipients, "Subject", "Body", false, null)))
-                    .exchange();
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(new BulkRequest(recipients, "Subject", "Body", false, null)))
+                .exchange();
             assertThat(result).hasStatus(HttpStatus.BAD_REQUEST);
             assertThat(result).bodyJson().extractingPath("$.errors").asMap().containsKey("recipients");
         }
@@ -283,13 +276,13 @@ class MailAdminTests extends OutboxIntegrationTest {
         }
 
         var firstPage = page(mvc.get().uri(MESSAGES).with(admin())
-                .queryParam("status", "CANCELLED").queryParam("size", "2").queryParam("page", "0")
-                .queryParam("sort", "createdAt,desc")
-                .exchange());
+            .queryParam("status", "CANCELLED").queryParam("size", "2").queryParam("page", "0")
+            .queryParam("sort", "createdAt,desc")
+            .exchange());
         var secondPage = page(mvc.get().uri(MESSAGES).with(admin())
-                .queryParam("status", "CANCELLED").queryParam("size", "2").queryParam("page", "1")
-                .queryParam("sort", "createdAt,desc")
-                .exchange());
+            .queryParam("status", "CANCELLED").queryParam("size", "2").queryParam("page", "1")
+            .queryParam("sort", "createdAt,desc")
+            .exchange());
         var newest = page(mvc.get().uri(MESSAGES).with(admin()).queryParam("size", "1").exchange());
 
         assertThat(firstPage.content()).extracting(MailView::id).containsExactly(ids.get(2), ids.get(1));
@@ -314,13 +307,13 @@ class MailAdminTests extends OutboxIntegrationTest {
     @Test
     void listRejectsUnsupportedSortPropertiesAndUnknownStatuses() {
         assertThat(mvc.get().uri(MESSAGES).with(admin()).queryParam("sort", "subject"))
-                .hasStatus(HttpStatus.BAD_REQUEST)
-                .bodyJson()
-                .extractingPath("$.allowed")
-                .asArray()
-                .containsExactly("createdAt", "scheduledAt", "status");
+            .hasStatus(HttpStatus.BAD_REQUEST)
+            .bodyJson()
+            .extractingPath("$.allowed")
+            .asArray()
+            .containsExactly("createdAt", "scheduledAt", "status");
         assertThat(mvc.get().uri(MESSAGES).with(admin()).queryParam("status", "BOUNCED"))
-                .hasStatus(HttpStatus.BAD_REQUEST);
+            .hasStatus(HttpStatus.BAD_REQUEST);
     }
 
     @Test
@@ -330,7 +323,7 @@ class MailAdminTests extends OutboxIntegrationTest {
         assertThat(result).hasStatus(HttpStatus.NOT_FOUND);
         assertThat(result).bodyJson().extractingPath("$.type").isEqualTo("urn:problem:not-found");
         assertThat(result).bodyJson().extractingPath("$.detail")
-                .isEqualTo("mail '" + Long.MAX_VALUE + "' does not exist");
+            .isEqualTo("mail '" + Long.MAX_VALUE + "' does not exist");
         assertThat(cancel(Long.MAX_VALUE)).hasStatus(HttpStatus.NOT_FOUND);
         assertThat(retry(Long.MAX_VALUE)).hasStatus(HttpStatus.NOT_FOUND);
     }
@@ -349,7 +342,7 @@ class MailAdminTests extends OutboxIntegrationTest {
         assertThat(again).bodyJson().extractingPath("$.type").isEqualTo("urn:problem:mail-not-modifiable");
         assertThat(again).bodyJson().extractingPath("$.title").isEqualTo("Message can no longer be modified");
         assertThat(again).bodyJson().extractingPath("$.detail")
-                .isEqualTo("Message " + view.id() + " is cancelled");
+            .isEqualTo("Message " + view.id() + " is cancelled");
     }
 
     @ParameterizedTest
@@ -374,9 +367,9 @@ class MailAdminTests extends OutboxIntegrationTest {
         assertThat(view.scheduledAt()).isBetween(before, clock.instant());
         assertThat(reload(id).getStatus()).isEqualTo(MailStatus.PENDING);
         assertThat(retry(id)).hasStatus(HttpStatus.CONFLICT)
-                .bodyJson()
-                .extractingPath("$.detail")
-                .isEqualTo("Message " + id + " is pending");
+            .bodyJson()
+            .extractingPath("$.detail")
+            .isEqualTo("Message " + id + " is pending");
     }
 
     @Test
@@ -402,7 +395,7 @@ class MailAdminTests extends OutboxIntegrationTest {
         assertThat(after.byStatus()).containsOnlyKeys(MailStatus.values());
         assertThat(after.byStatus().get(MailStatus.PENDING)).isEqualTo(before.byStatus().get(MailStatus.PENDING) + 1);
         assertThat(after.byStatus().get(MailStatus.CANCELLED))
-                .isEqualTo(before.byStatus().get(MailStatus.CANCELLED) + 1);
+            .isEqualTo(before.byStatus().get(MailStatus.CANCELLED) + 1);
         assertThat(after.byStatus().get(MailStatus.SENT)).isEqualTo(before.byStatus().get(MailStatus.SENT));
         assertThat(after.byStatus().get(MailStatus.FAILED)).isEqualTo(before.byStatus().get(MailStatus.FAILED));
         assertThat(after.oldestDue()).isNotNull().isBeforeOrEqualTo(reload(pending.id()).getScheduledAt());
@@ -416,39 +409,39 @@ class MailAdminTests extends OutboxIntegrationTest {
         assertThat(mvc.get().uri(MESSAGES).with(user(1))).hasStatus(HttpStatus.FORBIDDEN);
         assertThat(mvc.get().uri(STATS).with(user(1))).hasStatus(HttpStatus.FORBIDDEN);
         assertThat(mvc.post().uri(MESSAGES).with(user(1)).contentType(MediaType.APPLICATION_JSON).content(request))
-                .hasStatus(HttpStatus.FORBIDDEN);
+            .hasStatus(HttpStatus.FORBIDDEN);
         assertThat(mvc.post().uri(MESSAGES + "/bulk").contentType(MediaType.APPLICATION_JSON).content(request))
-                .hasStatus(HttpStatus.UNAUTHORIZED);
+            .hasStatus(HttpStatus.UNAUTHORIZED);
     }
 
     private static ComposeRequest request(List<String> to, @Nullable List<String> cc, @Nullable List<String> bcc,
-            @Nullable String replyTo, String subject, String body, @Nullable Instant sendAt) {
+                                          @Nullable String replyTo, String subject, String body, @Nullable Instant sendAt) {
         return new ComposeRequest(to, cc, bcc, replyTo, subject, body, false, sendAt);
     }
 
     private void assertRejected(ComposeRequest request, String field) {
         var result = mvc.post().uri(MESSAGES).with(admin())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(request))
-                .exchange();
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJson(request))
+            .exchange();
         assertThat(result).hasStatus(HttpStatus.BAD_REQUEST);
         assertThat(result).bodyJson().extractingPath("$.errors").asMap()
-                .containsEntry(field, "must be a plain e-mail address");
+            .containsEntry(field, "must be a plain e-mail address");
     }
 
     private MvcTestResult composeMultipart(ComposeRequest request) {
         return mvc.post().uri(MESSAGES).multipart()
-                .file(new MockMultipartFile("message", "", MediaType.APPLICATION_JSON_VALUE, toJson(request).getBytes(UTF_8)))
-                .file(new MockMultipartFile("attachments", "notes.txt", MediaType.TEXT_PLAIN_VALUE, "notes".getBytes(UTF_8)))
-                .with(admin())
-                .exchange();
+            .file(new MockMultipartFile("message", "", MediaType.APPLICATION_JSON_VALUE, toJson(request).getBytes(UTF_8)))
+            .file(new MockMultipartFile("attachments", "notes.txt", MediaType.TEXT_PLAIN_VALUE, "notes".getBytes(UTF_8)))
+            .with(admin())
+            .exchange();
     }
 
     private MailView compose(ComposeRequest request) {
         var result = mvc.post().uri(MESSAGES).with(admin())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(request))
-                .exchange();
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJson(request))
+            .exchange();
         assertThat(result).hasStatus(HttpStatus.ACCEPTED);
         return track(read(result, MailView.class));
     }
@@ -477,7 +470,9 @@ class MailAdminTests extends OutboxIntegrationTest {
         return read(result, MailPage.class);
     }
 
-    record MailPage(List<MailView> content, PageMetadata page) {}
+    record MailPage(List<MailView> content, PageMetadata page) {
+    }
 
-    record PageMetadata(int size, int number, long totalElements) {}
+    record PageMetadata(int size, int number, long totalElements) {
+    }
 }

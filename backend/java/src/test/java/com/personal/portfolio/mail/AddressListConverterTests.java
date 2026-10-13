@@ -1,10 +1,9 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import java.util.List;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,10 +15,10 @@ class AddressListConverterTests {
 
     static Stream<Arguments> addressLists() {
         return Stream.of(
-                arguments(List.of(), ""),
-                arguments(List.of("ada@example.test"), "ada@example.test"),
-                arguments(List.of("ada@example.test", "alan@example.test", "grace.hopper+navy@example.test"),
-                        "ada@example.test,alan@example.test,grace.hopper+navy@example.test"));
+            arguments(List.of(), ""),
+            arguments(List.of("ada@example.test"), "ada@example.test"),
+            arguments(List.of("ada@example.test", "alan@example.test", "grace.hopper+navy@example.test"),
+                "ada@example.test,alan@example.test,grace.hopper+navy@example.test"));
     }
 
     @ParameterizedTest
@@ -39,6 +38,6 @@ class AddressListConverterTests {
         var addresses = List.of("zed@example.test", "ada@example.test", "zed@example.test");
 
         assertThat(converter.convertToEntityAttribute(converter.convertToDatabaseColumn(addresses)))
-                .containsExactly("zed@example.test", "ada@example.test", "zed@example.test");
+            .containsExactly("zed@example.test", "ada@example.test", "zed@example.test");
     }
 }

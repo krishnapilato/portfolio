@@ -1,11 +1,9 @@
 package com.personal.portfolio.auth;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -39,7 +37,7 @@ class AccountTests extends AuthTestSupport {
         assertThat(view.get("role").asString()).isEqualTo("USER");
         assertThat(view.get("status").asString()).isEqualTo("ACTIVE");
         assertThat(view.propertyNames()).containsExactlyInAnyOrder("id", "fullName", "email", "role", "status",
-                "lastLoginAt", "createdAt", "updatedAt");
+            "lastLoginAt", "createdAt", "updatedAt");
     }
 
     @Test
@@ -61,8 +59,8 @@ class AccountTests extends AuthTestSupport {
         assertThat(stored.getFullName()).isEqualTo("Grace Brewster Hopper");
         assertThat(stored.getUpdatedAt()).isAfter(before);
         assertThat(Instant.parse(body(renamed).get("updatedAt").asString()))
-                .isAfter(before)
-                .isCloseTo(stored.getUpdatedAt(), within(1, ChronoUnit.MILLIS));
+            .isAfter(before)
+            .isCloseTo(stored.getUpdatedAt(), within(1, ChronoUnit.MILLIS));
     }
 
     @ParameterizedTest
@@ -119,7 +117,7 @@ class AccountTests extends AuthTestSupport {
         assertThat(changePassword(owner.getId(), PASSWORD, NEW_PASSWORD)).hasStatus(HttpStatus.NO_CONTENT);
 
         assertProblem(post(RESET, Map.of("token", pending, "newPassword", "Attacker-Passw0rd")),
-                HttpStatus.BAD_REQUEST, "invalid-token");
+            HttpStatus.BAD_REQUEST, "invalid-token");
         assertThat(post(LOGIN, credentials(email, NEW_PASSWORD))).hasStatusOk();
     }
 
@@ -145,7 +143,7 @@ class AccountTests extends AuthTestSupport {
 
         for (var attempt = 0; attempt < properties.security().maxFailedLogins(); attempt++) {
             assertProblem(changePassword(owner.getId(), "Not-The-Passw0rd", NEW_PASSWORD),
-                    HttpStatus.BAD_REQUEST, "wrong-password");
+                HttpStatus.BAD_REQUEST, "wrong-password");
         }
 
         assertProblem(changePassword(owner.getId(), PASSWORD, NEW_PASSWORD), HttpStatus.LOCKED, "temporarily-locked");
@@ -194,16 +192,16 @@ class AccountTests extends AuthTestSupport {
         var session = login(email, PASSWORD);
 
         assertThat(getWithBearer(ME, session.accessToken())).hasStatusOk()
-                .bodyJson().extractingPath("$.email").isEqualTo(email);
+            .bodyJson().extractingPath("$.email").isEqualTo(email);
     }
 
     private MvcTestResult patch(long userId, Map<String, String> body) {
         return mvc.patch().uri(ME).with(user(userId)).contentType(MediaType.APPLICATION_JSON)
-                .content(json.writeValueAsString(body)).exchange();
+            .content(json.writeValueAsString(body)).exchange();
     }
 
     private MvcTestResult changePassword(long userId, String current, String next) {
         return mvc.put().uri(PASSWORD_PATH).with(user(userId)).contentType(MediaType.APPLICATION_JSON)
-                .content(json.writeValueAsString(Map.of("currentPassword", current, "newPassword", next))).exchange();
+            .content(json.writeValueAsString(Map.of("currentPassword", current, "newPassword", next))).exchange();
     }
 }

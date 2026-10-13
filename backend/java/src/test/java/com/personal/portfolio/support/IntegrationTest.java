@@ -1,15 +1,12 @@
 package com.personal.portfolio.support;
 
+import module java.base;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 
 import com.personal.portfolio.user.Role;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Properties;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,7 +60,7 @@ public abstract class IntegrationTest {
 
     private static RequestPostProcessor bearer(long id, Role role) {
         return jwt()
-                .jwt(token -> token.subject(Long.toString(id)).claim("roles", List.of(role.name())))
-                .authorities(new SimpleGrantedAuthority("ROLE_" + role.name()));
+            .jwt(token -> token.subject(Long.toString(id)).claim("roles", List.of(role.name())))
+            .authorities(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 }

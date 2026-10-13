@@ -1,5 +1,7 @@
 package com.personal.portfolio.user;
 
+import module java.base;
+
 import com.personal.portfolio.platform.ApiException;
 import com.personal.portfolio.platform.Problem.IllegalTransition;
 import jakarta.persistence.Entity;
@@ -10,9 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Locale;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

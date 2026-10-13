@@ -1,5 +1,6 @@
 package com.personal.portfolio.platform;
 
+import module java.base;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -23,17 +24,6 @@ import com.personal.portfolio.platform.Problem.TemporarilyLocked;
 import com.personal.portfolio.platform.Problem.TokenReuse;
 import com.personal.portfolio.platform.Problem.UnsupportedSort;
 import com.personal.portfolio.platform.Problem.WrongPassword;
-import java.net.URI;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
@@ -58,8 +48,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-/// Turns exceptions into RFC 9457 problem details with a stable type, the request id and a timestamp.
-/// Unexpected errors are logged in full but answered with a generic message.
 @Slf4j
 @RequiredArgsConstructor
 @RestControllerAdvice(annotations = RestController.class)
@@ -76,60 +64,45 @@ class ProblemHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
-    @Nullable ResponseEntity<Object> handleDataIntegrityViolation(
-            DataIntegrityViolationException exception, WebRequest request) {
-        return respond(exception, problem(exception, CONFLICT, "Conflict",
-                "The request conflicts with data that already exists")
-                .type(typeOf("conflict")), request);
+    @Nullable ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException exception, WebRequest request) {
+        return respond(exception, CONFLICT, "conflict", "Conflict", "The request conflicts with data that already exists", request);
     }
 
     @ExceptionHandler
-    @Nullable ResponseEntity<Object> handleOptimisticLockingFailure(
-            OptimisticLockingFailureException exception, WebRequest request) {
-        return respond(exception, problem(exception, CONFLICT, "Concurrent modification",
-                "The resource was modified by another request; reload it and try again")
-                .type(typeOf("concurrent-modification")), request);
+    @Nullable ResponseEntity<Object> handleOptimisticLockingFailure(OptimisticLockingFailureException exception, WebRequest request) {
+        return respond(exception, CONFLICT, "concurrent-modification", "Concurrent modification", "The resource was modified by another request; reload it and try again", request);
     }
 
     @ExceptionHandler
     @Nullable ResponseEntity<Object> handleAccessDenied(AccessDeniedException exception, WebRequest request) {
-        return respond(exception, problem(exception, FORBIDDEN, "Access denied",
-                "You are not allowed to perform this operation")
-                .type(typeOf("access-denied")), request);
+        return respond(exception, FORBIDDEN, "access-denied", "Access denied", "You are not allowed to perform this operation", request);
     }
 
     @ExceptionHandler
     @Nullable ResponseEntity<Object> handleUnexpected(Exception exception, WebRequest request) {
         log.error("An unexpected error occurred", exception);
-        return respond(exception, problem(exception, INTERNAL_SERVER_ERROR, "Internal error",
-                "An unexpected error occurred")
-                .type(typeOf("internal-error")), request);
+        return respond(exception, INTERNAL_SERVER_ERROR, "internal-error", "Internal error", "An unexpected error occurred", request);
     }
 
     @Override
     protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        var errors = exception.getBindingResult().getAllErrors().stream()
-                .collect(Collectors.toMap(ProblemHandler::fieldOf, ProblemHandler::messageOf,
-                        (first, _) -> first, TreeMap::new));
+        MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        var errors = exception.getBindingResult().getAllErrors().stream().collect(Collectors.toMap(ProblemHandler::fieldOf, ProblemHandler::messageOf, (first, _) -> first, TreeMap::new));
         return validationFailed(exception, errors, headers, status, request);
     }
 
     @Override
     protected @Nullable ResponseEntity<Object> handleHandlerMethodValidationException(
-            HandlerMethodValidationException exception,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request) {
+        HandlerMethodValidationException exception, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         var errors = new TreeMap<String, String>();
-        exception.getParameterValidationResults().forEach(result -> result.getResolvableErrors()
-                .forEach(error -> errors.putIfAbsent(fieldOf(result, error), messageOf(error))));
+        for (var result : exception.getParameterValidationResults())
+            for (var error : result.getResolvableErrors()) errors.putIfAbsent(fieldOf(result, error), messageOf(error));
         return validationFailed(exception, errors, headers, status, request);
     }
 
     @Override
     protected ResponseEntity<Object> createResponseEntity(
-            @Nullable Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+        @Nullable Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
         if (body instanceof ProblemDetail problem) {
             CorrelationFilter.current().ifPresent(id -> problem.setProperty("requestId", id));
             problem.setProperty("timestamp", clock.instant());
@@ -139,59 +112,61 @@ class ProblemHandler extends ResponseEntityExceptionHandler {
 
     private ErrorResponse.Builder describe(ApiException exception) {
         var response = switch (exception.problem()) {
-            case NotFound(var resource, var key) -> problem(exception, NOT_FOUND, "Resource not found",
-                    "%s '%s' does not exist".formatted(resource, key));
-            case EmailTaken(var email) -> problem(exception, CONFLICT, "Email already registered",
-                    "An account for %s already exists".formatted(email));
+            case NotFound(var resource, var key) ->
+                problem(exception, NOT_FOUND, "Resource not found", "%s '%s' does not exist".formatted(resource, key));
+            case EmailTaken(var email) ->
+                problem(exception, CONFLICT, "Email already registered", "An account for %s already exists".formatted(email));
             case InvalidCredentials() -> problem(exception, UNAUTHORIZED, "Invalid credentials",
-                    "The email or password is incorrect, or the account is locked after too many failed attempts");
-            case AccountUnavailable(var status) -> problem(exception, FORBIDDEN, "Account unavailable",
-                    "The account is %s".formatted(label(status)));
-            case TemporarilyLocked(var until) -> problem(exception, LOCKED, "Account temporarily locked",
-                    "Too many failed sign-in attempts; try again later")
+                "The email or password is incorrect, or the account is locked after too many failed attempts");
+            case AccountUnavailable(var status) ->
+                problem(exception, FORBIDDEN, "Account unavailable", "The account is %s".formatted(label(status)));
+            case TemporarilyLocked(var until) ->
+                problem(exception, LOCKED, "Account temporarily locked", "Too many failed sign-in attempts; try again later")
                     .property("lockedUntil", until)
                     .header(HttpHeaders.RETRY_AFTER, Long.toString(secondsUntil(until)));
-            case RateLimited(var until) -> problem(exception, TOO_MANY_REQUESTS, "Too many requests",
-                    "Too many authentication requests from this client; try again later")
+            case RateLimited(var until) ->
+                problem(exception, TOO_MANY_REQUESTS, "Too many requests", "Too many authentication requests from this client; try again later")
                     .header(HttpHeaders.RETRY_AFTER, Long.toString(secondsUntil(until)));
-            case InvalidToken(var purpose) -> problem(exception, BAD_REQUEST, "Invalid or expired token",
-                    "The %s token is invalid or has expired".formatted(label(purpose)));
-            case TokenReuse() -> problem(exception, UNAUTHORIZED, "Refresh token reuse detected",
-                    "The session was revoked for safety; sign in again");
-            case IllegalTransition(var from, var to) -> problem(exception, CONFLICT, "Illegal status transition",
-                    "An account cannot move from %s to %s".formatted(label(from), label(to)));
+            case InvalidToken(var purpose) ->
+                problem(exception, BAD_REQUEST, "Invalid or expired token", "The %s token is invalid or has expired".formatted(label(purpose)));
+            case TokenReuse() ->
+                problem(exception, UNAUTHORIZED, "Refresh token reuse detected", "The session was revoked for safety; sign in again");
+            case IllegalTransition(var from, var to) ->
+                problem(exception, CONFLICT, "Illegal status transition", "An account cannot move from %s to %s".formatted(label(from), label(to)));
             case SelfManagement() -> problem(exception, CONFLICT, "Self management not allowed",
-                    "Administrators cannot change their own role or status, nor delete their own account");
-            case LastAdministrator() -> problem(exception, CONFLICT, "Last administrator",
-                    "At least one active administrator must remain");
-            case WrongPassword() -> problem(exception, BAD_REQUEST, "Current password is incorrect",
-                    "The current password does not match");
-            case UnsupportedSort(var property, var allowed) -> problem(exception, BAD_REQUEST,
-                    "Unsupported sort property", "Sorting by '%s' is not supported".formatted(property))
+                "Administrators cannot change their own role or status, nor delete their own account");
+            case LastAdministrator() ->
+                problem(exception, CONFLICT, "Last administrator", "At least one active administrator must remain");
+            case WrongPassword() ->
+                problem(exception, BAD_REQUEST, "Current password is incorrect", "The current password does not match");
+            case UnsupportedSort(var property, var allowed) ->
+                problem(exception, BAD_REQUEST, "Unsupported sort property", "Sorting by '%s' is not supported".formatted(property))
                     .property("allowed", new TreeSet<>(allowed));
-            case MailNotModifiable(var id, var status) -> problem(exception, CONFLICT,
-                    "Message can no longer be modified", "Message %d is %s".formatted(id, label(status)));
+            case MailNotModifiable(var id, var status) ->
+                problem(exception, CONFLICT, "Message can no longer be modified", "Message %d is %s".formatted(id, label(status)));
         };
         var name = exception.problem().getClass().getSimpleName();
         return response.type(typeOf(WORD_BOUNDARY.matcher(name).replaceAll("-").toLowerCase(Locale.ROOT)));
     }
 
-    private @Nullable ResponseEntity<Object> validationFailed(Exception exception, SortedMap<String, String> errors,
-            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        var body = problem(exception, BAD_REQUEST, "Validation failed",
-                "The request contains %d invalid field(s)".formatted(errors.size()))
-                .type(typeOf("validation-failed"))
-                .property("errors", errors)
-                .build()
-                .getBody();
+    private @Nullable ResponseEntity<Object> validationFailed(
+        Exception exception, SortedMap<String, String> errors, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        var body = problem(exception, BAD_REQUEST, "Validation failed", "The request contains %d invalid field(s)".formatted(errors.size()))
+            .type(typeOf("validation-failed"))
+            .property("errors", errors)
+            .build()
+            .getBody();
         return handleExceptionInternal(exception, body, headers, status, request);
     }
 
     private @Nullable ResponseEntity<Object> respond(
-            Exception exception, ErrorResponse.Builder problem, WebRequest request) {
+        Exception exception, HttpStatus status, String slug, String title, String detail, WebRequest request) {
+        return respond(exception, problem(exception, status, title, detail).type(typeOf(slug)), request);
+    }
+
+    private @Nullable ResponseEntity<Object> respond(Exception exception, ErrorResponse.Builder problem, WebRequest request) {
         var response = problem.build();
-        return handleExceptionInternal(exception, response.getBody(), response.getHeaders(),
-                response.getStatusCode(), request);
+        return handleExceptionInternal(exception, response.getBody(), response.getHeaders(), response.getStatusCode(), request);
     }
 
     private long secondsUntil(Instant instant) {
@@ -216,8 +191,8 @@ class ProblemHandler extends ResponseEntityExceptionHandler {
 
     private static String fieldOf(ParameterValidationResult result, MessageSourceResolvable error) {
         return error instanceof ObjectError objectError
-                ? fieldOf(objectError)
-                : Objects.requireNonNullElse(result.getMethodParameter().getParameterName(), "request");
+            ? fieldOf(objectError)
+            : Objects.requireNonNullElse(result.getMethodParameter().getParameterName(), "request");
     }
 
     private static String messageOf(MessageSourceResolvable error) {

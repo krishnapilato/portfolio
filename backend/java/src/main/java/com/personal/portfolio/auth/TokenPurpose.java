@@ -1,12 +1,11 @@
 package com.personal.portfolio.auth;
 
+import module java.base;
+
 import com.personal.portfolio.platform.AppProperties;
-import java.time.Duration;
 
 public enum TokenPurpose {
-    EMAIL_VERIFICATION,
-    PASSWORD_RESET,
-    REFRESH;
+    EMAIL_VERIFICATION, PASSWORD_RESET, REFRESH;
 
     public Duration ttl(AppProperties.Security security) {
         return switch (this) {

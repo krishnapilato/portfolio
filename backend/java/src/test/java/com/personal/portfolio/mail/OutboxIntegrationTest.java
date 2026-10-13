@@ -1,14 +1,10 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static org.mockito.Mockito.clearInvocations;
 
 import com.personal.portfolio.mail.MailDispatcher.DispatchReport;
 import com.personal.portfolio.support.IntegrationTest;
-import java.time.Clock;
-import java.time.Instant;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.function.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.assertj.MvcTestResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -51,8 +47,8 @@ abstract class OutboxIntegrationTest extends IntegrationTest {
 
     protected void withdraw(long id) {
         transactions.executeWithoutResult(_ -> messages.findById(id)
-                .filter(message -> message.getStatus() == MailStatus.PENDING)
-                .ifPresent(MailMessage::cancel));
+            .filter(message -> message.getStatus() == MailStatus.PENDING)
+            .ifPresent(MailMessage::cancel));
     }
 
     protected void drainOutbox() {

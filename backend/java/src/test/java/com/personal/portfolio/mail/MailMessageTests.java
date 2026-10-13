@@ -1,15 +1,12 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.personal.portfolio.platform.ApiException;
 import com.personal.portfolio.platform.Problem.MailNotModifiable;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -24,8 +21,8 @@ class MailMessageTests {
     private static final int MAX_ATTEMPTS = 5;
     private static final Attachment REPORT = new Attachment("report.txt", "text/plain", "quarterly".getBytes(UTF_8));
     private static final Envelope ENVELOPE = new Envelope(List.of("ada@example.test", "alan@example.test"),
-            List.of("grace@example.test"), List.of("audit@example.test"), "reply@example.test", "Quarterly report",
-            "<p>See attachment.</p>", true, List.of(REPORT));
+        List.of("grace@example.test"), List.of("audit@example.test"), "reply@example.test", "Quarterly report",
+        "<p>See attachment.</p>", true, List.of(REPORT));
 
     @Test
     void composesAPendingMessageFromTheEnvelope() {
@@ -154,7 +151,7 @@ class MailMessageTests {
         var message = inStatus(status);
 
         assertThatThrownBy(() -> message.retry(LATER)).isInstanceOfSatisfying(ApiException.class,
-                exception -> assertThat(exception.problem()).isEqualTo(new MailNotModifiable(0, status)));
+            exception -> assertThat(exception.problem()).isEqualTo(new MailNotModifiable(0, status)));
         assertThat(message.getStatus()).isEqualTo(status);
     }
 
@@ -174,14 +171,15 @@ class MailMessageTests {
         var message = inStatus(status);
 
         assertThatThrownBy(message::cancel).isInstanceOfSatisfying(ApiException.class,
-                exception -> assertThat(exception.problem()).isEqualTo(new MailNotModifiable(0, status)));
+            exception -> assertThat(exception.problem()).isEqualTo(new MailNotModifiable(0, status)));
         assertThat(message.getStatus()).isEqualTo(status);
     }
 
     private static MailMessage inStatus(MailStatus status) {
         var message = MailMessage.compose(ENVELOPE, NOW, null);
         switch (status) {
-            case PENDING -> {}
+            case PENDING -> {
+            }
             case SENT -> message.markSent(NOW);
             case FAILED -> message.markFailed("550 rejected", NOW, 1, INITIAL_BACKOFF, MAX_BACKOFF);
             case CANCELLED -> message.cancel();

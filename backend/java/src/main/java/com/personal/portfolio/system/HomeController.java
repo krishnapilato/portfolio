@@ -1,12 +1,7 @@
 package com.personal.portfolio.system;
 
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.Optional;
+import module java.base;
+
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.SpringBootVersion;
@@ -21,8 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 class HomeController {
 
     private static final Duration HEALTH_CACHE = Duration.ofSeconds(10);
-    private static final DateTimeFormatter DATE =
-        DateTimeFormatter.ofPattern("d MMM uuuu", Locale.ENGLISH).withZone(ZoneOffset.UTC);
+    private static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("d MMM uuuu", Locale.ENGLISH).withZone(ZoneOffset.UTC);
 
     private final HealthEndpoint health;
     private final Clock clock;
@@ -31,10 +25,9 @@ class HomeController {
     private final @Nullable String commit;
     private final @Nullable String built;
     private final String runtime;
-    private volatile Reading lastReading = new Reading("UNKNOWN", Instant.MIN);
+    private final AtomicReference<Reading> lastReading = new AtomicReference<>(new Reading("UNKNOWN", Instant.MIN));
 
-    HomeController(HealthEndpoint health, ObjectProvider<BuildProperties> buildInfo,
-                   ObjectProvider<GitProperties> gitInfo, Clock clock) {
+    HomeController(HealthEndpoint health, ObjectProvider<BuildProperties> buildInfo, ObjectProvider<GitProperties> gitInfo, Clock clock) {
         var build = Optional.ofNullable(buildInfo.getIfAvailable());
         this.health = health;
         this.clock = clock;
@@ -42,16 +35,12 @@ class HomeController {
         this.version = build.map(BuildProperties::getVersion).orElse("dev");
         this.commit = Optional.ofNullable(gitInfo.getIfAvailable()).map(GitProperties::getShortCommitId).orElse(null);
         this.built = build.map(BuildProperties::getTime).map(DATE::format).orElse(null);
-        this.runtime = "Java " + Runtime.version().feature() + " · Spring Boot " + SpringBootVersion.getVersion();
+        this.runtime = "Java %d · Spring Boot %s".formatted(Runtime.version().feature(), SpringBootVersion.getVersion());
     }
 
     static String uptime(Duration duration) {
-        if (duration.toDays() > 0) {
-            return duration.toDays() + " d " + duration.toHoursPart() + " h";
-        }
-        if (duration.toHours() > 0) {
-            return duration.toHours() + " h " + duration.toMinutesPart() + " min";
-        }
+        if (duration.toDays() > 0) return duration.toDays() + " d " + duration.toHoursPart() + " h";
+        if (duration.toHours() > 0) return duration.toHours() + " h " + duration.toMinutesPart() + " min";
         return Math.max(1, duration.toMinutes()) + " min";
     }
 
@@ -66,17 +55,15 @@ class HomeController {
         return "home";
     }
 
-    // The page is public: however often it is loaded, the health checks run at most once per cache period.
     private String status() {
         var now = clock.instant();
-        var reading = lastReading;
+        var reading = lastReading.get();
         if (!now.isBefore(reading.takenAt().plus(HEALTH_CACHE))) {
             reading = new Reading(health.health().getStatus().getCode(), now);
-            lastReading = reading;
+            lastReading.set(reading);
         }
         return reading.status();
     }
 
-    private record Reading(String status, Instant takenAt) {
-    }
+    private record Reading(String status, Instant takenAt) { }
 }

@@ -1,7 +1,6 @@
 package com.personal.portfolio.platform;
 
-import java.io.Serial;
-import java.util.Objects;
+import module java.base;
 
 public final class ApiException extends RuntimeException {
 
@@ -11,8 +10,8 @@ public final class ApiException extends RuntimeException {
     private final transient Problem problem;
 
     public ApiException(Problem problem) {
-        this.problem = Objects.requireNonNull(problem);
         super(problem.toString(), null, false, false);
+        this.problem = problem;
     }
 
     public Problem problem() {

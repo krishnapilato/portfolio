@@ -1,5 +1,6 @@
 package com.personal.portfolio.user;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
@@ -14,18 +15,15 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import com.personal.portfolio.auth.TokenPurpose;
 import com.personal.portfolio.auth.TokenVault;
 import com.personal.portfolio.platform.ApiException;
+import com.personal.portfolio.platform.Problem;
 import com.personal.portfolio.platform.Problem.EmailTaken;
 import com.personal.portfolio.platform.Problem.LastAdministrator;
 import com.personal.portfolio.platform.Problem.NotFound;
 import com.personal.portfolio.platform.Problem.SelfManagement;
-import com.personal.portfolio.platform.Problem;
 import com.personal.portfolio.platform.Tally;
 import com.personal.portfolio.user.UserPayloads.CreateUser;
 import com.personal.portfolio.user.UserPayloads.UpdateUser;
 import com.personal.portfolio.user.UserService.Criteria;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,14 +46,14 @@ class UserServiceTests {
     @Test
     void statsZeroFillEveryStatusAndRole() {
         given(users.tallyByStatus()).willReturn(List.of(
-                new Tally<>(AccountStatus.LOCKED, 1L), new Tally<>(AccountStatus.ACTIVE, 3L)));
+            new Tally<>(AccountStatus.LOCKED, 1L), new Tally<>(AccountStatus.ACTIVE, 3L)));
         given(users.tallyByRole()).willReturn(List.of(new Tally<>(Role.USER, 4L)));
 
         var stats = service.stats();
 
         assertThat(stats.total()).isEqualTo(4L);
         assertThat(stats.byStatus()).containsExactly(entry(AccountStatus.PENDING, 0L), entry(AccountStatus.ACTIVE, 3L),
-                entry(AccountStatus.LOCKED, 1L), entry(AccountStatus.DISABLED, 0L));
+            entry(AccountStatus.LOCKED, 1L), entry(AccountStatus.DISABLED, 0L));
         assertThat(stats.byRole()).containsExactly(entry(Role.USER, 4L), entry(Role.ADMIN, 0L));
     }
 
@@ -79,22 +77,22 @@ class UserServiceTests {
 
     static Stream<Arguments> searchTerms() {
         return Stream.of(
-                Arguments.of("ada", "%ada%"),
-                Arguments.of(" Ada ", "%ada%"),
-                Arguments.of("LOVELACE", "%lovelace%"),
-                Arguments.of("\tGrace Hopper\n", "%grace hopper%"),
-                Arguments.of("ada@portfolio.local", "%ada@portfolio.local%"));
+            Arguments.of("ada", "%ada%"),
+            Arguments.of(" Ada ", "%ada%"),
+            Arguments.of("LOVELACE", "%lovelace%"),
+            Arguments.of("\tGrace Hopper\n", "%grace hopper%"),
+            Arguments.of("ada@portfolio.local", "%ada@portfolio.local%"));
     }
 
     @ParameterizedTest(name = "[{index}] q={0}")
     @CsvSource(delimiter = '|', textBlock = """
-            50%      | %50!%%
-            a_b      | %a!_b%
-            %        | %!%%
-            _        | %!_%
-            Wow!     | %wow!!%
-            C:\\Temp | %c:\\temp%
-            """)
+        50%      | %50!%%
+        a_b      | %a!_b%
+        %        | %!%%
+        _        | %!_%
+        Wow!     | %wow!!%
+        C:\\Temp | %c:\\temp%
+        """)
     void criteriaEscapeLikeMetacharactersWithTheExclamationMark(String query, String pattern) {
         assertThat(new Criteria(query, null, null).pattern()).isEqualTo(pattern);
     }
@@ -126,7 +124,7 @@ class UserServiceTests {
         given(users.existsByEmail("grace@example.test")).willReturn(true);
 
         assertProblem(() -> service.create(new CreateUser("Grace", "GRACE@example.test", PASSWORD, Role.USER), ACTOR),
-                new EmailTaken("grace@example.test"));
+            new EmailTaken("grace@example.test"));
 
         verifyNoInteractions(passwordEncoder);
         verify(users, never()).save(any(User.class));
@@ -284,6 +282,6 @@ class UserServiceTests {
 
     private static void assertProblem(ThrowingCallable call, Problem problem) {
         assertThatThrownBy(call).isInstanceOfSatisfying(ApiException.class,
-                failure -> assertThat(failure.problem()).isEqualTo(problem));
+            failure -> assertThat(failure.problem()).isEqualTo(problem));
     }
 }

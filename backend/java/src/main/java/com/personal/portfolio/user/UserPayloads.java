@@ -1,19 +1,18 @@
 package com.personal.portfolio.user;
 
+import module java.base;
+
 import com.personal.portfolio.mail.MailAddress;
 import com.personal.portfolio.security.StrongPassword;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import java.time.Instant;
-import java.util.Map;
 import org.jspecify.annotations.Nullable;
 
 public final class UserPayloads {
 
-    private UserPayloads() {
-    }
+    private UserPayloads() {}
 
     public record UserView(
         long id,
@@ -39,18 +38,15 @@ public final class UserPayloads {
 
         @Override
         public String toString() {
-            return "CreateUser[fullName=" + fullName + ", email=" + email + ", password=<redacted>, role=" + role + "]";
+            return "CreateUser[fullName=%s, email=%s, password=<redacted>, role=%s]".formatted(fullName, email, role);
         }
     }
 
     public record UpdateUser(
         @Nullable @Size(max = 100) @Pattern(regexp = "(?s).*\\S.*", message = "must not be blank") String fullName,
-        @Nullable Role role) {
-    }
+        @Nullable Role role) {}
 
-    public record StatusChange(@NotNull AccountStatus status) {
-    }
+    public record StatusChange(@NotNull AccountStatus status) {}
 
-    public record UserStats(long total, Map<AccountStatus, Long> byStatus, Map<Role, Long> byRole) {
-    }
+    public record UserStats(long total, Map<AccountStatus, Long> byStatus, Map<Role, Long> byRole) {}
 }

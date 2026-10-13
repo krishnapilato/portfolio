@@ -1,18 +1,12 @@
 package com.personal.portfolio.system;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Map;
-import java.util.Properties;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -56,9 +50,9 @@ class HomeControllerTests {
         stubHealth(Status.UP);
 
         assertThat(render(controller(new BuildProperties(build), new GitProperties(git))))
-                .containsEntry("version", "2.3.4")
-                .containsEntry("commit", "10bbaa5")
-                .containsEntry("built", "30 Sep 2026");
+            .containsEntry("version", "2.3.4")
+            .containsEntry("commit", "10bbaa5")
+            .containsEntry("built", "30 Sep 2026");
     }
 
     @Test
@@ -66,11 +60,11 @@ class HomeControllerTests {
         stubHealth(Status.UP);
 
         assertThat(render(controller(null, null)))
-                .containsEntry("version", "dev")
-                .containsEntry("commit", null)
-                .containsEntry("built", null)
-                .containsEntry("runtime",
-                        "Java " + Runtime.version().feature() + " · Spring Boot " + SpringBootVersion.getVersion());
+            .containsEntry("version", "dev")
+            .containsEntry("commit", null)
+            .containsEntry("built", null)
+            .containsEntry("runtime",
+                "Java " + Runtime.version().feature() + " · Spring Boot " + SpringBootVersion.getVersion());
     }
 
     @Test
@@ -85,13 +79,13 @@ class HomeControllerTests {
 
     @ParameterizedTest
     @CsvSource({
-            "PT0S, 1 min",
-            "PT1M59S, 1 min",
-            "PT59M59S, 59 min",
-            "PT1H, 1 h 0 min",
-            "PT23H59M, 23 h 59 min",
-            "P1D, 1 d 0 h",
-            "P2DT5H30M, 2 d 5 h"})
+        "PT0S, 1 min",
+        "PT1M59S, 1 min",
+        "PT59M59S, 59 min",
+        "PT1H, 1 h 0 min",
+        "PT23H59M, 23 h 59 min",
+        "P1D, 1 d 0 h",
+        "P2DT5H30M, 2 d 5 h"})
     void formatsUptimeForPeople(Duration uptime, String expected) {
         assertThat(HomeController.uptime(uptime)).isEqualTo(expected);
     }
@@ -105,7 +99,7 @@ class HomeControllerTests {
             beans.addBean("git", git);
         }
         return new HomeController(health, beans.getBeanProvider(BuildProperties.class),
-                beans.getBeanProvider(GitProperties.class), clock);
+            beans.getBeanProvider(GitProperties.class), clock);
     }
 
     private static Map<String, Object> render(HomeController controller) {

@@ -1,14 +1,12 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.personal.portfolio.mail.MailPayloads.ComposeRequest;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,11 +24,11 @@ class MailControllerTests {
         given(upload.getContentType()).willReturn(MediaType.APPLICATION_PDF_VALUE);
         given(upload.getBytes()).willThrow(failure);
         var request = new ComposeRequest(List.of("ada@example.test"), null, null, null, "Report", "Attached", false,
-                null);
+            null);
 
         assertThatThrownBy(() -> controller.composeWithAttachments(request, List.of(upload)))
-                .isInstanceOf(UncheckedIOException.class)
-                .hasCause(failure);
+            .isInstanceOf(UncheckedIOException.class)
+            .hasCause(failure);
         verifyNoInteractions(mail);
     }
 }

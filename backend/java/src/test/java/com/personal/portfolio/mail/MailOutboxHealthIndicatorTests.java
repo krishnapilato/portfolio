@@ -1,16 +1,12 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 import com.personal.portfolio.mail.MailPayloads.OutboxStats;
 import com.personal.portfolio.support.AppPropertiesFixture;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.util.Map;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,7 +20,7 @@ class MailOutboxHealthIndicatorTests {
 
     private final MailService mail = mock(MailService.class);
     private final MailOutboxHealthIndicator indicator =
-            new MailOutboxHealthIndicator(mail, AppPropertiesFixture.defaults(), Clock.fixed(NOW, ZoneOffset.UTC));
+        new MailOutboxHealthIndicator(mail, AppPropertiesFixture.defaults(), Clock.fixed(NOW, ZoneOffset.UTC));
 
     @Test
     void isUpWithTheQueueCountsWhenNothingIsDue() {
@@ -52,7 +48,7 @@ class MailOutboxHealthIndicatorTests {
 
         assertThat(health.getStatus().getCode()).isEqualTo(status);
         assertThat(health.getDetails()).containsExactlyInAnyOrderEntriesOf(
-                Map.of("pending", 2L, "failed", 0L, "oldestDue", oldestDue));
+            Map.of("pending", 2L, "failed", 0L, "oldestDue", oldestDue));
     }
 
     @Test
@@ -67,6 +63,6 @@ class MailOutboxHealthIndicatorTests {
 
     private static OutboxStats stats(long pending, long failed, @Nullable Instant oldestDue) {
         return new OutboxStats(Map.of(MailStatus.PENDING, pending, MailStatus.SENT, 0L, MailStatus.FAILED, failed,
-                MailStatus.CANCELLED, 0L), oldestDue);
+            MailStatus.CANCELLED, 0L), oldestDue);
     }
 }

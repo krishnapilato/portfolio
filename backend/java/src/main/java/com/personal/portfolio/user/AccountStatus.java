@@ -1,10 +1,7 @@
 package com.personal.portfolio.user;
 
 public enum AccountStatus {
-    PENDING,
-    ACTIVE,
-    LOCKED,
-    DISABLED;
+    PENDING, ACTIVE, LOCKED, DISABLED;
 
     public boolean canTransitionTo(AccountStatus target) {
         return switch (this) {

@@ -1,9 +1,9 @@
 package com.personal.portfolio.user;
 
+import module java.base;
+
 import com.personal.portfolio.platform.Tally;
 import jakarta.persistence.LockModeType;
-import java.util.List;
-import java.util.Optional;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -24,20 +24,20 @@ class ScrapersTests {
         assertThat(authentication.getName()).isEqualTo("prometheus");
         assertThat(authentication.getCredentials()).isNull();
         assertThat(authentication.getAuthorities()).extracting(GrantedAuthority::getAuthority)
-                .containsExactly("ROLE_METRICS");
+            .containsExactly("ROLE_METRICS");
     }
 
     @ParameterizedTest
     @CsvSource({
-            "prometheus, a-long-random-scrape-secret-012",
-            "prometheus, a-long-random-scrape-secret-01234",
-            "prometheus, A-LONG-RANDOM-SCRAPE-SECRET-0123",
-            "grafana, a-long-random-scrape-secret-0123"})
+        "prometheus, a-long-random-scrape-secret-012",
+        "prometheus, a-long-random-scrape-secret-01234",
+        "prometheus, A-LONG-RANDOM-SCRAPE-SECRET-0123",
+        "grafana, a-long-random-scrape-secret-0123"})
     void rejectsAnyOtherUserOrPassword(String user, String password) {
         var scraper = SecurityConfig.scraper(SECRET);
 
         assertThatThrownBy(() -> scraper.authenticate(basic(user, password)))
-                .isInstanceOf(BadCredentialsException.class);
+            .isInstanceOf(BadCredentialsException.class);
     }
 
     @ParameterizedTest
@@ -46,7 +46,7 @@ class ScrapersTests {
         var scraper = SecurityConfig.scraper(password);
 
         assertThatThrownBy(() -> scraper.authenticate(basic("prometheus", password)))
-                .isInstanceOf(BadCredentialsException.class);
+            .isInstanceOf(BadCredentialsException.class);
     }
 
     private static Authentication basic(String user, String password) {

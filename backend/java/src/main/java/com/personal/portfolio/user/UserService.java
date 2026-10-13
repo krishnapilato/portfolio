@@ -1,5 +1,7 @@
 package com.personal.portfolio.user;
 
+import module java.base;
+
 import com.personal.portfolio.auth.TokenPurpose;
 import com.personal.portfolio.auth.TokenVault;
 import com.personal.portfolio.platform.ApiException;
@@ -14,10 +16,6 @@ import com.personal.portfolio.user.UserPayloads.UpdateUser;
 import com.personal.portfolio.user.UserPayloads.UserStats;
 import com.personal.portfolio.user.UserPayloads.UserView;
 import jakarta.validation.constraints.Size;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
-import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
@@ -38,10 +36,6 @@ class UserService {
     private final UserRepository users;
     private final TokenVault vault;
     private final PasswordEncoder passwordEncoder;
-
-    private static void requireOther(long id, long actorId) {
-        if (id == actorId) throw new ApiException(new SelfManagement());
-    }
 
     Page<UserView> search(Criteria criteria, Pageable pageable) {
         var sorted = Pageables.restrict(pageable, SORTABLE);
@@ -93,8 +87,7 @@ class UserService {
         user.transitionTo(target);
         if (previous != target) {
             var revoked = previous == AccountStatus.ACTIVE ? vault.revoke(user, TokenPurpose.REFRESH) : 0;
-            log.info("Admin {} moved user {} from {} to {} ({} refresh tokens revoked)",
-                actorId, id, previous, target, revoked);
+            log.info("Admin {} moved user {} from {} to {} ({} refresh tokens revoked)", actorId, id, previous, target, revoked);
         }
         return flushed(user);
     }
@@ -117,11 +110,14 @@ class UserService {
         return UserView.of(user);
     }
 
+    private static void requireOther(long id, long actorId) {
+        if (id == actorId) throw new ApiException(new SelfManagement());
+    }
+
     private void keepAnAdministrator(User user) {
-        if (user.getRole() == Role.ADMIN && user.getStatus() == AccountStatus.ACTIVE
-            && users.findByRoleAndStatus(Role.ADMIN, AccountStatus.ACTIVE).size() < 2) {
+        var activeAdmin = user.getRole() == Role.ADMIN && user.getStatus() == AccountStatus.ACTIVE;
+        if (activeAdmin && users.findByRoleAndStatus(Role.ADMIN, AccountStatus.ACTIVE).size() < 2)
             throw new ApiException(new LastAdministrator());
-        }
     }
 
     record Criteria(@Nullable @Size(max = 100) String q, @Nullable Role role, @Nullable AccountStatus status) {

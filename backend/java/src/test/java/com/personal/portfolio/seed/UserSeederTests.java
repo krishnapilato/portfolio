@@ -1,12 +1,12 @@
 package com.personal.portfolio.seed;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.personal.portfolio.support.IntegrationTest;
 import com.personal.portfolio.user.AccountStatus;
 import com.personal.portfolio.user.Role;
 import com.personal.portfolio.user.UserRepository;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,9 +33,9 @@ class UserSeederTests extends IntegrationTest {
 
     @ParameterizedTest(name = "{0}")
     @CsvSource({
-            "admin@test.local, Khova Krishna Pilato, ADMIN, Admin-Passw0rd",
-            "ada@portfolio.local, Ada Lovelace, USER, Demo-Passw0rd",
-            "alan@portfolio.local, Alan Turing, USER, Demo-Passw0rd"})
+        "admin@test.local, Khova Krishna Pilato, ADMIN, Admin-Passw0rd",
+        "ada@portfolio.local, Ada Lovelace, USER, Demo-Passw0rd",
+        "alan@portfolio.local, Alan Turing, USER, Demo-Passw0rd"})
     void seedsActiveAccountsWithTheConfiguredPasswords(String email, String fullName, Role role, String password) {
         var user = users.findByEmail(email).orElseThrow();
 
@@ -55,7 +55,7 @@ class UserSeederTests extends IntegrationTest {
 
         assertThat(users.count()).isEqualTo(before);
         assertThat(SEEDED.stream().map(email -> users.findByEmail(email).orElseThrow().getId()).toList())
-                .isEqualTo(ids);
+            .isEqualTo(ids);
         assertThat(output.getOut()).contains("Seeded 0 of 3 users");
     }
 }

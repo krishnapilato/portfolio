@@ -1,18 +1,11 @@
 package com.personal.portfolio.user;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.personal.portfolio.support.IntegrationTest;
 import com.personal.portfolio.user.UserPayloads.UserStats;
 import com.personal.portfolio.user.UserPayloads.UserView;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Stream;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,8 +33,7 @@ class UserAdminTests extends IntegrationTest {
     private static final String USERS = "/api/v1/users";
     private static final String PASSWORD = "Str0ng-Passw0rd";
     private static final String SEEDED_ADMIN = "admin@test.local";
-    private static final List<String> SORTABLE =
-            List.of("createdAt", "email", "fullName", "lastLoginAt", "role", "status", "updatedAt");
+    private static final List<String> SORTABLE = List.of("createdAt", "email", "fullName", "lastLoginAt", "role", "status", "updatedAt");
 
     private final String marker = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
 
@@ -61,9 +53,9 @@ class UserAdminTests extends IntegrationTest {
         var edsger = persist("Edsger Dijkstra", email("edsger"), Role.USER, AccountStatus.DISABLED);
 
         assertThat(emails(page("?q={q}", marker)))
-                .containsExactlyInAnyOrder(grace.getEmail(), barbara.getEmail(), edsger.getEmail());
+            .containsExactlyInAnyOrder(grace.getEmail(), barbara.getEmail(), edsger.getEmail());
         assertThat(emails(page("?q={q}", " " + marker.toUpperCase(Locale.ROOT) + " ")))
-                .containsExactlyInAnyOrder(grace.getEmail(), barbara.getEmail(), edsger.getEmail());
+            .containsExactlyInAnyOrder(grace.getEmail(), barbara.getEmail(), edsger.getEmail());
         assertThat(emails(page("?q={q}&role=ADMIN", marker))).containsExactly(barbara.getEmail());
         assertThat(emails(page("?q={q}&status=DISABLED", marker))).containsExactly(edsger.getEmail());
         assertThat(emails(page("?q={q}&role=USER&status=ACTIVE", marker))).containsExactly(grace.getEmail());
@@ -105,7 +97,7 @@ class UserAdminTests extends IntegrationTest {
 
         var result = mvc.get().uri(USERS + "?q={q}&size=2&page=0&sort=email,asc", marker).with(admin()).exchange();
         assertThat(result).hasStatusOk().hasContentTypeCompatibleWith(MediaType.APPLICATION_JSON)
-                .bodyJson().extractingPath("$").asMap().containsOnlyKeys("content", "page");
+            .bodyJson().extractingPath("$").asMap().containsOnlyKeys("content", "page");
         var firstPage = read(result, PageBody.class);
         assertThat(firstPage.page()).isEqualTo(new PageMeta(2, 0, 3, 2));
         assertThat(emails(firstPage)).containsExactly(first.getEmail(), second.getEmail());
@@ -119,9 +111,9 @@ class UserAdminTests extends IntegrationTest {
         assertThat(beyond.page()).isEqualTo(new PageMeta(2, 5, 3, 2));
 
         assertThat(emails(page("?q={q}&sort=email,desc", marker)))
-                .containsExactly(third.getEmail(), second.getEmail(), first.getEmail());
+            .containsExactly(third.getEmail(), second.getEmail(), first.getEmail());
         assertThat(emails(page("?q={q}&sort=fullName,asc", marker)))
-                .containsExactly(first.getEmail(), third.getEmail(), second.getEmail());
+            .containsExactly(first.getEmail(), third.getEmail(), second.getEmail());
     }
 
     @Test
@@ -133,7 +125,7 @@ class UserAdminTests extends IntegrationTest {
         assertThat(defaults.page().size()).isEqualTo(20);
         assertThat(defaults.page().number()).isZero();
         assertThat(defaults.content()).hasSize(2).extracting(UserView::createdAt)
-                .isSortedAccordingTo(Comparator.reverseOrder());
+            .isSortedAccordingTo(Comparator.reverseOrder());
 
         assertThat(page("?size=500").page().size()).isEqualTo(100);
     }
@@ -151,7 +143,7 @@ class UserAdminTests extends IntegrationTest {
 
         assertProblem(result, HttpStatus.BAD_REQUEST, "unsupported-sort", "Unsupported sort property");
         assertThat(result).bodyJson().extractingPath("$.detail")
-                .isEqualTo("Sorting by '%s' is not supported".formatted(property));
+            .isEqualTo("Sorting by '%s' is not supported".formatted(property));
         assertThat(result).bodyJson().extractingPath("$.allowed").asArray().containsExactlyElementsOf(SORTABLE);
     }
 
@@ -190,16 +182,16 @@ class UserAdminTests extends IntegrationTest {
         assertThat(after.byRole()).containsOnlyKeys(Role.values());
         for (var status : AccountStatus.values()) {
             assertThat(after.byStatus()).containsEntry(status,
-                    users.findAll().stream().filter(user -> user.getStatus() == status).count());
+                users.findAll().stream().filter(user -> user.getStatus() == status).count());
         }
         assertThat(after.total()).isEqualTo(users.count())
-                .isEqualTo(sum(after.byStatus()))
-                .isEqualTo(sum(after.byRole()));
+            .isEqualTo(sum(after.byStatus()))
+            .isEqualTo(sum(after.byRole()));
         assertThat(after.total() - before.total()).isEqualTo(3);
         assertThat(delta(before.byStatus(), after.byStatus())).containsExactlyInAnyOrderEntriesOf(Map.of(
-                AccountStatus.PENDING, 1L, AccountStatus.ACTIVE, 0L, AccountStatus.LOCKED, 1L, AccountStatus.DISABLED, 1L));
+            AccountStatus.PENDING, 1L, AccountStatus.ACTIVE, 0L, AccountStatus.LOCKED, 1L, AccountStatus.DISABLED, 1L));
         assertThat(delta(before.byRole(), after.byRole()))
-                .containsExactlyInAnyOrderEntriesOf(Map.of(Role.USER, 2L, Role.ADMIN, 1L));
+            .containsExactlyInAnyOrderEntriesOf(Map.of(Role.USER, 2L, Role.ADMIN, 1L));
     }
 
     @Test
@@ -221,7 +213,7 @@ class UserAdminTests extends IntegrationTest {
         assertThat(result).hasStatusOk();
         assertThat(read(result, UserView.class)).isEqualTo(UserView.of(stored));
         assertThat(result).bodyJson().extractingPath("$").asMap()
-                .doesNotContainKeys("passwordHash", "failedLogins", "lockedUntil", "version");
+            .doesNotContainKeys("passwordHash", "failedLogins", "lockedUntil", "version");
     }
 
     @Test
@@ -230,7 +222,7 @@ class UserAdminTests extends IntegrationTest {
 
         assertProblem(result, HttpStatus.NOT_FOUND, "not-found", "Resource not found");
         assertThat(result).bodyJson().extractingPath("$.detail")
-                .isEqualTo("user '%d' does not exist".formatted(Long.MAX_VALUE));
+            .isEqualTo("user '%d' does not exist".formatted(Long.MAX_VALUE));
     }
 
     @Test
@@ -282,7 +274,7 @@ class UserAdminTests extends IntegrationTest {
 
             assertProblem(result, HttpStatus.CONFLICT, "email-taken", "Email already registered");
             assertThat(result).bodyJson().extractingPath("$.detail")
-                    .isEqualTo("An account for %s already exists".formatted(email));
+                .isEqualTo("An account for %s already exists".formatted(email));
         }
         assertThat(page("?q={q}", marker).page().totalElements()).isEqualTo(1);
         assertThat(reload(users.findByEmail(email).orElseThrow().getId()).getFullName()).isEqualTo("Original");
@@ -303,18 +295,18 @@ class UserAdminTests extends IntegrationTest {
 
     static Stream<Arguments> invalidCreations() {
         return Stream.of(
-                Arguments.of("fullName", " "),
-                Arguments.of("fullName", "x".repeat(101)),
-                Arguments.of("fullName", null),
-                Arguments.of("email", "not-an-email"),
-                Arguments.of("email", ""),
-                Arguments.of("email", "a".repeat(250) + "@example.test"),
-                Arguments.of("password", "Sh0rt"),
-                Arguments.of("password", "no-upper-case-1"),
-                Arguments.of("password", "NO-LOWER-CASE-1"),
-                Arguments.of("password", "No-Digits-Here"),
-                Arguments.of("password", null),
-                Arguments.of("role", null));
+            Arguments.of("fullName", " "),
+            Arguments.of("fullName", "x".repeat(101)),
+            Arguments.of("fullName", null),
+            Arguments.of("email", "not-an-email"),
+            Arguments.of("email", ""),
+            Arguments.of("email", "a".repeat(250) + "@example.test"),
+            Arguments.of("password", "Sh0rt"),
+            Arguments.of("password", "no-upper-case-1"),
+            Arguments.of("password", "NO-LOWER-CASE-1"),
+            Arguments.of("password", "No-Digits-Here"),
+            Arguments.of("password", null),
+            Arguments.of("role", null));
     }
 
     @ParameterizedTest
@@ -344,14 +336,14 @@ class UserAdminTests extends IntegrationTest {
         assertThat(renamed).hasStatusOk();
         var renamedView = read(renamed, UserView.class);
         assertThat(renamedView).extracting(UserView::fullName, UserView::role)
-                .containsExactly("Rear Admiral Hopper", Role.USER);
+            .containsExactly("Rear Admiral Hopper", Role.USER);
         assertThat(renamedView.updatedAt()).isAfter(user.getUpdatedAt());
 
         var promoted = patch(user.getId(), Map.of("role", "ADMIN"), admin());
         assertThat(promoted).hasStatusOk();
         var promotedView = read(promoted, UserView.class);
         assertThat(promotedView).extracting(UserView::fullName, UserView::role)
-                .containsExactly("Rear Admiral Hopper", Role.ADMIN);
+            .containsExactly("Rear Admiral Hopper", Role.ADMIN);
 
         var stored = reload(user.getId());
         assertThat(UserView.of(stored)).isEqualTo(promotedView);
@@ -371,7 +363,7 @@ class UserAdminTests extends IntegrationTest {
             var result = patch(user.getId(), request, admin());
             assertThat(result).hasStatusOk();
             assertThat(read(result, UserView.class)).extracting(UserView::fullName, UserView::role)
-                    .containsExactly("Grace Hopper", Role.USER);
+                .containsExactly("Grace Hopper", Role.USER);
         }
         assertThat(reload(user.getId()).getVersion()).isZero();
     }
@@ -403,7 +395,7 @@ class UserAdminTests extends IntegrationTest {
     @Test
     void patchReportsUnknownAccountsAsNotFound() {
         assertProblem(patch(Long.MAX_VALUE, Map.of("fullName", "Nobody"), admin()), HttpStatus.NOT_FOUND, "not-found",
-                "Resource not found");
+            "Resource not found");
     }
 
     @Test
@@ -424,7 +416,7 @@ class UserAdminTests extends IntegrationTest {
         var kept = patch(self, Map.of("role", "ADMIN"), admin(self));
         assertThat(kept).hasStatusOk();
         assertThat(read(kept, UserView.class)).extracting(UserView::fullName, UserView::role)
-                .containsExactly(name, Role.ADMIN);
+            .containsExactly(name, Role.ADMIN);
 
         var other = persist("Temporary Admin", email("admin"), Role.ADMIN, AccountStatus.ACTIVE);
         var renamed = patch(other.getId(), Map.of("fullName", "Renamed Admin", "role", "ADMIN"), admin(other.getId()));
@@ -502,7 +494,7 @@ class UserAdminTests extends IntegrationTest {
 
         assertProblem(result, HttpStatus.CONFLICT, "illegal-transition", "Illegal status transition");
         assertThat(result).bodyJson().extractingPath("$.detail").isEqualTo("An account cannot move from %s to %s"
-                .formatted(from.name().toLowerCase(Locale.ROOT), to.name().toLowerCase(Locale.ROOT)));
+            .formatted(from.name().toLowerCase(Locale.ROOT), to.name().toLowerCase(Locale.ROOT)));
         assertThat(reload(user.getId()).getStatus()).isEqualTo(from);
     }
 
@@ -512,7 +504,7 @@ class UserAdminTests extends IntegrationTest {
         var user = persist("Status Subject", email("malformed"), Role.USER, AccountStatus.ACTIVE);
 
         var result = mvc.put().uri(USERS + "/{id}/status", user.getId()).with(admin())
-                .contentType(MediaType.APPLICATION_JSON).content(request).exchange();
+            .contentType(MediaType.APPLICATION_JSON).content(request).exchange();
 
         assertThat(result).hasStatus(HttpStatus.BAD_REQUEST);
         assertThat(reload(user.getId()).getStatus()).isEqualTo(AccountStatus.ACTIVE);
@@ -521,7 +513,7 @@ class UserAdminTests extends IntegrationTest {
     @Test
     void statusChangesOfUnknownAccountsAreNotFound() {
         assertProblem(changeStatus(Long.MAX_VALUE - 1, Map.of("status", "LOCKED"), admin()), HttpStatus.NOT_FOUND,
-                "not-found", "Resource not found");
+            "not-found", "Resource not found");
     }
 
     @Test
@@ -534,14 +526,14 @@ class UserAdminTests extends IntegrationTest {
         assertThat(changeStatus(victim.id(), Map.of("status", "LOCKED"), admin())).hasStatusOk();
 
         assertThat(output.getOut()).contains("moved user %d from ACTIVE to LOCKED (1 refresh tokens revoked)"
-                .formatted(victim.id()));
+            .formatted(victim.id()));
         assertProblem(refresh(victimRefresh), HttpStatus.BAD_REQUEST, "invalid-token", "Invalid or expired token");
         assertProblem(login(victim.email()), HttpStatus.FORBIDDEN, "account-unavailable", "Account unavailable");
         assertThat(refresh(bystanderRefresh)).hasStatusOk();
 
         assertThat(changeStatus(victim.id(), Map.of("status", "ACTIVE"), admin())).hasStatusOk();
         assertThat(output.getOut()).contains("moved user %d from LOCKED to ACTIVE (0 refresh tokens revoked)"
-                .formatted(victim.id()));
+            .formatted(victim.id()));
         assertThat(login(victim.email())).hasStatusOk();
     }
 
@@ -567,9 +559,9 @@ class UserAdminTests extends IntegrationTest {
         assertThat(deleted.getResponse().getContentAsByteArray()).isEmpty();
         assertThat(users.existsById(user.id())).isFalse();
         assertProblem(mvc.get().uri(USERS + "/{id}", user.id()).with(admin()).exchange(), HttpStatus.NOT_FOUND,
-                "not-found", "Resource not found");
+            "not-found", "Resource not found");
         assertProblem(mvc.delete().uri(USERS + "/{id}", user.id()).with(admin()).exchange(), HttpStatus.NOT_FOUND,
-                "not-found", "Resource not found");
+            "not-found", "Resource not found");
         assertProblem(refresh(refreshToken), HttpStatus.BAD_REQUEST, "invalid-token", "Invalid or expired token");
         assertProblem(login(user.email()), HttpStatus.UNAUTHORIZED, "invalid-credentials", "Invalid credentials");
     }
@@ -578,9 +570,9 @@ class UserAdminTests extends IntegrationTest {
     void deleteAlsoRemovesAccountsWithPendingVerificationTokens() {
         var email = email("pending");
         var registered = mvc.post().uri("/api/v1/auth/register").contentType(MediaType.APPLICATION_JSON)
-                .content(json.writeValueAsString(Map.of("fullName", "Pending Registrant", "email", email,
-                        "password", PASSWORD)))
-                .exchange();
+            .content(json.writeValueAsString(Map.of("fullName", "Pending Registrant", "email", email,
+                "password", PASSWORD)))
+            .exchange();
         assertThat(registered).hasStatus(HttpStatus.CREATED);
         var pending = read(registered, UserView.class);
         assertThat(pending.status()).isEqualTo(AccountStatus.PENDING);
@@ -638,7 +630,7 @@ class UserAdminTests extends IntegrationTest {
 
     private MvcTestResult create(Map<String, ?> body) {
         return mvc.post().uri(USERS).with(admin()).contentType(MediaType.APPLICATION_JSON)
-                .content(json.writeValueAsString(body)).exchange();
+            .content(json.writeValueAsString(body)).exchange();
     }
 
     private UserView createViaApi(String fullName, String email, Role role) {
@@ -649,12 +641,12 @@ class UserAdminTests extends IntegrationTest {
 
     private MvcTestResult patch(long id, Map<String, ?> body, RequestPostProcessor actor) {
         return mvc.patch().uri(USERS + "/{id}", id).with(actor).contentType(MediaType.APPLICATION_JSON)
-                .content(json.writeValueAsString(body)).exchange();
+            .content(json.writeValueAsString(body)).exchange();
     }
 
     private MvcTestResult changeStatus(long id, Map<String, ?> body, RequestPostProcessor actor) {
         return mvc.put().uri(USERS + "/{id}/status", id).with(actor).contentType(MediaType.APPLICATION_JSON)
-                .content(json.writeValueAsString(body)).exchange();
+            .content(json.writeValueAsString(body)).exchange();
     }
 
     private PageBody page(String query, Object... variables) {
@@ -671,7 +663,7 @@ class UserAdminTests extends IntegrationTest {
 
     private MvcTestResult login(String email) {
         return mvc.post().uri("/api/v1/auth/login").contentType(MediaType.APPLICATION_JSON)
-                .content(json.writeValueAsString(Map.of("email", email, "password", PASSWORD))).exchange();
+            .content(json.writeValueAsString(Map.of("email", email, "password", PASSWORD))).exchange();
     }
 
     private String refreshTokenOf(String email) {
@@ -682,7 +674,7 @@ class UserAdminTests extends IntegrationTest {
 
     private MvcTestResult refresh(String refreshToken) {
         return mvc.post().uri("/api/v1/auth/refresh").contentType(MediaType.APPLICATION_JSON)
-                .content(json.writeValueAsString(Map.of("refreshToken", refreshToken))).exchange();
+            .content(json.writeValueAsString(Map.of("refreshToken", refreshToken))).exchange();
     }
 
     private <T> T read(MvcTestResult result, Class<T> type) {
@@ -710,7 +702,9 @@ class UserAdminTests extends IntegrationTest {
         assertThat(result).bodyJson().extractingPath("$.status").isEqualTo(status.value());
     }
 
-    record PageBody(List<UserView> content, PageMeta page) {}
+    record PageBody(List<UserView> content, PageMeta page) {
+    }
 
-    record PageMeta(int size, int number, long totalElements, int totalPages) {}
+    record PageMeta(int size, int number, long totalElements, int totalPages) {
+    }
 }

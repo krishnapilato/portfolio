@@ -1,5 +1,6 @@
 package com.personal.portfolio.security;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -8,9 +9,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import java.nio.charset.StandardCharsets;
-import java.util.Set;
-import java.util.stream.Stream;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
@@ -21,7 +19,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class StrongPasswordTests {
 
     private static final String MESSAGE =
-            "must be 10-72 characters (at most 72 bytes) and contain upper-case, lower-case and a digit";
+        "must be 10-72 characters (at most 72 bytes) and contain upper-case, lower-case and a digit";
     private static final ValidatorFactory FACTORY = Validation.buildDefaultValidatorFactory();
     private static final Validator VALIDATOR = FACTORY.getValidator();
 
@@ -40,12 +38,12 @@ class StrongPasswordTests {
     @MethodSource("weakPasswords")
     void rejectsWeakPasswordsWithASingleViolation(@Nullable String password) {
         assertThat(validate(password)).singleElement()
-                .satisfies(violation -> assertThat(violation.getMessage()).isEqualTo(MESSAGE));
+            .satisfies(violation -> assertThat(violation.getMessage()).isEqualTo(MESSAGE));
     }
 
     static Stream<@Nullable String> weakPasswords() {
         return Stream.of(null, "", "          ", "Sh0rt-pw", "Aa1Aa1Aa1", "all-lower-case-1", "ALL-UPPER-CASE-1",
-                "No-Digits-Anywhere", "A1" + "a".repeat(71), "Aa1" + "é".repeat(35));
+            "No-Digits-Anywhere", "A1" + "a".repeat(71), "Aa1" + "é".repeat(35));
     }
 
     @ParameterizedTest
@@ -71,5 +69,6 @@ class StrongPasswordTests {
         return VALIDATOR.validate(new Candidate(password));
     }
 
-    record Candidate(@StrongPassword @Nullable String password) {}
+    record Candidate(@StrongPassword @Nullable String password) {
+    }
 }

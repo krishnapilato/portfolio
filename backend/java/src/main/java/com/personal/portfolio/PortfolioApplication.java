@@ -12,9 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class PortfolioApplication {
 
     static void main(String[] args) {
-        // Records startup steps so /actuator/startup can show where boot time goes.
         new SpringApplicationBuilder(PortfolioApplication.class)
-                .applicationStartup(new BufferingApplicationStartup(4096))
-                .run(args);
+            .applicationStartup(new BufferingApplicationStartup(4096))
+            .run(args);
     }
 }

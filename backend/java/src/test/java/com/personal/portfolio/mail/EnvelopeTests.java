@@ -1,10 +1,9 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class EnvelopeTests {
@@ -12,7 +11,7 @@ class EnvelopeTests {
     @Test
     void countsVisibleAndBlindRecipients() {
         var envelope = new Envelope(List.of("a@x.io", "b@x.io"), List.of("c@x.io"),
-                List.of("d@x.io", "e@x.io", "f@x.io"), null, "Subject", "Body", false, List.of());
+            List.of("d@x.io", "e@x.io", "f@x.io"), null, "Subject", "Body", false, List.of());
 
         assertThat(envelope.recipientCount()).isEqualTo(6);
     }

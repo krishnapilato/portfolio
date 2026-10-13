@@ -1,17 +1,12 @@
 package com.personal.portfolio.platform;
 
+import module java.base;
 import static com.personal.portfolio.support.AppPropertiesFixture.secretOf;
 import static com.personal.portfolio.support.AppPropertiesFixture.withSecret;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.security.GeneralSecurityException;
-import java.util.Arrays;
-import java.util.HexFormat;
-import java.util.stream.Stream;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -52,8 +47,8 @@ class KeyRingTests {
         assertThat(signing).isNotEqualTo(hkdf(MASTER, FINGERPRINT_INFO));
         assertThat(signing).isNotEqualTo(Arrays.copyOf(MASTER, signing.length));
         assertThat(keyRing.fingerprint("token"))
-                .isNotEqualTo(HexFormat.of().formatHex(hmac(signing, "token".getBytes(UTF_8))))
-                .isNotEqualTo(HexFormat.of().formatHex(hmac(MASTER, "token".getBytes(UTF_8))));
+            .isNotEqualTo(HexFormat.of().formatHex(hmac(signing, "token".getBytes(UTF_8))))
+            .isNotEqualTo(HexFormat.of().formatHex(hmac(MASTER, "token".getBytes(UTF_8))));
     }
 
     @Test
@@ -77,10 +72,10 @@ class KeyRingTests {
         var fingerprint = keyRing.fingerprint("refresh-token");
 
         assertThat(fingerprint)
-                .matches("[0-9a-f]{64}")
-                .isEqualTo(keyRing.fingerprint("refresh-token"))
-                .isNotEqualTo(keyRing.fingerprint("refresh-token-2"))
-                .isNotEqualTo(keyRing.fingerprint("Refresh-token"));
+            .matches("[0-9a-f]{64}")
+            .isEqualTo(keyRing.fingerprint("refresh-token"))
+            .isNotEqualTo(keyRing.fingerprint("refresh-token-2"))
+            .isNotEqualTo(keyRing.fingerprint("Refresh-token"));
     }
 
     @Test
@@ -96,17 +91,17 @@ class KeyRingTests {
         var minimal = sequence(32, 0);
 
         assertThat(new KeyRing(withSecret(secretOf(minimal))).signingKey().getEncoded())
-                .isEqualTo(hkdf(minimal, SIGNING_INFO))
-                .isNotEqualTo(keyRing.signingKey().getEncoded());
+            .isEqualTo(hkdf(minimal, SIGNING_INFO))
+            .isNotEqualTo(keyRing.signingKey().getEncoded());
     }
 
     @ParameterizedTest
     @MethodSource("tooShortSecrets")
     void rejectsSecretsShorterThanThirtyTwoBytes(String secret) {
         assertThatThrownBy(() -> new KeyRing(withSecret(secret)))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage(INVALID_SECRET)
-                .hasNoCause();
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage(INVALID_SECRET)
+            .hasNoCause();
     }
 
     static Stream<String> tooShortSecrets() {
@@ -117,9 +112,9 @@ class KeyRingTests {
     @ValueSource(strings = {"not base64 at all!", "%%%%", "A", "AAAA====AAAA"})
     void rejectsSecretsThatAreNotBase64(String secret) {
         assertThatThrownBy(() -> new KeyRing(withSecret(secret)))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage(INVALID_SECRET)
-                .hasCauseInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage(INVALID_SECRET)
+            .hasCauseInstanceOf(IllegalArgumentException.class);
     }
 
     private static byte[] sequence(int length, int offset) {

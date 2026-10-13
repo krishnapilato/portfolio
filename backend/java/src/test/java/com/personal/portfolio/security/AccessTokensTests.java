@@ -1,5 +1,6 @@
 package com.personal.portfolio.security;
 
+import module java.base;
 import static com.personal.portfolio.support.AppPropertiesFixture.ACCESS_TOKEN_TTL;
 import static com.personal.portfolio.support.AppPropertiesFixture.AUDIENCE;
 import static com.personal.portfolio.support.AppPropertiesFixture.ISSUER;
@@ -13,13 +14,6 @@ import com.personal.portfolio.platform.KeyRing;
 import com.personal.portfolio.user.AccountStatus;
 import com.personal.portfolio.user.Role;
 import com.personal.portfolio.user.User;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.UUID;
-import javax.crypto.SecretKey;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -58,7 +52,7 @@ class AccessTokensTests {
         assertThat(jwt.getClaimAsString("email")).isEqualTo("ada@example.test");
         assertThat(jwt.getClaimAsString("name")).isEqualTo("Ada Lovelace");
         assertThat(jwt.getClaims()).containsOnlyKeys("iss", "aud", "sub", "iat", "exp", "jti", "email", "name", "roles",
-                "session_version");
+            "session_version");
         assertThat(AccessTokens.sessionVersion(jwt)).isZero();
     }
 

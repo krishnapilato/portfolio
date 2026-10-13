@@ -1,5 +1,7 @@
 package com.personal.portfolio.auth;
 
+import module java.base;
+
 import com.personal.portfolio.auth.AuthPayloads.Credentials;
 import com.personal.portfolio.auth.AuthPayloads.EmailRequest;
 import com.personal.portfolio.auth.AuthPayloads.PasswordChange;
@@ -28,12 +30,6 @@ import com.personal.portfolio.user.Role;
 import com.personal.portfolio.user.User;
 import com.personal.portfolio.user.UserPayloads.UserView;
 import com.personal.portfolio.user.UserRepository;
-import java.net.URI;
-import java.time.Clock;
-import java.time.Instant;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -64,11 +60,9 @@ class AuthService {
 
     public UserView register(Registration registration) {
         var email = User.normalizeEmail(registration.email());
-        if (users.existsByEmail(email)) {
-            throw new ApiException(new EmailTaken(email));
-        }
-        var user = users.save(User.register(registration.fullName(), email, hash(registration.password()),
-                Role.USER, AccountStatus.PENDING));
+        if (users.existsByEmail(email)) throw new ApiException(new EmailTaken(email));
+
+        var user = users.save(User.register(registration.fullName(), email, hash(registration.password()), Role.USER, AccountStatus.PENDING));
         sendVerification(user);
         audit(AuditType.USER_REGISTERED, user);
         log.info("Registered user {}", user.getId());
@@ -84,34 +78,33 @@ class AuthService {
 
     public void resendVerification(EmailRequest request) {
         findByEmail(request.email())
-                .filter(user -> user.getStatus() == AccountStatus.PENDING)
-                .filter(user -> !vault.issuedRecently(user, TokenPurpose.EMAIL_VERIFICATION))
-                .ifPresent(user -> {
-                    vault.revoke(user, TokenPurpose.EMAIL_VERIFICATION);
-                    sendVerification(user);
-                });
+            .filter(user -> user.getStatus() == AccountStatus.PENDING)
+            .filter(user -> !vault.issuedRecently(user, TokenPurpose.EMAIL_VERIFICATION))
+            .ifPresent(user -> {
+                vault.revoke(user, TokenPurpose.EMAIL_VERIFICATION);
+                sendVerification(user);
+            });
     }
 
     public TokenPair login(Credentials credentials) {
         var now = clock.instant();
         var email = User.normalizeEmail(credentials.email());
         var account = users.findForUpdateByEmail(email);
+
         // Unknown, locked and real accounts all get one bcrypt check and the same 401,
         // so neither the answer nor its timing reveals which emails are registered.
-        var passwordMatches = passwordEncoder.matches(credentials.password(),
-                account.map(User::getPasswordHash).orElse(DUMMY_HASH));
+        var passwordMatches = passwordEncoder.matches(credentials.password(), account.map(User::getPasswordHash).orElse(DUMMY_HASH));
         var user = account.filter(found -> !found.isLockedOut(now))
-                .orElseThrow(() -> rejected(email, account.isPresent() ? "locked" : "unknown-account"));
+            .orElseThrow(() -> rejected(email, account.isPresent() ? "locked" : "unknown-account"));
+
         if (!passwordMatches) {
             recordFailure(user, now);
             throw rejected(email, "bad-credentials");
         }
-        if (user.getStatus() != AccountStatus.ACTIVE) {
-            throw new ApiException(new AccountUnavailable(user.getStatus()));
-        }
-        if (passwordEncoder.upgradeEncoding(user.getPasswordHash())) {
-            user.upgradePasswordHash(hash(credentials.password()));
-        }
+        if (user.getStatus() != AccountStatus.ACTIVE) throw new ApiException(new AccountUnavailable(user.getStatus()));
+
+        if (passwordEncoder.upgradeEncoding(user.getPasswordHash())) user.upgradePasswordHash(hash(credentials.password()));
+
         user.recordSuccessfulLogin(now);
         audit(AuditType.AUTHENTICATION_SUCCESS, user);
         return tokenPair(user, vault.issue(user, TokenPurpose.REFRESH));
@@ -120,10 +113,9 @@ class AuthService {
     public TokenPair refresh(RefreshRequest request) {
         var refresh = vault.redeem(request.refreshToken(), TokenPurpose.REFRESH);
         var user = refresh.getUser();
-        var status = user.getStatus();
-        if (status != AccountStatus.ACTIVE) {
+        if (user.getStatus() != AccountStatus.ACTIVE) {
             vault.revoke(user, TokenPurpose.REFRESH);
-            throw new ApiException(new AccountUnavailable(status));
+            throw new ApiException(new AccountUnavailable(user.getStatus()));
         }
         return tokenPair(user, vault.rotate(refresh));
     }
@@ -134,16 +126,15 @@ class AuthService {
 
     public void forgotPassword(EmailRequest request) {
         findByEmail(request.email())
-                .filter(user -> canRecover(user.getStatus()))
-                .filter(user -> !vault.issuedRecently(user, TokenPurpose.PASSWORD_RESET))
-                .ifPresent(this::sendPasswordReset);
+            .filter(user -> canRecover(user.getStatus()))
+            .filter(user -> !vault.issuedRecently(user, TokenPurpose.PASSWORD_RESET))
+            .ifPresent(this::sendPasswordReset);
     }
 
     public void resetPassword(PasswordReset reset) {
         var user = vault.redeem(reset.token(), TokenPurpose.PASSWORD_RESET).getUser();
-        if (!canRecover(user.getStatus())) {
-            throw new ApiException(new AccountUnavailable(user.getStatus()));
-        }
+        if (!canRecover(user.getStatus())) throw new ApiException(new AccountUnavailable(user.getStatus()));
+
         user.changePassword(hash(reset.newPassword()));
         user.verifyEmail();
         vault.revoke(user, TokenPurpose.REFRESH);
@@ -165,15 +156,13 @@ class AuthService {
     public void changePassword(long userId, PasswordChange change) {
         var user = find(userId);
         var now = clock.instant();
-        // The current password is all that stands between a stolen access token and a stolen account,
-        // so guessing it is limited exactly like guessing at sign-in.
-        if (user.isLockedOut(now)) {
-            throw new ApiException(new TemporarilyLocked(lockedUntil(user)));
-        }
+
+        if (user.isLockedOut(now)) throw new ApiException(new TemporarilyLocked(lockedUntil(user)));
         if (!passwordEncoder.matches(change.currentPassword(), user.getPasswordHash())) {
             recordFailure(user, now);
             throw new ApiException(new WrongPassword());
         }
+
         user.changePassword(hash(change.newPassword()));
         vault.revoke(user, TokenPurpose.REFRESH);
         vault.revoke(user, TokenPurpose.PASSWORD_RESET);
@@ -204,21 +193,19 @@ class AuthService {
 
     private TokenPair tokenPair(User user, IssuedToken refresh) {
         var access = accessTokens.issue(user);
-        return new TokenPair(TokenType.BEARER.getValue(), access.value(), access.expiresAt(),
-                properties.security().accessTokenTtl().toSeconds(), refresh.value(), refresh.expiresAt());
+        return new TokenPair(TokenType.BEARER.getValue(), access.value(), access.expiresAt(), properties.security().accessTokenTtl().toSeconds(), refresh.value(), refresh.expiresAt());
     }
 
     private void sendVerification(User user) {
         var token = vault.issue(user, TokenPurpose.EMAIL_VERIFICATION);
-        notifier.notify(new VerifyEmail(user.getEmail(), user.getFullName(), token.value(),
-                frontendLink("verify-email", token)));
+        notifier.notify(new VerifyEmail(user.getEmail(), user.getFullName(), token.value(), frontendLink("verify-email", token)));
     }
 
     private void sendPasswordReset(User user) {
         vault.revoke(user, TokenPurpose.PASSWORD_RESET);
         var token = vault.issue(user, TokenPurpose.PASSWORD_RESET);
         notifier.notify(new ResetPassword(user.getEmail(), user.getFullName(), token.value(),
-                frontendLink("reset-password", token), TokenPurpose.PASSWORD_RESET.ttl(properties.security())));
+            frontendLink("reset-password", token), TokenPurpose.PASSWORD_RESET.ttl(properties.security())));
     }
 
     private void notifyPasswordChanged(User user) {
@@ -227,11 +214,7 @@ class AuthService {
     }
 
     private URI frontendLink(String page, IssuedToken token) {
-        return UriComponentsBuilder.fromUri(properties.frontendUrl())
-                .pathSegment(page)
-                .queryParam("token", token.value())
-                .build()
-                .toUri();
+        return UriComponentsBuilder.fromUri(properties.frontendUrl()).pathSegment(page).queryParam("token", token.value()).build().toUri();
     }
 
     private Optional<User> findByEmail(String email) {

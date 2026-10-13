@@ -22,20 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequiredArgsConstructor
 @SecurityRequirements
 @Tag(name = "Authentication", description = "Registration, email verification, token issuance and password recovery")
 @RequestMapping(path = "/api/v{version}/auth", version = "1")
+@RequiredArgsConstructor
 class AuthController {
-
-    private static final String ACCOUNT_PATH = "/api/v1/me";
 
     private final AuthService auth;
 
     @PostMapping("/register")
     ResponseEntity<UserView> register(@Valid @RequestBody Registration registration) {
         var user = auth.register(registration);
-        var account = ServletUriComponentsBuilder.fromCurrentContextPath().path(ACCOUNT_PATH).build().toUri();
+        var account = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/me").build().toUri();
         return ResponseEntity.created(account).body(user);
     }
 

@@ -1,5 +1,7 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
+
 import com.personal.portfolio.platform.ApiException;
 import com.personal.portfolio.platform.Problem.MailNotModifiable;
 import jakarta.persistence.CollectionTable;
@@ -17,12 +19,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,7 +52,6 @@ public class MailMessage {
     private List<String> bcc;
 
     private @Nullable String replyTo;
-
     private String subject;
 
     @Column(columnDefinition = "longtext")
@@ -68,13 +63,9 @@ public class MailMessage {
     private MailStatus status;
 
     private int attempts;
-
     private Instant scheduledAt;
-
     private @Nullable Instant sentAt;
-
     private @Nullable String lastError;
-
     private @Nullable String requestId;
 
     @CreationTimestamp
@@ -124,22 +115,18 @@ public class MailMessage {
             return;
         }
         var backoff = initialBackoff.multipliedBy(1L << Math.min(attempts - 1, MAX_BACKOFF_SHIFT));
-        scheduledAt = now.plus(Comparator.<Duration>naturalOrder().min(backoff, maxBackoff));
+        scheduledAt = now.plus(Collections.min(List.of(backoff, maxBackoff)));
     }
 
     public void retry(Instant now) {
-        if (status != MailStatus.FAILED && status != MailStatus.CANCELLED) {
-            throw notModifiable();
-        }
+        if (status != MailStatus.FAILED && status != MailStatus.CANCELLED) throw notModifiable();
         status = MailStatus.PENDING;
         attempts = 0;
         scheduledAt = now;
     }
 
     public void cancel() {
-        if (status != MailStatus.PENDING) {
-            throw notModifiable();
-        }
+        if (status != MailStatus.PENDING) throw notModifiable();
         status = MailStatus.CANCELLED;
     }
 

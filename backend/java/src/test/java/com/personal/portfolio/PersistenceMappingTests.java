@@ -1,5 +1,6 @@
 package com.personal.portfolio;
 
+import module java.base;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -13,8 +14,8 @@ import com.personal.portfolio.mail.Envelope;
 import com.personal.portfolio.mail.MailMessage;
 import com.personal.portfolio.mail.MailPayloads.AttachmentView;
 import com.personal.portfolio.mail.MailPayloads.MailView;
-import com.personal.portfolio.mail.MailRepository.AttachmentMeta;
 import com.personal.portfolio.mail.MailRepository;
+import com.personal.portfolio.mail.MailRepository.AttachmentMeta;
 import com.personal.portfolio.mail.MailStatus;
 import com.personal.portfolio.platform.Tally;
 import com.personal.portfolio.user.AccountStatus;
@@ -22,9 +23,6 @@ import com.personal.portfolio.user.Role;
 import com.personal.portfolio.user.User;
 import com.personal.portfolio.user.UserPayloads.UserView;
 import com.personal.portfolio.user.UserRepository;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -58,8 +56,7 @@ class PersistenceMappingTests {
 
     @Test
     void persistsUsersAndAnswersTheirQueries() {
-        var ada = users.save(User.register("  Ada Lovelace ", " Ada@Portfolio.Local ", "{bcrypt}ada", Role.ADMIN,
-                AccountStatus.PENDING));
+        var ada = users.save(User.register("  Ada Lovelace ", " Ada@Portfolio.Local ", "{bcrypt}ada", Role.ADMIN, AccountStatus.PENDING));
         users.save(User.register("Alan Turing", "alan@portfolio.local", "{bcrypt}alan", Role.USER, AccountStatus.ACTIVE));
         detach();
 
@@ -84,23 +81,22 @@ class PersistenceMappingTests {
         assertThat(active.getLastLoginAt()).isEqualTo(NOW);
         assertThat(users.existsByEmail("alan@portfolio.local")).isTrue();
         assertThat(users.findByRoleAndStatus(Role.ADMIN, AccountStatus.ACTIVE)).extracting(User::getEmail)
-                .containsExactly("ada@portfolio.local");
+            .containsExactly("ada@portfolio.local");
         assertThat(users.findByRoleAndStatus(Role.ADMIN, AccountStatus.PENDING)).isEmpty();
         assertThat(users.search("%ada%", null, null, FIRST_PAGE)).extracting(User::getEmail)
-                .containsExactly("ada@portfolio.local");
+            .containsExactly("ada@portfolio.local");
         assertThat(users.search(null, Role.USER, AccountStatus.ACTIVE, FIRST_PAGE)).extracting(User::getEmail)
-                .containsExactly("alan@portfolio.local");
+            .containsExactly("alan@portfolio.local");
         assertThat(Tally.zeroFilled(AccountStatus.class, users.tallyByStatus())).containsExactly(
-                entry(AccountStatus.PENDING, 0L), entry(AccountStatus.ACTIVE, 2L),
-                entry(AccountStatus.LOCKED, 0L), entry(AccountStatus.DISABLED, 0L));
+            entry(AccountStatus.PENDING, 0L), entry(AccountStatus.ACTIVE, 2L),
+            entry(AccountStatus.LOCKED, 0L), entry(AccountStatus.DISABLED, 0L));
         assertThat(Tally.zeroFilled(Role.class, users.tallyByRole()))
-                .containsExactly(entry(Role.USER, 1L), entry(Role.ADMIN, 1L));
+            .containsExactly(entry(Role.USER, 1L), entry(Role.ADMIN, 1L));
     }
 
     @Test
     void persistsTokensAndRevokesThemInBulk() {
-        var owner = users.save(User.register("Grace Hopper", "grace@portfolio.local", "{bcrypt}grace", Role.USER,
-                AccountStatus.ACTIVE));
+        var owner = users.save(User.register("Grace Hopper", "grace@portfolio.local", "{bcrypt}grace", Role.USER, AccountStatus.ACTIVE));
         var family = "01999a4e-3c1b-7d2e-8f00-123456789abc";
         var expiry = NOW.plus(Duration.ofDays(30));
         tokens.save(UserToken.issue(owner, TokenPurpose.REFRESH, "a".repeat(64), family, expiry));
@@ -120,8 +116,7 @@ class PersistenceMappingTests {
         assertThat(tokens.claim(refresh.getId(), NOW)).isEqualTo(1);
         detach();
 
-        assertThat(tokens.findByFingerprintAndPurpose("a".repeat(64), TokenPurpose.REFRESH))
-                .hasValueSatisfying(token -> assertThat(token.getConsumedAt()).isEqualTo(NOW));
+        assertThat(tokens.findByFingerprintAndPurpose("a".repeat(64), TokenPurpose.REFRESH)).hasValueSatisfying(token -> assertThat(token.getConsumedAt()).isEqualTo(NOW));
         assertThat(tokens.findByFingerprintAndPurpose("a".repeat(64), TokenPurpose.PASSWORD_RESET)).isEmpty();
         assertThat(tokens.deleteExpired(NOW)).isEqualTo(1);
         assertThat(tokens.deleteByUserAndPurpose(owner, TokenPurpose.PASSWORD_RESET)).isEqualTo(1);
@@ -132,17 +127,17 @@ class PersistenceMappingTests {
     @Test
     void persistsMessagesWithOrderedAttachments() {
         var envelope = new Envelope(List.of("a@example.test", "b@example.test"), List.of(), List.of("audit@example.test"),
-                "reply@example.test", "Quarterly report", "<p>Attached.</p>", true, List.of(
-                        new Attachment("report.txt", "text/plain", "alpha".getBytes(UTF_8)),
-                        new Attachment("chart.png", "image/png", new byte[] {1, 2, 3})));
+            "reply@example.test", "Quarterly report", "<p>Attached.</p>", true, List.of(
+            new Attachment("report.txt", "text/plain", "alpha".getBytes(UTF_8)),
+            new Attachment("chart.png", "image/png", new byte[]{1, 2, 3})));
         var due = mails.save(MailMessage.compose(envelope, NOW, "req-01999a4e"));
         var later = mails.save(MailMessage.compose(Envelope.html("c@example.test", "Later", "<p>Soon.</p>"),
-                NOW.plusSeconds(60), null));
+            NOW.plusSeconds(60), null));
         detach();
 
         assertThat(mails.attachmentMeta(List.of(later.getId(), due.getId())))
-                .extracting(AttachmentMeta::getMessageId, AttachmentMeta::getFilename, AttachmentMeta::getSize)
-                .containsExactly(tuple(due.getId(), "report.txt", 5), tuple(due.getId(), "chart.png", 3));
+            .extracting(AttachmentMeta::getMessageId, AttachmentMeta::getFilename, AttachmentMeta::getSize)
+            .containsExactly(tuple(due.getId(), "report.txt", 5), tuple(due.getId(), "chart.png", 3));
         var reloaded = mails.findById(due.getId()).orElseThrow();
         var attachments = mails.attachmentMeta(List.of(due.getId())).stream().map(AttachmentView::of).toList();
         assertThat(MailView.of(reloaded, attachments)).satisfies(view -> {
@@ -153,8 +148,8 @@ class PersistenceMappingTests {
             assertThat(view.status()).isEqualTo(MailStatus.PENDING);
             assertThat(view.scheduledAt()).isEqualTo(NOW);
             assertThat(view.attachments()).extracting(AttachmentView::filename, AttachmentView::contentType,
-                    AttachmentView::size).containsExactly(tuple("report.txt", "text/plain", 5),
-                    tuple("chart.png", "image/png", 3));
+                AttachmentView::size).containsExactly(tuple("report.txt", "text/plain", 5),
+                tuple("chart.png", "image/png", 3));
         });
         assertThat(reloaded.envelope()).satisfies(snapshot -> {
             assertThat(snapshot.body()).isEqualTo("<p>Attached.</p>");
@@ -164,7 +159,7 @@ class PersistenceMappingTests {
         assertThat(reloaded.getRequestId()).isEqualTo("req-01999a4e");
 
         assertThat(mails.lockDue(MailStatus.PENDING, NOW, Limit.of(10))).extracting(MailMessage::getId)
-                .containsExactly(due.getId());
+            .containsExactly(due.getId());
         assertThat(mails.oldestDue(MailStatus.PENDING, NOW)).contains(NOW);
         assertThat(mails.oldestDue(MailStatus.FAILED, NOW)).isEmpty();
         assertThat(mails.findByStatus(MailStatus.PENDING, FIRST_PAGE).getTotalElements()).isEqualTo(2);
@@ -177,8 +172,8 @@ class PersistenceMappingTests {
         assertThat(sent.getSentAt()).isEqualTo(NOW);
         assertThat(sent.getVersion()).isEqualTo(1);
         assertThat(Tally.zeroFilled(MailStatus.class, mails.tallyByStatus())).containsExactly(
-                entry(MailStatus.PENDING, 1L), entry(MailStatus.SENT, 1L),
-                entry(MailStatus.FAILED, 0L), entry(MailStatus.CANCELLED, 0L));
+            entry(MailStatus.PENDING, 1L), entry(MailStatus.SENT, 1L),
+            entry(MailStatus.FAILED, 0L), entry(MailStatus.CANCELLED, 0L));
     }
 
     private void detach() {

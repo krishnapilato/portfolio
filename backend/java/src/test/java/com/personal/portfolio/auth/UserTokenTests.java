@@ -1,13 +1,12 @@
 package com.personal.portfolio.auth;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.personal.portfolio.support.AppPropertiesFixture;
 import com.personal.portfolio.user.AccountStatus;
 import com.personal.portfolio.user.Role;
 import com.personal.portfolio.user.User;
-import java.time.Duration;
-import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
 class UserTokenTests {
@@ -16,8 +15,7 @@ class UserTokenTests {
     private static final String FINGERPRINT = "f".repeat(64);
     private static final String FAMILY = "01999a4e-3c1b-7d2e-8f00-123456789abc";
 
-    private final User owner = User.register("Ada Lovelace", "ada@example.test", "{noop}secret", Role.USER,
-            AccountStatus.ACTIVE);
+    private final User owner = User.register("Ada Lovelace", "ada@example.test", "{noop}secret", Role.USER, AccountStatus.ACTIVE);
 
     @Test
     void keepsWhatItWasIssuedWith() {

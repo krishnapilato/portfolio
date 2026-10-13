@@ -1,13 +1,9 @@
 package com.personal.portfolio.platform;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
-import java.util.Map;
-import java.util.Properties;
-import java.util.stream.IntStream;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -50,12 +46,12 @@ class PlatformConfigTests {
 
     @ParameterizedTest(name = "{0} -> {1}")
     @CsvSource(nullValues = "none", value = {
-            "/api/v1/users, v1",
-            "/api/v2/me, v2",
-            "/api/v1, v1",
-            "/system/snapshot, none",
-            "/, none",
-            "/apiary/v1/users, none"})
+        "/api/v1/users, v1",
+        "/api/v2/me, v2",
+        "/api/v1, v1",
+        "/system/snapshot, none",
+        "/, none",
+        "/apiary/v1/users, none"})
     void readsTheApiVersionFromTheSecondPathSegmentOfApiRequests(String path, @Nullable String version) {
         var request = new MockHttpServletRequest("GET", path);
         ServletRequestPathUtils.parseAndCache(request);
@@ -69,7 +65,7 @@ class PlatformConfigTests {
         build.setProperty("version", "2.3.4");
 
         var openApi = config.openApi(new StaticListableBeanFactory(Map.of("build", new BuildProperties(build)))
-                .getBeanProvider(BuildProperties.class));
+            .getBeanProvider(BuildProperties.class));
 
         assertThat(openApi.getInfo()).satisfies(info -> {
             assertThat(info.getTitle()).isEqualTo("Portfolio Platform API");
@@ -84,9 +80,9 @@ class PlatformConfigTests {
             assertThat(scheme.getBearerFormat()).isEqualTo("JWT");
         });
         assertThat(openApi.getSecurity()).singleElement().satisfies(requirement ->
-                assertThat(requirement).containsOnlyKeys("bearer-jwt"));
+            assertThat(requirement).containsOnlyKeys("bearer-jwt"));
         assertThat(openApi.getServers()).singleElement().satisfies(server ->
-                assertThat(server.getUrl()).isEqualTo("/"));
+            assertThat(server.getUrl()).isEqualTo("/"));
     }
 
     @Test

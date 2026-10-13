@@ -1,5 +1,6 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -18,9 +19,6 @@ import jakarta.mail.Message.RecipientType;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 import java.sql.Timestamp;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,7 +63,7 @@ class MailDispatcherTests extends OutboxIntegrationTest {
         var recipient = address();
         var message = enqueue(new Envelope(List.of(recipient), List.of(), List.of(), null, "Invoice", "<p>Paid</p>",
                 true, List.of(new Attachment("invoice.txt", "text/plain", "total: 42".getBytes(UTF_8)))),
-                clock.instant());
+            clock.instant());
 
         var report = dispatcher.dispatch();
 
@@ -127,7 +125,7 @@ class MailDispatcherTests extends OutboxIntegrationTest {
     @Test
     void doesNotRetryFailuresOtherThanSendFailures() {
         willThrow(new MailAuthenticationException("535 authentication failed"))
-                .given(mailSender).send(any(MimeMessage.class));
+            .given(mailSender).send(any(MimeMessage.class));
         var message = enqueue(Envelope.html(address(), "Locked out", "<p>Nope</p>"), clock.instant());
 
         assertThat(dispatcher.dispatch()).isEqualTo(new DispatchReport(0, 1));
@@ -137,6 +135,20 @@ class MailDispatcherTests extends OutboxIntegrationTest {
         assertThat(rescheduled.getStatus()).isEqualTo(MailStatus.PENDING);
         assertThat(rescheduled.getAttempts()).isEqualTo(1);
         assertThat(rescheduled.getLastError()).isEqualTo("535 authentication failed");
+        withdraw(message.getId());
+    }
+
+    @Test
+    void countsAnUnexpectedFailureAsAnAttemptInsteadOfRollingTheBatchBack() {
+        willThrow(new IllegalStateException("connection pool exhausted")).given(mailSender).send(any(MimeMessage.class));
+        var message = enqueue(Envelope.html(address(), "Unexpected", "<p>Oops</p>"), clock.instant());
+
+        assertThat(dispatcher.dispatch()).isEqualTo(new DispatchReport(0, 1));
+
+        var rescheduled = reload(message.getId());
+        assertThat(rescheduled.getStatus()).isEqualTo(MailStatus.PENDING);
+        assertThat(rescheduled.getAttempts()).isEqualTo(1);
+        assertThat(rescheduled.getLastError()).isEqualTo("connection pool exhausted");
         withdraw(message.getId());
     }
 
@@ -196,7 +208,7 @@ class MailDispatcherTests extends OutboxIntegrationTest {
         var later = clock.instant().plus(Duration.ofHours(1));
         var waiting = enqueue(Envelope.html(address(), "Waiting", "<p>Later</p>"), later);
         var dropped = enqueue(new Envelope(List.of(address()), List.of(), List.of(), null, "Dropped", "<p>Never</p>",
-                true, List.of(new Attachment("note.txt", "text/plain", "x".getBytes(UTF_8)))), later);
+            true, List.of(new Attachment("note.txt", "text/plain", "x".getBytes(UTF_8)))), later);
         withdraw(dropped.getId());
 
         assertThat(dispatcher.purge()).isZero();

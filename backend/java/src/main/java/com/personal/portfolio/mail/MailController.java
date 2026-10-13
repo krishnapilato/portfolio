@@ -1,5 +1,6 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static java.util.function.Predicate.not;
 
 import com.personal.portfolio.mail.MailPayloads.BulkReceipt;
@@ -10,11 +11,6 @@ import com.personal.portfolio.mail.MailPayloads.OutboxStats;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springdoc.core.annotations.ParameterObject;
@@ -41,6 +37,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequiredArgsConstructor
 class MailController {
 
+    private final MailService mail;
+
     private static final int MAX_ATTACHMENTS = 5;
     private static final int MAX_FILENAME = 255;
     private static final String UNNAMED_ATTACHMENT = "attachment";
@@ -49,8 +47,6 @@ class MailController {
     private static final Pattern UNSAFE_FILENAME = Pattern.compile("(?s)^.*[/\\\\]|\\p{Cntrl}");
     private static final Pattern MEDIA_TYPE = Pattern.compile("[\\w.+-]{1,63}/[\\w.+-]{1,63}");
 
-    private final MailService mail;
-
     @PostMapping(path = "/messages", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<MailView> compose(@Valid @RequestBody ComposeRequest request) {
         return accepted(mail.compose(request, List.of()));
@@ -58,13 +54,13 @@ class MailController {
 
     @PostMapping(path = "/messages", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<MailView> composeWithAttachments(
-            @Valid @RequestPart("message") ComposeRequest request,
-            @Size(max = MAX_ATTACHMENTS) @RequestPart(name = "attachments", required = false)
-                    @Nullable List<MultipartFile> attachments) {
+        @Valid @RequestPart("message") ComposeRequest request,
+        @Size(max = MAX_ATTACHMENTS) @RequestPart(name = "attachments", required = false)
+        @Nullable List<MultipartFile> attachments) {
         var files = Objects.requireNonNullElse(attachments, List.<MultipartFile>of()).stream()
-                .filter(not(MultipartFile::isEmpty))
-                .map(MailController::attachment)
-                .toList();
+            .filter(not(MultipartFile::isEmpty))
+            .map(MailController::attachment)
+            .toList();
         return accepted(mail.compose(request, files));
     }
 
@@ -75,9 +71,9 @@ class MailController {
 
     @GetMapping("/messages")
     Page<MailView> list(
-            @RequestParam(required = false) @Nullable MailStatus status,
-            @ParameterObject @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
-                    Pageable pageable) {
+        @RequestParam(required = false) @Nullable MailStatus status,
+        @ParameterObject @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
+        Pageable pageable) {
         return mail.list(status, pageable);
     }
 
@@ -102,10 +98,7 @@ class MailController {
     }
 
     private static ResponseEntity<MailView> accepted(MailView view) {
-        var location = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .path("/{id}")
-                .buildAndExpand(view.id())
-                .toUri();
+        var location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(view.id()).toUri();
         return ResponseEntity.accepted().location(location).body(view);
     }
 

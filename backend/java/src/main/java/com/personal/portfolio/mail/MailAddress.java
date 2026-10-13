@@ -1,5 +1,6 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -12,9 +13,6 @@ import jakarta.validation.Payload;
 import jakarta.validation.ReportAsSingleViolation;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 
 // Printable ASCII without quotes, commas or semicolons: one value is always exactly one plain address,
 // with nothing that could add a recipient or bend a mail header.

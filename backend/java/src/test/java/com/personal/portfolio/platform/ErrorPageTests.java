@@ -1,23 +1,21 @@
 package com.personal.portfolio.platform;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.personal.portfolio.security.AccessTokens;
 import com.personal.portfolio.support.IntegrationTest;
 import com.personal.portfolio.user.UserRepository;
-import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpResponse;
-import java.util.UUID;
+import java.net.http.HttpResponse.BodyHandlers;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -54,14 +52,14 @@ class ErrorPageTests extends IntegrationTest {
 
         assertThat(response.statusCode()).isEqualTo(404);
         assertThat(response.headers().firstValue(HttpHeaders.CONTENT_TYPE)).hasValueSatisfying(type ->
-                assertThat(MediaType.parseMediaType(type).isCompatibleWith(MediaType.TEXT_HTML)).isTrue());
+            assertThat(MediaType.parseMediaType(type).isCompatibleWith(MediaType.TEXT_HTML)).isTrue());
         assertThat(response.headers().firstValue(CorrelationFilter.HEADER)).contains(requestId);
         assertThat(response.body())
-                .contains("<title>404 Not Found · Portfolio Platform</title>")
-                .contains("Page not found")
-                .contains("<code>" + requestId + "</code>")
-                .contains("<code>/missing-page</code>")
-                .doesNotContain("<script");
+            .contains("<title>404 Not Found · Portfolio Platform</title>")
+            .contains("Page not found")
+            .contains("<code>" + requestId + "</code>")
+            .contains("<code>/missing-page</code>")
+            .doesNotContain("<script");
     }
 
     @Test
@@ -98,10 +96,10 @@ class ErrorPageTests extends IntegrationTest {
 
         assertThat(response.statusCode()).isEqualTo(401);
         assertThat(response.headers().firstValue(HttpHeaders.WWW_AUTHENTICATE)).hasValueSatisfying(challenge ->
-                assertThat(challenge).startsWith("Bearer"));
+            assertThat(challenge).startsWith("Bearer"));
         assertThat(response.body())
-                .contains("Sign-in required")
-                .contains("<code>" + requestId + "</code>");
+            .contains("Sign-in required")
+            .contains("<code>" + requestId + "</code>");
     }
 
     @Test
@@ -133,10 +131,10 @@ class ErrorPageTests extends IntegrationTest {
     }
 
     private HttpResponse<String> send(String path, String accept, @Nullable String requestId, @Nullable String token)
-            throws IOException, InterruptedException {
+        throws IOException, InterruptedException {
         var request = HttpRequest.newBuilder(URI.create("http://localhost:" + port + path))
-                .header(HttpHeaders.ACCEPT, accept)
-                .GET();
+            .header(HttpHeaders.ACCEPT, accept)
+            .GET();
         if (requestId != null) {
             request.header(CorrelationFilter.HEADER, requestId);
         }

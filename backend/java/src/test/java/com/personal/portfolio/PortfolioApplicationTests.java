@@ -12,15 +12,15 @@ class PortfolioApplicationTests extends IntegrationTest {
     @Test
     void contextLoads() {
         assertThat(mvc.get().uri("/"))
-                .hasStatusOk()
-                .hasContentTypeCompatibleWith(MediaType.TEXT_HTML);
+            .hasStatusOk()
+            .hasContentTypeCompatibleWith(MediaType.TEXT_HTML);
         assertThat(mvc.get().uri("/actuator/health")).hasStatusOk();
         assertThat(mvc.get().uri("/api/v1/users")).hasStatus(HttpStatus.UNAUTHORIZED);
         assertThat(mvc.get().uri("/v3/api-docs"))
-                .hasStatusOk()
-                .bodyJson()
-                .extractingPath("$.info.title")
-                .isEqualTo("Portfolio Platform API");
+            .hasStatusOk()
+            .bodyJson()
+            .extractingPath("$.info.title")
+            .isEqualTo("Portfolio Platform API");
     }
 
     @Test

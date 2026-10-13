@@ -1,5 +1,6 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,11 +21,6 @@ import jakarta.mail.internet.ContentType;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,8 +43,8 @@ class MailGatewayTests {
     @Test
     void sendsAnHtmlMessageFromTheConfiguredSenderToEveryRecipient() throws Exception {
         gateway.send(new Envelope(List.of("ada@example.test", "alan@example.test"), List.of("grace@example.test"),
-                List.of("audit@example.test"), "support@example.test", "Grüße aus Zürich", "<p>Hallo Welt</p>", true,
-                List.of()));
+            List.of("audit@example.test"), "support@example.test", "Grüße aus Zürich", "<p>Hallo Welt</p>", true,
+            List.of()));
 
         var mime = sent();
         mime.saveChanges();
@@ -56,7 +52,7 @@ class MailGatewayTests {
         assertThat(from.getAddress()).isEqualTo(AppPropertiesFixture.MAIL_FROM);
         assertThat(from.getPersonal()).isEqualTo(AppPropertiesFixture.MAIL_SENDER);
         assertThat(addresses(mime.getRecipients(RecipientType.TO))).containsExactly("ada@example.test",
-                "alan@example.test");
+            "alan@example.test");
         assertThat(addresses(mime.getRecipients(RecipientType.CC))).containsExactly("grace@example.test");
         assertThat(addresses(mime.getRecipients(RecipientType.BCC))).containsExactly("audit@example.test");
         assertThat(addresses(mime.getReplyTo())).containsExactly("support@example.test");
@@ -68,7 +64,7 @@ class MailGatewayTests {
     @Test
     void sendsPlainTextWithoutReplyToWhenNoneIsGiven() throws Exception {
         gateway.send(new Envelope(List.of("ada@example.test"), List.of(), List.of(), null, "Plain", "Just text", false,
-                List.of()));
+            List.of()));
 
         var mime = sent();
         mime.saveChanges();
@@ -81,22 +77,22 @@ class MailGatewayTests {
     @Test
     void attachesEveryFileInAMultipartMessage() throws Exception {
         var csv = "id,name\n1,Ada\n".getBytes(UTF_8);
-        var png = new byte[] {(byte) 0x89, 'P', 'N', 'G'};
+        var png = new byte[]{(byte) 0x89, 'P', 'N', 'G'};
         gateway.send(new Envelope(List.of("ada@example.test"), List.of(), List.of(), null, "Report", "See attached",
-                false, List.of(new Attachment("report.csv", "text/csv", csv), new Attachment("logo.png", "image/png", png))));
+            false, List.of(new Attachment("report.csv", "text/csv", csv), new Attachment("logo.png", "image/png", png))));
 
         var mime = sent();
         mime.saveChanges();
         assertThat(mime.getContent()).isInstanceOf(MimeMultipart.class);
         assertThat(attachments((MimeMultipart) mime.getContent()))
-                .containsExactly(tuple("report.csv", "text/csv", csv), tuple("logo.png", "image/png", png));
+            .containsExactly(tuple("report.csv", "text/csv", csv), tuple("logo.png", "image/png", png));
     }
 
     @Test
     void reportsUnparseableAddressesAsPreparationFailuresWithoutSending() {
         assertThatThrownBy(() -> gateway.send(Envelope.html("broken<address", "Hello", "<p>Hi</p>")))
-                .isInstanceOf(MailPreparationException.class)
-                .hasCauseInstanceOf(AddressException.class);
+            .isInstanceOf(MailPreparationException.class)
+            .hasCauseInstanceOf(AddressException.class);
         verify(sender, never()).send(any(MimeMessage.class));
     }
 
@@ -117,7 +113,7 @@ class MailGatewayTests {
             if (part.getFileName() != null) {
                 try (var content = part.getInputStream()) {
                     attachments.add(tuple(part.getFileName(), new ContentType(part.getContentType()).getBaseType(),
-                            content.readAllBytes()));
+                        content.readAllBytes()));
                 }
             }
         }

@@ -1,13 +1,11 @@
 package com.personal.portfolio.platform;
 
+import module java.base;
+
 import com.personal.portfolio.auth.TokenPurpose;
 import com.personal.portfolio.mail.MailStatus;
 import com.personal.portfolio.user.AccountStatus;
-import java.time.Instant;
-import java.util.Set;
 
-/// Every business error the API can return. The interface is sealed, so the switch in ProblemHandler
-/// is exhaustive: a new problem without a decided HTTP response does not compile.
 public sealed interface Problem {
 
     record NotFound(String resource, Object key) implements Problem {}

@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@Tag(name = "Users", description = "Administrative account search, lifecycle and statistics")
+@Tag(name = "Users", description = "Administrative account search, lifecycle and statistics.")
 @RequestMapping(path = "/api/v{version}/users", version = "1")
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
@@ -42,7 +42,9 @@ class UserController {
     private final UserService users;
 
     @GetMapping
-    Page<UserView> search(@Valid @ParameterObject Criteria criteria, @ParameterObject @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    Page<UserView> search(
+        @Valid @ParameterObject Criteria criteria,
+        @ParameterObject @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return users.search(criteria, pageable);
     }
 
@@ -59,10 +61,7 @@ class UserController {
     @PostMapping
     ResponseEntity<UserView> create(@Valid @RequestBody CreateUser request, @AuthenticationPrincipal Jwt actor) {
         var user = users.create(request, AccessTokens.userId(actor));
-        var location = ServletUriComponentsBuilder.fromCurrentRequestUri()
-            .path("/{id}")
-            .buildAndExpand(user.id())
-            .toUri();
+        var location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(user.id()).toUri();
         return ResponseEntity.created(location).body(user);
     }
 

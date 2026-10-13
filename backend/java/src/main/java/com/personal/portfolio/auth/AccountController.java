@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
-@Tag(name = "Account", description = "Self-service profile, password and session management")
+@Tag(name = "Account", description = "Self-service profile, password and session management.")
 @RequestMapping(path = "/api/v{version}/me", version = "1")
+@RequiredArgsConstructor
 class AccountController {
 
     private final AuthService auth;

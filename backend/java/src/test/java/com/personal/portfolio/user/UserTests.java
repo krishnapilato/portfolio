@@ -1,20 +1,16 @@
 package com.personal.portfolio.user;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.personal.portfolio.platform.ApiException;
 import com.personal.portfolio.platform.Problem.IllegalTransition;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource.Mode;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.EnumSource.Mode;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -27,7 +23,7 @@ class UserTests {
     @Test
     void registerStripsTheNameAndNormalizesTheEmail() {
         var user = User.register("  Ada Lovelace \t", "  Ada.Lovelace@Example.TEST ", "{bcrypt}hash", Role.ADMIN,
-                AccountStatus.PENDING);
+            AccountStatus.PENDING);
 
         assertThat(user.getId()).isZero();
         assertThat(user.getVersion()).isZero();
@@ -50,11 +46,11 @@ class UserTests {
 
     static Stream<Arguments> emails() {
         return Stream.of(
-                Arguments.of("ada@example.test", "ada@example.test"),
-                Arguments.of("ADA@EXAMPLE.TEST", "ada@example.test"),
-                Arguments.of("  Grace.Hopper@Navy.MIL  ", "grace.hopper@navy.mil"),
-                Arguments.of("\tAlan@Bletchley.Park\n", "alan@bletchley.park"),
-                Arguments.of(" Edsger@Example.Test ", "edsger@example.test"));
+            Arguments.of("ada@example.test", "ada@example.test"),
+            Arguments.of("ADA@EXAMPLE.TEST", "ada@example.test"),
+            Arguments.of("  Grace.Hopper@Navy.MIL  ", "grace.hopper@navy.mil"),
+            Arguments.of("\tAlan@Bletchley.Park\n", "alan@bletchley.park"),
+            Arguments.of(" Edsger@Example.Test ", "edsger@example.test"));
     }
 
     @Test
@@ -167,15 +163,15 @@ class UserTests {
             assertThat(user.getStatus()).isEqualTo(to);
         } else {
             assertThatThrownBy(() -> user.transitionTo(to))
-                    .isInstanceOfSatisfying(ApiException.class,
-                            failure -> assertThat(failure.problem()).isEqualTo(new IllegalTransition(from, to)));
+                .isInstanceOfSatisfying(ApiException.class,
+                    failure -> assertThat(failure.problem()).isEqualTo(new IllegalTransition(from, to)));
             assertThat(user.getStatus()).isEqualTo(from);
         }
     }
 
     static Stream<Arguments> everyTransition() {
         return Arrays.stream(AccountStatus.values())
-                .flatMap(from -> Arrays.stream(AccountStatus.values()).map(to -> Arguments.of(from, to)));
+            .flatMap(from -> Arrays.stream(AccountStatus.values()).map(to -> Arguments.of(from, to)));
     }
 
     @ParameterizedTest

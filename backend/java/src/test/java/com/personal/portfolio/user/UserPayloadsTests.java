@@ -13,8 +13,8 @@ class UserPayloadsTests {
         var request = new CreateUser("Grace Hopper", "grace@example.test", "Str0ng-Passw0rd", Role.ADMIN);
 
         assertThat(request.toString())
-                .isEqualTo("CreateUser[fullName=Grace Hopper, email=grace@example.test, password=<redacted>, role=ADMIN]")
-                .doesNotContain(request.password());
+            .isEqualTo("CreateUser[fullName=Grace Hopper, email=grace@example.test, password=<redacted>, role=ADMIN]")
+            .doesNotContain(request.password());
     }
 
     @Test

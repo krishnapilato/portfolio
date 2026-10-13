@@ -1,5 +1,6 @@
 package com.personal.portfolio.security;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.personal.portfolio.platform.AppProperties;
@@ -9,14 +10,6 @@ import com.personal.portfolio.user.AccountStatus;
 import com.personal.portfolio.user.Role;
 import com.personal.portfolio.user.User;
 import com.personal.portfolio.user.UserRepository;
-import java.security.SecureRandom;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
-import javax.crypto.spec.SecretKeySpec;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -40,14 +33,14 @@ class SecurityTests extends IntegrationTest {
     private static final String ME = "/api/v1/me";
     private static final String USERS = "/api/v1/users";
     private static final String CONTENT_SECURITY_POLICY = String.join("; ",
-            "default-src 'self'",
-            "script-src 'self'",
-            "style-src 'self' 'unsafe-inline'",
-            "img-src 'self' data:",
-            "object-src 'none'",
-            "frame-ancestors 'none'",
-            "base-uri 'self'",
-            "form-action 'self'");
+        "default-src 'self'",
+        "script-src 'self'",
+        "style-src 'self' 'unsafe-inline'",
+        "img-src 'self' data:",
+        "object-src 'none'",
+        "frame-ancestors 'none'",
+        "base-uri 'self'",
+        "form-action 'self'");
     private static final long ROLE_CHECK_ONLY_ID = Long.MAX_VALUE - 1;
     private static final JwsHeader HS256 = JwsHeader.with(MacAlgorithm.HS256).build();
 
@@ -88,7 +81,7 @@ class SecurityTests extends IntegrationTest {
 
     @ParameterizedTest
     @ValueSource(strings = {USERS, "/api/v1/users/stats", "/api/v1/mail/messages", "/actuator/metrics", "/actuator/env",
-            "/actuator/auditevents"})
+        "/actuator/auditevents"})
     void forbidsRegularUsersFromAdministration(String path) {
         var result = mvc.get().uri(path).with(user(ROLE_CHECK_ONLY_ID)).exchange();
 
@@ -118,7 +111,7 @@ class SecurityTests extends IntegrationTest {
     void opensTheAuthenticationEndpointsOnlyForPost() {
         assertThat(mvc.get().uri("/api/v1/auth/login")).hasStatus(HttpStatus.UNAUTHORIZED);
         assertThat(mvc.post().uri("/api/v1/auth/logout").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"refreshToken\":\"unknown\"}")).hasStatus(HttpStatus.NO_CONTENT);
+            .content("{\"refreshToken\":\"unknown\"}")).hasStatus(HttpStatus.NO_CONTENT);
     }
 
     @Test
@@ -128,11 +121,11 @@ class SecurityTests extends IntegrationTest {
         var adminToken = accessTokens.issue(account(Role.ADMIN)).value();
 
         assertThat(withBearer(ME, userToken)).hasStatusOk().bodyJson().extractingPath("$.email")
-                .isEqualTo(member.getEmail());
+            .isEqualTo(member.getEmail());
         assertThat(withBearer(USERS, userToken)).hasStatus(HttpStatus.FORBIDDEN);
         assertThat(withBearer(USERS, adminToken)).hasStatusOk();
         assertThat(withBearer(ME, adminToken)).hasStatusOk().bodyJson().extractingPath("$.role")
-                .isEqualTo(Role.ADMIN.name());
+            .isEqualTo(Role.ADMIN.name());
     }
 
     @Test
@@ -150,12 +143,12 @@ class SecurityTests extends IntegrationTest {
         assertThat(withBearer(USERS, memberToken)).hasStatusOk();
         assertThat(withBearer(USERS, adminToken)).hasStatus(HttpStatus.FORBIDDEN);
         assertThat(mvc.post().uri(USERS).header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                        {"fullName": "Shadow Admin", "email": "shadow-%s@security.test",
-                         "password": "Shadow-Passw0rd", "role": "ADMIN"}
-                        """.formatted(UUID.randomUUID())))
-                .hasStatus(HttpStatus.FORBIDDEN);
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"fullName": "Shadow Admin", "email": "shadow-%s@security.test",
+                 "password": "Shadow-Passw0rd", "role": "ADMIN"}
+                """.formatted(UUID.randomUUID())))
+            .hasStatus(HttpStatus.FORBIDDEN);
     }
 
     @ParameterizedTest
@@ -184,10 +177,10 @@ class SecurityTests extends IntegrationTest {
     @Test
     void ignoresStaleBearerTokensOnThePublicAuthenticationEndpoints() {
         var result = mvc.post().uri("/api/v1/auth/refresh")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer abc.def.ghi")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{}")
-                .exchange();
+            .header(HttpHeaders.AUTHORIZATION, "Bearer abc.def.ghi")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{}")
+            .exchange();
 
         assertThat(result).hasStatus(HttpStatus.BAD_REQUEST).doesNotContainHeader(HttpHeaders.WWW_AUTHENTICATE);
     }
@@ -207,10 +200,10 @@ class SecurityTests extends IntegrationTest {
         var security = properties.security();
 
         var result = withBearer(ME, sign(encoder, claims(member.getId(), Instant.now(), security.issuer(),
-                security.audience())));
+            security.audience())));
 
         assertThat(result).hasStatusOk().bodyJson().extractingPath("$.id").convertTo(Long.class)
-                .isEqualTo(member.getId());
+            .isEqualTo(member.getId());
     }
 
     @Test
@@ -219,12 +212,12 @@ class SecurityTests extends IntegrationTest {
         var security = properties.security();
         var now = Instant.now();
         var withoutSession = JwtClaimsSet.builder()
-                .issuer(security.issuer())
-                .audience(List.of(security.audience()))
-                .subject(Long.toString(member.getId()))
-                .issuedAt(now)
-                .expiresAt(now.plus(Duration.ofMinutes(15)))
-                .build();
+            .issuer(security.issuer())
+            .audience(List.of(security.audience()))
+            .subject(Long.toString(member.getId()))
+            .issuedAt(now)
+            .expiresAt(now.plus(Duration.ofMinutes(15)))
+            .build();
 
         assertThat(withBearer(ME, sign(encoder, withoutSession))).hasStatus(HttpStatus.UNAUTHORIZED);
     }
@@ -243,32 +236,32 @@ class SecurityTests extends IntegrationTest {
         var origin = properties.cors().allowedOrigins().getFirst();
 
         var preflight = mvc.options().uri("/api/v1/auth/login")
-                .header(HttpHeaders.ORIGIN, origin)
-                .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST")
-                .header(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS, "authorization, content-type, x-request-id")
-                .exchange();
+            .header(HttpHeaders.ORIGIN, origin)
+            .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST")
+            .header(HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS, "authorization, content-type, x-request-id")
+            .exchange();
 
         assertThat(preflight).hasStatusOk()
-                .hasHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin)
-                .hasHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "3600")
-                .doesNotContainHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS);
+            .hasHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin)
+            .hasHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "3600")
+            .doesNotContainHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS);
         assertThat(preflight.getResponse().getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS))
-                .contains("GET", "POST", "PUT", "PATCH", "DELETE");
+            .contains("GET", "POST", "PUT", "PATCH", "DELETE");
         assertThat(preflight.getResponse().getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS))
-                .containsIgnoringCase("authorization")
-                .containsIgnoringCase("content-type")
-                .containsIgnoringCase(CorrelationFilter.HEADER);
+            .containsIgnoringCase("authorization")
+            .containsIgnoringCase("content-type")
+            .containsIgnoringCase(CorrelationFilter.HEADER);
     }
 
     @Test
     void refusesCorsPreflightsFromOtherOrigins() {
         var preflight = mvc.options().uri("/api/v1/auth/login")
-                .header(HttpHeaders.ORIGIN, "https://attacker.example")
-                .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST")
-                .exchange();
+            .header(HttpHeaders.ORIGIN, "https://attacker.example")
+            .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST")
+            .exchange();
 
         assertThat(preflight).hasStatus(HttpStatus.FORBIDDEN)
-                .doesNotContainHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN);
+            .doesNotContainHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN);
     }
 
     @Test
@@ -279,7 +272,7 @@ class SecurityTests extends IntegrationTest {
 
         assertThat(result).hasStatusOk().hasHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
         assertThat(result.getResponse().getHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS))
-                .contains(CorrelationFilter.HEADER, HttpHeaders.LOCATION, HttpHeaders.RETRY_AFTER);
+            .contains(CorrelationFilter.HEADER, HttpHeaders.LOCATION, HttpHeaders.RETRY_AFTER);
     }
 
     @Test
@@ -287,12 +280,12 @@ class SecurityTests extends IntegrationTest {
         var page = mvc.get().uri("/").accept(MediaType.TEXT_HTML).exchange();
 
         assertThat(page).hasStatusOk()
-                .hasHeader("Content-Security-Policy", CONTENT_SECURITY_POLICY)
-                .hasHeader("X-Frame-Options", "DENY")
-                .hasHeader("Referrer-Policy", "strict-origin-when-cross-origin")
-                .hasHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
-                .hasHeader("X-Content-Type-Options", "nosniff")
-                .doesNotContainHeader("Strict-Transport-Security");
+            .hasHeader("Content-Security-Policy", CONTENT_SECURITY_POLICY)
+            .hasHeader("X-Frame-Options", "DENY")
+            .hasHeader("Referrer-Policy", "strict-origin-when-cross-origin")
+            .hasHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+            .hasHeader("X-Content-Type-Options", "nosniff")
+            .doesNotContainHeader("Strict-Transport-Security");
     }
 
     @Test
@@ -300,8 +293,8 @@ class SecurityTests extends IntegrationTest {
         var page = mvc.get().uri("/").secure(true).exchange();
 
         assertThat(page.getResponse().getHeader("Strict-Transport-Security"))
-                .contains("max-age=" + Duration.ofDays(365).toSeconds())
-                .contains("includeSubDomains");
+            .contains("max-age=" + Duration.ofDays(365).toSeconds())
+            .contains("includeSubDomains");
     }
 
     @Test
@@ -320,7 +313,7 @@ class SecurityTests extends IntegrationTest {
     private User account(Role role) {
         var email = role.name().toLowerCase(Locale.ROOT) + "-" + UUID.randomUUID() + "@security.test";
         return users.save(User.register("Security " + role.name(), email,
-                Objects.requireNonNull(passwordEncoder.encode("Security-Passw0rd")), role, AccountStatus.ACTIVE));
+            Objects.requireNonNull(passwordEncoder.encode("Security-Passw0rd")), role, AccountStatus.ACTIVE));
     }
 
     private static void assertInvalidToken(MvcTestResult result) {
@@ -341,23 +334,23 @@ class SecurityTests extends IntegrationTest {
             case WRONG_ISSUER -> sign(encoder, claims(subject, now, "someone-else", security.audience()));
             case WRONG_AUDIENCE -> sign(encoder, claims(subject, now, security.issuer(), "another-api"));
             case EXPIRED -> sign(encoder, claims(subject, now.minus(Duration.ofHours(2)), security.issuer(),
-                    security.audience()));
+                security.audience()));
             case UNSIGNED -> "eyJhbGciOiJub25lIn0." + payloadOf(sign(encoder, claims(subject, now, security.issuer(),
-                    security.audience()))) + ".";
+                security.audience()))) + ".";
             case GARBAGE -> "not-a-jwt";
         };
     }
 
     private static JwtClaimsSet claims(long subject, Instant issuedAt, String issuer, String audience) {
         return JwtClaimsSet.builder()
-                .issuer(issuer)
-                .audience(List.of(audience))
-                .subject(Long.toString(subject))
-                .issuedAt(issuedAt)
-                .expiresAt(issuedAt.plus(Duration.ofMinutes(15)))
-                .claim("roles", List.of(Role.USER.name()))
-                .claim("session_version", 0)
-                .build();
+            .issuer(issuer)
+            .audience(List.of(audience))
+            .subject(Long.toString(subject))
+            .issuedAt(issuedAt)
+            .expiresAt(issuedAt.plus(Duration.ofMinutes(15)))
+            .claim("roles", List.of(Role.USER.name()))
+            .claim("session_version", 0)
+            .build();
     }
 
     private static String payloadOf(String token) {

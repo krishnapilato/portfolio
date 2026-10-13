@@ -1,5 +1,6 @@
 package com.personal.portfolio.auth;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -7,13 +8,6 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import com.personal.portfolio.user.AccountStatus;
 import com.personal.portfolio.user.Role;
 import com.personal.portfolio.user.User;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -41,7 +35,7 @@ class AuthFlowTests extends AuthTestSupport {
     void completesTheAccountJourneyFromRegistrationToLogout() {
         var email = uniqueEmail("ada");
         var registered = post(REGISTER, Map.of("fullName", "  Ada Lovelace ", "email", email.toUpperCase(Locale.ROOT),
-                "password", PASSWORD));
+            "password", PASSWORD));
 
         assertThat(registered).hasStatus(HttpStatus.CREATED).hasHeader(HttpHeaders.LOCATION, "http://localhost" + ME);
         var view = body(registered);
@@ -54,12 +48,12 @@ class AuthFlowTests extends AuthTestSupport {
         var verification = lastMail(email, VERIFY_SUBJECT);
         var token = tokenIn(verification);
         assertThat(verification.getBody())
-                .contains(properties.frontendUrl() + "/verify-email?token=" + token)
-                .contains("Ada Lovelace");
+            .contains(properties.frontendUrl() + "/verify-email?token=" + token)
+            .contains("Ada Lovelace");
         assertThat(mailsTo(email)).hasSize(1);
 
         assertThat(post(VERIFY, Map.of("token", token))).hasStatusOk()
-                .bodyJson().extractingPath("$.status").isEqualTo("ACTIVE");
+            .bodyJson().extractingPath("$.status").isEqualTo("ACTIVE");
         assertThat(reload(email).getStatus()).isEqualTo(AccountStatus.ACTIVE);
         assertProblem(post(VERIFY, Map.of("token", token)), HttpStatus.BAD_REQUEST, "invalid-token");
 
@@ -71,9 +65,9 @@ class AuthFlowTests extends AuthTestSupport {
         assertThat(pair.get("tokenType").asString()).isEqualTo("Bearer");
         assertThat(pair.get("expiresIn").asLong()).isEqualTo(ttl.toSeconds());
         assertThat(Instant.parse(pair.get("accessTokenExpiresAt").asString()))
-                .isCloseTo(before.plus(ttl), within(5, ChronoUnit.SECONDS));
+            .isCloseTo(before.plus(ttl), within(5, ChronoUnit.SECONDS));
         assertThat(Instant.parse(pair.get("refreshTokenExpiresAt").asString()))
-                .isCloseTo(before.plus(properties.security().refreshTokenTtl()), within(5, ChronoUnit.SECONDS));
+            .isCloseTo(before.plus(properties.security().refreshTokenTtl()), within(5, ChronoUnit.SECONDS));
 
         var session = session(login);
         var jwt = jwtDecoder.decode(session.accessToken());
@@ -84,7 +78,7 @@ class AuthFlowTests extends AuthTestSupport {
         assertThat(user.getLastLoginAt()).isNotNull();
 
         assertThat(getWithBearer(ME, session.accessToken())).hasStatusOk()
-                .bodyJson().extractingPath("$.email").isEqualTo(email);
+            .bodyJson().extractingPath("$.email").isEqualTo(email);
 
         var rotated = session(post(REFRESH, refreshToken(session.refreshToken())));
         assertProblem(post(REFRESH, refreshToken(session.refreshToken())), HttpStatus.UNAUTHORIZED, "token-reuse");
@@ -101,7 +95,7 @@ class AuthFlowTests extends AuthTestSupport {
         activeUser(email);
 
         var result = post(REGISTER, Map.of("fullName", "Someone Else", "email", email.toUpperCase(Locale.ROOT),
-                "password", PASSWORD));
+            "password", PASSWORD));
 
         assertProblem(result, HttpStatus.CONFLICT, "email-taken");
         assertThat(result).bodyJson().extractingPath("$.detail").isEqualTo("An account for " + email + " already exists");
@@ -131,9 +125,9 @@ class AuthFlowTests extends AuthTestSupport {
         assertProblem(post(REFRESH, refreshToken(second.refreshToken())), HttpStatus.BAD_REQUEST, "invalid-token");
         assertThat(post(REFRESH, refreshToken(parallel.refreshToken()))).hasStatusOk();
         assertThat(audits.find(Long.toString(owner.getId()), started, "TOKEN_REUSE"))
-                .singleElement()
-                .satisfies(event -> assertThat(event.getData()).containsEntry("revoked", 3)
-                        .containsKey("family"));
+            .singleElement()
+            .satisfies(event -> assertThat(event.getData()).containsEntry("revoked", 3)
+                .containsKey("family"));
     }
 
     @Test
@@ -207,8 +201,8 @@ class AuthFlowTests extends AuthTestSupport {
         var resetMail = lastMail(email, RESET_SUBJECT);
         var token = tokenIn(resetMail);
         assertThat(resetMail.getBody())
-                .contains(properties.frontendUrl() + "/reset-password?token=" + token)
-                .contains("1 hour");
+            .contains(properties.frontendUrl() + "/reset-password?token=" + token)
+            .contains("1 hour");
 
         assertThat(post(RESET, Map.of("token", token, "newPassword", NEW_PASSWORD))).hasStatus(HttpStatus.NO_CONTENT);
 
@@ -217,7 +211,7 @@ class AuthFlowTests extends AuthTestSupport {
         assertThat(post(LOGIN, credentials(email, NEW_PASSWORD))).hasStatusOk();
         assertThat(mailsTo(email, CHANGED_SUBJECT)).hasSize(1);
         assertProblem(post(RESET, Map.of("token", token, "newPassword", "Another-Passw0rd")),
-                HttpStatus.BAD_REQUEST, "invalid-token");
+            HttpStatus.BAD_REQUEST, "invalid-token");
     }
 
     @Test
@@ -242,7 +236,7 @@ class AuthFlowTests extends AuthTestSupport {
 
         var fresh = tokenIn(lastMail(email, RESET_SUBJECT));
         assertProblem(post(RESET, Map.of("token", earlier, "newPassword", NEW_PASSWORD)),
-                HttpStatus.BAD_REQUEST, "invalid-token");
+            HttpStatus.BAD_REQUEST, "invalid-token");
         assertThat(post(RESET, Map.of("token", fresh, "newPassword", NEW_PASSWORD))).hasStatus(HttpStatus.NO_CONTENT);
     }
 
@@ -269,7 +263,7 @@ class AuthFlowTests extends AuthTestSupport {
         var hash = reload(email).getPasswordHash();
 
         assertProblem(post(RESET, Map.of("token", token, "newPassword", NEW_PASSWORD)),
-                HttpStatus.FORBIDDEN, "account-unavailable");
+            HttpStatus.FORBIDDEN, "account-unavailable");
         assertThat(reload(email).getPasswordHash()).isEqualTo(hash);
     }
 
@@ -282,7 +276,7 @@ class AuthFlowTests extends AuthTestSupport {
 
         for (var attempt = 0; attempt < security.maxFailedLogins(); attempt++) {
             assertProblem(post(LOGIN, credentials(email, WRONG_PASSWORD)), HttpStatus.UNAUTHORIZED,
-                    "invalid-credentials");
+                "invalid-credentials");
         }
 
         assertProblem(post(LOGIN, credentials(email, PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
@@ -290,11 +284,11 @@ class AuthFlowTests extends AuthTestSupport {
         assertThat(lockedUntil).isBetween(started.plus(security.lockout()), Instant.now().plus(security.lockout()));
         assertThat(reload(email).getFailedLogins()).isZero();
         assertThat(audits.find(email, started, "AUTHENTICATION_FAILURE"))
-                .hasSize(security.maxFailedLogins() + 1)
-                .filteredOn(event -> "locked".equals(event.getData().get("reason")))
-                .hasSize(1);
+            .hasSize(security.maxFailedLogins() + 1)
+            .filteredOn(event -> "locked".equals(event.getData().get("reason")))
+            .hasSize(1);
         assertThat(audits.find(Long.toString(owner.getId()), started, "ACCOUNT_LOCKED")).singleElement()
-                .satisfies(event -> assertThat(event.getData()).containsKey("until"));
+            .satisfies(event -> assertThat(event.getData()).containsKey("until"));
         assertProblem(post(LOGIN, credentials(email, WRONG_PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
         assertThat(reload(email).getLockedUntil()).isEqualTo(lockedUntil);
     }
@@ -318,7 +312,7 @@ class AuthFlowTests extends AuthTestSupport {
         activeUser(email);
         for (var attempt = 0; attempt < properties.security().maxFailedLogins(); attempt++) {
             assertProblem(post(LOGIN, credentials(email, WRONG_PASSWORD)), HttpStatus.UNAUTHORIZED,
-                    "invalid-credentials");
+                "invalid-credentials");
         }
         assertProblem(post(LOGIN, credentials(email, PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
 
@@ -335,7 +329,7 @@ class AuthFlowTests extends AuthTestSupport {
         var email = uniqueEmail("long-password");
 
         var result = post(REGISTER, Map.of("fullName", "Long Password", "email", email,
-                "password", "Aa1" + "x".repeat(77)));
+            "password", "Aa1" + "x".repeat(77)));
 
         assertProblem(result, HttpStatus.BAD_REQUEST, "validation-failed");
         assertThat(result).bodyJson().extractingPath("$.errors").asMap().containsOnlyKeys("password");
@@ -367,20 +361,20 @@ class AuthFlowTests extends AuthTestSupport {
         login(email, PASSWORD);
         assertThat(post(FORGOT, Map.of("email", email))).hasStatus(HttpStatus.ACCEPTED);
         assertThat(post(RESET, Map.of("token", tokenIn(lastMail(email, RESET_SUBJECT)), "newPassword", NEW_PASSWORD)))
-                .hasStatus(HttpStatus.NO_CONTENT);
+            .hasStatus(HttpStatus.NO_CONTENT);
         var principal = Long.toString(reload(email).getId());
 
         assertThat(audits.find(principal, started, null)).extracting(AuditEvent::getType)
-                .containsExactly("USER_REGISTERED", "EMAIL_VERIFIED", "AUTHENTICATION_SUCCESS", "PASSWORD_RESET");
+            .containsExactly("USER_REGISTERED", "EMAIL_VERIFIED", "AUTHENTICATION_SUCCESS", "PASSWORD_RESET");
         assertThat(audits.find(email, started, "AUTHENTICATION_FAILURE")).singleElement()
-                .satisfies(event -> assertThat(event.getData()).containsEntry("reason", "bad-credentials"));
+            .satisfies(event -> assertThat(event.getData()).containsEntry("reason", "bad-credentials"));
         assertThat(audits.find(null, started, null))
-                .filteredOn(event -> event.getPrincipal().equals(principal) || event.getPrincipal().equals(email))
-                .allSatisfy(event -> {
-                    assertThat(event.getData()).containsKey("requestId");
-                    assertThat(event.getData().toString()).doesNotContain(PASSWORD).doesNotContain(NEW_PASSWORD)
-                            .doesNotContain(verification);
-                });
+            .filteredOn(event -> event.getPrincipal().equals(principal) || event.getPrincipal().equals(email))
+            .allSatisfy(event -> {
+                assertThat(event.getData()).containsKey("requestId");
+                assertThat(event.getData().toString()).doesNotContain(PASSWORD).doesNotContain(NEW_PASSWORD)
+                    .doesNotContain(verification);
+            });
     }
 
     @Test
@@ -391,7 +385,7 @@ class AuthFlowTests extends AuthTestSupport {
         assertProblem(post(LOGIN, credentials(email, PASSWORD)), HttpStatus.UNAUTHORIZED, "invalid-credentials");
 
         assertThat(audits.find(email, started, "AUTHENTICATION_FAILURE")).singleElement()
-                .satisfies(event -> assertThat(event.getData()).containsEntry("reason", "unknown-account"));
+            .satisfies(event -> assertThat(event.getData()).containsEntry("reason", "unknown-account"));
     }
 
     @Test
@@ -403,7 +397,7 @@ class AuthFlowTests extends AuthTestSupport {
         for (var round = 0; round < 2; round++) {
             for (var attempt = 0; attempt < belowLimit; attempt++) {
                 assertProblem(post(LOGIN, credentials(email, WRONG_PASSWORD)), HttpStatus.UNAUTHORIZED,
-                        "invalid-credentials");
+                    "invalid-credentials");
             }
             assertThat(reload(email).getFailedLogins()).isEqualTo(belowLimit);
             assertThat(post(LOGIN, credentials(email, PASSWORD))).hasStatusOk();
@@ -481,10 +475,10 @@ class AuthFlowTests extends AuthTestSupport {
         assertThat(problem.has("requestId")).isTrue();
         assertThat(problem.has("timestamp")).isTrue();
         assertThat(result).bodyJson().extractingPath("$.errors").asMap().containsOnly(
-                Map.entry("fullName", "must not be blank"),
-                Map.entry("email", "must be a plain e-mail address"),
-                Map.entry("password",
-                        "must be 10-72 characters (at most 72 bytes) and contain upper-case, lower-case and a digit"));
+            Map.entry("fullName", "must not be blank"),
+            Map.entry("email", "must be a plain e-mail address"),
+            Map.entry("password",
+                "must be 10-72 characters (at most 72 bytes) and contain upper-case, lower-case and a digit"));
         assertThat(result).bodyText().doesNotContain("weak\"");
     }
 
@@ -500,22 +494,22 @@ class AuthFlowTests extends AuthTestSupport {
     static Stream<Arguments> invalidRequests() {
         var tooLong = "x".repeat(101);
         return Stream.of(
-                arguments(REGISTER, Map.of("fullName", tooLong, "email", uniqueEmail("long"), "password", PASSWORD),
-                        "fullName"),
-                arguments(REGISTER, Map.of("fullName", "No Digits", "email", uniqueEmail("weak"),
-                        "password", "NoDigitsInHere"), "password"),
-                arguments(LOGIN, Map.of("email", "", "password", PASSWORD), "email"),
-                arguments(LOGIN, Map.of("email", uniqueEmail("blank"), "password", " "), "password"),
-                arguments(VERIFY, Map.of("token", " "), "token"),
-                arguments(LOGIN, Map.of("email", "\"a;b\"@auth.test", "password", PASSWORD), "email"),
-                arguments(RESEND, Map.of("email", "nobody"), "email"),
-                arguments(RESEND, Map.of("email", "\"a b\"@auth.test"), "email"),
-                arguments(REFRESH, Map.of("refreshToken", ""), "refreshToken"),
-                arguments(LOGOUT, Map.of(), "refreshToken"),
-                arguments(FORGOT, Map.of("email", "a@"), "email"),
-                arguments(FORGOT, Map.of("email", "\"a,b\"@auth.test"), "email"),
-                arguments(RESET, Map.of("token", "", "newPassword", NEW_PASSWORD), "token"),
-                arguments(RESET, Map.of("token", "abc", "newPassword", "alllowercase1"), "newPassword"));
+            arguments(REGISTER, Map.of("fullName", tooLong, "email", uniqueEmail("long"), "password", PASSWORD),
+                "fullName"),
+            arguments(REGISTER, Map.of("fullName", "No Digits", "email", uniqueEmail("weak"),
+                "password", "NoDigitsInHere"), "password"),
+            arguments(LOGIN, Map.of("email", "", "password", PASSWORD), "email"),
+            arguments(LOGIN, Map.of("email", uniqueEmail("blank"), "password", " "), "password"),
+            arguments(VERIFY, Map.of("token", " "), "token"),
+            arguments(LOGIN, Map.of("email", "\"a;b\"@auth.test", "password", PASSWORD), "email"),
+            arguments(RESEND, Map.of("email", "nobody"), "email"),
+            arguments(RESEND, Map.of("email", "\"a b\"@auth.test"), "email"),
+            arguments(REFRESH, Map.of("refreshToken", ""), "refreshToken"),
+            arguments(LOGOUT, Map.of(), "refreshToken"),
+            arguments(FORGOT, Map.of("email", "a@"), "email"),
+            arguments(FORGOT, Map.of("email", "\"a,b\"@auth.test"), "email"),
+            arguments(RESET, Map.of("token", "", "newPassword", NEW_PASSWORD), "token"),
+            arguments(RESET, Map.of("token", "abc", "newPassword", "alllowercase1"), "newPassword"));
     }
 
     @Test

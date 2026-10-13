@@ -1,14 +1,11 @@
 package com.personal.portfolio.system;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.personal.portfolio.support.IntegrationTest;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
-import java.time.Instant;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
@@ -47,11 +44,11 @@ class AuditMetricsTests extends IntegrationTest {
         var email = "metrics-" + UUID.randomUUID().toString().toLowerCase(Locale.ROOT) + "@nowhere.test";
 
         assertThat(mvc.post().uri("/api/v1/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                        {"email": "%s", "password": "Wrong-Passw0rd"}
-                        """.formatted(email)))
-                .hasStatus(HttpStatus.UNAUTHORIZED);
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"email": "%s", "password": "Wrong-Passw0rd"}
+                """.formatted(email)))
+            .hasStatus(HttpStatus.UNAUTHORIZED);
 
         assertThat(count(registry, "AUTHENTICATION_FAILURE")).isEqualTo(before + 1);
     }

@@ -1,12 +1,10 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
+
 import com.personal.portfolio.platform.Tally;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.QueryHint;
-import java.time.Instant;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,13 +36,12 @@ public interface MailRepository extends JpaRepository<MailMessage, Long> {
     Optional<Instant> oldestDue(MailStatus status, Instant now);
 
     @Query(nativeQuery = true, value = """
-            select message_id, filename, content_type, octet_length(content) as size
-            from mail_attachments where message_id in (:ids) order by message_id, sort_order
-            """)
+        select message_id, filename, content_type, octet_length(content) as size
+        from mail_attachments where message_id in (:ids) order by message_id, sort_order
+        """)
     List<AttachmentMeta> attachmentMeta(Collection<Long> ids);
 
     interface AttachmentMeta {
-
         long getMessageId();
 
         String getFilename();

@@ -1,10 +1,8 @@
 package com.personal.portfolio.support;
 
+import module java.base;
+
 import com.personal.portfolio.platform.AppProperties;
-import java.net.URI;
-import java.time.Duration;
-import java.util.Base64;
-import java.util.List;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
@@ -43,13 +41,13 @@ public final class AppPropertiesFixture {
 
     private static AppProperties create(String secret, Duration accessTokenTtl, AppProperties.Seed seed) {
         return new AppProperties(
-                URI.create("http://localhost:5173/portfolio"),
-                new AppProperties.Cors(List.of("http://localhost:5173")),
-                new AppProperties.Security(secret, ISSUER, AUDIENCE, accessTokenTtl, Duration.ofDays(30),
-                        Duration.ofHours(24), Duration.ofHours(1), 5, Duration.ofMinutes(15), Duration.ofMinutes(2),
-                        30, ""),
-                new AppProperties.Mail(MAIL_FROM, MAIL_SENDER, 25, 8, 5, Duration.ofSeconds(30), Duration.ofHours(1),
-                        STALE_AFTER, Duration.ofDays(30)),
-                seed);
+            URI.create("http://localhost:5173/portfolio"),
+            new AppProperties.Cors(List.of("http://localhost:5173")),
+            new AppProperties.Security(secret, ISSUER, AUDIENCE, accessTokenTtl, Duration.ofDays(30),
+                Duration.ofHours(24), Duration.ofHours(1), 5, Duration.ofMinutes(15), Duration.ofMinutes(2),
+                30, ""),
+            new AppProperties.Mail(MAIL_FROM, MAIL_SENDER, 25, 8, 5, Duration.ofSeconds(30), Duration.ofHours(1),
+                STALE_AFTER, Duration.ofDays(30)),
+            seed);
     }
 }

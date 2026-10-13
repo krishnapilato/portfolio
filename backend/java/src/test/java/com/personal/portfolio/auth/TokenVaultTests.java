@@ -1,5 +1,6 @@
 package com.personal.portfolio.auth;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.within;
@@ -9,15 +10,6 @@ import com.personal.portfolio.platform.ApiException;
 import com.personal.portfolio.platform.Problem.InvalidToken;
 import com.personal.portfolio.platform.Problem.TokenReuse;
 import com.personal.portfolio.user.User;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Supplier;
-import java.util.regex.Pattern;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -110,10 +102,10 @@ class TokenVaultTests extends AuthTestSupport {
 
         assertProblem(result, HttpStatus.BAD_REQUEST, "invalid-token");
         assertThat(result).bodyJson().extractingPath("$.detail").asString()
-                .contains(purpose.name().toLowerCase(Locale.ROOT).replace('_', ' '));
+            .contains(purpose.name().toLowerCase(Locale.ROOT).replace('_', ' '));
         assertInvalid(raw, purpose);
         assertThat(tokens.findByFingerprintAndPurpose(keyRing.fingerprint(raw), purpose))
-                .hasValueSatisfying(token -> assertThat(token.isConsumed()).isFalse());
+            .hasValueSatisfying(token -> assertThat(token.isConsumed()).isFalse());
     }
 
     @Test
@@ -125,7 +117,7 @@ class TokenVaultTests extends AuthTestSupport {
         assertInvalid(refresh.value(), TokenPurpose.EMAIL_VERIFICATION);
         assertInvalid(refresh.value(), TokenPurpose.PASSWORD_RESET);
         assertThat(stored(refresh, TokenPurpose.REFRESH))
-                .hasValueSatisfying(token -> assertThat(token.isConsumed()).isFalse());
+            .hasValueSatisfying(token -> assertThat(token.isConsumed()).isFalse());
     }
 
     @ParameterizedTest
@@ -149,7 +141,7 @@ class TokenVaultTests extends AuthTestSupport {
         assertThat(inTransaction(() -> tokens.claim(id, claimedAt.plusSeconds(1)))).isZero();
 
         assertThat(stored(issued, TokenPurpose.REFRESH)).hasValueSatisfying(token ->
-                assertThat(token.getConsumedAt()).isCloseTo(claimedAt, within(1, ChronoUnit.MILLIS)));
+            assertThat(token.getConsumedAt()).isCloseTo(claimedAt, within(1, ChronoUnit.MILLIS)));
     }
 
     @Test
@@ -163,16 +155,16 @@ class TokenVaultTests extends AuthTestSupport {
         assertThat(inTransaction(() -> tokens.claim(id, Instant.now()))).isEqualTo(1);
 
         assertThatThrownBy(() -> vault.redeem(issued.value(), TokenPurpose.REFRESH))
-                .isInstanceOfSatisfying(ApiException.class,
-                        exception -> assertThat(exception.problem()).isEqualTo(new TokenReuse()));
+            .isInstanceOfSatisfying(ApiException.class,
+                exception -> assertThat(exception.problem()).isEqualTo(new TokenReuse()));
 
         assertThat(stored(issued, TokenPurpose.REFRESH)).isEmpty();
         assertThat(tokens.findByFingerprintAndPurpose(keyRing.fingerprint(sibling), TokenPurpose.REFRESH)).isEmpty();
         assertThat(audits.find(Long.toString(owner.getId()), started, "TOKEN_REUSE"))
-                .singleElement()
-                .satisfies(event -> assertThat(event.getData())
-                        .containsEntry("family", family)
-                        .containsEntry("revoked", 2));
+            .singleElement()
+            .satisfies(event -> assertThat(event.getData())
+                .containsEntry("family", family)
+                .containsEntry("revoked", 2));
     }
 
     @Test
@@ -186,8 +178,8 @@ class TokenVaultTests extends AuthTestSupport {
             assertThat(tokens.claim(loaded.getId(), Instant.now())).isEqualTo(1);
             assertThat(loaded.isConsumed()).isFalse();
             assertThatThrownBy(() -> vault.redeem(issued.value(), TokenPurpose.REFRESH))
-                    .isInstanceOfSatisfying(ApiException.class,
-                            exception -> assertThat(exception.problem()).isEqualTo(new TokenReuse()));
+                .isInstanceOfSatisfying(ApiException.class,
+                    exception -> assertThat(exception.problem()).isEqualTo(new TokenReuse()));
             return loaded.getId();
         });
 
@@ -271,7 +263,7 @@ class TokenVaultTests extends AuthTestSupport {
         vault.purgeExpired();
 
         assertThat(tokens.findByFingerprintAndPurpose(keyRing.fingerprint(expired), TokenPurpose.EMAIL_VERIFICATION))
-                .isEmpty();
+            .isEmpty();
         assertThat(stored(valid, TokenPurpose.EMAIL_VERIFICATION)).isPresent();
         var purgeLines = purgeLines(output);
         assertThat(purgeLines).isPositive();
@@ -297,8 +289,8 @@ class TokenVaultTests extends AuthTestSupport {
 
     private void assertInvalid(String raw, TokenPurpose purpose) {
         assertThatThrownBy(() -> vault.redeem(raw, purpose))
-                .isInstanceOfSatisfying(ApiException.class,
-                        exception -> assertThat(exception.problem()).isEqualTo(new InvalidToken(purpose)));
+            .isInstanceOfSatisfying(ApiException.class,
+                exception -> assertThat(exception.problem()).isEqualTo(new InvalidToken(purpose)));
     }
 
     private Optional<UserToken> stored(IssuedToken issued, TokenPurpose purpose) {

@@ -1,18 +1,13 @@
 package com.personal.portfolio.auth;
 
+import module java.base;
+
 import com.personal.portfolio.platform.ApiException;
 import com.personal.portfolio.platform.AppProperties;
 import com.personal.portfolio.platform.KeyRing;
 import com.personal.portfolio.platform.Problem.InvalidToken;
 import com.personal.portfolio.platform.Problem.TokenReuse;
 import com.personal.portfolio.user.User;
-import java.security.SecureRandom;
-import java.time.Clock;
-import java.time.Instant;
-import java.util.Base64;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
@@ -21,8 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/// Issues and redeems one-time tokens (email verification, password reset) and refresh tokens.
-/// Only an HMAC fingerprint of each token is stored, so the table is useless to whoever steals it.
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -49,19 +42,14 @@ public class TokenVault {
     }
 
     public UserToken redeem(String raw, TokenPurpose purpose) {
-        var token = tokens.findByFingerprintAndPurpose(keyRing.fingerprint(raw), purpose)
-                .orElseThrow(() -> invalid(purpose));
-        if (token.isConsumed()) {
-            throw alreadyRedeemed(token);
-        }
+        var token = tokens.findByFingerprintAndPurpose(keyRing.fingerprint(raw), purpose).orElseThrow(() -> invalid(purpose));
+        if (token.isConsumed()) throw alreadyRedeemed(token);
+
         var now = clock.instant();
-        if (token.isExpired(now)) {
-            throw invalid(purpose);
-        }
+        if (token.isExpired(now)) throw invalid(purpose);
+
         // "update ... where consumed_at is null": of two concurrent redeems, exactly one wins.
-        if (tokens.claim(token.getId(), now) == 0) {
-            throw alreadyRedeemed(token);
-        }
+        if (tokens.claim(token.getId(), now) == 0) throw alreadyRedeemed(token);
         return token;
     }
 
@@ -79,16 +67,14 @@ public class TokenVault {
 
     public void revokeFamilyOf(String raw) {
         tokens.findByFingerprintAndPurpose(keyRing.fingerprint(raw), TokenPurpose.REFRESH)
-                .map(UserToken::getFamily)
-                .ifPresent(tokens::deleteByFamily);
+            .map(UserToken::getFamily)
+            .ifPresent(tokens::deleteByFamily);
     }
 
     @Scheduled(cron = "0 7 * * * *")
     public void purgeExpired() {
         var purged = tokens.deleteExpired(clock.instant());
-        if (purged > 0) {
-            log.info("Purged {} expired tokens", purged);
-        }
+        if (purged > 0) log.info("Purged {} expired tokens", purged);
     }
 
     private IssuedToken store(User user, TokenPurpose purpose, @Nullable String family) {
@@ -112,8 +98,7 @@ public class TokenVault {
         var family = Objects.requireNonNull(replayed.getFamily());
         var revoked = tokens.deleteByFamily(family);
         log.warn("Refresh token reuse detected for user {}: revoked {} tokens of family {}", userId, revoked, family);
-        events.publishEvent(AuditType.TOKEN_REUSE.event(clock.instant(), Long.toString(userId),
-                Map.of("family", family, "revoked", revoked)));
+        events.publishEvent(AuditType.TOKEN_REUSE.event(clock.instant(), Long.toString(userId), Map.of("family", family, "revoked", revoked)));
         return new ApiException(new TokenReuse());
     }
 
@@ -128,10 +113,9 @@ public class TokenVault {
     }
 
     public record IssuedToken(String value, Instant expiresAt) {
-
         @Override
         public String toString() {
-            return "IssuedToken[value=<redacted>, expiresAt=" + expiresAt + "]";
+            return "IssuedToken[value=<redacted>, expiresAt=%s]".formatted(expiresAt);
         }
     }
 }

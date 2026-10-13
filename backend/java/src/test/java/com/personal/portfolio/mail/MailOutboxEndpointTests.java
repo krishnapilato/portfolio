@@ -1,5 +1,6 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -7,7 +8,6 @@ import static org.mockito.Mockito.verify;
 import com.personal.portfolio.mail.MailPayloads.OutboxStats;
 import com.personal.portfolio.platform.AppProperties;
 import jakarta.mail.internet.MimeMessage;
-import java.time.Duration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,8 +64,8 @@ class MailOutboxEndpointTests extends OutboxIntegrationTest {
         assertThat(result).hasStatusOk();
         assertThat(result).bodyJson().extractingPath("$.components.mailOutbox.status").isEqualTo("UP");
         assertThat(result).bodyJson().extractingPath("$.components.mailOutbox.details").asMap()
-                .containsKeys("pending", "failed")
-                .doesNotContainKey("oldestDue");
+            .containsKeys("pending", "failed")
+            .doesNotContainKey("oldestDue");
     }
 
     @Test
@@ -91,7 +91,7 @@ class MailOutboxEndpointTests extends OutboxIntegrationTest {
             assertThat(result).bodyJson().extractingPath("$.status").isEqualTo("DOWN");
             assertThat(result).bodyJson().extractingPath("$.components.mailOutbox.status").isEqualTo("DOWN");
             assertThat(result).bodyJson().extractingPath("$.components.mailOutbox.details").asMap()
-                    .containsKeys("pending", "failed", "oldestDue");
+                .containsKeys("pending", "failed", "oldestDue");
         } finally {
             withdraw(stuck.getId());
         }

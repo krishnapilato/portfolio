@@ -1,5 +1,6 @@
 package com.personal.portfolio.auth;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.personal.portfolio.mail.MailMessage;
@@ -11,14 +12,6 @@ import com.personal.portfolio.user.AccountStatus;
 import com.personal.portfolio.user.Role;
 import com.personal.portfolio.user.User;
 import com.personal.portfolio.user.UserRepository;
-import java.time.Clock;
-import java.time.Instant;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -85,16 +78,16 @@ abstract class AuthTestSupport extends IntegrationTest {
 
     static void assertProblem(MvcTestResult result, HttpStatus status, String slug) {
         assertThat(result)
-                .hasStatus(status)
-                .hasContentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON)
-                .bodyJson()
-                .extractingPath("$.type")
-                .isEqualTo("urn:problem:" + slug);
+            .hasStatus(status)
+            .hasContentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON)
+            .bodyJson()
+            .extractingPath("$.type")
+            .isEqualTo("urn:problem:" + slug);
     }
 
     MvcTestResult post(String uri, Map<String, ?> body) {
         return mvc.post().uri(uri).contentType(MediaType.APPLICATION_JSON).content(json.writeValueAsString(body))
-                .exchange();
+            .exchange();
     }
 
     MvcTestResult getWithBearer(String uri, String accessToken) {
@@ -107,7 +100,7 @@ abstract class AuthTestSupport extends IntegrationTest {
 
     User activeUser(String email) {
         return users.save(User.register("Test User", email, Objects.requireNonNull(passwordEncoder.encode(PASSWORD)),
-                Role.USER, AccountStatus.ACTIVE));
+            Role.USER, AccountStatus.ACTIVE));
     }
 
     User pendingUser(String email) {
@@ -152,9 +145,9 @@ abstract class AuthTestSupport extends IntegrationTest {
 
     List<MailMessage> mailsTo(String email) {
         return mails.findAll().stream()
-                .filter(mail -> mail.getRecipients().contains(email))
-                .sorted(Comparator.comparingLong(MailMessage::getId))
-                .toList();
+            .filter(mail -> mail.getRecipients().contains(email))
+            .sorted(Comparator.comparingLong(MailMessage::getId))
+            .toList();
     }
 
     List<MailMessage> mailsTo(String email, String subject) {
@@ -173,5 +166,6 @@ abstract class AuthTestSupport extends IntegrationTest {
         return matcher.group(2);
     }
 
-    record Session(String accessToken, String refreshToken) {}
+    record Session(String accessToken, String refreshToken) {
+    }
 }

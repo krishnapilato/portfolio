@@ -114,7 +114,7 @@ Nothing talks to the SMTP server during a request. The service writes the messag
 
 | Threat | Defence | Where |
 |---|---|---|
-| Password guessing | 30 requests per minute per client IP on `/auth/**`. `X-Forwarded-For` counts only when it comes from a proxy listed in `TRUSTED_PROXIES`. Five failures lock the account for 15 minutes, and failures are counted under a row lock. | `AuthRateLimiter`, `AuthService`, `application.yaml` |
+| Password guessing | 30 requests per minute per client IP on `/auth/**`, counted in the database so the limit holds across instances. `X-Forwarded-For` counts only when it comes from a proxy listed in `TRUSTED_PROXIES`. Five failures lock the account for 15 minutes, and failures are counted under a row lock. | `AuthRateLimiter`, `AuthService`, `application.yaml` |
 | Finding out who has an account | Unknown, locked and wrong-password sign-ins get the same 401 after the same bcrypt work. Password recovery always answers 202. | `AuthService` |
 | Stolen access token | 15-minute lifetime. Role, status and session version are checked on every request. The current password is guarded by the same lockout as sign-in. | `SecurityConfig`, `User` |
 | Stolen refresh token | Single use and rotated on every refresh. Replaying one revokes its whole family. | `TokenVault` |

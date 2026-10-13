@@ -1,5 +1,6 @@
 package com.personal.portfolio.mail;
 
+import module java.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -7,12 +8,6 @@ import com.personal.portfolio.mail.Notification.PasswordChanged;
 import com.personal.portfolio.mail.Notification.ResetPassword;
 import com.personal.portfolio.mail.Notification.VerifyEmail;
 import com.personal.portfolio.platform.AppProperties;
-import java.net.URI;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -38,23 +33,23 @@ class NotificationRendererTests extends OutboxIntegrationTest {
 
     static Stream<Arguments> notifications() {
         return Stream.of(
-                arguments(new VerifyEmail("augusta@example.test", "Augusta King", "vfy-7Qe2x9", VERIFY_LINK),
-                        "Confirm your email address",
-                        List.of("Augusta King", "augusta@example.test", "vfy-7Qe2x9", VERIFY_LINK.toString())),
-                arguments(new ResetPassword("turing@example.test", "Alan Mathison", "rst-4Kp8z1", RESET_LINK,
-                        Duration.ofHours(1)),
-                        "Reset your password",
-                        List.of("Alan Mathison", "rst-4Kp8z1", RESET_LINK.toString(), "1 hour")),
-                arguments(new PasswordChanged("hopper@example.test", "Grace Brewster",
-                        Instant.parse("2027-03-05T07:04:59Z")),
-                        "Your password was changed",
-                        List.of("Grace Brewster", "hopper@example.test", "5 March 2027 at 07:04 UTC")));
+            arguments(new VerifyEmail("augusta@example.test", "Augusta King", "vfy-7Qe2x9", VERIFY_LINK),
+                "Confirm your email address",
+                List.of("Augusta King", "augusta@example.test", "vfy-7Qe2x9", VERIFY_LINK.toString())),
+            arguments(new ResetPassword("turing@example.test", "Alan Mathison", "rst-4Kp8z1", RESET_LINK,
+                    Duration.ofHours(1)),
+                "Reset your password",
+                List.of("Alan Mathison", "rst-4Kp8z1", RESET_LINK.toString(), "1 hour")),
+            arguments(new PasswordChanged("hopper@example.test", "Grace Brewster",
+                    Instant.parse("2027-03-05T07:04:59Z")),
+                "Your password was changed",
+                List.of("Grace Brewster", "hopper@example.test", "5 March 2027 at 07:04 UTC")));
     }
 
     @ParameterizedTest
     @MethodSource("notifications")
     void rendersEveryNotificationWithItsSubjectAndDetails(Notification notification, String subject,
-            List<String> details) {
+                                                          List<String> details) {
         var envelope = renderer.render(notification);
 
         assertThat(envelope.subject()).isEqualTo(subject);
@@ -65,20 +60,20 @@ class NotificationRendererTests extends OutboxIntegrationTest {
         assertThat(envelope.attachments()).isEmpty();
         assertThat(envelope.html()).isTrue();
         assertThat(envelope.body())
-                .contains(details)
-                .contains("<title>" + subject + "</title>", properties.mail().sender(),
-                        properties.frontendUrl().toString())
-                .doesNotContain(" th:", "${");
+            .contains(details)
+            .contains("<title>" + subject + "</title>", properties.mail().sender(),
+                properties.frontendUrl().toString())
+            .doesNotContain(" th:", "${");
     }
 
     @Test
     void escapesMarkupInPersonalDetails() {
         var envelope = renderer.render(new VerifyEmail("eve@example.test", "Eve <script>alert(1)</script>", "vfy-1",
-                URI.create("https://front.test/portfolio/verify-email?token=vfy-1")));
+            URI.create("https://front.test/portfolio/verify-email?token=vfy-1")));
 
         assertThat(envelope.body())
-                .contains("Eve &lt;script&gt;alert(1)&lt;/script&gt;")
-                .doesNotContain("<script>");
+            .contains("Eve &lt;script&gt;alert(1)&lt;/script&gt;")
+            .doesNotContain("<script>");
     }
 
     @ParameterizedTest(name = "a validity of {0} reads \"{1}\"")
@@ -104,13 +99,13 @@ class NotificationRendererTests extends OutboxIntegrationTest {
         var before = clock.instant();
 
         notifier.notify(new ResetPassword(recipient, "Alan Mathison", "rst-9Zt3q5",
-                URI.create("https://front.test/portfolio/reset-password?token=rst-9Zt3q5"), Duration.ofMinutes(30)));
+            URI.create("https://front.test/portfolio/reset-password?token=rst-9Zt3q5"), Duration.ofMinutes(30)));
 
         var queued = messages.findByStatus(MailStatus.PENDING, PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "id")))
-                .stream()
-                .filter(message -> message.getRecipients().equals(List.of(recipient)))
-                .findFirst()
-                .orElseThrow();
+            .stream()
+            .filter(message -> message.getRecipients().equals(List.of(recipient)))
+            .findFirst()
+            .orElseThrow();
         assertThat(queued.getSubject()).isEqualTo("Reset your password");
         assertThat(queued.isHtml()).isTrue();
         assertThat(queued.getBody()).contains("rst-9Zt3q5", "30 minutes", "Alan Mathison");

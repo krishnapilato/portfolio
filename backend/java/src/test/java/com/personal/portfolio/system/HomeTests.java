@@ -13,25 +13,25 @@ class HomeTests extends IntegrationTest {
     @Test
     void rendersTheIndexOnTheServerWithoutAnyScript() {
         assertThat(mvc.get().uri("/").accept(MediaType.TEXT_HTML))
-                .hasStatusOk()
-                .hasViewName("home")
-                .bodyText()
-                .contains("The boring parts,")
-                .contains("Running normally")
-                .contains("Java " + Runtime.version().feature() + " · Spring Boot " + SpringBootVersion.getVersion())
-                .doesNotContain("<script");
+            .hasStatusOk()
+            .hasViewName("home")
+            .bodyText()
+            .contains("The boring parts,")
+            .contains("Running normally")
+            .contains("Java " + Runtime.version().feature() + " · Spring Boot " + SpringBootVersion.getVersion())
+            .doesNotContain("<script");
     }
 
     @Test
     void protectsThePageWithAStrictContentSecurityPolicy() {
         assertThat(mvc.get().uri("/"))
-                .hasStatusOk()
-                .hasHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; "
-                        + "style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; "
-                        + "frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
-                .hasHeader("X-Frame-Options", "DENY")
-                .hasHeader("X-Content-Type-Options", "nosniff")
-                .hasHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+            .hasStatusOk()
+            .hasHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; "
+                + "style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; "
+                + "frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
+            .hasHeader("X-Frame-Options", "DENY")
+            .hasHeader("X-Content-Type-Options", "nosniff")
+            .hasHeader("Referrer-Policy", "strict-origin-when-cross-origin");
     }
 
     @Test
