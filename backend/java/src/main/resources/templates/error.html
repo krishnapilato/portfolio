@@ -4,96 +4,98 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="noindex" name="robots">
-    <title th:text="|${status} ${error} · Portfolio Platform|">404 Not Found · Portfolio Platform</title>
+    <meta content="light dark" name="color-scheme">
+    <title>Something went wrong · Portfolio Platform</title>
     <link href="/favicon.svg" rel="icon" th:href="@{/favicon.svg}" type="image/svg+xml">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net" rel="preconnect">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/daisyui@5.7.50/daisyui.css"
+          integrity="sha384-UwBu1IAWgb8nYSKlFTAgsMdqElJVcwjO1O31z47tHuvyhJ4rgjfif927I0JH2zI1" rel="stylesheet">
+    <script crossorigin="anonymous" integrity="sha384-2ql948lIdLcGEE0/qxNiudyTjgauA3RDJERu5xW75kFCvSl5a9odyQYCb6tEjnmB"
+            src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3/dist/index.global.js"></script>
     <style>
         :root {
-            color-scheme: light dark;
+            --color-base-100: #fafaf9;
+            --color-base-200: #f2f2f0;
+            --color-base-300: #e4e4e1;
+            --color-base-content: #19191b;
+            --color-neutral: #19191b;
+            --color-neutral-content: #fafaf9;
+            --color-primary: #c2552b;
+            --color-primary-content: #ffffff;
+            --radius-field: 0.5rem;
+            --border: 1px;
+            --depth: 0;
+            --noise: 0;
         }
 
-        body {
-            max-width: 44rem;
-            margin: 0 auto;
-            padding: 1.5rem 1.25rem 3rem;
-            font: 1.0625rem/1.6 system-ui, sans-serif;
-            background: light-dark(#f7f6f2, #141412);
-            color: light-dark(#1a1917, #ebe9e3);
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-base-100: #111112;
+                --color-base-200: #19191b;
+                --color-base-300: #2a2a2d;
+                --color-base-content: #ececea;
+                --color-neutral: #ececea;
+                --color-neutral-content: #111112;
+                --color-primary: #e2774c;
+                --color-primary-content: #111112;
+            }
         }
-
-        a {
-            color: inherit;
-            text-underline-offset: .2em;
-        }
-
-        a:hover {
-            color: light-dark(#b4532a, #e08a62);
-        }
-
-        header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: .5rem;
-        }
-
-        h1 {
-            margin: 4.5rem 0 1rem;
-            font: 400 clamp(2.5rem, 8vw, 4rem)/1.05 "Iowan Old Style", Georgia, serif;
-            letter-spacing: -.02em;
-        }
-
-        small {
-            color: light-dark(#6f6b63, #9a968c);
-        }
-
-        code {
-            overflow-wrap: anywhere;
+    </style>
+    <style type="text/tailwindcss">
+        @theme {
+            --color-paper: var(--color-base-100);
+            --color-ink: var(--color-base-content);
+            --color-line: var(--color-base-300);
+            --color-accent: var(--color-primary);
         }
     </style>
 </head>
-<body oncontextmenu="return false;" style="user-select: none;">
-<header>
-    <b>
-        <svg aria-hidden="true" height="12" viewBox="0 0 32 32" width="12">
-            <rect fill="currentColor" height="32" rx="7" width="32"/>
-            <circle cx="22" cy="22" fill="#d0643a" r="5"/>
-        </svg>
-        Portfolio Platform</b>
-    <small th:text="|${status} · ${error}|">404 · Not Found</small>
-</header>
+<body class="bg-paper text-ink antialiased">
+<div class="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 sm:px-8">
+    <header class="py-6">
+        <a aria-label="Portfolio Platform, home" class="inline-flex items-center gap-2.5 font-semibold tracking-tight"
+           href="/" th:href="@{/}">
+            <svg aria-hidden="true" class="size-5" viewBox="0 0 32 32">
+                <rect class="fill-ink" height="32" rx="7" width="32"/>
+                <circle class="fill-accent" cx="22" cy="22" r="5"/>
+            </svg>
+            Portfolio Platform
+        </a>
+    </header>
 
-<main th:switch="${status}">
-    <th:block th:case="404">
-        <h1>Page not found</h1>
-        <p>Nothing lives at <code th:text="${path}">/missing</code>. The link may be out of date, or the address
-            mistyped.</p>
-    </th:block>
-    <th:block th:case="401">
-        <h1>Sign-in required</h1>
-        <p>This address is private, or it does not exist; without signing in there is no telling which.
-            API clients get an access token from <code>POST /api/v1/auth/login</code> and send it as a bearer token.</p>
-    </th:block>
-    <th:block th:case="403">
-        <h1>Not allowed</h1>
-        <p>You are signed in, but this account does not have access here.</p>
-    </th:block>
-    <th:block th:case="405">
-        <h1>Method not allowed</h1>
-        <p>This address exists, but it does not accept that kind of request.</p>
-    </th:block>
-    <th:block th:case="429">
-        <h1>Too many requests</h1>
-        <p>That was a lot in a short time. Wait a minute, then try again.</p>
-    </th:block>
-    <th:block th:case="*">
-        <h1 th:text="${status >= 500} ? 'Something broke' : ${error}">Something broke</h1>
-        <p th:text="${status >= 500} ? 'The server ran into an error it did not expect. If it keeps happening, mention the request id below.' : 'The request could not be processed as it was sent.'">
-            The server ran into an error it did not expect.</p>
-    </th:block>
-</main>
+    <main class="flex flex-1 items-center pb-24">
+        <div class="max-w-2xl">
+            <h1 class="text-5xl font-semibold leading-[1.02] tracking-tight text-balance sm:text-7xl" data-split>
+                Something went wrong.
+            </h1>
+            <p class="mt-8 max-w-lg text-lg leading-relaxed text-ink/70" data-fade>
+                This page isn't available right now. It may have moved, or there may be a problem on our side.
+                Try again in a moment, or start over from the home page.
+            </p>
+            <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4" data-fade>
+                <a class="btn btn-primary h-11 rounded-full px-6 font-medium" href="/" th:href="@{/}">Go to the home
+                    page</a>
+                <a class="text-sm font-medium underline-offset-4 hover:underline" href="">Try again</a>
+            </div>
+        </div>
+    </main>
+</div>
 
-<p><a href="/" th:href="@{/}">← Back to the index</a></p>
-<p th:if="${requestId}"><small>Request id <code
-    th:text="${requestId}">0192f3a7-5c1e-7b2d-9a40-3f6c2e8d1b07</code></small></p>
+<script crossorigin="anonymous" integrity="sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly"
+        src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-SWJ0lLVRoipvHh59xj0pL7uC7Ih51F+5smaFtrG+2nr+TlDZU5SYJHmxfolbeNTr"
+        src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script th:nonce="${cspNonce}">
+    if (window.gsap) {
+        gsap.registerPlugin(SplitText);
+        gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+            const title = SplitText.create("[data-split]", {type: "lines", mask: "lines"});
+            gsap.timeline({defaults: {ease: "power3.out"}})
+                .from(title.lines, {yPercent: 100, duration: 0.9, stagger: 0.09})
+                .from("[data-fade]", {y: 16, autoAlpha: 0, duration: 0.7, stagger: 0.08}, "-=0.5");
+            return () => title.revert();
+        });
+    }
+</script>
 </body>
 </html>

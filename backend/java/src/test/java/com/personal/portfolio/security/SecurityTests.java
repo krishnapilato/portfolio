@@ -32,15 +32,7 @@ class SecurityTests extends IntegrationTest {
 
     private static final String ME = "/api/v1/me";
     private static final String USERS = "/api/v1/users";
-    private static final String CONTENT_SECURITY_POLICY = String.join("; ",
-        "default-src 'self'",
-        "script-src 'self'",
-        "style-src 'self' 'unsafe-inline'",
-        "img-src 'self' data:",
-        "object-src 'none'",
-        "frame-ancestors 'none'",
-        "base-uri 'self'",
-        "form-action 'self'");
+    private static final Pattern NONCE = Pattern.compile("<script nonce=\"([^\"]+)\">");
     private static final long ROLE_CHECK_ONLY_ID = Long.MAX_VALUE - 1;
     private static final JwsHeader HS256 = JwsHeader.with(MacAlgorithm.HS256).build();
 
@@ -276,16 +268,30 @@ class SecurityTests extends IntegrationTest {
     }
 
     @Test
-    void protectsPagesWithSecurityHeaders() {
+    void protectsPagesWithSecurityHeaders() throws Exception {
         var page = mvc.get().uri("/").accept(MediaType.TEXT_HTML).exchange();
 
         assertThat(page).hasStatusOk()
-            .hasHeader("Content-Security-Policy", CONTENT_SECURITY_POLICY)
+            .hasHeader(ContentSecurityPolicyFilter.HEADER, ContentSecurityPolicyFilter.policy(nonceOf(page)))
             .hasHeader("X-Frame-Options", "DENY")
             .hasHeader("Referrer-Policy", "strict-origin-when-cross-origin")
             .hasHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
             .hasHeader("X-Content-Type-Options", "nosniff")
             .doesNotContainHeader("Strict-Transport-Security");
+    }
+
+    @Test
+    void issuesAFreshScriptNonceForEveryPage() throws Exception {
+        var first = nonceOf(mvc.get().uri("/").accept(MediaType.TEXT_HTML).exchange());
+        var second = nonceOf(mvc.get().uri("/").accept(MediaType.TEXT_HTML).exchange());
+
+        assertThat(first).isNotEqualTo(second);
+        assertThat(Base64.getDecoder().decode(first)).hasSize(18);
+    }
+
+    private static String nonceOf(MvcTestResult page) throws UnsupportedEncodingException {
+        return NONCE.matcher(page.getResponse().getContentAsString()).results().map(match -> match.group(1))
+            .findFirst().orElseThrow();
     }
 
     @Test

@@ -6,206 +6,179 @@
     <meta
         content="A Spring Boot base for new projects: accounts, sign-in and transactional email, built and tested properly."
         name="description">
+    <meta content="light dark" name="color-scheme">
     <title>Portfolio Platform</title>
     <link href="/favicon.svg" rel="icon" th:href="@{/favicon.svg}" type="image/svg+xml">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net" rel="preconnect">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/daisyui@5.7.50/daisyui.css"
+          integrity="sha384-UwBu1IAWgb8nYSKlFTAgsMdqElJVcwjO1O31z47tHuvyhJ4rgjfif927I0JH2zI1" rel="stylesheet">
+    <script crossorigin="anonymous" integrity="sha384-2ql948lIdLcGEE0/qxNiudyTjgauA3RDJERu5xW75kFCvSl5a9odyQYCb6tEjnmB"
+            src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3/dist/index.global.js"></script>
     <style>
         :root {
-            color-scheme: light dark;
-            --muted: light-dark(#6f6b63, #9a968c);
-            --line: #8883;
+            --color-base-100: #fafaf9;
+            --color-base-200: #f2f2f0;
+            --color-base-300: #e4e4e1;
+            --color-base-content: #19191b;
+            --color-neutral: #19191b;
+            --color-neutral-content: #fafaf9;
+            --color-primary: #c2552b;
+            --color-primary-content: #ffffff;
+            --radius-field: 0.5rem;
+            --border: 1px;
+            --depth: 0;
+            --noise: 0;
         }
 
-        body {
-            max-width: 44rem;
-            margin: 0 auto;
-            padding: 1.5rem 1.25rem 3rem;
-            font: 1.0625rem/1.6 system-ui, sans-serif;
-            background: light-dark(#f7f6f2, #141412);
-            color: light-dark(#1a1917, #ebe9e3);
-        }
-
-        a {
-            color: inherit;
-            text-underline-offset: .2em;
-        }
-
-        a:hover {
-            color: light-dark(#b4532a, #e08a62);
-        }
-
-        header, footer {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: .5rem;
-        }
-
-        h1 {
-            margin: 4.5rem 0 1rem;
-            font: 400 clamp(2.5rem, 8vw, 4rem)/1.05 "Iowan Old Style", Georgia, serif;
-            letter-spacing: -.02em;
-        }
-
-        h2 {
-            margin: 3.5rem 0 .5rem;
-            font-size: .75rem;
-            letter-spacing: .12em;
-            text-transform: uppercase;
-        }
-
-        h2, small, footer, td + td, dd {
-            color: var(--muted);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        td {
-            padding: .6rem 1rem .6rem 0;
-            border-top: 1px solid var(--line);
-            vertical-align: top;
-        }
-
-        td:first-child {
-            white-space: nowrap;
-        }
-
-        @media (max-width: 40rem) {
-            td {
-                display: block;
-            }
-
-            td + td {
-                padding-top: 0;
-                border: 0;
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-base-100: #111112;
+                --color-base-200: #19191b;
+                --color-base-300: #2a2a2d;
+                --color-base-content: #ececea;
+                --color-neutral: #ececea;
+                --color-neutral-content: #111112;
+                --color-primary: #e2774c;
+                --color-primary-content: #111112;
             }
         }
-
-        dt {
-            font-weight: 600;
-        }
-
-        footer {
-            margin-top: 4.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--line);
-            font-size: .875rem;
-        }
-
-        .ok {
-            color: #2f8a55;
-        }
-
-        .warn {
-            color: #c08a1a;
-        }
-
-        .bad {
-            color: #c2452c;
+    </style>
+    <style type="text/tailwindcss">
+        @theme {
+            --color-paper: var(--color-base-100);
+            --color-ink: var(--color-base-content);
+            --color-line: var(--color-base-300);
+            --color-accent: var(--color-primary);
         }
     </style>
 </head>
-<body oncontextmenu="return false;" style="user-select: none;">
-<header>
-    <b>
-        <svg aria-hidden="true" height="12" viewBox="0 0 32 32" width="12">
-            <rect fill="currentColor" height="32" rx="7" width="32"/>
-            <circle cx="22" cy="22" fill="#d0643a" r="5"/>
-        </svg>
-        Portfolio Platform</b>
-    <small><span th:text="|v${version}|">v1.0.0</span>
-        <th:block th:if="${commit}"> · <a href="#"
-                                          th:href="|https://github.com/krishnapilato/portfolio/commit/${commit}|"
-                                          th:text="${commit}">3f2a9c1</a></th:block>
-    </small>
-</header>
+<body class="bg-paper text-ink antialiased">
+<a class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-10 focus:rounded-md focus:bg-ink focus:px-3 focus:py-2 focus:text-paper"
+   href="#main">Skip to content</a>
 
-<main>
-    <h1>The boring parts,<br><i>done properly.</i></h1>
-    <p>
-        A Spring Boot service that already takes care of accounts, sign-in and transactional email.
-        It is tested, observable and ready to deploy, so the next project can start with the part
-        that is actually new.
-    </p>
-    <p th:with="state=${status == 'UP'} ? 'ok' : (${status == 'DOWN'} ? 'bad' : 'warn')">
-        <span aria-hidden="true" class="ok" th:class="${state}">●</span>
-        <th:block th:switch="${status}">
-            <th:block th:case="'UP'">Running normally</th:block>
-            <th:block th:case="'DOWN'">Running with problems</th:block>
-            <th:block th:case="'OUT_OF_SERVICE'">Out of service</th:block>
-            <th:block th:case="*">Status unknown</th:block>
-        </th:block>
-        <small th:text="|· up ${uptime}|">· up 4 h 12 min</small>
-    </p>
+<div class="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 sm:px-8">
+    <header class="flex items-center justify-between gap-4 py-6">
+        <a aria-label="Portfolio Platform, home" class="flex items-center gap-2.5 font-semibold tracking-tight" href="/"
+           th:href="@{/}">
+            <svg aria-hidden="true" class="size-5" viewBox="0 0 32 32">
+                <rect class="fill-ink" height="32" rx="7" width="32"/>
+                <circle class="fill-accent" cx="22" cy="22" r="5"/>
+            </svg>
+            Portfolio Platform
+        </a>
+        <nav aria-label="Primary">
+            <ul class="flex items-center gap-5 text-sm sm:gap-7">
+                <li><a class="underline-offset-4 hover:underline" href="/swagger-ui.html" th:href="@{/swagger-ui.html}">API
+                    reference</a></li>
+                <li><a class="underline-offset-4 hover:underline" href="https://github.com/krishnapilato/portfolio"
+                       rel="noopener">Source</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <h2>Index</h2>
-    <table>
-        <tr>
-            <td><a href="/swagger-ui.html" th:href="@{/swagger-ui.html}">API reference</a></td>
-            <td>Every endpoint, with a console to try them out.</td>
-        </tr>
-        <tr>
-            <td><a href="/v3/api-docs" th:href="@{/v3/api-docs}">OpenAPI document</a></td>
-            <td>The contract as JSON, ready for client generators.</td>
-        </tr>
-        <tr>
-            <td><a href="/actuator/health" th:href="@{/actuator/health}">Health</a></td>
-            <td>Liveness and readiness, the way orchestrators expect them.</td>
-        </tr>
-        <tr>
-            <td><a href="https://github.com/krishnapilato/portfolio">Source code</a></td>
-            <td>Code, tests and the reasoning behind them.</td>
-        </tr>
-    </table>
+    <main class="flex-1" id="main">
+        <section aria-labelledby="intro" class="pb-20 pt-20 sm:pb-28 sm:pt-32" data-hero>
+            <h1 class="max-w-3xl text-5xl font-semibold leading-[1.02] tracking-tight text-balance sm:text-7xl"
+                data-split id="intro">
+                The boring parts, <span class="text-ink/45">done properly.</span>
+            </h1>
+            <p class="mt-8 max-w-xl text-lg leading-relaxed text-ink/70" data-fade>
+                A Spring Boot service that already takes care of accounts, sign-in and transactional email. It is
+                tested, observable and ready to deploy, so the next project can start with the part that is actually
+                new.
+            </p>
+            <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4" data-fade>
+                <a class="btn btn-primary h-11 rounded-full px-6 font-medium" href="/swagger-ui.html"
+                   th:href="@{/swagger-ui.html}">Explore the API</a>
+                <a class="group inline-flex items-center gap-1.5 text-sm font-medium"
+                   href="https://github.com/krishnapilato/portfolio" rel="noopener">
+                    Read the source
+                    <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+                </a>
+            </div>
+        </section>
 
-    <h2>Start here</h2>
-    <table>
-        <tr>
-            <td><code>POST /api/v1/auth/register</code></td>
-            <td>Create an account. A verification link is emailed.</td>
-        </tr>
-        <tr>
-            <td><code>POST /api/v1/auth/login</code></td>
-            <td>Trade email and password for an access and a refresh token.</td>
-        </tr>
-        <tr>
-            <td><code>POST /api/v1/auth/refresh</code></td>
-            <td>Swap the refresh token for a new pair.</td>
-        </tr>
-        <tr>
-            <td><code>GET /api/v1/me</code></td>
-            <td>Your profile, with the access token as a bearer token.</td>
-        </tr>
-    </table>
+        <section aria-labelledby="inside" class="border-t border-line py-16 sm:py-24">
+            <div class="grid gap-10 md:grid-cols-[13rem_1fr] md:gap-16">
+                <h2 class="text-sm font-medium text-ink/55 md:sticky md:top-10 md:self-start" data-fade id="inside">
+                    What it covers
+                </h2>
+                <dl class="divide-y divide-line">
+                    <div class="grid gap-2 py-7 first:pt-0 sm:grid-cols-[10rem_1fr] sm:gap-8" data-row>
+                        <dt class="font-medium">Accounts</dt>
+                        <dd class="leading-relaxed text-ink/70">Sign-up with email verification, roles, lockout after
+                            repeated failures, and admin tools that refuse to remove the last administrator.
+                        </dd>
+                    </div>
+                    <div class="grid gap-2 py-7 sm:grid-cols-[10rem_1fr] sm:gap-8" data-row>
+                        <dt class="font-medium">Sessions</dt>
+                        <dd class="leading-relaxed text-ink/70">Short-lived access tokens. Refresh tokens rotate on
+                            every use, and replaying an old one revokes the whole chain.
+                        </dd>
+                    </div>
+                    <div class="grid gap-2 py-7 sm:grid-cols-[10rem_1fr] sm:gap-8" data-row>
+                        <dt class="font-medium">Email</dt>
+                        <dd class="leading-relaxed text-ink/70">A transactional outbox: messages are saved with the
+                            change that caused them, then delivered with retries, safely across instances.
+                        </dd>
+                    </div>
+                    <div class="grid gap-2 py-7 sm:grid-cols-[10rem_1fr] sm:gap-8" data-row>
+                        <dt class="font-medium">Operations</dt>
+                        <dd class="leading-relaxed text-ink/70">Health checks for orchestrators, Prometheus metrics and
+                            structured logs where every line carries its request id.
+                        </dd>
+                    </div>
+                    <div class="grid gap-2 py-7 last:pb-0 sm:grid-cols-[10rem_1fr] sm:gap-8" data-row>
+                        <dt class="font-medium">Quality</dt>
+                        <dd class="leading-relaxed text-ink/70">The build fails on any compiler warning, and the tests
+                            are graded by mutation testing, not just coverage.
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </section>
+    </main>
 
-    <h2>Inside</h2>
-    <dl>
-        <dt>Accounts</dt>
-        <dd>Sign-up with email verification, roles, lockout after repeated failures, and admin tools that refuse to
-            remove the last administrator.
-        </dd>
-        <dt>Sessions</dt>
-        <dd>Short-lived access tokens. Refresh tokens rotate on every use, and replaying an old one revokes the whole
-            chain.
-        </dd>
-        <dt>Email</dt>
-        <dd>A transactional outbox: messages are saved with the change that caused them, then delivered with retries,
-            safely across instances.
-        </dd>
-        <dt>Operations</dt>
-        <dd>Health groups, Prometheus metrics and structured logs where every line carries its request id.</dd>
-        <dt>Quality</dt>
-        <dd>The build fails on any compiler warning, and the tests are graded by mutation testing, not just coverage.
-        </dd>
-    </dl>
-</main>
+    <footer class="flex flex-wrap items-center justify-between gap-3 border-t border-line py-8 text-sm text-ink/55">
+        <p>Khova Krishna Pilato · MIT License</p>
+        <a class="underline-offset-4 hover:text-ink hover:underline" href="https://github.com/krishnapilato/portfolio"
+           rel="noopener">github.com/krishnapilato/portfolio</a>
+    </footer>
+</div>
 
-<footer>
-    <span>Khova Krishna Pilato · MIT License</span>
-    <span
-        th:text="${built} ? |${runtime} · built ${built}| : ${runtime}">Java 27 · Spring Boot 4.2.0 · built 1 Oct 2026</span>
-</footer>
+<script crossorigin="anonymous" integrity="sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly"
+        src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-wl5TeDVvOWt30Pbf8aSo2ZrzsOjddu3avOBvHe+p+OhJt9gP6w9YXmDkN5DK2/dF"
+        src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-SWJ0lLVRoipvHh59xj0pL7uC7Ih51F+5smaFtrG+2nr+TlDZU5SYJHmxfolbeNTr"
+        src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script th:nonce="${cspNonce}">
+    if (window.gsap) {
+        gsap.registerPlugin(ScrollTrigger, SplitText);
+        gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+            const title = SplitText.create("[data-split]", {type: "lines", mask: "lines"});
+            gsap.timeline({defaults: {ease: "power3.out"}})
+                .from(title.lines, {yPercent: 100, duration: 0.9, stagger: 0.09})
+                .from("[data-hero] [data-fade]", {y: 16, autoAlpha: 0, duration: 0.7, stagger: 0.08}, "-=0.5");
+
+            gsap.to("[data-hero]", {
+                yPercent: -12,
+                autoAlpha: 0.35,
+                ease: "none",
+                scrollTrigger: {trigger: "[data-hero]", start: "top top", end: "bottom top", scrub: true},
+            });
+
+            gsap.utils.toArray("[data-row], #inside").forEach(element => gsap.from(element, {
+                y: 24,
+                autoAlpha: 0,
+                duration: 0.7,
+                ease: "power2.out",
+                scrollTrigger: {trigger: element, start: "top 88%"},
+            }));
+
+            return () => title.revert();
+        });
+    }
+</script>
 </body>
 </html>

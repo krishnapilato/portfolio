@@ -26,6 +26,8 @@ import tools.jackson.databind.json.JsonMapper;
 class ErrorPageTests extends IntegrationTest {
 
     private static final HttpClient CLIENT = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
+    private static final String GENERIC_MESSAGE = "Something went wrong.";
+    private static final Pattern NONCE = Pattern.compile("<script nonce=\"([^\"]+)\">");
 
     @LocalServerPort
     private int port;
@@ -55,11 +57,18 @@ class ErrorPageTests extends IntegrationTest {
             assertThat(MediaType.parseMediaType(type).isCompatibleWith(MediaType.TEXT_HTML)).isTrue());
         assertThat(response.headers().firstValue(CorrelationFilter.HEADER)).contains(requestId);
         assertThat(response.body())
-            .contains("<title>404 Not Found · Portfolio Platform</title>")
-            .contains("Page not found")
-            .contains("<code>" + requestId + "</code>")
-            .contains("<code>/missing-page</code>")
-            .doesNotContain("<script");
+            .contains("<title>Something went wrong · Portfolio Platform</title>", GENERIC_MESSAGE)
+            .doesNotContain(requestId, "/missing-page", "Not Found", ">404<");
+    }
+
+    @Test
+    void letsOnlyTheInlineScriptCarryingThisResponsesNonceRun() throws Exception {
+        var response = send("/missing-page", MediaType.TEXT_HTML_VALUE, null, null);
+
+        var policy = response.headers().firstValue("Content-Security-Policy").orElseThrow();
+        var nonce = NONCE.matcher(response.body()).results().map(match -> match.group(1)).toList();
+        assertThat(nonce).hasSize(1);
+        assertThat(policy).contains("script-src 'self' 'nonce-" + nonce.getFirst() + "' https://cdn.jsdelivr.net");
     }
 
     @Test
@@ -85,11 +94,11 @@ class ErrorPageTests extends IntegrationTest {
 
         var header = response.headers().firstValue(CorrelationFilter.HEADER).orElseThrow();
         assertThat(UUID.fromString(header).version()).isEqualTo(7);
-        assertThat(response.body()).contains("<code>" + header + "</code>");
+        assertThat(response.body()).doesNotContain(header);
     }
 
     @Test
-    void rendersTheSignInPageForAnonymousBrowsers() throws Exception {
+    void showsAnonymousBrowsersTheSameGenericPage() throws Exception {
         var requestId = "anonymous-html-" + UUID.randomUUID();
 
         var response = send("/missing-page", MediaType.TEXT_HTML_VALUE, requestId, null);
@@ -97,9 +106,7 @@ class ErrorPageTests extends IntegrationTest {
         assertThat(response.statusCode()).isEqualTo(401);
         assertThat(response.headers().firstValue(HttpHeaders.WWW_AUTHENTICATE)).hasValueSatisfying(challenge ->
             assertThat(challenge).startsWith("Bearer"));
-        assertThat(response.body())
-            .contains("Sign-in required")
-            .contains("<code>" + requestId + "</code>");
+        assertThat(response.body()).contains(GENERIC_MESSAGE).doesNotContain(requestId, "Sign-in", "/api/v1/");
     }
 
     @Test
@@ -112,11 +119,11 @@ class ErrorPageTests extends IntegrationTest {
     }
 
     @Test
-    void rendersNotFoundForPublicPathsWithoutSigningIn() throws Exception {
+    void rendersTheGenericPageForPublicPathsWithoutSigningIn() throws Exception {
         var response = send("/favicon.ico", MediaType.TEXT_HTML_VALUE, null, null);
 
         assertThat(response.statusCode()).isEqualTo(404);
-        assertThat(response.body()).contains("Page not found").contains("<code>/favicon.ico</code>");
+        assertThat(response.body()).contains(GENERIC_MESSAGE).doesNotContain("/favicon.ico");
     }
 
     @Test

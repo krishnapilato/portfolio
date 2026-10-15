@@ -60,8 +60,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-// CSRF is disabled on both chains: they are stateless and authenticate from the Authorization header,
-// never from a cookie, so a forged cross-site request carries no credentials.
 @SuppressWarnings("java:S4502")
 @Configuration(proxyBeanMethods = false)
 @EnableMethodSecurity
@@ -74,23 +72,13 @@ class SecurityConfig {
     private static final Duration HSTS_MAX_AGE = Duration.ofDays(365);
     private static final Duration CORS_MAX_AGE = Duration.ofHours(1);
     private static final String PERMISSIONS_POLICY = "camera=(), microphone=(), geolocation=()";
-    private static final String CONTENT_SECURITY_POLICY = String.join("; ",
-        "default-src 'self'",
-        "script-src 'self'",
-        "style-src 'self' 'unsafe-inline'",
-        "img-src 'self' data:",
-        "object-src 'none'",
-        "frame-ancestors 'none'",
-        "base-uri 'self'",
-        "form-action 'self'");
 
-    // The scrape password is a long random secret, not a human password: a constant-time comparison is enough,
-    // and unlike bcrypt it costs an anonymous caller nothing to be told no.
     static AuthenticationManager scraper(String password) {
         var expected = password.getBytes(UTF_8);
         return authentication -> {
             var presented = String.valueOf(authentication.getCredentials()).getBytes(UTF_8);
-            if (password.isBlank() || !PROMETHEUS.equals(authentication.getName()) || !MessageDigest.isEqual(presented, expected)) throw new BadCredentialsException("Invalid scrape credentials");
+            if (password.isBlank() || !PROMETHEUS.equals(authentication.getName()) || !MessageDigest.isEqual(presented, expected))
+                throw new BadCredentialsException("Invalid scrape credentials");
             return UsernamePasswordAuthenticationToken.authenticated(PROMETHEUS, null, AuthorityUtils.createAuthorityList("ROLE_" + METRICS));
         };
     }
@@ -143,7 +131,6 @@ class SecurityConfig {
                 .authenticationEntryPoint(bearerChallenge())
                 .accessDeniedHandler(new BearerTokenAccessDeniedHandler()))
             .headers(headers -> headers
-                .contentSecurityPolicy(csp -> csp.policyDirectives(CONTENT_SECURITY_POLICY))
                 .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).maxAgeInSeconds(HSTS_MAX_AGE.toSeconds()))
                 .referrerPolicy(referrer -> referrer.policy(ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
                 .permissionsPolicyHeader(permissions -> permissions.policy(PERMISSIONS_POLICY))
