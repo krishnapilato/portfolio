@@ -5,11 +5,11 @@ on:
     branches:
       - main
     paths:
-      - backend/java/**
+      - backend/**
       - .github/workflows/backend.yml
   pull_request:
     paths:
-      - backend/java/**
+      - backend/**
       - .github/workflows/backend.yml
   workflow_dispatch:
 
@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 30
     defaults:
       run:
-        working-directory: backend/java
+        working-directory: backend
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -40,7 +40,7 @@ jobs:
           distribution: oracle
           java-version: '27'
           cache: maven
-          cache-dependency-path: backend/java/pom.xml
+          cache-dependency-path: backend/pom.xml
 
       - name: Build, test and enforce quality gates
         run: sh ./mvnw -B -ntp verify
@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: backend/java/target/site/jacoco
+          path: backend/target/site/jacoco
           if-no-files-found: ignore
 
   mutation:
@@ -60,7 +60,7 @@ jobs:
     timeout-minutes: 60
     defaults:
       run:
-        working-directory: backend/java
+        working-directory: backend
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -73,7 +73,7 @@ jobs:
           distribution: oracle
           java-version: '27'
           cache: maven
-          cache-dependency-path: backend/java/pom.xml
+          cache-dependency-path: backend/pom.xml
 
       - name: Run PIT and enforce the mutation score
         run: sh ./mvnw -B -ntp -Pmutation -Djacoco.skip=true test-compile org.pitest:pitest-maven:mutationCoverage
@@ -83,7 +83,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pit-report
-          path: backend/java/target/pit-reports
+          path: backend/target/pit-reports
           if-no-files-found: ignore
 
   image:
@@ -101,7 +101,7 @@ jobs:
       - name: Build image
         uses: docker/build-push-action@v6
         with:
-          context: backend/java
+          context: backend
           push: false
           tags: portfolio:${{ github.sha }}
           labels: org.opencontainers.image.revision=${{ github.sha }}

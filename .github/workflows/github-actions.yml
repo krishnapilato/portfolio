@@ -21,7 +21,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./frontend/react-app
+        working-directory: ./frontend
 
     steps:
       - name: Checkout repository
@@ -44,7 +44,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './frontend/react-app/dist'
+          path: './frontend/dist'
 
   deploy:
     environment:
