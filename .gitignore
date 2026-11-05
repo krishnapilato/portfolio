@@ -1,0 +1,15 @@
+# Generated output and local tooling
+node_modules/
+target/
+dist/
+logs/
+*.log
+*.lck
+.idea/
+.vscode/
+
+# Secrets stay local; configuration examples may be committed.
+.env
+.env.*
+*.env
+!.env.example

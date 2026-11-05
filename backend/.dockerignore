@@ -1,0 +1,11 @@
+target
+.env
+.env.*
+*.env
+.git
+.idea
+.claude
+*.iml
+logs
+docs
+*.md

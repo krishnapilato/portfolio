@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="referrer" content="no-referrer">
+    <meta name="description" content="A considered foundation for your next project. Privacy first. Security by design.">
+    <title th:text="${@environment.getProperty('app.name', 'Foundation')}">Foundation</title>
+    <link rel="icon" href="/favicon.svg" th:href="@{/favicon.svg}" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/interface.css" th:href="@{/assets/interface.css}">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="page">
+    <header class="masthead">
+        <a class="brand" href="/" th:href="@{/}" aria-label="Home">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 29 9.5v13L16 30 3 22.5v-13Z"/><path d="m10 12 6-3.5 6 3.5v8L16 23.5 10 20Z"/></svg>
+                <span th:text="${@environment.getProperty('app.name', 'Foundation')}">Foundation</span>
+            </a>
+        <span class="edition">BUILT WITH INTENTION</span>
+    </header>
+    <main id="main" class="hero" tabindex="-1">
+        <section class="hero-copy" aria-labelledby="title">
+            <p class="eyebrow"><span class="signal" aria-hidden="true"></span> A STRONG START. A LIGHT FOOTPRINT.</p>
+            <h1 id="title">Good things<br>begin with <em>trust.</em></h1>
+            <p class="description">A considered foundation for what comes next. Privacy first. Security by design. Only what matters.</p>
+            <div class="actions">
+                <a class="button" href="/swagger-ui.html" th:href="@{/swagger-ui.html}">Explore the API <span aria-hidden="true">↗</span></a>
+                <span class="action-note">Built to become yours.</span>
+            </div>
+        </section>
+        <div class="hero-art"><div class="emblem" aria-hidden="true">
+                    <svg viewBox="0 0 480 480" fill="none">
+                        <path class="crosshair" d="M240 0v480M0 240h480"/>
+                        <circle class="orbit" cx="240" cy="240" r="211"/>
+                        <circle class="orbit" cx="240" cy="240" r="178"/>
+                        <path class="boundary" d="m240 66 151 87v174l-151 87-151-87V153Z"/>
+                        <path class="boundary inner" d="m240 104 118 68v136l-118 68-118-68V172Z"/>
+                        <path class="core" d="m240 142 85 49v98l-85 49-85-49v-98Z"/>
+                        <path class="lock" d="M215 234v-22a25 25 0 0 1 50 0v22m-58 0h66v51h-66Zm33 19v12"/>
+                        <circle class="node" cx="240" cy="29" r="5"/>
+                        <circle class="node" cx="57" cy="346" r="5"/>
+                        <circle class="node" cx="423" cy="346" r="5"/>
+                    </svg>
+                    <span class="art-label art-label-top">LESS EXPOSURE.</span>
+                    <span class="art-label art-label-bottom">MORE INTENTION.</span>
+                </div></div>
+    </main>
+    <footer class="footnote">
+        <span class="principles">Privacy first <span aria-hidden="true">/</span> Secure by design <span aria-hidden="true">/</span> Purposefully simple</span>
+        <span class="signature">A little less. A lot more care.</span>
+    </footer>
+</div>
+</body>
+</html>

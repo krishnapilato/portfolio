@@ -1,0 +1,31 @@
+package com.example.application.platform;
+
+import module java.base;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+
+import com.example.application.mail.MailStatus;
+import com.example.application.user.AccountStatus;
+import org.junit.jupiter.api.Test;
+
+class TallyTests {
+
+    @Test
+    void fillsMissingKeysWithZeroInDeclarationOrder() {
+        var counts = Tally.zeroFilled(AccountStatus.class, List.of(
+            new Tally<>(AccountStatus.DISABLED, 2), new Tally<>(AccountStatus.ACTIVE, 7)));
+
+        assertThat(counts).containsExactly(
+            entry(AccountStatus.PENDING, 0L),
+            entry(AccountStatus.ACTIVE, 7L),
+            entry(AccountStatus.LOCKED, 0L),
+            entry(AccountStatus.DISABLED, 2L));
+    }
+
+    @Test
+    void reportsZeroForEveryKeyWithoutTallies() {
+        assertThat(Tally.zeroFilled(MailStatus.class, List.of()))
+            .containsOnlyKeys(MailStatus.values())
+            .allSatisfy((_, total) -> assertThat(total).isZero());
+    }
+}

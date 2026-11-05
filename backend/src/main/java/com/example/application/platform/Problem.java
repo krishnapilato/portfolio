@@ -1,0 +1,38 @@
+package com.example.application.platform;
+
+import module java.base;
+
+import com.example.application.auth.TokenPurpose;
+import com.example.application.mail.MailStatus;
+import com.example.application.user.AccountStatus;
+
+public sealed interface Problem {
+
+    record NotFound(String resource, Object key) implements Problem {}
+
+    record EmailTaken(String email) implements Problem {}
+
+    record InvalidCredentials() implements Problem {}
+
+    record AccountUnavailable(AccountStatus status) implements Problem {}
+
+    record TemporarilyLocked(Instant until) implements Problem {}
+
+    record RateLimited(Instant until) implements Problem {}
+
+    record InvalidToken(TokenPurpose purpose) implements Problem {}
+
+    record TokenReuse() implements Problem {}
+
+    record IllegalTransition(AccountStatus from, AccountStatus to) implements Problem {}
+
+    record SelfManagement() implements Problem {}
+
+    record LastAdministrator() implements Problem {}
+
+    record WrongPassword() implements Problem {}
+
+    record UnsupportedSort(String property, Set<String> allowed) implements Problem {}
+
+    record MailNotModifiable(long id, MailStatus status) implements Problem {}
+}

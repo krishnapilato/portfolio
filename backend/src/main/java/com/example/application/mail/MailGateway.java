@@ -1,0 +1,51 @@
+package com.example.application.mail;
+
+import module java.base;
+
+import com.example.application.platform.AppProperties;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.MailPreparationException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
+
+// No retries here on purpose: the outbox retries with backoff, and retrying inside one attempt
+// could send the same message twice when the server accepted it but the reply was lost.
+@Component
+@RequiredArgsConstructor
+class MailGateway {
+
+    private final JavaMailSender sender;
+    private final AppProperties properties;
+
+    public void send(Envelope envelope) {
+        sender.send(mime(envelope));
+    }
+
+    private MimeMessage mime(Envelope envelope) {
+        var message = sender.createMimeMessage();
+        try {
+            var helper = new MimeMessageHelper(message, !envelope.attachments().isEmpty(), StandardCharsets.UTF_8.name());
+            helper.setFrom(properties.mail().from(), properties.mail().sender());
+            helper.setTo(addresses(envelope.to()));
+            helper.setCc(addresses(envelope.cc()));
+            helper.setBcc(addresses(envelope.bcc()));
+            var replyTo = envelope.replyTo();
+            if (replyTo != null) helper.setReplyTo(replyTo);
+            helper.setSubject(envelope.subject());
+            helper.setText(envelope.body(), envelope.html());
+            for (var attachment : envelope.attachments())
+                helper.addAttachment(attachment.filename(), new ByteArrayResource(attachment.content()), attachment.contentType());
+            return message;
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new MailPreparationException("Could not build the MIME message", e);
+        }
+    }
+
+    private static String[] addresses(List<String> addresses) {
+        return addresses.toArray(String[]::new);
+    }
+}

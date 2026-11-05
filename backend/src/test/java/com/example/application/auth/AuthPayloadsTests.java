@@ -1,0 +1,44 @@
+package com.example.application.auth;
+
+import module java.base;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+
+import com.example.application.auth.AuthPayloads.Credentials;
+import com.example.application.auth.AuthPayloads.PasswordChange;
+import com.example.application.auth.AuthPayloads.PasswordReset;
+import com.example.application.auth.AuthPayloads.RefreshRequest;
+import com.example.application.auth.AuthPayloads.Registration;
+import com.example.application.auth.AuthPayloads.TokenPair;
+import com.example.application.auth.AuthPayloads.TokenRequest;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+class AuthPayloadsTests {
+
+    private static final String SECRET = "S3cret-Value-42";
+    private static final String OTHER_SECRET = "0ther-Secret-Value";
+
+    @ParameterizedTest
+    @MethodSource("secretBearingPayloads")
+    void redactsSecretsFromTheStringForm(Record payload, String visible) {
+        assertThat(payload.toString())
+            .doesNotContain(SECRET)
+            .doesNotContain(OTHER_SECRET)
+            .contains("<redacted>")
+            .contains(visible);
+    }
+
+    static Stream<Arguments> secretBearingPayloads() {
+        return Stream.of(
+            arguments(new Registration("Ada Lovelace", "ada@example.test", SECRET), "ada@example.test"),
+            arguments(new Credentials("ada@example.test", SECRET), "ada@example.test"),
+            arguments(new TokenRequest(SECRET), "TokenRequest"),
+            arguments(new RefreshRequest(SECRET), "RefreshRequest"),
+            arguments(new PasswordReset(SECRET, OTHER_SECRET), "PasswordReset"),
+            arguments(new PasswordChange(SECRET, OTHER_SECRET), "PasswordChange"),
+            arguments(new TokenPair("Bearer", SECRET, Instant.EPOCH, 900, OTHER_SECRET, Instant.EPOCH),
+                "expiresIn=900"));
+    }
+}

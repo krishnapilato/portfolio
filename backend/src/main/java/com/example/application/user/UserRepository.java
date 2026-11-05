@@ -1,0 +1,40 @@
+package com.example.application.user;
+
+import module java.base;
+
+import com.example.application.platform.Tally;
+import jakarta.persistence.LockModeType;
+import org.jspecify.annotations.Nullable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findByEmail(String email);
+
+    // Sign-in locks the row, so parallel guesses against one account are counted one after another.
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<User> findForUpdateByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    @Query("""
+        select u from User u
+        where (:query is null or lower(u.fullName) like :query escape '!' or u.email like :query escape '!')
+          and (:role is null or u.role = :role)
+          and (:status is null or u.status = :status)
+        """)
+    Page<User> search(@Nullable String query, @Nullable Role role, @Nullable AccountStatus status, Pageable pageable);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    List<User> findByRoleAndStatus(Role role, AccountStatus status);
+
+    @Query("select new com.example.application.platform.Tally(u.status, count(u)) from User u group by u.status")
+    List<Tally<AccountStatus>> tallyByStatus();
+
+    @Query("select new com.example.application.platform.Tally(u.role, count(u)) from User u group by u.role")
+    List<Tally<Role>> tallyByRole();
+}

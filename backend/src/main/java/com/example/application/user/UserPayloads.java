@@ -1,0 +1,52 @@
+package com.example.application.user;
+
+import module java.base;
+
+import com.example.application.mail.MailAddress;
+import com.example.application.security.StrongPassword;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import org.jspecify.annotations.Nullable;
+
+public final class UserPayloads {
+
+    private UserPayloads() {}
+
+    public record UserView(
+        long id,
+        String fullName,
+        String email,
+        Role role,
+        AccountStatus status,
+        @Nullable Instant lastLoginAt,
+        Instant createdAt,
+        Instant updatedAt) {
+
+        public static UserView of(User user) {
+            return new UserView(user.getId(), user.getFullName(), user.getEmail(), user.getRole(), user.getStatus(),
+                user.getLastLoginAt(), user.getCreatedAt(), user.getUpdatedAt());
+        }
+    }
+
+    public record CreateUser(
+        @NotBlank @Size(max = 100) String fullName,
+        @NotBlank @MailAddress String email,
+        @StrongPassword String password,
+        @NotNull Role role) {
+
+        @Override
+        public String toString() {
+            return "CreateUser[fullName=%s, email=%s, password=<redacted>, role=%s]".formatted(fullName, email, role);
+        }
+    }
+
+    public record UpdateUser(
+        @Nullable @Size(max = 100) @Pattern(regexp = "(?s).*\\S.*", message = "must not be blank") String fullName,
+        @Nullable Role role) {}
+
+    public record StatusChange(@NotNull AccountStatus status) {}
+
+    public record UserStats(long total, Map<AccountStatus, Long> byStatus, Map<Role, Long> byRole) {}
+}
