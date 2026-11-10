@@ -1,6 +1,8 @@
 # Generated output and local tooling
 node_modules/
 target/
+build/
+.gradle/
 dist/
 logs/
 *.log

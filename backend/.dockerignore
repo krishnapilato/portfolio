@@ -1,4 +1,5 @@
-target
+**/build
+**/.gradle
 .env
 .env.*
 *.env
@@ -7,5 +8,5 @@ target
 .claude
 *.iml
 logs
-docs
-*.md
+**/docs
+**/*.md

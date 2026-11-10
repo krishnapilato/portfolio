@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Seed · live demo</title>
+    <link rel="stylesheet" href="/assets/core.css">
+    <link rel="stylesheet" href="/demo/demo.css">
+    <script type="module" src="/demo/demo.js"></script>
+</head>
+<body class="demo">
+<main>
+    <p class="eyebrow">Live demo · data made up by Datafaker</p>
+    <h1>Seed any service from a file</h1>
+    <p class="lead">This plan creates a newsletter audience and fills it with readers. Change the numbers or the
+        expressions, run it, then look at the result in the mail service.</p>
+
+    <label for="plan">Plan</label>
+    <textarea id="plan" spellcheck="false" th:text="${plan}"></textarea>
+
+    <nav aria-label="Actions">
+        <button class="primary" type="button" data-action="run">Run the plan</button>
+        <a th:href="${mailDemo}" target="_blank" rel="noopener">Open the mail demo</a>
+    </nav>
+
+    <p class="status" role="status" aria-live="polite"></p>
+    <ul class="cards" data-list="steps"></ul>
+</main>
+</body>
+</html>

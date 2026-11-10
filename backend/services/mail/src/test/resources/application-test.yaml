@@ -1,0 +1,17 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:1/realms/test
+          jwk-set-uri: http://127.0.0.1:1/never-called
+mail:
+  public-url: https://mail.test
+  secret: dGVzdC1zZWNyZXQtdGhhdC1pcy1sb25nLWVub3VnaC0wMTIzNDU2Nzg5
+  delivery:
+    max-retries: 2
+    retry-delay: 1ms
+management:
+  health:
+    mail:
+      enabled: false

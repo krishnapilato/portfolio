@@ -26,39 +26,22 @@ The production site uses local assets, system fonts and a self-only CSP, with no
 
 ## Backend
 
-Java 27 and Spring Boot 4.1.2. Accounts, authentication, rotating tokens, transactional email, observability and responsive landing/error heroes. The generic entry point is `com.example.application.Application`; the packaged artifact is `backend/target/application.jar`.
-
-With Docker Compose:
+Java 27, Spring Boot 4.1.2 and Gradle 9.9.0. Keycloak handles identity; independent services for mail and newsletters, live notifications and seeding share a `core` module, one build and one set of strict quality gates. Each has its own image, pages, API reference and live demo.
 
 ```sh
 cd backend
 cp .env.example .env
-# Set the required secrets and local configuration before starting.
-docker compose up --build --wait
+docker compose up --build --wait    # Keycloak, MySQL, Redis, Mailpit and the three services
+./gradlew build
+./gradlew dependencyUpdates
 ```
 
-With JDK 27 and a configured local database and SMTP server:
-
-```sh
-cd backend
-./mvnw spring-boot:run
-```
-
-On Windows, use `mvnw.cmd` in place of `./mvnw`. Application, API documentation and local mail inbox are available at `http://localhost:8080/`, `http://localhost:8080/swagger-ui.html` and `http://localhost:8025/` respectively when using Compose.
-
-Validation:
-
-```sh
-./mvnw verify
-./mvnw -Pmutation -Djacoco.skip=true test-compile org.pitest:pitest-maven:mutationCoverage
-```
-
-See the [backend README](backend/README.md) for environment variables, security decisions, API endpoints and quality gates. Tests use H2 and do not need Docker.
+On Windows, use `gradlew.bat` in place of `./gradlew`. See the [backend README](backend/README.md) for addresses, running one service at a time, the quality gates and the open-source projects it uses.
 
 ## Automation
 
-The frontend workflow installs from the lockfile, lints, builds and deploys to GitHub Pages. The backend workflow runs validation, mutation testing and a container build. Dependabot checks dependencies weekly. Secrets and generated artifacts stay outside version control.
+The frontend workflow installs from the lockfile, lints, builds and deploys to GitHub Pages. The backend workflow runs the build with its quality gates and a check that fails while an update is not applied. Dependabot proposes updates daily. Secrets and generated artifacts stay outside version control.
 
 ## Rights
 
-All rights reserved © Khova Krishna Pilato unless otherwise stated. Check the module documentation for any separately stated licensing terms.
+The backend is open source under the [MIT licence](backend/LICENSE) and lists the open-source projects it uses in its README. Everything else is all rights reserved © Khova Krishna Pilato unless otherwise stated.

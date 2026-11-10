@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title th:text="|${status} · ${@environment.getProperty('core.name', 'Service')}|">Error</title>
+    <link rel="stylesheet" href="/assets/core.css">
+</head>
+<body>
+<main>
+    <p class="eyebrow" th:text="${status}">404</p>
+    <h1 th:text="${error}">Not Found</h1>
+    <p class="lead">Nothing here to show. The address may be wrong, or you may need to sign in first.</p>
+    <nav aria-label="Where to go next">
+        <a class="primary" href="/">Back to the start</a>
+    </nav>
+</main>
+</body>
+</html>

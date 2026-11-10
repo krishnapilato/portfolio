@@ -1,0 +1,27 @@
+[versions]
+java = "27"
+spring-boot = "4.1.2"
+springdoc = "3.2.0"
+mysql-connector = "26.10.0"
+error-prone = "2.52.0"
+pmd = "7.29.0"
+jacoco = "0.8.16"
+pitest = "1.30.2"
+pitest-junit5 = "1.2.3"
+spring-modulith = "2.1.2"
+datafaker = "2.7.0"
+
+[libraries]
+spring-modulith-bom = { module = "org.springframework.modulith:spring-modulith-bom", version.ref = "spring-modulith" }
+datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker" }
+springdoc-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+mysql-connector = { module = "com.mysql:mysql-connector-j", version.ref = "mysql-connector" }
+error-prone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "error-prone" }
+pitest-command-line = { module = "org.pitest:pitest-command-line", version.ref = "pitest" }
+pitest-junit5-plugin = { module = "org.pitest:pitest-junit5-plugin", version.ref = "pitest-junit5" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+cyclonedx = { id = "org.cyclonedx.bom", version = "3.5.1" }
+git-properties = { id = "com.gorylenko.gradle-git-properties", version = "4.0.1" }
+error-prone = { id = "net.ltgt.errorprone", version = "5.2.0" }

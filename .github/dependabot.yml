@@ -1,14 +1,21 @@
 version: 2
 updates:
-  - package-ecosystem: maven
+  - package-ecosystem: gradle
     directory: /backend
     schedule:
-      interval: weekly
+      interval: daily
   - package-ecosystem: docker
+    directories:
+      - /backend/services/mail
+      - /backend/services/notification
+      - /backend/services/seed
+    schedule:
+      interval: daily
+  - package-ecosystem: docker-compose
     directory: /backend
     schedule:
-      interval: weekly
+      interval: daily
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: daily

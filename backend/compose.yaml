@@ -1,11 +1,29 @@
-name: application
+name: foundation
+
+# Start everything:            docker compose up --build --wait
+# Start one service and what it needs:  docker compose up --build --wait mail
+# SPRING_PROFILES_ACTIVE=demo (the default here) turns on each service's live demo at /demo/.
+
+x-service: &service
+  restart: unless-stopped
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  read_only: true
+  tmpfs:
+    - /tmp
+
+x-identity: &identity
+  IDENTITY_ISSUER: http://localhost:8081/realms/foundation
+  IDENTITY_JWKS: http://keycloak:8080/realms/foundation/protocol/openid-connect/certs
+  SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-demo}
 
 services:
   mysql:
-    image: mysql:26.10
+    image: mysql:26.10.0
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
-      MYSQL_DATABASE: portfolio
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
@@ -15,32 +33,125 @@ services:
       interval: 5s
       retries: 30
 
+  redis:
+    image: redis:8.10.3-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      retries: 30
+
   mailpit:
-    image: axllent/mailpit:v1.33.0
+    image: axllent/mailpit:v1.33.1
     ports:
       - "127.0.0.1:8025:8025"
       - "127.0.0.1:1025:1025"
 
-  app:
-    build: .
-    env_file: .env
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.2
+    command: [ "start-dev", "--import-realm" ]
     environment:
-      DB_URL: jdbc:mysql://mysql:3306/portfolio
-      DB_USERNAME: root
-      MAIL_HOST: mailpit
-      MAIL_PORT: "1025"
-      MAIL_STARTTLS: "false"
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://mysql:3306/keycloak?createDatabaseIfNotExist=true
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?set KEYCLOAK_ADMIN_PASSWORD in .env}
+      KC_HEALTH_ENABLED: "true"
+      SEED_CLIENT_SECRET: ${SEED_CLIENT_SECRET:?set SEED_CLIENT_SECRET in .env}
+      # Tokens always name the address browsers use, while services fetch keys over the internal network.
+      KC_HOSTNAME: http://localhost:8081
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+    volumes:
+      - ./platform/keycloak:/opt/keycloak/data/import:ro
     depends_on:
       mysql:
         condition: service_healthy
       mailpit:
         condition: service_started
     ports:
-      - "127.0.0.1:8080:8080"
-    security_opt:
-      - no-new-privileges:true
-    cap_drop:
-      - ALL
+      - "127.0.0.1:8081:8080"
+    healthcheck:
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q '\"UP\"' <&3" ]
+      interval: 10s
+      retries: 30
+      start_period: 60s
+
+  mail:
+    <<: *service
+    build:
+      context: .
+      dockerfile: services/mail/Dockerfile
+    environment:
+      <<: *identity
+      PORT: "8082"
+      DB_URL: jdbc:mysql://mysql:3306/mail?createDatabaseIfNotExist=true
+      DB_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
+      MAIL_HOST: mailpit
+      MAIL_PORT: "1025"
+      MAIL_PUBLIC_URL: http://localhost:8082
+      MAIL_SECRET: ${MAIL_SECRET:?set MAIL_SECRET in .env}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+      keycloak:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8082:8082"
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://127.0.0.1:8082/actuator/health" ]
+      interval: 5s
+      retries: 30
+      start_period: 20s
+
+  notification:
+    <<: *service
+    build:
+      context: .
+      dockerfile: services/notification/Dockerfile
+    environment:
+      <<: *identity
+      PORT: "8083"
+      REDIS_HOST: redis
+    depends_on:
+      redis:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8083:8083"
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://127.0.0.1:8083/actuator/health" ]
+      interval: 5s
+      retries: 30
+      start_period: 20s
+
+  seed:
+    <<: *service
+    build:
+      context: .
+      dockerfile: services/seed/Dockerfile
+    environment:
+      <<: *identity
+      PORT: "8084"
+      IDENTITY_TOKENS: http://keycloak:8080/realms/foundation/protocol/openid-connect/token
+      SEED_CLIENT_SECRET: ${SEED_CLIENT_SECRET:?set SEED_CLIENT_SECRET in .env}
+      SEED_DEMO_MAIL_URL: http://mail:8082
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      mail:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8084:8084"
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://127.0.0.1:8084/actuator/health" ]
+      interval: 5s
+      retries: 30
+      start_period: 20s
 
 volumes:
   mysql-data:

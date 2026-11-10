@@ -1,260 +1,164 @@
-<div align="center">
+# Foundation
 
-# Application Foundation
+**Privacy first. Security by design. Purposefully small.**
 
-**Privacy first. Security by design. Purposefully simple.**
-
-A Spring Boot service that already handles accounts, sign-in and transactional email,<br>
-so the next project can start with the part that is actually new.
-
-![Java 27](https://img.shields.io/badge/Java-27-orange?logo=openjdk&logoColor=white)
-![Spring Boot 4.1](https://img.shields.io/badge/Spring%20Boot-4.1.2-6db33f?logo=springboot&logoColor=white)
-![MySQL Connector/J](https://img.shields.io/badge/MySQL%20Connector%2FJ-26.10.0-4479a1?logo=mysql&logoColor=white)
-![Coverage](https://img.shields.io/badge/coverage-99%25-success?logo=junit5&logoColor=white)
-![License MIT](https://img.shields.io/badge/license-MIT-blue?logo=opensourceinitiative&logoColor=white)
-
-<img src="docs/screenshots/landing.png" alt="The service's home page: status, links to the API reference, first endpoints and what is inside" width="88%">
-
-</div>
+Independent Java services a new project can pick from instead of writing them again. What open-source projects already do well is configured, not rewritten: [Keycloak](https://www.keycloak.org/) is the identity provider, and the services keep only the code that is specific to them.
 
 <p align="center">
-  <img src="docs/screenshots/error.png" alt="The generic error hero" width="88%">
+  <img src="docs/screenshots/slideshow.gif" alt="A tour: the mail service's landing page, the newsletter demo, live notifications, the seed demo, the API reference and the error page" width="90%">
 </p>
 
----
+## What is in it
 
-**Contents** · [What's inside](#whats-inside) · [Quick start](#quick-start) · [Architecture](#architecture) · [Security](#security) · [Configuration](#configuration) · [Quality](#quality) · [API](#api) · [Design decisions](#design-decisions)
+| Part | Port | What it does | Data |
+|---|---|---|---|
+| Identity: [Keycloak 26.8.2](platform/keycloak/foundation-realm.json) | 8081 | Registration with email verification, sign-in, passkeys, authenticator apps (TOTP), password reset, brute-force protection, invitations through organizations, roles. Configured, not coded. | MySQL |
+| [`core`](core) | – | What every service shares: problem responses, request ids, a strict CSP with a nonce per response, Keycloak tokens and roles, landing and error pages, the API reference, the [design system](docs/design-system.md). | – |
+| [`mail`](services/mail) | 8082 | Transactional mail and newsletters from templates you edit through the API, with an outbox that never loses a message, double opt-in and one-click unsubscribe. | MySQL |
+| [`notification`](services/notification) | 8083 | In-app notifications pushed live to every open session, kept in Redis for 30 days and nowhere else. | Redis |
+| [`seed`](services/seed) | 8084 | Fills any service from a YAML file: fixed values or Datafaker expressions, sent through the service's own API. | – |
 
-## What's inside
+```mermaid
+flowchart LR
+    browser([Browser or app]) -- sign in --> keycloak[Keycloak]
+    browser -- access token --> mail & notification & seed
+    mail & notification & seed -. check signatures .-> keycloak
+    seed -- its own token --> mail
+    mail --> mysql[(MySQL)]
+    keycloak --> mysql
+    notification --> redis[(Redis)]
+    mail -- SMTP --> mailpit[Mailpit]
+```
 
-| | |
-|---|---|
-| **Accounts** | Sign-up with email verification, roles, account statuses, lockout after repeated failures, and admin tools that refuse to remove the last administrator. |
-| **Sessions** | 15-minute JWT access tokens and single-use refresh tokens that rotate on every refresh. Replaying an old refresh token revokes the whole chain. |
-| **Email** | A transactional outbox: mail is saved in the same transaction as the change that caused it, then delivered by a background dispatcher with retries and backoff. |
-| **Operations** | Health groups for orchestrators, Prometheus metrics, JSON logs in production, and a request id on every log line and error response. |
-| **Quality** | About 700 tests, 99 % line coverage, mutation testing, and a build that fails on any compiler warning. |
+Each service is its own Spring Boot application with its own `main` class (`MailApplication`, `NotificationApplication`, `SeedApplication`), its own Docker image, landing page, error page, API reference, live demo and README. A project takes only the ones it needs: they never call each other, apart from `seed`, which calls whatever its plan names.
 
-## Quick start
+## Run it
 
 You need Docker with Compose v2.
 
 ```bash
-git clone <repository-url> application && cd application/backend
-cp .env.example .env            # then replace every change-me
-openssl rand -base64 48         # paste the output as APP_SECRET
+cd backend
+cp .env.example .env      # then replace every change-me; the comments say how to generate each value
 docker compose up --build --wait
 ```
 
-| | |
+The first start builds three images and takes a few minutes. Keycloak needs about a minute on its own.
+
+| Open | To |
 |---|---|
-| http://localhost:8080 | Home page |
-| http://localhost:8080/swagger-ui.html | API reference. Sign in with `POST /api/v1/auth/login`, then use **Authorize**. |
-| http://localhost:8025 | Mailpit, a local inbox that catches every email the service sends |
+| http://localhost:8082/demo/ | try newsletters: invent readers, confirm some, send a campaign |
+| http://localhost:8083/demo/ | watch notifications arrive live; open it in two windows |
+| http://localhost:8084/demo/ | edit a seed plan and run it against the mail service |
+| http://localhost:8025 | read every email the platform sent, Keycloak's included |
+| http://localhost:8081/realms/foundation/account | register, then add a passkey or an authenticator app |
+| http://localhost:8081/admin | Keycloak's console: user `admin`, password `KEYCLOAK_ADMIN_PASSWORD` |
+| http://localhost:8082/swagger-ui.html, :8083, :8084 | each service's API reference |
 
-Everything is bound to `127.0.0.1`, so nothing is reachable from your network. `docker compose down` stops it; add `-v` to wipe the database.
+Everything is bound to `127.0.0.1`. `docker compose down` stops it; add `-v` to wipe the data.
 
-**From the IDE:** run `Application` with JDK 27 and a local MySQL. It reads `.env` from the working directory and starts with the `dev` profile. `docker compose up mailpit` gives you an inbox on port 8025.
+### One service at a time
 
-## Architecture
-
-One deployable Spring Boot service, organised by feature. There are no microservices: one database, so a change and its email commit together.
-
-```mermaid
-flowchart LR
-    client([Client]) -- "HTTPS + bearer JWT" --> filters
-    subgraph service [Spring Boot service]
-        filters["Request id, rate limit, Spring Security"] --> controllers["REST controllers /api/v1"]
-        controllers --> services["Services: auth, users, mail"]
-        dispatcher["Outbox dispatcher, every 5 s"]
-    end
-    services -- "one transaction" --> db[(MySQL)]
-    dispatcher -- "SKIP LOCKED" --> db
-    dispatcher -- "SMTP" --> smtp[(Mail server)]
+```bash
+docker compose up --build --wait mail            # mail, plus MySQL, Mailpit and Keycloak
+docker compose up --build --wait notification    # notification, plus Redis and Keycloak
+docker compose up --build --wait seed            # seed, plus Keycloak and mail
 ```
 
-| Package | What lives there |
-|---|---|
-| `auth` | Registration, sign-in, password recovery, the token vault, the rate limiter and the `/me` endpoints |
-| `user` | The user entity, roles and statuses, and the admin API |
-| `mail` | The outbox entity, the dispatcher, the SMTP gateway, email templates and the admin API |
-| `security` | Spring Security setup, JWT access tokens and the password policy |
-| `platform` | Cross-cutting pieces: problem-detail errors, request ids, key derivation and typed settings |
-| `seed` | Demo users created from `seed/users.json` on startup |
-| `system` | The landing page and audit metrics |
+From the IDE, start only what a service needs (`docker compose up --wait mysql mailpit keycloak`), then run its `main` class with the `demo` profile. It reads `.env` from the working directory.
 
-### Signing in
+### Without the demos
 
-```mermaid
-sequenceDiagram
-    participant C as Client
-    participant S as AuthService
-    participant D as MySQL
-    C->>S: POST /api/v1/auth/login
-    S->>D: load the account with SELECT ... FOR UPDATE
-    S->>S: one bcrypt check, even for unknown emails
-    alt wrong password, unknown or locked account
-        S->>D: count the failure (5 failures lock it for 15 min)
-        S-->>C: 401 with the same body every time
-    else correct password
-        S->>D: store the refresh token as an HMAC fingerprint
-        S-->>C: access token (15 min) + refresh token (30 days)
-    end
-```
+The demos run only with the `demo` profile, which Compose turns on by default here. In production, leave it off: `SPRING_PROFILES_ACTIVE=prod docker compose up --wait`.
 
-Every later request carries the access token. Its signature proves who the caller is, and one indexed lookup reads the current role, status and **session version** from the database. Changing the password or signing out everywhere bumps that version, so every older token stops working at once, with no deny list to maintain.
+## Signing in with Google, GitHub, Apple and others
 
-Access tokens contain only issuer, audience, subject, timestamps, token id and session version. Names, email addresses and roles stay out of the readable JWT payload; clients use `/api/v1/me` for profile data. Expiry is required with Spring Security's `JwtTimestampValidator.setAllowEmptyExpiryClaim(false)`. Malformed subjects and overflowing session versions are rejected as invalid tokens.
+Keycloak brokers other identity providers, so no service changes when one is added:
 
-### Sending email
+- **Built in:** Google, GitHub, GitLab, Microsoft, Facebook, LinkedIn, X (Twitter), Instagram, Bitbucket, PayPal, Stack Overflow, OpenShift.
+- **Any OpenID Connect or SAML 2.0 provider**, through the generic provider types.
+- **Apple** is not built in. It works as a generic OpenID Connect provider, but its client secret is a JWT that has to be renewed at least every six months, so most setups use the community extension [apple-identity-provider-keycloak](https://github.com/klausbetz/apple-identity-provider-keycloak), which renews it.
 
-Nothing talks to the SMTP server during a request. The service writes the message to the `mail_messages` table in the same transaction as the change that caused it. Every 5 seconds the dispatcher claims due messages with `SELECT ... FOR UPDATE SKIP LOCKED`, so several instances can run without sending anything twice. It delivers them on virtual threads, then marks each one sent or schedules a retry with exponential backoff. Delivered bodies are dropped (they can contain one-time links), and finished messages are purged after 30 days.
-
-## Security
-
-| Threat | Defence | Where |
-|---|---|---|
-| Password guessing | 30 requests per minute per client IP on `/auth/**`, counted in the database so the limit holds across instances. `X-Forwarded-For` counts only when it comes from a proxy listed in `TRUSTED_PROXIES`. Five failures lock the account for 15 minutes, and failures are counted under a row lock. | `AuthRateLimiter`, `AuthService`, `application.yaml` |
-| Finding out who has an account | Unknown, locked and wrong-password sign-ins get the same 401 after the same bcrypt work. Password recovery always answers 202. | `AuthService` |
-| Stolen access token | 15-minute lifetime. Role, status and session version are checked on every request. The current password is guarded by the same lockout as sign-in. | `SecurityConfig`, `User` |
-| Stolen refresh token | Single use and rotated on every refresh. Replaying one revokes its whole family. | `TokenVault` |
-| Database leak | Passwords are bcrypt hashes. Tokens are stored only as HMAC-SHA256 fingerprints, keyed through HKDF. Delivered mail bodies are deleted. | `KeyRing`, `MailMessage` |
-| XSS, clickjacking | Pages are rendered on the server with escaped output and no JavaScript. The CSP allows scripts only from the service itself, with `object-src 'none'` and `frame-ancestors 'none'`. | `SecurityConfig`, `templates/` |
-| CSRF | Bearer tokens travel in a header. There are no cookies and no server sessions. | `SecurityConfig` |
-| Header and mail injection | Addresses must be printable ASCII without quotes, commas or semicolons. Attachment names are reduced to a plain base name. | `MailAddress`, `MailController` |
-| Oversized requests | JSON is capped at 1 MB and 200,000-character strings, secrets at 128 characters, uploads at 10 MB per file and 25 MB per request. | `application.yaml`, `AuthPayloads` |
-| Information leaks | Errors never include stack traces or exception messages. Health details, `env`, `configprops` and the actuator index are admin-only, and heap dumps are disabled. | `ProblemHandler`, `application.yaml` |
-| Metrics brute force | Prometheus signs in with a secret of at least 24 characters, compared in constant time, so anonymous guesses cost the server nothing. | `SecurityConfig` |
-| SMTP downgrade | STARTTLS, once enabled, is required. It is on by default in the `prod` profile. | `application.yaml` |
-| Outdated dependencies | Dependabot checks Maven, Docker and GitHub Actions every week. | `.github/dependabot.yml` |
-
-Rate-limit rows hold HMAC fingerprints of client addresses, using a separate HKDF-derived key. The address is needed to enforce the limit, but is not stored in the rate-limit table. Security settings redact their secrets when printed, and the temporary decoded master-key buffer is cleared after derivation. HTTP exchange recording is disabled: headers, query strings and client addresses are not retained in an actuator request history. Request counts and latency metrics remain available. Responses send `Referrer-Policy: no-referrer`.
-
-Unexpected errors log a structured exception type and the request id, without raw exception messages or cause chains that can contain credentials. Existing access tokens still work until expiry. Clients that previously read profile claims from JWTs must use `/api/v1/me`; `/actuator/httpexchanges` is no longer available. On upgrade, existing rate-limit windows expire normally and are removed by scheduled cleanup.
-
-## Configuration
-
-Settings come from environment variables, or from a git-ignored `.env` file in the working directory (`DOTENV_FILE` points elsewhere). The service refuses to start when a required value is missing or invalid.
-
-The runtime entry point is `com.example.application.Application`, the Maven artifact is `com.example:application`, and Docker packages `target/application.jar`. `index.html` is the landing template; `error.html` keeps Spring Boot's conventional fallback name. Both use `/assets/interface.css`, system fonts and inline SVG, with no JavaScript or third-party requests. The pages use a self-only CSP; Swagger UI alone permits inline styles for its controls. Normal desktop and tablet viewports fit without scrollbars; mobile and enlarged text can scroll vertically to keep content accessible.
-
-| Variable | Purpose | Default |
-|---|---|---|
-| `APP_NAME` | Display name on the landing and error pages | `Foundation` |
-| `APP_SECRET` | Master key: base64 of at least 32 random bytes. The JWT key and the token pepper are derived from it. | required |
-| `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` | MySQL connection | required |
-| `MAIL_HOST`, `MAIL_PORT`, `MAIL_FROM` | SMTP server and sender address | required |
-| `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_SMTP_AUTH` | SMTP sign-in | off |
-| `MAIL_STARTTLS` | Encrypt SMTP; once on, it is required | `false` in dev, `true` in prod |
-| `APP_FRONTEND_URL` | Base URL of the links in emails | `http://localhost:5173` |
-| `APP_CORS_ALLOWED_ORIGINS` | Browser origins allowed to call the API | `http://localhost:5173` |
-| `TRUSTED_PROXIES` | Regex of reverse proxies allowed to set `X-Forwarded-*` | none |
-| `APP_SCRAPE_PASSWORD` | Basic auth password for `/actuator/prometheus`, at least 24 characters | disabled |
-| `SEED_ENABLED`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `SEED_DEMO_PASSWORD` | Demo users from `seed/users.json` | off |
-| `PORT` | HTTP port | `8080` |
-
-**Behind a reverse proxy**, set `TRUSTED_PROXIES` to its address (for example `10\.0\.0\.\d+`) and make it overwrite `X-Forwarded-For` rather than append to it. Without it, the rate limit would treat every client as the proxy, and HSTS would not be sent.
+Add one in the console under *Identity providers*, or in `foundation-realm.json` with the client id and secret as `${ENV_VAR}` placeholders, so no secret is committed. Keycloak also ships OAuth 2.1 client policy profiles (PKCE everywhere, no implicit flow), which can be enforced on the realm. The `demo` client here already requires PKCE with S256.
 
 ## Quality
 
-The build is strict on purpose:
+The build is strict on purpose, in every module:
 
 | Gate | Tool | Fails the build when |
 |---|---|---|
 | Compiler | `javac -Xlint:all -Werror` | there is any warning |
 | Static analysis | Error Prone | it finds a bug pattern, unused code or a wildcard import |
 | Dead code | PMD | a private field, method or variable is never used |
-| Coverage | JaCoCo | line, branch or instruction coverage drops below 80 % (currently about 99 %) |
-| Mutation testing | PIT, in CI | fewer than 90 % of injected bugs are caught by a test |
+| Coverage | JaCoCo | line, branch or instruction coverage drops below 90 % |
+| Mutation testing | PIT | fewer than 90 % of injected bugs are caught by a test |
+| Build | Gradle 9.9.0, `org.gradle.warning.mode=fail` | the build or a plugin uses a deprecated Gradle API |
+| Updates | `dependencyUpdates`, in CI every day | a version pinned in `gradle/libs.versions.toml`, or Gradle, has a newer stable release |
 
 ```bash
-./mvnw verify    # compile, run all tests and every gate; prints a coverage summary
-./mvnw -Pmutation -Djacoco.skip=true test-compile org.pitest:pitest-maven:mutationCoverage
+./gradlew build                                     # everything, every gate
+./gradlew :services:mail:build                      # one module
+./gradlew mutationTest                              # PIT, slow: about 10 minutes for mail
+./gradlew dependencyUpdates                         # fails while an update is not applied
 ```
 
-The coverage report is written to `target/site/jacoco/index.html` and the mutation report to `target/pit-reports/index.html`. Tests run against H2 in MySQL mode with the real Flyway migrations, so they need no Docker. They include unit tests for the domain rules, MockMvc tests for every endpoint, and real HTTP tests for the error pages and the forwarded-header handling.
+On Windows, use `gradlew.bat`. Tests run against real MySQL and Redis in containers (Testcontainers), so they need Docker. Java 27 final features only, no preview flags. Dependabot proposes Gradle, Docker, Compose and GitHub Actions updates every day.
 
-CI (`.github/workflows/backend.yml`) runs `verify`, the mutation tests and a Docker build on every change to the backend.
+Known, and left visible on purpose: Flyway warns that MySQL 26.10 is newer than the newest version it has been verified with (9.4). No Flyway release verifies MySQL 26 yet; the warning goes away when one does.
 
-## API
-
-All endpoints live under `/api/v1` and speak JSON. Errors are [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457) problem details with a stable `type` such as `urn:problem:invalid-credentials`, plus the `requestId`. The full contract is at `/v3/api-docs` and in Swagger UI.
-
-| Endpoint | Access | Purpose |
-|---|---|---|
-| `POST /auth/register` | public | Create an account. A verification link is emailed. |
-| `POST /auth/verify`, `/auth/verify/resend` | public | Confirm the email address |
-| `POST /auth/login` | public | Exchange email and password for an access and a refresh token |
-| `POST /auth/refresh`, `/auth/logout` | public | Rotate the refresh token, or revoke its family |
-| `POST /auth/password/forgot`, `/auth/password/reset` | public | Password recovery by email |
-| `GET`, `PATCH /me` | signed in | Read or rename the own profile |
-| `PUT /me/password`, `DELETE /me/sessions` | signed in | Change the password, or sign out everywhere |
-| `GET /users`, `GET /users/stats`, `GET /users/{id}` | admin | Search with paging and sorting, statistics, details |
-| `POST /users`, `PATCH /users/{id}`, `PUT /users/{id}/status`, `DELETE /users/{id}` | admin | Create, rename or change role, change status, delete |
-| `POST /mail/messages`, `POST /mail/messages/bulk` | admin | Queue a message (JSON or multipart with attachments), or one per recipient |
-| `GET /mail/messages`, `GET /mail/messages/{id}`, `GET /mail/stats` | admin | Inspect the outbox |
-| `POST /mail/messages/{id}/retry`, `/cancel` | admin | Retry a failed message, or cancel a pending one |
-
-Operational endpoints live under `/actuator`. `health` (with the `liveness` and `readiness` groups) and `info` are public, and `prometheus` is for the scraper. Everything else is admin-only, including a custom `outbox` endpoint that shows the queue and can trigger a dispatch.
-
-## Built with Java 27
-
-Only final language features are used, each where it earns its place:
-
-| Feature | Where |
-|---|---|
-| Virtual threads | Request handling and parallel SMTP delivery |
-| Stream gatherers (`mapConcurrent`) | Bounded concurrent delivery in `MailDispatcher` |
-| Scoped values | The request id in `CorrelationFilter` |
-| Sealed interfaces and record patterns | `Problem`, mapped exhaustively to HTTP responses in `ProblemHandler` |
-| Key derivation API (HKDF) | `KeyRing` derives the JWT key and the token pepper from one secret |
-| Flexible constructor bodies | `ApiException` validates before calling `super` |
-| UUID version 7 | Time-ordered request ids, token families and JWT ids |
-| Markdown documentation comments | `///` class documentation |
-| Compact source files and module imports | `config/jacoco/CoverageSummary.java`, run straight from the build |
-
-## Project layout
+## Layout
 
 ```text
 backend
-├── Dockerfile, compose.yaml, .env.example
-├── config/                PMD rules and the coverage summary script
-├── docs/screenshots/
-└── src/main
-    ├── java/com/example/application
-    │   ├── auth/          sign-up, sign-in, tokens, rate limit, /me
-    │   ├── mail/          outbox, dispatcher, templates, admin API
-    │   ├── platform/      errors, request ids, keys, settings
-    │   ├── security/      Spring Security, JWT, password policy
-    │   ├── seed/          demo users
-    │   ├── system/        home page, audit metrics
-    │   └── user/          accounts and their admin API
-    └── resources
-        ├── application.yaml
-        ├── db/migration/  Flyway migrations
-        ├── seed/users.json
-        └── templates/     landing and error heroes, three emails
+├── build-logic/          quality gates, library and service setup, the update check: written once
+├── config/               PMD rules, the coverage summary and the slideshow script
+├── core/                 the shared module; a service depends on it and needs no setup
+├── docs/                 design system and decisions
+├── gradle/libs.versions.toml
+├── platform/keycloak/    the realm Keycloak imports on its first start
+├── services/
+│   ├── mail/
+│   ├── notification/
+│   └── seed/
+└── compose.yaml
 ```
 
-For existing deployments, the internal JWT issuer/audience and HKDF salt retain their original values so renaming the scaffold does not change persisted token fingerprints. Existing database names and connection URLs are also retained. New projects can configure their own issuer, audience and database before issuing credentials. Application metrics now use the `application.*` prefix; update scraper dashboards when migrating.
+A new service is a folder under `services/` with a `build.gradle.kts` applying `example.service` and depending on `project(":core")`, a line in `settings.gradle.kts`, a Dockerfile and an entry in `compose.yaml`.
 
-## Design decisions
+## Decisions
 
-- **One service, packages by feature.** A single deployable and a single database keep changes transactional, with no distributed sagas. The feature packages would split cleanly if that ever became necessary.
-- **Outbox instead of sending mail in the request.** Email is committed together with the change that triggers it, and a slow or failing mail server never slows down or fails a request.
-- **Stateless JWT plus one database check.** Access tokens need no session store, yet role changes, disabled accounts and "sign out everywhere" apply immediately.
-- **Opaque refresh tokens.** They carry no data to trust, are stored only as fingerprints, and are single use.
-- **Pages without JavaScript.** The home and error pages are plain server-rendered HTML with a few lines of inline CSS: nothing to bundle and nothing for XSS to run.
-- **A clock that ticks in microseconds.** It matches `DATETIME(6)`, so a timestamp reads back from the database exactly as it was written.
-- **Stable APIs with minimal data.** Spring Boot 4.1.2 and final Java 27 features keep the runtime current without preview flags. New APIs earn their place by reducing code or improving security; upgrading analysis tools does not require application abstractions.
+- [1. Keycloak for identity](docs/decisions/0001-keycloak-for-identity.md)
+- [2. Mutation testing skips Spring configuration classes](docs/decisions/0002-mutation-testing-skips-configuration.md)
+- [3. An outbox through Spring Modulith](docs/decisions/0003-outbox-through-spring-modulith.md)
+- [4. Mustache for templates that change at run time](docs/decisions/0004-mustache-for-stored-templates.md)
+- [5. Notifications live only in Redis](docs/decisions/0005-notifications-live-only-in-redis.md)
+- [6. Seeding through the services' own APIs](docs/decisions/0006-seeding-through-the-apis.md)
+- [7. Tests against real MySQL and Redis](docs/decisions/0007-tests-against-real-databases.md)
 
-<details>
-<summary><b>Dark mode</b></summary>
+## Open source
 
-<img src="docs/screenshots/landing-dark.png" alt="The home page in dark mode">
+This project stands on open-source projects, each under its own licence:
 
-</details>
+| Project | Used for | Licence |
+|---|---|---|
+| [Keycloak](https://www.keycloak.org/) | Identity and access management | Apache 2.0 |
+| [Spring Boot](https://spring.io/projects/spring-boot), Spring Security, Spring Data | Framework, token validation, persistence | Apache 2.0 |
+| [Spring Modulith](https://spring.io/projects/spring-modulith) | Transactional outbox for mail | Apache 2.0 |
+| [Hibernate ORM](https://hibernate.org/orm/), [Flyway](https://github.com/flyway/flyway) | Persistence and migrations | Apache 2.0 |
+| [JMustache](https://github.com/samskivert/jmustache) | Logic-less mail templates | BSD |
+| [Datafaker](https://www.datafaker.net/) | Made-up data for seeding and demos | Apache 2.0 |
+| [Jackson](https://github.com/FasterXML/jackson), [Jayway JsonPath](https://github.com/json-path/JsonPath) | YAML plans, references between steps | Apache 2.0 |
+| [springdoc-openapi](https://springdoc.org/), Swagger UI | API reference | Apache 2.0 |
+| [Thymeleaf](https://www.thymeleaf.org/) | Pages | Apache 2.0 |
+| [Lombok](https://projectlombok.org/) | Less boilerplate at compile time | MIT |
+| [MySQL](https://www.mysql.com/) | Database | GPL 2.0 |
+| [Redis](https://redis.io/) | Notifications and their live channel | AGPL 3.0, among others |
+| [Mailpit](https://mailpit.axllent.org/) | Local inbox | MIT |
+| [Gradle](https://gradle.org/), [Eclipse Temurin](https://adoptium.net/) | Build and Java runtime | Apache 2.0, GPL 2.0 with Classpath Exception |
+| [Testcontainers](https://testcontainers.com/), [JUnit](https://junit.org/), [Mockito](https://site.mockito.org/), [Awaitility](http://www.awaitility.org/) | Tests | MIT, EPL 2.0, MIT, Apache 2.0 |
+| [Error Prone](https://errorprone.info/), [PMD](https://pmd.github.io/), [JaCoCo](https://www.jacoco.org/), [PIT](https://pitest.org/) | Quality gates | Apache 2.0, BSD-style, EPL 2.0, Apache 2.0 |
+
+Every service's jar contains a CycloneDX bill of materials listing each dependency and its licence.
 
 ## License
 
-[MIT](https://opensource.org/license/mit) © Khova Krishna Pilato
+[MIT](LICENSE) © Khova Krishna Pilato

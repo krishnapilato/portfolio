@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title th:text="${@environment.getProperty('core.name', 'Service')}">Service</title>
+    <link rel="stylesheet" href="/assets/core.css">
+</head>
+<body>
+<main>
+    <p class="eyebrow">Running</p>
+    <h1 th:text="${@environment.getProperty('core.name', 'Service')}">Service</h1>
+    <p class="lead" th:text="${@environment.getProperty('core.description', '')}">What this service does.</p>
+    <nav aria-label="Where to go next">
+        <a class="primary" href="/demo/">Try it live</a>
+        <a href="/swagger-ui.html">API reference</a>
+        <a href="/actuator/health">Health</a>
+    </nav>
+</main>
+</body>
+</html>

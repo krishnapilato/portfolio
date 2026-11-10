@@ -1,0 +1,14 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:1/realms/test
+          jwk-set-uri: http://127.0.0.1:1/never-called
+core:
+  security:
+    public-paths: /target/**
+seed:
+  use-token: false
+  demo:
+    mail-url: https://mail.test

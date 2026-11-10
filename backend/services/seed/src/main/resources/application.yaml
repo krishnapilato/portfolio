@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: seed
+  config:
+    import: optional:file:${DOTENV_FILE:.env}[.properties]
+  threads:
+    virtual:
+      enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${IDENTITY_ISSUER:http://localhost:8081/realms/foundation}
+          jwk-set-uri: ${IDENTITY_JWKS:http://localhost:8081/realms/foundation/protocol/openid-connect/certs}
+      client:
+        registration:
+          seed:
+            provider: identity
+            client-id: seed
+            client-secret: ${SEED_CLIENT_SECRET:}
+            authorization-grant-type: client_credentials
+        provider:
+          identity:
+            token-uri: ${IDENTITY_TOKENS:http://localhost:8081/realms/foundation/protocol/openid-connect/token}
+server:
+  port: ${PORT:8084}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+      roles: admin
+core:
+  name: Seed
+  description: Fills any service with data described in a file, through the service's own API.
+seed:
+  demo:
+    mail-url: ${SEED_DEMO_MAIL_URL:http://localhost:8082}
+# The API reference is part of every service on purpose: it is public, and lists what each endpoint requires.
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

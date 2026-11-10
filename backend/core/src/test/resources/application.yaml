@@ -1,0 +1,21 @@
+core:
+  name: Example service
+  description: A service used to test the core.
+  csp:
+    trusted-sources: https://cdn.jsdelivr.net
+    connect-sources: http://localhost:8081
+  cors:
+    allowed-origins: http://localhost:5173
+  security:
+    public-paths: /probe/open/**
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://127.0.0.1:1/never-called
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics

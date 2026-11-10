@@ -1,0 +1,20 @@
+# One audience, then 25 made-up readers who ask to join it.
+targets:
+  mail: ${mail}
+
+steps:
+  - target: mail
+    method: POST
+    path: /api/v1/audiences
+    as: audience
+    body:
+      name: "#{book.genre} readers #{number.numberBetween '1000','9999'}"
+      description: Filled by the seed service with people made up by Datafaker
+
+  - target: mail
+    method: POST
+    path: /api/v1/audiences/{{audience.id}}/subscriptions
+    repeat: 25
+    body:
+      email: "#{internet.safeEmailAddress}"
+      name: "#{name.fullName}"

@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: mail
+  config:
+    import: optional:file:${DOTENV_FILE:.env}[.properties]
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3307/mail?createDatabaseIfNotExist=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${MAIL_SMTP_AUTH:false}
+      mail.smtp.starttls.enable: ${MAIL_STARTTLS:false}
+      mail.smtp.starttls.required: ${MAIL_STARTTLS:false}
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 5000
+      mail.smtp.writetimeout: 5000
+  modulith:
+    events:
+      jdbc:
+        schema-initialization:
+          enabled: true
+      republish-outstanding-events-on-restart: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${IDENTITY_ISSUER:http://localhost:8081/realms/foundation}
+          jwk-set-uri: ${IDENTITY_JWKS:http://localhost:8081/realms/foundation/protocol/openid-connect/certs}
+server:
+  port: ${PORT:8082}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+      roles: admin
+core:
+  name: Mail
+  description: Transactional mail and newsletters, with templates you can change without a release.
+  security:
+    public-paths: /api/v1/audiences/*/subscriptions, /subscriptions/**
+mail:
+  from: ${MAIL_FROM:no-reply@foundation.local}
+  sender: ${MAIL_SENDER:Foundation}
+  public-url: ${MAIL_PUBLIC_URL:http://localhost:8082}
+  secret: ${MAIL_SECRET}
+# The API reference is part of every service on purpose: it is public, and lists what each endpoint requires.
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

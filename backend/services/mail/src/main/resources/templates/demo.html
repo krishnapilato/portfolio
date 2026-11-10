@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Mail · live demo</title>
+    <link rel="stylesheet" href="/assets/core.css">
+    <link rel="stylesheet" href="/demo/demo.css">
+    <script type="module" src="/demo/demo.js"></script>
+</head>
+<body class="demo">
+<main>
+    <p class="eyebrow">Live demo · people made up by Datafaker</p>
+    <h1>Newsletter, end to end</h1>
+    <p class="lead">Invent a few readers, confirm some of them, send a campaign, then open the inbox to see what they received.</p>
+
+    <nav aria-label="Steps">
+        <button class="primary" type="button" data-action="invent">1 · Invent 3 readers</button>
+        <button type="button" data-action="campaign">3 · Send a campaign</button>
+        <a th:href="${inboxUrl}" target="_blank" rel="noopener">4 · Open the inbox</a>
+    </nav>
+
+    <p class="status" role="status" aria-live="polite"></p>
+
+    <section aria-labelledby="readers-title">
+        <h2 id="readers-title">Readers <small>2 · confirm the ones who should receive the campaign</small></h2>
+        <ul class="cards" data-list="people"></ul>
+    </section>
+
+    <section aria-labelledby="mail-title">
+        <h2 id="mail-title">Latest mail</h2>
+        <ul class="cards" data-list="mail"></ul>
+    </section>
+</main>
+</body>
+</html>

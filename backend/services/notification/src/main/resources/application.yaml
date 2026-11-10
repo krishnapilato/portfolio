@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: notification
+  config:
+    import: optional:file:${DOTENV_FILE:.env}[.properties]
+  threads:
+    virtual:
+      enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${IDENTITY_ISSUER:http://localhost:8081/realms/foundation}
+          jwk-set-uri: ${IDENTITY_JWKS:http://localhost:8081/realms/foundation/protocol/openid-connect/certs}
+server:
+  port: ${PORT:8083}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+      roles: admin
+core:
+  name: Notifications
+  description: In-app notifications that reach every open session the moment they are sent.
+# The API reference is part of every service on purpose: it is public, and lists what each endpoint requires.
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

@@ -1,0 +1,70 @@
+{
+  "realm": "foundation",
+  "displayName": "Foundation",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": true,
+  "registrationEmailAsUsername": true,
+  "verifyEmail": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": false,
+  "bruteForceProtected": true,
+  "organizationsEnabled": true,
+  "passwordPolicy": "length(12) and notUsername and notEmail",
+  "otpPolicyType": "totp",
+  "otpPolicyAlgorithm": "HmacSHA256",
+  "otpPolicyDigits": 6,
+  "otpPolicyPeriod": 30,
+  "webAuthnPolicyPasswordlessRpEntityName": "Foundation",
+  "webAuthnPolicyPasswordlessUserVerificationRequirement": "required",
+  "webAuthnPolicyPasswordlessResidentKey": "required",
+  "webAuthnPolicyPasswordlessPasskeysEnabled": true,
+  "accessTokenLifespan": 300,
+  "smtpServer": {
+    "host": "mailpit",
+    "port": "1025",
+    "from": "no-reply@foundation.local",
+    "fromDisplayName": "Foundation"
+  },
+  "users": [
+    {
+      "username": "service-account-seed",
+      "enabled": true,
+      "serviceAccountClientId": "seed",
+      "realmRoles": [ "admin" ]
+    }
+  ],
+  "roles": {
+    "realm": [
+      { "name": "admin", "description": "Manages every service" },
+      { "name": "user", "description": "Uses the services" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "seed",
+      "name": "Seed service",
+      "description": "Fills services with data through their APIs, as an administrator",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "${SEED_CLIENT_SECRET}",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false
+    },
+    {
+      "clientId": "demo",
+      "name": "Service demo pages",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [ "http://localhost:8082/*", "http://localhost:8083/*" ],
+      "webOrigins": [ "+" ],
+      "attributes": { "pkce.code.challenge.method": "S256" }
+    }
+  ]
+}

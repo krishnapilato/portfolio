@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="robots" content="noindex">
+    <title th:text="${action == 'confirm'} ? 'Confirm your subscription' : 'Unsubscribe'">Subscription</title>
+    <link rel="stylesheet" href="/assets/core.css">
+</head>
+<body>
+<main th:switch="${done}">
+    <th:block th:case="null">
+        <p class="eyebrow">Newsletter</p>
+        <h1 th:text="${action == 'confirm'} ? 'Confirm your subscription' : 'Unsubscribe'">Confirm your subscription</h1>
+        <p class="lead" th:text="${action == 'confirm'} ? 'One click and you are on the list.' : 'One click and you will receive nothing more from this list.'">One click.</p>
+        <form method="post">
+            <input type="hidden" name="token" th:value="${token}">
+            <button class="primary" type="submit" th:text="${action == 'confirm'} ? 'Confirm' : 'Unsubscribe'">Confirm</button>
+        </form>
+    </th:block>
+    <th:block th:case="true">
+        <p class="eyebrow">Done</p>
+        <h1 th:text="${action == 'confirm'} ? 'You are subscribed' : 'You are unsubscribed'">Done</h1>
+        <p class="lead">You can close this page.</p>
+    </th:block>
+    <th:block th:case="*">
+        <p class="eyebrow">Link not valid</p>
+        <h1>This link does not work</h1>
+        <p class="lead">It may be incomplete. Copy the whole address from the email and try again.</p>
+    </th:block>
+</main>
+</body>
+</html>
