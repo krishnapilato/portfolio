@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { createLight } from "./light";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -14,37 +15,37 @@ export function useScrollNarrative() {
       const root = scope.current;
       if (!root) return;
       const reduced = Boolean(context.conditions?.reduced);
-      const splits: SplitText[] = [];
-      const intro = SplitText.create(root.querySelector("[data-intro-title]"), { type: "words", aria: "auto" });
-      splits.push(intro);
-      gsap.from(intro.words, { yPercent: reduced ? 0 : 65, opacity: 0, duration: reduced ? 0.4 : 1, stagger: 0.08, ease: "power3.out" });
-      gsap.to("[data-intro-copy]", { y: reduced ? 0 : -55, opacity: 0,
-        scrollTrigger: { trigger: ".intro", start: "top top", end: "bottom 20%", scrub: true } });
-      gsap.to("[data-orbit]", { rotation: reduced ? 0 : 55, transformOrigin: "50% 50%", ease: "none",
-        scrollTrigger: { trigger: ".intro", start: "top top", end: "bottom top", scrub: true } });
+      // Reduced motion keeps the fades and drops travel and blur.
+      const blur = (px: number) => reduced ? "blur(0px)" : `blur(${px}px)`;
+      const rise = (px: number) => reduced ? 0 : px;
+      const headings = [...root.querySelectorAll<HTMLElement>("[data-intro-title], [data-reveal], [data-reading]")];
+      const splits = headings.map((element) => SplitText.create(element, { type: "words", wordsClass: "ink-word", aria: "auto" }));
 
-      root.querySelectorAll<HTMLElement>("[data-reveal], [data-reading]").forEach((element) => {
-        const reading = element.hasAttribute("data-reading");
-        const split = SplitText.create(element, { type: "words", aria: "auto" });
-        splits.push(split);
-        // The final invitation stays visible: there is no following scene to transition into.
-        if (element.closest("#contact")) {
-          gsap.from(split.words, { opacity: 0, yPercent: reduced ? 0 : 35, stagger: 0.025, ease: "none",
-            scrollTrigger: { trigger: element, start: "clamp(top 92%)", end: "clamp(center 55%)", scrub: true } });
+      gsap.timeline()
+        .from(splits[0].words, { opacity: 0, filter: blur(12), y: rise(24), duration: reduced ? 0.6 : 1.6, stagger: 0.12, ease: "power3.out" })
+        .from(".opening [data-fade]", { opacity: 0, duration: 1.2, stagger: 0.15, ease: "power1.out" }, "-=0.8");
+
+      splits.slice(1).forEach((split, index) => {
+        const element = headings[index + 1];
+        if (element.hasAttribute("data-reading")) {
+          // A pause is read at scrolling pace: each word surfaces as the reader reaches it.
+          gsap.from(split.words, { opacity: 0.08, filter: blur(5), stagger: 0.06, ease: "none",
+            scrollTrigger: { trigger: element, start: "top 40%", end: "top -5%", scrub: true } });
           return;
         }
-        gsap.timeline({ scrollTrigger: { trigger: element, start: "clamp(top 92%)", end: "clamp(bottom -12%)", scrub: true } })
-          .from(split.words, { opacity: reading ? 0.15 : 0, yPercent: reading || reduced ? 0 : 35, stagger: 0.025, duration: 0.2, ease: "none" })
-          .to({}, { duration: 0.55 })
-          .to(split.words, { opacity: 0, yPercent: reduced ? 0 : -25, stagger: 0.01, duration: 0.18, ease: "none" });
+        gsap.from(split.words, { opacity: 0, filter: blur(10), y: rise(18), duration: reduced ? 0.6 : 1.3, stagger: 0.07, ease: "power3.out",
+          scrollTrigger: { trigger: element, start: "top 85%", toggleActions: "play none none reverse" } });
       });
-      gsap.from("[data-measure]", { scaleX: 0, transformOrigin: "left", ease: "none",
-        scrollTrigger: { trigger: ".impact-measure", start: "top 85%", end: "center 45%", scrub: true } });
-      gsap.to("[data-scan]", { top: reduced ? "50%" : "95%", ease: "none",
-        scrollTrigger: { trigger: ".scanner-visual", start: "top bottom", end: "bottom top", scrub: true } });
+
+      root.querySelectorAll<HTMLElement>(".chapter [data-fade]").forEach((element) => {
+        gsap.from(element, { opacity: 0, y: rise(12), duration: 1.1, ease: "power2.out",
+          scrollTrigger: { trigger: element, start: "top 90%", toggleActions: "play none none reverse" } });
+      });
       gsap.fromTo("[data-progress]", { scaleX: 0 }, { scaleX: 1, ease: "none", transformOrigin: "left",
         scrollTrigger: { start: 0, end: "max", scrub: true } });
-      return () => splits.forEach((split) => split.revert());
+
+      const stopLight = createLight(root, headings, !reduced);
+      return () => { stopLight(); splits.forEach((split) => split.revert()); };
     }, scope);
     return () => media.revert();
   }, []);
