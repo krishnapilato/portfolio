@@ -1,117 +1,101 @@
 @import "tailwindcss";
-@font-face {
-  font-family: "DM Sans";
-  src: url("@fontsource-variable/dm-sans/files/dm-sans-latin-standard-normal.woff2") format("woff2");
-  font-weight: 100 1000;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DM Sans";
-  src: url("@fontsource-variable/dm-sans/files/dm-sans-latin-standard-italic.woff2") format("woff2");
-  font-style: italic;
-  font-weight: 100 1000;
-  font-display: swap;
-}
 
+/*
+  Why each choice is here.
+  Paper   #f3f3f0  a quiet, slightly toned white: less glare than pure white over a long read.
+  Strong  #15181f  statements, the words that carry the thought.
+  Text    #3b414d  running sentences, one step back from the statements.
+  Quiet   #6c7280  the facts underneath, present but never competing.
+  Hair    #d3d5d9  progress and controls: found when needed, otherwise unnoticed.
+  No accent colour. The only emphasis is depth of ink, and the reader's pointer decides where it falls.
+  Newsreader: a reading serif with optical sizes, so the same voice works at statement and sentence size.
+*/
+@font-face { font-family:"Newsreader"; src:url("@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2") format("woff2"); font-weight:200 800; font-display:swap; }
+@font-face { font-family:"Newsreader"; src:url("@fontsource-variable/newsreader/files/newsreader-latin-opsz-italic.woff2") format("woff2"); font-weight:200 800; font-style:italic; font-display:swap; }
 :root {
-  color-scheme: light;
-  --paper: #f5f2ea;
-  --ink: #1b1916;
-  --faded: #827c71;
-  --quiet: #615b52;
-  --story-font: "DM Sans", system-ui, sans-serif;
-  --mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
-  --gutter: clamp(20px, 6vw, 96px);
-  --reach: clamp(150px, 30vw, 440px);
-  font-family: var(--story-font);
-  color: var(--ink);
-  background: var(--paper);
-  font-synthesis: none;
-  -webkit-font-smoothing: antialiased;
+  --paper:#f3f3f0; --strong:#15181f; --text:#3b414d; --quiet:#6c7280; --hair:#d3d5d9;
+  --left:clamp(24px,13vw,220px); --bar:clamp(56px,9vh,88px);
+  font-family:"Newsreader",Georgia,serif; color:var(--text); background:var(--paper);
+  font-optical-sizing:auto; font-synthesis:none; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-padding-top: 15vh; }
-body { margin: 0; min-width: 320px; background: var(--paper); overflow-x: clip; }
-h1, h2, p { margin: 0; font-weight: 400; }
-a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .25em; -webkit-tap-highlight-color: transparent; }
-svg { display: block; }
-::selection { color: var(--paper); background: var(--ink); }
-:focus-visible { outline: 1px solid var(--ink); outline-offset: 8px; }
-.page { position: relative; }
-.shell { width: min(100% - 2 * var(--gutter), 1320px); margin-inline: auto; }
+* { box-sizing:border-box; }
+html,body,#root { margin:0; width:100%; height:100%; overflow:clip; overscroll-behavior:none; background:var(--paper); }
+h1,h2,p { margin:0; font-weight:inherit; }
+a { color:inherit; }
+button { font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; }
+a,button { -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+:focus-visible { outline:1px solid var(--strong); outline-offset:6px; border-radius:2px; }
+[hidden] { display:none!important; }
 
-/* Attention. Each word paints its own copy of one radial gradient, offset by its position in the heading. */
-[data-intro-title], [data-reveal], [data-reading] { position: relative; --mx: -9999px; --my: -9999px; }
-@supports (background-clip: text) or (-webkit-background-clip: text) {
-  .ink-word {
-    color: transparent;
-    background: radial-gradient(circle var(--reach) at calc(var(--mx) - var(--wx, 0px)) calc(var(--my) - var(--wy, 0px)), var(--ink) 30%, var(--faded) 85%);
-    -webkit-background-clip: text;
-    background-clip: text;
+/* One viewport, always: a top bar, the stage and a bottom bar. Nothing scrolls. */
+.stage { position:fixed; inset:0; isolation:isolate; overflow:clip; display:grid; grid-template-rows:var(--bar) minmax(0,1fr) var(--bar); }
+.bar { position:relative; z-index:2; display:flex; align-items:center; gap:24px; padding-inline:var(--left); font-size:1rem; color:var(--quiet); }
+.bar button { min-height:44px; transition:color .3s; }
+.bar button:hover { color:var(--strong); }
+.to-contact { margin-left:auto; }
+main { position:relative; z-index:1; min-height:0; }
+
+/* The light: a wide, soft pool that follows the pointer and slowly gathers while it rests. */
+.glow { position:absolute; left:0; top:0; z-index:0; width:140vmax; height:140vmax; margin:-70vmax 0 0 -70vmax; pointer-events:none;
+  transform:translate3d(var(--torch-x,30vw),var(--torch-y,40vh),0) scale(calc(.85 + var(--dwell,0)*.25));
+  opacity:calc(.35 + var(--dwell,0)*.65);
+  background:radial-gradient(closest-side,rgb(255 255 255/.85),rgb(255 255 255/.55) 14%,rgb(255 255 255/.25) 30%,rgb(255 255 255/.08) 46%,transparent 62%); }
+
+/* Every scene shares one left edge and one starting height, so only the words change. */
+.scene { position:absolute; inset:0; visibility:hidden; }
+.copy { position:absolute; left:var(--left); right:var(--left); top:clamp(24px,16%,160px); max-width:42rem; }
+.opening .copy { top:auto; bottom:clamp(24px,18%,180px); max-width:none; }
+
+/* Each word is revealed and lit on its own; --lit is the pointer's light on that word. */
+.w { display:inline-block; opacity:0; will-change:opacity,transform; color:color-mix(in oklab,#000 calc(var(--lit,0)*70%),var(--ink));
   }
-  .ink-word::selection { color: var(--paper); }
+
+h1,h2 { --ink:var(--strong); font-weight:330; letter-spacing:-.018em; line-height:1.04; text-wrap:balance; }
+h1 { font-size:clamp(3rem,min(9vw,17vh),8.5rem); font-weight:300; letter-spacing:-.028em; margin-left:-.05em; }
+h2 { font-size:clamp(2.2rem,min(5.4vw,10vh),5rem); max-width:15ch; margin-left:-.04em; }
+p { --ink:var(--text); font-size:clamp(1.08rem,min(.6rem + 1vw,2.9vh),1.38rem); line-height:1.58; max-width:30em; text-wrap:pretty; }
+h1 + p,h2 + p { margin-top:clamp(20px,4.4vh,44px); }
+p + p { margin-top:.85em; }
+.opening p { --ink:var(--text); font-size:clamp(1.15rem,min(.7rem + 1.2vw,3.2vh),1.6rem); }
+.note { --ink:var(--quiet); font-style:italic; font-size:clamp(.98rem,min(.55rem + .8vw,2.5vh),1.1rem); margin-top:clamp(18px,3.4vh,34px)!important; }
+.links { display:flex; flex-wrap:wrap; gap:2px 32px; margin-top:clamp(10px,2vh,20px)!important; max-width:none; }
+.links a,.links button { display:inline-block; line-height:44px; --ink:var(--strong); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:7px; text-decoration-color:var(--hair); transition:text-decoration-color .3s; }
+.links a .w,.links button .w { --ink:var(--strong); }
+.links a:hover,.links button:hover { text-decoration-color:var(--quiet); }
+.address { max-width:none; margin-top:clamp(18px,4vh,40px)!important; }
+.address a { --ink:var(--strong); font-size:clamp(1.3rem,min(3.2vw,6vh),2.6rem); font-weight:300; letter-spacing:-.01em; text-decoration:none; overflow-wrap:anywhere; }
+.address .w { --ink:var(--strong); }
+
+/* Bottom bar: where you are, how to move. */
+.hint { --ink:var(--quiet); font-size:.95rem; opacity:var(--start,1); }
+.hint .w { opacity:1; }
+.with-touch { display:none; }
+.progress { position:relative; flex:0 1 160px; height:1px; margin-left:auto; background:var(--hair); overflow:hidden; }
+.progress span { position:absolute; inset:0; background:var(--quiet); transform-origin:left; transform:scaleX(0); }
+.arrows { display:flex; gap:6px; }
+.arrows button { width:44px; height:44px; display:grid; place-items:center; color:var(--quiet); }
+.arrows button:disabled { opacity:.25; cursor:default; }
+.arrows svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.3; stroke-linecap:round; stroke-linejoin:round; }
+.announce { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+
+@media (max-width:760px) {
+  :root { --left:24px; }
+  .copy { top:6%; }
+  .opening .copy { bottom:10%; }
+  .progress { flex-basis:72px; }
 }
-/* Where attention rests, the paper is a little brighter, like a page under a reading lamp. */
-.lamp { position: fixed; z-index: 0; top: 0; left: 0; width: calc(var(--reach) * 3); aspect-ratio: 1; margin: calc(var(--reach) * -1.5) 0 0 calc(var(--reach) * -1.5); border-radius: 50%; pointer-events: none; background: radial-gradient(circle, #fffdf8cc 0%, #fffdf866 30%, #fffdf81f 52%, transparent 70%); }
-main { position: relative; z-index: 1; }
-
-.note { font-family: var(--mono); font-size: 12px; line-height: 1.8; letter-spacing: .04em; color: var(--quiet); }
-.note a { color: var(--ink); }
-a.note { text-decoration: none; padding-block: 12px; }
-a.note:hover, .site-footer a:hover { color: var(--ink); text-decoration: underline; }
-.skip-link { position: fixed; z-index: 40; top: 12px; left: 12px; padding: 12px 20px; transform: translateY(-200%); background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 12px; }
-.skip-link:focus { transform: translateY(0); }
-.reading-progress { position: fixed; z-index: 30; top: 0; left: 0; height: 1px; width: 100%; background: var(--ink); transform: scaleX(0); transform-origin: left; }
-
-
-
-html { scrollbar-width: none; overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
-html::-webkit-scrollbar { display: none; }
-.stage { position: fixed; inset: 0; overflow: clip; }
-.scene {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: safe center;
-  align-items: flex-start;
-  padding-block: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-bottom));
-  overflow-y: auto;
+@media (max-height:540px) {
+  .copy { top:4%; }
+  p + p { margin-top:.5em; }
 }
-.scene > * { flex-shrink: 0; }
-.scene:not(:first-child) { visibility: hidden; }
-.portrait-opening { align-items: center; }
-.portrait {
-  width: min(86vw, 72svh, 600px);
-  height: auto;
-  object-fit: contain;
-  mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
-}
-.statement { font-size: clamp(1.9rem, min(4.5vw, 7svh), 4rem); max-width: 24ch; line-height: 1.08; letter-spacing: -.04em; margin-top: clamp(12px, 2svh, 24px); text-wrap: balance; }
-.prose { max-width: 58ch; font-size: clamp(1rem, 1.65vw, 1.35rem); line-height: 1.5; margin-top: clamp(16px, 3svh, 28px); }
-.prose p + p { margin-top: .85em; }
-.record { max-width: 70ch; margin-top: clamp(16px, 3svh, 24px); font-size: 11px; line-height: 1.6; }
-.email { overflow-wrap: anywhere; }
-
-@media (max-height: 650px) {
-  .scene { padding-block: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-bottom)); }
-  .statement { font-size: clamp(1.65rem, 4vw, 2.5rem); margin-top: 8px; }
-  .prose { margin-top: 12px; font-size: 1rem; line-height: 1.4; }
-  .record { margin-top: 12px; line-height: 1.45; }
-}
-
-@media (forced-colors: active) {
-  .ink-word { background: none; color: CanvasText; }
-  .lamp { display: none; }
-}
+@media (hover:none) { .glow { display:none; } .with-mouse { display:none; } .with-touch { display:inline; } }
+@media (forced-colors:active) { .glow { display:none; } .w { color:CanvasText; text-shadow:none; } }
 @media print {
-  .page { height: auto !important; }
-  .stage, .scene { position: static; overflow: visible; }
-  .scene { visibility: visible !important; opacity: 1 !important; padding: 12px 0; }
-  .lamp, .hint, .skip-link { display: none; }
-  .ink-word { background: none; color: black; }
+  html,body,#root { height:auto; overflow:visible; background:#fff; }
+  .stage { position:static; display:block; }
+  main { position:static; }
+  .scene { position:static; visibility:visible!important; padding:24px 0; break-inside:avoid; }
+  .copy { position:static; max-width:none; }
+  .w { opacity:1!important; transform:none!important; color:#000; text-shadow:none; }
+  .glow,.bar { display:none; }
 }
-
-.project-links { display: flex; flex-wrap: wrap; gap: 4px 24px; margin-top: 12px; }
-.project-links a { display: inline-flex; align-items: center; min-height: 44px; }

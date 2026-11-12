@@ -11,19 +11,20 @@
 
 [Live portfolio](https://krishnapilato.github.io/portfolio/)
 
-A personal portfolio written as a short essay instead of a CV. Seven reflections on what software owes the people who use it, each one backed by real work. There are no lists, tables or cards: only sentences, and the space around them.
+A personal portfolio told as a short story instead of a CV. Eight reflections on what software owes the people who use it, each one backed by real work. There are no lists, tables, cards or pictures: only sentences, revealed one word at a time.
 
 ## The story
 
-1. **Time.** ATM Milano's notice workflow, from twenty minutes to two.
-2. **Privacy.** PixelPaper, and where a document should be read.
-3. **Place.** BiMap and the difference between a register and a map.
-4. **Words.** Cherubini, a historical dictionary given new ways in.
-5. **Trust.** The full professional path since 2021, told as prose.
-6. **Doubt.** Aviation, checklists, background and education.
-7. **Craft.** Code written for the next person who reads it.
+1. **Attention.** ATM Milano's notice workflow, from twenty minutes to two.
+2. **Care.** Changing systems that are already running, at Intesa Sanpaolo and Fincons Group.
+3. **Honesty.** Interfaces for real machines, at SEA Vision and for Bosch R&D.
+4. **Privacy.** PixelPaper, and where a document should be read.
+5. **Place.** BiMap and the difference between a register and a map.
+6. **Memory.** Cherubini, a historical dictionary given new ways in.
+7. **Awareness.** Two languages, flight simulation and the habit of looking twice.
+8. **Craft.** Code written for the next person who reads it.
 
-The story ends with an invitation and three ways to make contact. All copy lives in `src/profile.ts`; professional facts come from the supplied profile, and the phone number is not published. `src/App.tsx` only lays the story out.
+It opens with a name and ends with an invitation and three ways to make contact. All copy lives in `src/profile.ts`; professional facts come from the supplied profile, and the phone number is not published.
 
 ## Stack
 
@@ -41,12 +42,14 @@ The deployment base is `/portfolio/` for GitHub Pages. Change `base` in `vite.co
 
 ## Design and motion
 
-- **Light only.** The page is paper and ink, with no accent colour: nothing is decoration, so nothing needs a colour of its own.
-- **One locally served typeface.** DM Sans, bundled with the site.
-- **Ink follows attention.** Display text is faded ink until attention reaches it (`src/light.ts`): the pointer, or the reading zone of the screen when scrolling by touch or keyboard. The effect is a 2D radial gradient clipped to the text; there is no WebGL or canvas.
-- **Scroll narrative.** `src/useScrollNarrative.ts` ties each reveal to scrolling, so statements surface at reading pace.
-- **Reduced motion.** With `prefers-reduced-motion`, the fades remain and travel, blur and easing are removed.
-- **Fallbacks.** Forced-colours mode and print use plain text. Without JavaScript, a short profile with contact links is shown.
+- **One viewport.** The page never scrolls. Scrolling, swiping or the arrow keys move through the story instead (`src/useStory.ts`).
+- **Words, not drawings.** Every scene shares the same left edge and starting height, so only the words change.
+- **Scroll-linked reveal.** Each scene appears word by word in reading order and leaves the same way, mapped linearly to the scroll position. The position glides after the hand and settles on a whole scene when the hand stops, so two scenes never share the screen.
+- **A light that waits.** On devices with a mouse, a soft light follows the pointer and slowly brightens the words beneath it the longer it rests.
+- **Evening palette.** Blue-black night, three tones of text and no accent colour; the reason for each is written at the top of `src/index.css`.
+- **One typeface.** Newsreader, a reading serif with optical sizes, served locally.
+- **Reduced motion.** With `prefers-reduced-motion`, scenes change without travel and the light stays still.
+- **Fallbacks.** Forced-colours mode and print show plain text. Without JavaScript, a short profile with contact links is shown.
 
 ## Privacy and security
 
