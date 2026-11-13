@@ -1,0 +1,6 @@
+---
+// Splits plain text into words so the story can reveal and light each one. Text is always escaped by Astro.
+interface Props { text: string }
+const words = Astro.props.text.split(/\s+/).filter(Boolean);
+---
+{words.map((word, index) => <Fragment>{index > 0 && " "}<span class="w">{word}</span></Fragment>)}

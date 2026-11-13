@@ -1,0 +1,44 @@
+---
+import Scene from "../components/Scene.astro";
+import Base from "../layouts/Base.astro";
+import { profile, scenes } from "../content/profile";
+
+const last = scenes.length - 1;
+---
+<Base title={`${profile.name}, ${profile.role}`} description="Five years of building software across public transport, banking and industry, and what it has taught me.">
+  <div class="stage" data-story>
+    <div class="light" aria-hidden="true"></div>
+
+    <header class="bar">
+      <a class="bar-link" href="#start" data-go="0">{profile.name}</a>
+      <a class="bar-link bar-end" href="#contact" data-go={String(last)}>Contact</a>
+    </header>
+
+    <main>
+      {scenes.map((scene, index) => (
+        <Scene scene={scene} index={index} total={scenes.length} email={index === last ? profile.email : undefined}>
+          {index === last && (
+            <p class="links">
+              <button class="w" type="button" data-copy={profile.email}>Copy address</button>
+              <a class="w" href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a class="w" href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+            </p>
+          )}
+        </Scene>
+      ))}
+    </main>
+
+    <footer class="bar">
+      <p class="counter" aria-hidden="true"><span data-counter>01</span><span class="counter-total"> / {String(scenes.length).padStart(2, "0")}</span></p>
+      <p class="hint" aria-hidden="true"><span class="hint-wheel">Scroll</span><span class="hint-touch">Swipe up</span></p>
+      <div class="progress" aria-hidden="true"><span data-progress></span></div>
+      <nav class="arrows" aria-label="Story">
+        <button type="button" data-step="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6" /></svg></button>
+        <button type="button" data-step="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m-6-6 6 6 6-6" /></svg></button>
+      </nav>
+    </footer>
+    <p class="announce" aria-live="polite" data-announce></p>
+  </div>
+</Base>
+
+<script src="../scripts/main.ts"></script>

@@ -1,0 +1,22 @@
+---
+import type { Scene } from "../content/profile";
+import Words from "./Words.astro";
+
+interface Props { scene: Scene; index: number; total: number; email?: string | undefined }
+const { scene, index, total, email } = Astro.props;
+const Heading = index === 0 ? "h1" : "h2";
+// The story is a sequence, so each scene carries its position: 01, 02, …
+const number = String(index + 1).padStart(2, "0");
+---
+<section class:list={["scene", { opening: index === 0 }]} id={scene.id} data-scene={scene.id} aria-labelledby={`${scene.id}-title`}>
+  <div class="copy">
+    {index > 0 && <p class="index" aria-label={`Part ${index + 1} of ${total}`}><span class="w">{number}</span></p>}
+    <Heading id={`${scene.id}-title`}><Words text={scene.title} /></Heading>
+    <span class="w rule" aria-hidden="true"></span>
+    {email && <p class="address"><a class="w" href={`mailto:${email}`}>{email}</a></p>}
+    {scene.text.map(text => <p class="text"><Words text={text} /></p>)}
+    {scene.note && <p class="note"><Words text={scene.note} /></p>}
+    {scene.links && <p class="links">{scene.links.map(link => <a class="w" href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>)}</p>}
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,120 @@
+/* Reset and document. Mobile first; the one-viewport story applies only when scripts run. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--size-text);
+  font-weight: var(--weight-text);
+  line-height: 1.55;
+  font-feature-settings: "ss01", "cv11";
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, p { margin: 0; font-weight: inherit; }
+a { color: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+a, button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 1px; }
+[hidden] { display: none !important; }
+svg { display: block; }
+
+/* A scene: one centred block on a single axis. Number, statement, rule, sentences, facts. */
+.copy { width: min(100%, var(--container)); margin-inline: auto; text-align: center; }
+.index { color: var(--accent); font-size: var(--size-small); font-weight: var(--weight-small); letter-spacing: 0.04em; }
+h1, h2 { color: var(--ink); font-weight: var(--weight-statement); line-height: 1.02; text-wrap: balance; }
+h1 { font-size: var(--size-name); letter-spacing: -0.045em; }
+h2 { font-size: var(--size-statement); letter-spacing: -0.035em; margin-top: var(--space-3); }
+.rule { display: block; width: var(--rule-width); height: 1px; margin: var(--space-4) auto; background: var(--accent); }
+.text { max-width: var(--measure); margin-inline: auto; text-wrap: pretty; }
+.text + .text { margin-top: var(--space-1); }
+.opening .text:first-of-type { color: var(--ink); }
+.note { margin-top: var(--space-3); color: var(--muted); font-size: var(--size-small); font-weight: var(--weight-small); letter-spacing: 0.01em; }
+.links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 var(--space-3); margin-top: var(--space-2); }
+.links a, .links button {
+  display: inline-block;
+  line-height: 2.75rem;
+  color: var(--ink);
+  font-size: var(--size-small);
+  font-weight: var(--weight-small);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.45em;
+  text-decoration-color: var(--rule);
+  transition: text-decoration-color 0.3s var(--ease);
+}
+.links a:hover, .links button:hover { text-decoration-color: var(--accent); }
+.address { margin-bottom: var(--space-3); }
+.address a { color: var(--ink); font-size: calc(var(--size-statement) * 0.55); font-weight: var(--weight-statement); letter-spacing: -0.02em; text-decoration: none; overflow-wrap: anywhere; }
+
+/* The pointer's light deepens the ink of nearby words; --lit is set per word by the story engine. */
+.w { display: inline-block; color: color-mix(in oklab, var(--ink) calc(var(--lit, 0) * 100%), currentColor); }
+.rule.w { display: block; }
+
+/* Bars: name and contact above; position, progress and controls below. Aligned to the page edges. */
+.bar { display: flex; align-items: center; gap: var(--space-3); padding-inline: var(--gutter); color: var(--muted); font-size: var(--size-small); font-weight: var(--weight-small); }
+.bar-link { display: inline-block; line-height: 2.75rem; text-decoration: none; transition: color 0.3s var(--ease); }
+.bar-link:hover { color: var(--ink); }
+.bar-end { margin-left: auto; }
+.counter, .hint, .progress, .arrows, .light, .announce { display: none; }
+
+/* Without scripts the page is a plain document: every scene in order, read by scrolling. */
+.scene { padding: 16vh var(--gutter); }
+
+/* With scripts: one viewport that never scrolls, the story told in place. */
+@media (scripting: enabled) {
+  html, body { height: 100%; overflow: clip; overscroll-behavior: none; }
+  .stage { position: fixed; inset: 0; isolation: isolate; overflow: clip; display: grid; grid-template-rows: var(--bar) minmax(0, 1fr) var(--bar); }
+  .bar { position: relative; z-index: 2; }
+  main { position: relative; z-index: 1; min-height: 0; }
+  .scene { position: absolute; inset: 0; display: grid; align-content: center; padding: var(--space-2) var(--gutter); visibility: hidden; }
+  .stage:not([data-ready]) .scene:first-of-type { visibility: visible; }
+  .stage[data-ready] .w { will-change: opacity, transform; }
+
+  .light {
+    display: block;
+    position: absolute; left: 0; top: 0; z-index: 0;
+    width: 140vmax; height: 140vmax; margin: -70vmax 0 0 -70vmax;
+    pointer-events: none;
+    transform: translate3d(var(--light-x, 50vw), var(--light-y, 45vh), 0) scale(calc(0.85 + var(--dwell, 0) * 0.25));
+    opacity: calc(0.4 + var(--dwell, 0) * 0.6);
+    background: radial-gradient(closest-side, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.6) 16%, rgb(255 255 255 / 0.25) 34%, rgb(255 255 255 / 0.07) 50%, transparent 64%);
+  }
+
+  .counter { display: block; min-width: 4.5rem; }
+  .counter [data-counter] { color: var(--ink); }
+  .counter-total { color: var(--muted); }
+
+  /* The centre of the lower bar shows the hint at the start, then the progress line in its place. */
+  .hint, .progress { display: block; grid-area: 1 / 1; }
+  .bar:has(.progress) { display: grid; grid-template-columns: 4.5rem 1fr auto; }
+  .hint { justify-self: center; opacity: var(--opening, 1); }
+  .progress { position: relative; align-self: center; width: min(100%, 12rem); height: 1px; justify-self: center; background: var(--rule); overflow: hidden; opacity: calc(1 - var(--opening, 1)); }
+  .progress span { position: absolute; inset: 0; background: var(--accent); transform-origin: left; transform: scaleX(0); }
+  .counter { grid-column: 1; }
+  .hint, .progress { grid-column: 2; grid-row: 1; }
+  .arrows { display: flex; grid-column: 3; gap: 0.25rem; margin-right: -0.75rem; }
+  .arrows button { width: 2.75rem; height: 2.75rem; display: grid; place-items: center; color: var(--muted); transition: color 0.3s var(--ease); }
+  .arrows button:hover:not(:disabled) { color: var(--ink); }
+  .arrows button:disabled { opacity: 0.3; cursor: default; }
+  .arrows svg { width: 1.125rem; height: 1.125rem; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: square; stroke-linejoin: miter; }
+  .announce { display: block; position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  .hint-wheel { display: none; }
+  @media (hover: hover) and (pointer: fine) { .hint-wheel { display: inline; } .hint-touch { display: none; } }
+  @media (hover: none) { .light { display: none; } }
+}
+
+@media (forced-colors: active) { .light { display: none; } .w { color: CanvasText; } .rule { background: CanvasText; } }
+@media print {
+  html, body { height: auto; overflow: visible; }
+  .stage { position: static; display: block; }
+  .scene { position: static; visibility: visible !important; padding: 1.5rem 0; break-inside: avoid; }
+  .w { opacity: 1 !important; transform: none !important; color: #000; }
+  .bar, .light { display: none; }
+}

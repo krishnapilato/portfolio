@@ -1,0 +1,98 @@
+/*
+  Design tokens, Swiss in spirit: one grotesque, a strict scale, hairlines, and one colour for structure.
+  Every value has a reason, written next to it.
+
+  Colour
+    --paper   #f7f7f6  neutral white with the slightest warmth, so long reading does not glare.
+    --ink     #111318  statements: the principle each scene stands for.
+    --text    #3a3f4a  sentences that support the statement; 10.6:1 on paper.
+    --muted   #6b717d  facts and navigation, present but quiet; 4.8:1 on paper.
+    --rule    #dadde2  hairlines that organise without drawing attention.
+    --accent  #2d4b70  steel blue, the colour of engineering tools. It marks structure only: the scene
+                       number, the rule under each statement, progress and focus. Never decoration.
+
+  Type
+    Inter Tight: a neutral, tightly spaced grotesque in the Swiss tradition. One family, set in three
+    weights; hierarchy comes from size and spacing, not from mixing typefaces.
+
+  Scale
+    Mobile first. The base values are the phone's; wider screens step up at 48rem and 72rem.
+    Sizes follow a ratio near 1.25 so every level is clearly distinct from the next.
+*/
+
+@font-face {
+  font-family: "Inter Tight";
+  src: url("@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --paper: #f7f7f6;
+  --ink: #111318;
+  --text: #3a3f4a;
+  --muted: #6b717d;
+  --rule: #dadde2;
+  --accent: #2d4b70;
+
+  --font: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --gutter: 1.5rem;
+  --container: 36rem;
+  --measure: 30ch;
+  --bar: 3.75rem;
+
+  --size-name: 2.875rem;
+  --size-statement: 2.25rem;
+  --size-text: 1.0625rem;
+  --size-small: 0.8125rem;
+
+  --weight-statement: 560;
+  --weight-text: 400;
+  --weight-small: 500;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+
+  --rule-width: 2.5rem;
+  --ease: cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 3rem;
+    --container: 44rem;
+    --bar: 4.5rem;
+    --size-name: 5rem;
+    --size-statement: 3.5rem;
+    --size-text: 1.1875rem;
+    --size-small: 0.875rem;
+    --space-4: 3rem;
+    --rule-width: 3rem;
+  }
+}
+
+@media (min-width: 72rem) {
+  :root {
+    --container: 56rem;
+    --bar: 5.5rem;
+    --size-name: 7rem;
+    --size-statement: 4.75rem;
+    --size-text: 1.3125rem;
+    --space-4: 3.5rem;
+  }
+}
+
+/* Short landscape screens: everything still fits one viewport. */
+@media (max-height: 34rem) and (orientation: landscape) {
+  :root {
+    --bar: 3rem;
+    --size-name: 2.5rem;
+    --size-statement: 1.875rem;
+    --size-text: 0.9375rem;
+    --space-3: 1rem;
+    --space-4: 1.25rem;
+  }
+}
