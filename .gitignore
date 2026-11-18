@@ -1,0 +1,26 @@
+# Dependencies and generated output
+node_modules
+dist
+*.local
+
+# Logs
+logs
+*.log
+
+# Secrets stay local
+.env
+.env.*
+!.env.example
+
+# Editors and operating system files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+
+.astro
+
+# Test and audit reports
+.lighthouseci
+playwright-report
+test-results

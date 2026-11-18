@@ -1,0 +1,35 @@
+---
+import { projects, profile, type Scene } from "../content/profile";
+interface Props { scene: Scene; index: number }
+const { scene, index } = Astro.props;
+const Heading = index === 0 ? "h1" : "h2";
+---
+<section class:list={["scene", { opening: index === 0, work: scene.id === "work" }]} id={scene.id} data-scene={scene.id} aria-labelledby={`${scene.id}-title`}>
+  <div class="statement">
+    <p class="eyebrow reveal"><span>{String(index + 1).padStart(2, "0")}</span>{scene.label}</p>
+    <Heading class="reveal" id={`${scene.id}-title`} tabindex="-1">{scene.title}</Heading>
+    <p class="aside reveal">{scene.note}</p>
+  </div>
+  <div class="reading">
+    {scene.text.map(text => <p class="prose reveal">{text}</p>)}
+    {index === 0 && <div class="origin reveal"><p>Bengaluru, India <span aria-hidden="true">/</span> Italy</p><p class="invitation">Scroll, swipe, or use the arrow keys.<br />Six notes. Take your time.</p></div>}
+    {scene.id === "work" && <div class="projects reveal">
+      <div class="project-tabs" role="tablist" aria-label="Selected work">
+        {projects.map((project, i) => <button type="button" role="tab" id={`tab-${project.id}`} aria-controls={`project-${project.id}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-project={String(i)}>{project.label}</button>)}
+      </div>
+      {projects.map(project => <div class="project" id={`project-${project.id}`} role="tabpanel" aria-labelledby={`tab-${project.id}`} tabindex="0">
+        <p class="project-context">{project.context}</p>
+        <h3>{project.title}</h3>
+        <p>{project.text}</p>
+        <p class="outcome">{project.outcome}</p>
+        <p class="stack">{project.stack}</p>
+        {project.links && <p class="project-links">{project.links.map(link => <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>)}</p>}
+      </div>)}
+    </div>}
+    {scene.id === "contact" && <div class="contact-links reveal">
+      <a class="email" href={`mailto:${profile.email}`}>{profile.email}</a>
+      <div class="links"><a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a><a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a><button type="button" data-copy={profile.email}>Copy address</button></div>
+      <p class="copy-status" role="status" data-copy-status></p>
+    </div>}
+  </div>
+</section>

@@ -1,0 +1,6 @@
+[
+  { "name": "HTML", "path": "dist/index.html", "limit": "4 kB" },
+  { "name": "CSS", "path": "dist/assets/*.css", "limit": "3 kB" },
+  { "name": "JavaScript", "path": "dist/assets/*.js", "limit": "30 kB" },
+  { "name": "Font", "path": "dist/assets/*.woff2", "limit": "50 kB", "brotli": false }
+]

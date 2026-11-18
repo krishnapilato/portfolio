@@ -1,0 +1,17 @@
+/* One local face. Neutral charcoal on a near-white ground, independent of the system theme. */
+@font-face {
+  font-family: "Inter Tight";
+  src: url("@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root {
+  color-scheme: light;
+  --bg-surface: #faf9f6;
+  --text-primary: #292929;
+  --text-secondary: #5b5b58;
+  --border-hairline: #d5d3cd;
+  --accent: #814831;
+  --font: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --gutter: clamp(1.5rem, 6vw, 7rem);
+}

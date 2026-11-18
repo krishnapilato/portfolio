@@ -1,0 +1,15 @@
+---
+import Scene from "../components/Scene.astro";
+import Base from "../layouts/Base.astro";
+import { profile, scenes } from "../content/profile";
+---
+<Base title={`${profile.name} — ${profile.role}`} description="Six notes on building useful software. Khova Krishna Pilato, full stack engineer in Italy. Selected work in transport, banking and industry.">
+  <div class="stage" data-story>
+    <main>{scenes.map((scene, index) => <Scene scene={scene} index={index} />)}</main>
+    <nav class="chapters" aria-label="Chapters">
+      {scenes.map((scene, index) => <a href={`#${scene.id}`} data-go={String(index)}><span>{String(index + 1).padStart(2, "0")}</span>{" "}<span class="chapter-label">{scene.label}</span></a>)}
+    </nav>
+    <p class="sr-only" aria-live="polite" aria-atomic="true" data-announce></p>
+  </div>
+</Base>
+<script src="../scripts/main.ts"></script>
