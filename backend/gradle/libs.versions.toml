@@ -8,7 +8,7 @@ pmd = "7.29.0"
 jacoco = "0.8.16"
 pitest = "1.30.2"
 pitest-junit5 = "1.2.3"
-spring-modulith = "2.1.2"
+spring-modulith = "2.2.0"
 datafaker = "2.7.0"
 
 [libraries]
